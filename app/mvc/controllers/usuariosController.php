@@ -5,28 +5,40 @@ use Jenssegers\Blade\Blade;
 
 class usuariosController extends controller
 {
-	protected $model;
+	protected $funcoes;
 	
 	public function __construct()
 	{
 		$this->model = $this->model('usuario');
+		$this->funcoes = $this->model('funcoes');
 	}
 
 
 
-
+	public function getSelectfuncoes($filtro = "")
+	{	
+		$resultado = "";
+		$funcoes = $this->funcoes->where('descricao','like',"%$filtro%")->where('empresa','=',Auth('empresa'))->get();
+		// <td>1</td><td>2</td>
+		foreach ($funcoes as $funcao)
+		{
+			$resultado.="<td>$funcao->id</td>
+						 <td>$funcao->descricao</td>";
+		}
+		return $resultado;
+	}	
 
 
 
 	public function getFuncoes()
 	{
-		return $this->view('usuarios.funcoes',[]);
+		echo $this->view('usuarios.funcoes',[]);
 	}
 	
 	public function getLogin()
 	{
 		LimpaUsuario();
-		return $this->view('usuarios.login',[]);
+		echo $this->view('usuarios.login',[]);
 	}
 
 	public function getSair()
@@ -38,12 +50,12 @@ class usuariosController extends controller
 	public function getCadastro()
 	{
 		LimpaUsuario();
-		return $this->view('usuarios.cadastro',[]);
+		echo $this->view('usuarios.cadastro',[]);
 	}
 
 	public function getRenovasenha()
 	{
-		return "aqui executa um processamento para renovar senha";
+		echo "aqui executa um processamento para renovar senha";
 	}
 
 	public function postLogar()
@@ -70,9 +82,9 @@ class usuariosController extends controller
 				->get();
 
 		if(count($usuario)>0)	
-		  return 'SIM';
+		  echo 'SIM';
 		else
-		  return 'NAO';
+		  echo 'NAO';
 	}
 
 	public function getValidalogin($email,$senha)
@@ -82,8 +94,8 @@ class usuariosController extends controller
 				->where('senha','=',md5($senha))
 					->get();
 		if(count($usuario)>0)	
-		  return 'SIM';
+		  echo 'SIM';
 		else
-		  return 'NAO';
+		  echo 'NAO';
 	}
 }

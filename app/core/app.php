@@ -49,7 +49,7 @@ class app
 
 		if($this->middleware->middleware_geral($nome_controller,$this->metodo))
 		{
-			echo call_user_func_array([$this->controller,$this->metodo],$this->parametros);
+			call_user_func_array([$this->controller,$this->metodo],$this->parametros);
 		}
 	}
 

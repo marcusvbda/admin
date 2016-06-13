@@ -7,6 +7,6 @@ class inicioController extends controller
 {
 	public function getIndex()
 	{
-		return $this->view('index',[]);
+		echo $this->view('index',[]);
 	}	
 }
