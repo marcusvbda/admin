@@ -93,8 +93,8 @@ function buscar()
         '<tr>'+
           '<td>'+funcoes.descricao+'</td>'+
           '<td>'+
-            '<div class="col-md-6"><a class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a></div>'+
-            '<div class="col-md-6"><a onclick="msgexcluir('+funcoes.id+')" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a></div>'+
+            '<div class="col-md-6"><a title="Editar" onclick="alterar('+funcoes.id+')" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a></div>'+
+            '<div class="col-md-6"><a title="Excluir" onclick="msgexcluir('+funcoes.id+')" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a></div>'+
           '</td>'+
         '</tr>');
     });
@@ -130,6 +130,10 @@ function excluir()
   $("#btn-filtro").click();
 }
 
+function alterar(id)
+{
+  $('#alterar-modal').modal('show');   
+}
 
 </script>
 
@@ -175,6 +179,31 @@ function excluir()
       </div>
       <div  class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Voltar</button>
+      </div>
+    </div>    
+  </div>
+</div>
+
+
+<div class="modal fade" id="alterar-modal" role="dialog">
+  <div class="modal-dialog modal-sm">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">
+          Alteração
+        </h4>
+      </div>
+      <div class="modal-body">
+        
+      formulario
+
+      </div>
+      <div  class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        <button type="button"  data-dismiss="modal" class="btn btn-primary">Sim</button>
       </div>
     </div>    
   </div>
