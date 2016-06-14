@@ -9,15 +9,14 @@ function CheckAuth()
 
 function SalvaUsuario($usuario =  [])
 {
-	LimpaUsuario();
 	$_SESSION['dados_usuario'] = (object) $usuario;
 }
 
 
 function LimpaUsuario()
 {
-	if(isset($_SESSION['dados_usuario']))
-		unset($_SESSION['dados_usuario']);
+	unset($_SESSION['dados_usuario']);
+	session_destroy();
 }
 
 function Auth($variavel="id")

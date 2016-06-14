@@ -7,6 +7,11 @@ function getInfo($valor,$tabela,$campo=1,$operador='=',$comparador=1)
 		return $row->{$valor};
 }
 
+function registralog($log = "")
+{
+	DB::table('log')->insert(['descricao' =>$log, 'usuario' => Auth('id'),'created_at'=>date("Y-m-d H:i:s")]);
+}
+
 function mensagem($mensagem= "")
 {
 	return "<script>alert('$mensagem');</script>";

@@ -7,8 +7,8 @@
   <small>Tabela auxiliar</small>
 </h1>
 <ol class="breadcrumb">
-  <li><a href="#"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li class="glyphicon glyphicon-road">Funções</li> 
+   <li><a href="{{asset('')}}"><i class="fa fa-dashboard"></i> Início</a></li>>
+  <li><span class="glyphicon glyphicon-road"></span> Funções</li> 
 </ol>
 @stop
 
@@ -39,6 +39,7 @@
         </div>
         <div class="col-md-1" style="margin-top:25px;">
           <button type="button" id="btn_confirma_alt" onclick="confirmaalteracao()" class="btn btn-primary">Salvar</button>
+          <input type="text" value="{{Auth('admin')}}" id="admin" hidden>
         </div>
       </div>       
     </div>
@@ -106,6 +107,7 @@ $( document ).ready(function()
 
 function buscar()
 {
+  admin = document.getElementById('admin').value;
   $("#loading-div").show();
   $("#loading-div").show();  
   $("#tabela").hide();
@@ -116,26 +118,26 @@ function buscar()
     $("#tabela tr").remove();
     $('#tabela').append(
       '<tr>'+
-        '<th  style="width:88%;" >Descrição</th>'+  
-        '<th class="centro"><span class="glyphicon glyphicon-cog"></span></th>'+  
+        '<th>Descrição</th>'+  
+        '<th></span></th>'+  
       '</tr>');
     $.each(data, function(funcoes,funcoes)
     {      
       html=
       '<tr>'+
           '<td>'+funcoes.descricao+'</td>'+
-          '<td>';
-      if(funcoes.usado=='N')
+          '<td class="centro pull-right">';
+      if((funcoes.usado=='N')&&(admin=='S'))
       {
         html+=
-            '<div class="col-md-6"><a title="Editar" onclick="alterar('+funcoes.id+')" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a></div>'+
-            '<div class="col-md-6"><a title="Excluir" onclick="msgexcluir('+funcoes.id+')" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a></div>';
+            '<a title="Editar" onclick="alterar('+funcoes.id+')" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>'+
+            '<a title="Excluir" onclick="msgexcluir('+funcoes.id+')" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>';
       }
       else
       {
          html+=
-            '<div class="col-md-6"><a disabled title="Registro em uso, por isso não pode ser alterado" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a></div>'+
-            '<div class="col-md-6"><a disabled title="Registro em uso, por isso não pode ser excluido" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a></div>';
+            '<a disabled title="Registro em uso, por isso não pode ser alterado" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>'+
+            '<a disabled title="Registro em uso, por isso não pode ser excluido" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>';
       }
 
       html+='</td>'+

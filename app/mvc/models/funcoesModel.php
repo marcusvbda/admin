@@ -7,3 +7,4 @@ class funcoesModel extends Eloquent
 	protected $table     = "funcoes";
 	protected $fillable  = ['id','descricao','empresa','usado'];
 }
+

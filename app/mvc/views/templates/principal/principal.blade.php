@@ -189,7 +189,7 @@
         <!-- itens menu -->
           <li class="treeview">
             <a href="#">
-              <i class="glyphicon glyphicon-inbox"></i> <span>Tabelas Auxiliáres</span>
+              <i class="glyphicon glyphicon-inbox"></i> <span>Cadastros</span>
             </a>
             <ul class="treeview-menu">
               <li>
@@ -197,6 +197,7 @@
                     <i class="glyphicon glyphicon-user"></i> <span>Funcionários</span>
                   </a>
                   <ul class="treeview-menu">
+                    <li><a href="{{asset('usuarios')}}"><i class="glyphicon glyphicon-user"></i> <span>Usuários</span></a></li>
                     <li><a href="{{asset('usuarios/funcoes')}}"><i class="glyphicon glyphicon-road"></i> <span>Funções</span></a></li>
                   </ul>
               </li>
