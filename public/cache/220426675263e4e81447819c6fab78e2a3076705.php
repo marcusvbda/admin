@@ -23,7 +23,27 @@
 		</div>
 		<div class="box-body">
 		  <!-- conteudo -->
-				
+
+    <div id="alt_insert" style="display:none;">
+      <h3 id="titulo_alt" class="centro"></h3>
+      <div class="row">
+        <div class="col-md-10">
+          <label>Descrição</label>
+          <input type="text" maxlength="50" class="form-control" id="descricao_alt">
+          <input type="text" hidden id="id_alt">
+        </div>
+        <div class="col-md-1" style="margin-top:25px;">
+          <button type="button" onclick="abrefechaform()" class="btn btn-warning">Cancelar</button>
+        </div>
+        <div class="col-md-1" style="margin-top:25px;">
+          <button type="button" id="btn_confirma_alt" onclick="confirmaalteracao()" class="btn btn-primary">Salvar</button>
+        </div>
+      </div>       
+    </div>
+
+
+	  <div id="grid">		
+
       <div class="row">
         <div class="col-md-12">
           <div class="input-group input-group-sm" >
@@ -40,6 +60,7 @@
       
       <div class="row">
         <div class="col-md-12">
+
           <div class="box-body table-responsive no-padding">
           <div id="loading-div" style="width:100%;" class="centro">
             <img src="<?php echo e(PASTA_PUBLIC); ?>/template/img/loading.gif">
@@ -48,6 +69,14 @@
          </div>
         </div>
       </div>
+      <div class="row">
+        <hr>
+        <div class="col-md-12"> 
+          <button class="btn btn-primary" onclick="cadastrar()" id="novo_reg"><span class="glyphicon glyphicon-plus"></span>  Cadastar</button>
+        </div>
+      </div>
+
+    </div>
      <!-- /.box-header -->
      
 
@@ -76,6 +105,7 @@ $( document ).ready(function()
 function buscar()
 {
   $("#loading-div").show();
+  $("#loading-div").show();  
   $("#tabela").hide();
   var filtro = document.getElementById("filtro").value;
   $.ajaxSetup({ cache: false });
@@ -111,8 +141,8 @@ function buscar()
       $('#tabela tr:last').after(html);
     });
   });
-  $("#tabela").show();
-  $("#loading-div").hide();
+  $("#tabela").toggle(500);
+  $("#loading-div").toggle(500);
 }
 
 function msgexcluir(id)
@@ -153,10 +183,19 @@ function alterar(id)
       document.getElementById('id_alt').value=funcoes.id;
     });
   });
-  $('#alterar-modal').modal('show');   
-  $('#descricao_alt').focus();   
+  $('#titulo_alt').html('Alterar função');
+  $('#alt_insert').toggle(500);
+  $('#grid').toggle(500);
 }
 
+function cadastrar()
+{    
+  document.getElementById('descricao_alt').value='';
+  document.getElementById('id_alt').value='';
+  $('#titulo_alt').html('Cadastrar função');
+  $('#alt_insert').toggle(500);
+  $('#grid').toggle(500);
+}
 
 $("#descricao_alt").keyup(function(event)
 {
@@ -171,7 +210,7 @@ function confirmaalteracao()
   id        = document.getElementById('id_alt').value;
   descricao = document.getElementById('descricao_alt').value;  
   $('#alterar-modal').modal('hide'); 
-  $.post("../funcoes/alterar",
+  $.post("../funcoes/alterar_inserir",
   {
     id: id,
     descricao: descricao
@@ -179,13 +218,24 @@ function confirmaalteracao()
   function(resultado)
   {
     $('#titulo_msg2').html('Aviso');
-    if(resultado=="SIM")
+    if(resultado=="ALTERADO")
       $('#msg_msg2').html('Registro alterado');
-    else
+    if((resultado=="NAOALTERADO"))
       $('#msg_msg2').html('Registro não alterado pois está em uso.');
-    $('#mensagem2').modal('show');     
+    if(resultado=="INSERIDO")
+      $('#msg_msg2').html('Registro inserido');
+    if((resultado=="NAOINSERIDO"))
+      $('#msg_msg2').html('Registro não inserido, verifique...');
+    $('#mensagem2').modal('show');  
   });
   $("#btn-filtro").click();
+  abrefechaform();
+}
+
+function abrefechaform()
+{
+  $('#alt_insert').toggle(500);
+  $('#grid').toggle(500);
 }
 
 </script>
@@ -237,36 +287,6 @@ function confirmaalteracao()
   </div>
 </div>
 
-
-<div class="modal fade" id="alterar-modal" role="dialog">
-  <div class="modal-dialog">
-  
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title centro">
-          Alteração
-        </h4>
-      </div>
-      <div class="modal-body">
-        
-      <div class="row">
-        <div class="col-md-12">
-          <label>Descrição</label>
-          <input type="text" maxlength="50" class="form-control" id="descricao_alt">
-          <input type="text" hidden id="id_alt">
-        </div>
-      </div>
-
-      </div>
-      <div  class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-        <button type="button" id="btn_confirma_alt" onclick="confirmaalteracao()" class="btn btn-primary">Sim</button>
-      </div>
-    </div>    
-  </div>
-</div>
 
 
 <?php $__env->stopSection(); ?>

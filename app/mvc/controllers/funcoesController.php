@@ -36,19 +36,29 @@ class funcoesController extends controller
 			echo "NAO";
 	}
 
-	public function postAlterar()
+	public function postAlterar_inserir()
 	{
-		//verifica campo usado
-		$funcoes = $this->model->findOrFail($_POST['id']);
-     	if ($funcoes->usado=="S")
-     	{
-			echo "NAO";
-			exit();
-     	}
-     	$funcoes->descricao = $_POST['descricao'];
-		if($funcoes->save())
-		   echo "SIM";
+		if(trim($_POST['id'])!="")
+		{
+			$funcoes = $this->model->findOrFail($_POST['id']);
+	     	if ($funcoes->usado=="S")
+	     	{
+				echo "NAO";
+				exit();
+	     	}
+	     	$funcoes->descricao = $_POST['descricao'];
+			if($funcoes->save())
+			   echo "ALTERADO";
+			else
+			   echo "NAOALTERADO";	
+		}
 		else
-		   echo "NAO";
+		{
+			$_POST['empresa'] = Auth('empresa');
+			if($this->model->create($_POST))
+				echo "INSERIDO";
+			else
+				echo "NAOINSERIDO";
+		}		
 	}
 }
