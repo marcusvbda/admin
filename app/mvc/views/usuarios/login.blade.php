@@ -136,7 +136,7 @@ function logar()
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">
+        <h4 class="modal-title centro">
           <div id="titulo_msg1"></div>
         </h4>
       </div>

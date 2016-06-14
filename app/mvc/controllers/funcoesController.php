@@ -17,18 +17,38 @@ class funcoesController extends controller
 		echo json_encode($funcoes);
 	}	
 
+	public function getEncontrafuncao($id)
+	{	
+		$funcoes = $this->model->where('id','=',$id)->get();
+		echo json_encode($funcoes);
+	}	
+
 	public function postExcluir()
 	{
 		//verifica campo usado
-		$funcoes = $this->model->where('id','=',$_POST['id']);
-		if(count($funcoes)>0)
+		$funcoes = $this->model->findOrFail($_POST['id']);
+		if((count($funcoes)>0)&&($funcoes->usado=="N"))
 		{
 			$funcoes->delete();
 			echo "SIM";
 		}
 		else
-		{
 			echo "NAO";
-		}
+	}
+
+	public function postAlterar()
+	{
+		//verifica campo usado
+		$funcoes = $this->model->findOrFail($_POST['id']);
+     	if ($funcoes->usado=="S")
+     	{
+			echo "NAO";
+			exit();
+     	}
+     	$funcoes->descricao = $_POST['descricao'];
+		if($funcoes->save())
+		   echo "SIM";
+		else
+		   echo "NAO";
 	}
 }

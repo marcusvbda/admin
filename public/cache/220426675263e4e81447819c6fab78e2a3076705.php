@@ -89,14 +89,26 @@ function buscar()
       '</tr>');
     $.each(data, function(funcoes,funcoes)
     {      
-      $('#tabela tr:last').after(
-        '<tr>'+
+      html=
+      '<tr>'+
           '<td>'+funcoes.descricao+'</td>'+
-          '<td>'+
+          '<td>';
+      if(funcoes.usado=='N')
+      {
+        html+=
             '<div class="col-md-6"><a title="Editar" onclick="alterar('+funcoes.id+')" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a></div>'+
-            '<div class="col-md-6"><a title="Excluir" onclick="msgexcluir('+funcoes.id+')" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a></div>'+
-          '</td>'+
-        '</tr>');
+            '<div class="col-md-6"><a title="Excluir" onclick="msgexcluir('+funcoes.id+')" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a></div>';
+      }
+      else
+      {
+         html+=
+            '<div class="col-md-6"><a disabled title="Registro em uso, por isso não pode ser alterado" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a></div>'+
+            '<div class="col-md-6"><a disabled title="Registro em uso, por isso não pode ser excluido" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a></div>';
+      }
+
+      html+='</td>'+
+        '</tr>';
+      $('#tabela tr:last').after(html);
     });
   });
   $("#tabela").show();
@@ -124,7 +136,7 @@ function excluir()
     if(resultado=="SIM")
       $('#msg_msg2').html('Registro excluido');
     else
-      $('#msg_msg2').html('Registro não excluido, verifique ...');
+      $('#msg_msg2').html('Registro não excluido pois está em uso.');
     $('#mensagem2').modal('show');     
   });
   $("#btn-filtro").click();
@@ -132,7 +144,48 @@ function excluir()
 
 function alterar(id)
 {
+  $.ajaxSetup({ cache: false });
+  $.getJSON("../funcoes/encontrafuncao/"+id, function(data)
+  {    
+    $.each(data, function(funcoes,funcoes)
+    {      
+      document.getElementById('descricao_alt').value=funcoes.descricao;
+      document.getElementById('id_alt').value=funcoes.id;
+    });
+  });
   $('#alterar-modal').modal('show');   
+  $('#descricao_alt').focus();   
+}
+
+
+$("#descricao_alt").keyup(function(event)
+{
+    if(event.keyCode == 13)
+    {
+        $("#btn_confirma_alt").click();
+    }
+});
+
+function confirmaalteracao()
+{
+  id        = document.getElementById('id_alt').value;
+  descricao = document.getElementById('descricao_alt').value;  
+  $('#alterar-modal').modal('hide'); 
+  $.post("../funcoes/alterar",
+  {
+    id: id,
+    descricao: descricao
+  },
+  function(resultado)
+  {
+    $('#titulo_msg2').html('Aviso');
+    if(resultado=="SIM")
+      $('#msg_msg2').html('Registro alterado');
+    else
+      $('#msg_msg2').html('Registro não alterado pois está em uso.');
+    $('#mensagem2').modal('show');     
+  });
+  $("#btn-filtro").click();
 }
 
 </script>
@@ -147,7 +200,7 @@ function alterar(id)
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">
+        <h4 class="modal-title centro">
           <div id="titulo_msg1"></div>
         </h4>
       </div>
@@ -170,7 +223,7 @@ function alterar(id)
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">
+        <h4 class="modal-title centro">
           <div id="titulo_msg2"></div>
         </h4>
       </div>
@@ -186,24 +239,30 @@ function alterar(id)
 
 
 <div class="modal fade" id="alterar-modal" role="dialog">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog">
   
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">
+        <h4 class="modal-title centro">
           Alteração
         </h4>
       </div>
       <div class="modal-body">
         
-      formulario
+      <div class="row">
+        <div class="col-md-12">
+          <label>Descrição</label>
+          <input type="text" maxlength="50" class="form-control" id="descricao_alt">
+          <input type="text" hidden id="id_alt">
+        </div>
+      </div>
 
       </div>
       <div  class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-        <button type="button"  data-dismiss="modal" class="btn btn-primary">Sim</button>
+        <button type="button" id="btn_confirma_alt" onclick="confirmaalteracao()" class="btn btn-primary">Sim</button>
       </div>
     </div>    
   </div>
