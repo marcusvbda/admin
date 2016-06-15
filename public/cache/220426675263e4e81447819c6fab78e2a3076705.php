@@ -5,8 +5,8 @@
   <small>Tabela auxiliar</small>
 </h1>
 <ol class="breadcrumb">
-   <li><a href="<?php echo e(asset('')); ?>"><i class="fa fa-dashboard"></i> Início</a></li>>
-  <li><span class="glyphicon glyphicon-road"></span> Funções</li> 
+   <li><a href="<?php echo e(asset('')); ?>"><i class="fa fa-dashboard"></i> Início</a></li>
+   <li><a href="<?php echo e(asset('usuarios/funcoes')); ?>"><i class="glyphicon glyphicon-road"></i> Funções</a></li>
 </ol>
 <?php $__env->stopSection(); ?>
 
@@ -143,8 +143,8 @@ function buscar()
       $('#tabela tr:last').after(html);
     });
   });
-  $("#tabela").toggle(500);
-  $("#loading-div").toggle(500);
+  $("#tabela").toggle(150);
+  $("#loading-div").toggle(150);
 }
 
 function msgexcluir(id)
@@ -186,8 +186,8 @@ function alterar(id)
     });
   });
   $('#titulo_alt').html('Alterar função');
-  $('#alt_insert').toggle(500);
-  $('#grid').toggle(500);
+  $('#alt_insert').toggle(150);
+  $('#grid').toggle(150);
 }
 
 function cadastrar()
@@ -195,8 +195,8 @@ function cadastrar()
   document.getElementById('descricao_alt').value='';
   document.getElementById('id_alt').value='';
   $('#titulo_alt').html('Cadastrar função');
-  $('#alt_insert').toggle(500);
-  $('#grid').toggle(500);
+  $('#alt_insert').toggle(150);
+  $('#grid').toggle(150);
 }
 
 $("#descricao_alt").keyup(function(event)
@@ -236,8 +236,8 @@ function confirmaalteracao()
 
 function abrefechaform()
 {
-  $('#alt_insert').toggle(500);
-  $('#grid').toggle(500);
+  $('#alt_insert').toggle(150);
+  $('#grid').toggle(150);
 }
 
 </script>

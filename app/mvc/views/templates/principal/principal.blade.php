@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/bootstrap/css/custom.css">
+  <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/bootstrap/css/custom.css">
 <style type="text/css"></style></head>
 <body class="skin-green sidebar-mini fixed" cz-shortcut-listen="true">
 <!-- Site wrapper -->

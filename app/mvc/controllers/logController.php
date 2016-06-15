@@ -16,7 +16,8 @@ class logController extends controller
 	    $log = $this->model
         	->where('usuario','=',$usuario)
 		        ->orderBy('created_at','desc')
-		        	->get();
+		        	->take(20)
+		        		->get();
 		echo json_encode($log);
 	}
 

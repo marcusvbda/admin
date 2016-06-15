@@ -6,7 +6,7 @@
 </h1>
 <ol class="breadcrumb">
   <li><a href="<?php echo e(asset('')); ?>"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><span class="glyphicon glyphicon-user"></span> Usuários</li> 
+  <li><a href="<?php echo e(asset('usuarios')); ?>"><i class="glyphicon glyphicon-user"></i> Usuários</a></li>
 </ol>
 <?php $__env->stopSection(); ?>
 
@@ -31,7 +31,7 @@
             <div class="box-body box-profile">
               <img class="profile-user-img img-responsive img-circle" id="alt_foto_prof" alt="User profile picture">
               <input type="text" id="id_alt" hidden>
-              <h3 class="profile-username text-center"><div id="alt_nome_prof">Nome do profile</div></h3>
+              <h3 class="profile-username text-center" id="alt_nome_prof">Nome do profile</h3>
               <p class="text-muted text-center" id="alt_status_prof">Status do profile</p>
               <p class="text-muted text-center" id="alt_funcao_prof">função do profile</p>
               <p class="text-muted text-center" id="alt_email_prof">email do profile</p>
@@ -63,11 +63,9 @@
               <div class="tab-pane active" id="atividades">
 
                 <!-- The timeline -->
-                <ul class="timeline timeline-inverse">
-                 
-                  <li id='timeline_itens'>                     
+                <ul class="timeline timeline-inverse" id='timeline_itens'>
 
-                  </li>              
+
                 </ul>
               </div>
               <!-- /.tab-pane -->
@@ -257,8 +255,8 @@ function buscar()
       $('#tabela tr:last').after(html);
     });
   });
-  $("#tabela").toggle(500);
-  $("#loading-div").toggle(500);
+  $("#tabela").toggle(150);
+  $("#loading-div").toggle(150);
 }
 
 
@@ -309,8 +307,8 @@ function alterar(id)
     });
   });
  
-  $('#alt_insert').toggle(500);
-  $('#grid').toggle(500);
+  $('#alt_insert').toggle(150);
+  $('#grid').toggle(150);
 }
 
 function montar_timeline(id)
@@ -321,15 +319,13 @@ function montar_timeline(id)
   {      
     $.each(data, function(index,log)
     {     
-       $('#timeline_itens').append('<div class="timeline-item">'+ 
-                                     '<span class="time"><div id="hr_atividade">'+log.created_at+'</div></span>'+ //formatar
-                                     '<div class="timeline-body">'+log.descricao+'</div>'+                     
-                                   '</div><br>');
+       $('#timeline_itens').append( '<li><i class="fa bg-blue"></i>'+
+                                    '<div class="timeline-item">'+ 
+                                       '<span class="time"><div id="hr_atividade">'+log.created_at+'</div></span>'+ //formatar
+                                       '<div class="timeline-body">'+log.descricao+'</div>'+                     
+                                   '</div></li>');
     });
   }); 
-  
-
-  $('#timeline_itens').html(timeline);
 }
 
 function cadastrar()
@@ -337,8 +333,8 @@ function cadastrar()
   document.getElementById('descricao_alt').value='';
   document.getElementById('id_alt').value='';
   $('#titulo_alt').html('Cadastrar função');
-  $('#alt_insert').toggle(500);
-  $('#grid').toggle(500);
+  $('#alt_insert').toggle(150);
+  $('#grid').toggle(150);
 }
 
 $("#usuario_alt").keyup(function(event)
@@ -378,8 +374,8 @@ function confirmaalteracao()
 
 function abrefechaform()
 {
-  $('#alt_insert').toggle(500);
-  $('#grid').toggle(500);
+  $('#alt_insert').toggle(150);
+  $('#grid').toggle(150);
 }
 
 </script>

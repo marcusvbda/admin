@@ -25,11 +25,8 @@ class usuariosController extends controller
         	->leftJoin('funcoes', 'funcoes.id', '=', 'usuarios.empresa')
         		->select('funcoes.descricao as funcao','usuarios.*')
         			->where('usuarios.usuario','like',"%$filtro%")
-						->where('usuarios.email','like',"%$filtro%")
-							->where('usuarios.site','like',"%$filtro%")
-								->where('usuarios.empresa','like',"%$filtro%")
-									->where('usuarios.empresa','=',Auth('empresa'))
-		        						->get();
+							->where('usuarios.empresa','=',Auth('empresa'))
+		        				->get();
 		echo json_encode($usuarios);
 	}
 	public function getEncontrausuario($id)
