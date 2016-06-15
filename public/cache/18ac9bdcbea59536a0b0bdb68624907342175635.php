@@ -1,3 +1,5 @@
+﻿
+
 <?php $__env->startSection('titulo','Usuários'); ?>
 
 <?php $__env->startSection('topo'); ?>
@@ -7,6 +9,7 @@
 <ol class="breadcrumb">
   <li><a href="<?php echo e(asset('')); ?>"><i class="fa fa-dashboard"></i> Início</a></li>
   <li><a href="<?php echo e(asset('usuarios')); ?>"><i class="glyphicon glyphicon-user"></i> Usuários</a></li>
+  <input id="id_user_logado" hidden value="<?php echo e(Auth('id')); ?>">
 </ol>
 <?php $__env->stopSection(); ?>
 
@@ -19,7 +22,7 @@
 
       </h3>
       <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div>
+        <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div> -->
     </div>
     <div class="box-body">
       <!-- conteudo -->
@@ -30,28 +33,14 @@
           <div class="box box-primary">
             <div class="box-body box-profile">
               <img class="profile-user-img img-responsive img-circle" id="alt_foto_prof" alt="User profile picture">
-              <input type="text" id="id_alt" hidden>
               <h3 class="profile-username text-center" id="alt_nome_prof">Nome do profile</h3>
               <p class="text-muted text-center" id="alt_status_prof">Status do profile</p>
               <p class="text-muted text-center" id="alt_funcao_prof">função do profile</p>
               <p class="text-muted text-center" id="alt_email_prof">email do profile</p>
+              <p class="text-muted text-center"> <strong><a onclick="abrefechaform()"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</a></strong></p>
             </div>
           </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       <div class="col-md-9">
           <div class="nav-tabs-custom">
@@ -63,6 +52,7 @@
               <div class="tab-pane active" id="atividades">
 
                 <!-- The timeline -->
+                <p class="text-muted text-center"> <strong><a onclick=""><span class="glyphicon glyphicon-align-justify"></span> Log completo</a></strong></p>
                 <ul class="timeline timeline-inverse" id='timeline_itens'>
 
 
@@ -70,81 +60,57 @@
               </div>
               <!-- /.tab-pane -->
 
+
               <div class="tab-pane" id="informacoes">
-                <form class="form-horizontal">
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputName" placeholder="Name">
+                
+                    <div class="row">
+                      <div class="col-md-12">
+                        <input type="text" id="id_alt" hidden>
+                        <label>Nome</label>
+                        <input type="text" class="form-control" id="usuario_atl" maxlength="50">
+                      </div>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                    <div class="row"> 
+                      <div class="col-md-2">
+                        <label id="desc_tipo_pessoa_alt">Tipo Pessoa</label><br>
+                        <label class="switch">
+                          <input type="checkbox" checked id="tipo_pessoa_atl" onclick="mudarpessoa()"> 
+                          <div class="slider round"></div>
+                        </label>
+                      </div>                    
+                      <div class="col-md-7" id="div_desc_cpf_cnpj_atl">
+                        <label id="desc_cpf_cnpj_atl">CGC</label>
+                        <input type="text" class="form-control" id="cpf_cnpj_atl" maxlength="30">
+                      </div>       
+                      <div class="col-md-3" id="div_dt_nascimento_atl">
+                        <label>Nascimento</label>
+                        <input type="text" class="form-control"  id="dt_nascimento_atl" maxlength="200">
+                      </div> 
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputName" placeholder="Name">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
-
-                    <div class="col-sm-10">
-                      <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
+                    <div class="row">           
+                      <div class="col-md-10" id="div_email_atl">
+                        <label>Email</label>
+                        <input type="email" class="form-control" id="email_atl" maxlength="200">
+                      </div>                    
+                       <div class="col-md-2" id="div_admin_atl">
+                        <label>Administrador</label><br>
+                        <label class="switch">
+                          <input type="checkbox" checked id="admin_atl" onclick="mudaradmin()"> 
+                          <div class="slider round"></div>
                         </label>
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button type="submit" class="btn btn-danger">Submit</button>
-                    </div>
-                  </div>
-                </form>
+
+
+
               </div>
-              <!-- /.tab-pane -->
+            <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
           </div>
           <!-- /.nav-tabs-custom -->
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
       </div>       
@@ -214,11 +180,11 @@ $( document ).ready(function()
 
 function buscar()
 {
-  admin = document.getElementById('admin').value;
+  id = $('#id_user_logado').val();
   $("#loading-div").show();
   $("#loading-div").show();  
   $("#tabela").hide();
-  var filtro = document.getElementById("filtro").value;
+  filtro = $('#filtro').val();
   $.ajaxSetup({ cache: false });
   $.getJSON("usuarios/selectusuarios/"+filtro, function(data)
   {    
@@ -240,16 +206,16 @@ function buscar()
           '<td style="padding-top: 22px;">'+result.email+'</td>'+
           '<td style="padding-top: 22px;">'+result.funcao+'</td>';
       html+='<td class="centro" style="widht:10px;padding-top: 22px;">';
-      if(admin=="S")
-      {
-        html+='<a title="Editar" onclick="alterar('+result.id+')" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>'+
-          '<a title="Excluir" onclick="msgexcluir('+result.id+')" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>';
-      }
+      if(($('#admin').val()=="S")||($('#id_user_logado').val()==result.id))
+        html+='<a title="Editar" onclick="alterar('+result.id+')" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>';
       else
-      {
-        html+='<a disabled title="Necessário permissão de administrador para efetuar esta operação" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>'+
-          '<a disabled title="Necessário permissão de administrador para efetuar esta operação" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>';          
-      }
+        html+='<a disabled title="Necessário permissão para efetuar esta operação" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>';
+
+      if(($('#admin').val()=="S")&&(result.logado=="N"))
+         html+='<a title="Excluir" onclick="msgexcluir('+result.id+')" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>';
+      else
+         html+='<a  disabled title="Necessário permissão para efetuar esta operação" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>';
+
        html+='</td>'+
       '</tr>';
       $('#tabela tr:last').after(html);
@@ -265,7 +231,7 @@ function msgexcluir(id)
   $('#titulo_msg1').html('Confirmação');
   $('#msg_msg1').html('Deseja excluir este registro ?');
   $('#mensagem1').modal('show');   
-  document.getElementById('id').value=id;
+  $('#id').val(id);
 }
 
 function excluir()
@@ -301,9 +267,49 @@ function alterar(id)
       if(usuarios.logado=='S')
         $('#alt_status_prof').html('<i class="fa fa-circle text-success"></i> Online');
       else
-        $('#alt_status_prof').html('<i class="fa fa-circle text-danger"></i> Offline');      
-      document.getElementById('id_alt').value=usuarios.id;
+        $('#alt_status_prof').html('<i class="fa fa-circle text-danger"></i> Offline');     
+      $('#id_alt').val(id);
       montar_timeline(id);
+
+      $('#usuario_atl').val(usuarios.usuario);
+      $('#tipo_atl').val(usuarios.tipopessoa);
+      $('#email_atl').val(usuarios.email);
+      if(usuarios.tipopessoa=="J")
+      {
+        $('#tipo_pessoa_atl').prop('checked', false);        
+        $('#desc_cpf_cnpj_atl').html('CNPJ');
+        $('#desc_tipo_pessoa_alt').html('Pessoa jurídica');
+        $("#div_desc_cpf_cnpj_atl").removeClass();
+        $("#div_desc_cpf_cnpj_atl").addClass('col-md-10');
+        $("#div_dt_nascimento_atl").hide();
+      }
+      else
+      {
+        $('#tipo_pessoa_atl').prop('checked', true);
+        $("#div_desc_cpf_cnpj_atl").removeClass();
+        $("#div_desc_cpf_cnpj_atl").addClass('col-md-7');
+        $("#div_dt_nascimento_atl").show();
+        $('#desc_cpf_cnpj_atl').html('CPF');   
+        $('#desc_tipo_pessoa_alt').html('Pessoa física'); 
+      }
+
+      if($('#admin').val()=="S")
+      {
+        $("#div_email_atl").removeClass();
+        $("#div_email_atl").addClass('col-md-10');
+        $("#div_admin_atl").show();
+      }
+      else
+      {
+        $("#div_email_atl").removeClass();
+        $("#div_email_atl").addClass('col-md-12');
+        $("#div_admin_atl").hide();
+      }
+
+      $('#cpf_cnpj_atl').val(usuarios.CPF_CNPJ);
+      $('#dt_nascimento_atl').val(usuarios.dtnascimento);
+      $('#admin_alt').val(usuarios.admin);
+      // foto
     });
   });
  
@@ -311,9 +317,29 @@ function alterar(id)
   $('#grid').toggle(150);
 }
 
+function mudarpessoa()
+{
+  if($('#tipo_pessoa_atl').is(':checked'))
+  {
+    $('#desc_cpf_cnpj_atl').html('CPF');
+    $('#desc_tipo_pessoa_alt').html('Pessoa jurídica');
+    $("#div_desc_cpf_cnpj_atl").removeClass();
+    $("#div_desc_cpf_cnpj_atl").addClass('col-md-7');
+    $("#div_dt_nascimento_atl").show();
+  }
+  else
+  {  
+    $('#desc_cpf_cnpj_atl').html('CNPJ');       
+    $('#desc_tipo_pessoa_alt').html('Pessoa física'); 
+    $("#div_desc_cpf_cnpj_atl").removeClass();
+    $("#div_desc_cpf_cnpj_atl").addClass('col-md-10');
+    $("#div_dt_nascimento_atl").hide();
+  }
+}
+
 function montar_timeline(id)
 {
-  timeline = "";
+  $('#timeline_itens').html('');
   $.ajaxSetup({ cache: false });
   $.getJSON("log/selectlog/"+id, function(data)
   {      
@@ -330,8 +356,8 @@ function montar_timeline(id)
 
 function cadastrar()
 {    
-  document.getElementById('descricao_alt').value='';
-  document.getElementById('id_alt').value='';
+  $('#descricao_alt').val('');
+  $('#id_alt').val('');
   $('#titulo_alt').html('Cadastrar função');
   $('#alt_insert').toggle(150);
   $('#grid').toggle(150);
@@ -347,8 +373,8 @@ $("#usuario_alt").keyup(function(event)
 
 function confirmaalteracao()
 {
-  id        = document.getElementById('id_alt').value;
-  descricao = document.getElementById('usuario_alt').value;  
+  id = $('#titulo_alt').val('id_alt');
+  descricao = $('#titulo_alt').val('usuario_alt'); 
   $('#alterar-modal').modal('hide'); 
   $.post("../funcoes/alterar_inserir",
   {

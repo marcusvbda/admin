@@ -16,7 +16,8 @@ class funcoesController extends controller
 		$funcoes = $this->model
 			->where('descricao','like',"%$filtro%")
 				->where('empresa','=',Auth('empresa'))
-					->get();
+					->where('excluido','=','N')
+						->get();
 		echo json_encode($funcoes);
 	}	
 
@@ -25,7 +26,8 @@ class funcoesController extends controller
 		$funcoes = $this->model
 			->where('id','=',$id)
 				->where('empresa','=',Auth('empresa'))
-					->get();
+					->where('excluido','=','N')
+						->get();
 		echo json_encode($funcoes);
 	}	
 
@@ -36,7 +38,8 @@ class funcoesController extends controller
 		if((count($funcoes)>0)&&($funcoes->usado=="N"))
 		{
 			registralog("Excluiu a função de usuário id({$funcoes->id}), descrição({$funcoes->descricao}) ");
-			$funcoes->delete();
+			$funcoes->excluido="S";
+			$funcoes->save();
 			echo "SIM";
 		}
 		else
@@ -73,6 +76,7 @@ class funcoesController extends controller
 			}
 			else
 				echo "NAOINSERIDO";
-		}		
+		}
+		
 	}
 }

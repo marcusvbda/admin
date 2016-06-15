@@ -119,13 +119,13 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="http://msalx.veja.abril.com.br/2015/04/25/2141/pe6Cx/jared-leto-caracterizado-de-coringa-em-primeira-foto-oficial-de-esquadrao-suicida-original.jpeg?1430008851"" class="user-image" alt="User Image">
+              <img src="<?php echo e(PASTA_PUBLIC.'/template/img/'.Auth('foto')); ?>" class="user-image" alt="User Image">
               <span class="hidden-xs"><?php echo e(limitarTexto(Auth('usuario'),20)); ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="http://msalx.veja.abril.com.br/2015/04/25/2141/pe6Cx/jared-leto-caracterizado-de-coringa-em-primeira-foto-oficial-de-esquadrao-suicida-original.jpeg?1430008851"" class="img-circle" alt="User Image">
+                <img src="<?php echo e(PASTA_PUBLIC.'/template/img/'.Auth('foto')); ?>" class="img-circle" alt="User Image">
 
                 <p>
                   <?php echo e(limitarTexto(Auth('usuario'),20)); ?>

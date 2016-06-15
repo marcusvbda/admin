@@ -26,7 +26,8 @@ class usuariosController extends controller
         		->select('funcoes.descricao as funcao','usuarios.*')
         			->where('usuarios.usuario','like',"%$filtro%")
 							->where('usuarios.empresa','=',Auth('empresa'))
-		        				->get();
+								->where('usuarios.excluido','=','N')
+		        					->get();
 		echo json_encode($usuarios);
 	}
 	public function getEncontrausuario($id)
@@ -35,7 +36,8 @@ class usuariosController extends controller
         	->leftJoin('funcoes', 'funcoes.id', '=', 'usuarios.empresa')
         		->where('usuarios.id','=',$id)
         			->where('usuarios.empresa','=',Auth('empresa'))
-		        		->get();
+        				->where('usuarios.excluido','=','N')
+		        			->get();
 		echo json_encode($usuario);
 	}	
 
@@ -81,7 +83,7 @@ class usuariosController extends controller
 		{			
 			$array = ['id'=>$usuarios[0]->id,'empresa'=>$usuarios[0]->empresa ,'admin'=>$usuarios[0]->admin,
 				'grupo_acesso'=>$usuarios[0]->grupo_acesso,'usuario'=>$usuarios[0]->usuario,
-					'email'=>$usuarios[0]->email];			
+					'email'=>$usuarios[0]->email,'foto'=>$usuarios[0]->foto];			
 			SalvaUsuario((object) $array);
 			$this->setlogado(Auth('id'));
 			registralog("Entrou do sistema");

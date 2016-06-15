@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 14-Jun-2016 às 23:08
+-- Generation Time: 15-Jun-2016 às 22:08
 -- Versão do servidor: 10.1.13-MariaDB
 -- PHP Version: 5.6.20
 
@@ -55,6 +55,7 @@ CREATE TABLE `funcoes` (
   `descricao` varchar(50) DEFAULT NULL,
   `empresa` int(11) NOT NULL,
   `usado` varchar(1) NOT NULL DEFAULT 'N',
+  `excluido` varchar(1) NOT NULL DEFAULT 'N',
   `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -63,9 +64,9 @@ CREATE TABLE `funcoes` (
 -- Extraindo dados da tabela `funcoes`
 --
 
-INSERT INTO `funcoes` (`id`, `descricao`, `empresa`, `usado`, `created_at`, `updated_at`) VALUES
-(1, 'Vendedor', 1, 'S', '2016-06-14 20:31:45', '2016-06-14 21:20:00'),
-(8, 'Gerente de Vendas', 1, 'N', '2016-06-15 01:31:08', '2016-06-15 01:31:08');
+INSERT INTO `funcoes` (`id`, `descricao`, `empresa`, `usado`, `excluido`, `created_at`, `updated_at`) VALUES
+(1, 'Vendedor', 1, 'S', 'N', '2016-06-14 20:31:45', '2016-06-14 21:20:00'),
+(8, 'teste', 1, 'N', 'S', '2016-06-15 14:34:15', '2016-06-15 19:34:15');
 
 -- --------------------------------------------------------
 
@@ -94,7 +95,23 @@ INSERT INTO `log` (`id`, `usuario`, `descricao`, `created_at`, `updated_at`) VAL
 (8, 1, 'Entrou do sistema', '2016-06-15 01:33:36', NULL),
 (9, 1, 'Cadastrou a função de usuário descricao(teste)', '2016-06-15 01:58:05', NULL),
 (10, 1, 'Alterou a função de usuário (id: 9) de(teste) para(teste 2)', '2016-06-15 01:58:26', NULL),
-(11, 1, 'Excluiu a função de usuário (id: 9,  descrição : teste 2) ', '2016-06-15 01:58:30', NULL);
+(11, 1, 'Excluiu a função de usuário (id: 9,  descrição : teste 2) ', '2016-06-15 01:58:30', NULL),
+(12, 1, 'Saiu do sistema', '2016-06-15 18:22:21', NULL),
+(13, 1, 'Entrou do sistema', '2016-06-15 18:22:31', NULL),
+(15, 1, 'Alterou a função de usuário (id: 8) de(Gerente de Vendas) para(teste)', '2016-06-15 19:34:10', NULL),
+(16, 1, 'Excluiu a função de usuário id(8), descrição(teste) ', '2016-06-15 19:34:14', NULL),
+(17, 1, 'Saiu do sistema', '2016-06-16 00:14:38', NULL),
+(18, 1, 'Entrou do sistema', '2016-06-16 00:14:46', NULL),
+(19, 1, 'Saiu do sistema', '2016-06-16 00:15:21', NULL),
+(20, 1, 'Entrou do sistema', '2016-06-16 00:15:40', NULL),
+(21, 1, 'Saiu do sistema', '2016-06-16 00:49:36', NULL),
+(22, 1, 'Entrou do sistema', '2016-06-16 00:49:44', NULL),
+(23, 1, 'Saiu do sistema', '2016-06-16 00:49:52', NULL),
+(24, 1, 'Entrou do sistema', '2016-06-16 00:50:05', NULL),
+(25, 1, 'Saiu do sistema', '2016-06-16 01:00:49', NULL),
+(26, 1, 'Entrou do sistema', '2016-06-16 01:01:03', NULL),
+(27, 1, 'Saiu do sistema', '2016-06-16 01:01:22', NULL),
+(28, 1, 'Entrou do sistema', '2016-06-16 01:01:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -107,7 +124,6 @@ CREATE TABLE `usuarios` (
   `usuario` varchar(50) DEFAULT NULL,
   `tipopessoa` varchar(1) NOT NULL DEFAULT 'F',
   `CPF_CNPJ` varchar(30) NOT NULL DEFAULT '',
-  `site` varchar(200) NOT NULL DEFAULT '',
   `dtnascimento` timestamp NULL DEFAULT NULL,
   `empresa` int(11) NOT NULL,
   `senha` varchar(200) NOT NULL,
@@ -116,6 +132,7 @@ CREATE TABLE `usuarios` (
   `email` varchar(200) NOT NULL DEFAULT '',
   `admin` varchar(1) NOT NULL DEFAULT 'N',
   `logado` varchar(1) NOT NULL DEFAULT 'N',
+  `excluido` varchar(1) NOT NULL DEFAULT 'N',
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -124,9 +141,9 @@ CREATE TABLE `usuarios` (
 -- Extraindo dados da tabela `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `usuario`, `tipopessoa`, `CPF_CNPJ`, `site`, `dtnascimento`, `empresa`, `senha`, `foto`, `grupo_acesso`, `email`, `admin`, `logado`, `updated_at`, `created_at`) VALUES
-(1, 'Marcus Vinicius Bassalobre de Assis', 'F', '', '', NULL, 1, '2578d734ff3c868c2ad68fa698d76730', 'user.png', NULL, 'marcusv.bda@icloud.com', 'S', 'S', '2016-06-15 01:33:36', NULL),
-(2, 'Driely da Silva Aoyama', 'F', '', '', '1993-09-05 03:00:00', 1, 'bee708867517a4563227ee6c2e9173e7', 'user.png', NULL, 'driely.aoayama@gmail.com', 'N', 'N', NULL, NULL);
+INSERT INTO `usuarios` (`id`, `usuario`, `tipopessoa`, `CPF_CNPJ`, `dtnascimento`, `empresa`, `senha`, `foto`, `grupo_acesso`, `email`, `admin`, `logado`, `excluido`, `updated_at`, `created_at`) VALUES
+(1, 'Marcus Vinicius Bassalobre de Assis', 'F', '406.145.898-19', '1992-04-08 03:00:00', 1, '2578d734ff3c868c2ad68fa698d76730', 'user.png', NULL, 'marcusv.bda@icloud.com', 'S', 'S', 'N', '2016-06-16 01:01:40', NULL),
+(2, 'Driely da Silva Aoyama', 'F', '', '1993-09-05 03:00:00', 1, 'bee708867517a4563227ee6c2e9173e7', 'user.png', NULL, 'driely.aoayama@gmail.com', 'N', 'N', 'N', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -169,12 +186,12 @@ ALTER TABLE `empresas`
 -- AUTO_INCREMENT for table `funcoes`
 --
 ALTER TABLE `funcoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `usuarios`
 --

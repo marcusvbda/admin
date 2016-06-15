@@ -21,7 +21,7 @@
 
 		  </h3>
 		  <div class="box-tools pull-right">
-		    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div>
+		    <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div> -->
 		</div>
 		<div class="box-body">
 		  <!-- conteudo -->
@@ -107,11 +107,11 @@ $( document ).ready(function()
 
 function buscar()
 {
-  admin = document.getElementById('admin').value;
+  admin = $("#admin").val();
   $("#loading-div").show();
   $("#loading-div").show();  
   $("#tabela").hide();
-  var filtro = document.getElementById("filtro").value;
+  filtro = $("#filtro").val();
   $.ajaxSetup({ cache: false });
   $.getJSON("../funcoes/selectfuncoes/"+filtro, function(data)
   {    
@@ -154,12 +154,12 @@ function msgexcluir(id)
   $('#titulo_msg1').html('Confirmação');
   $('#msg_msg1').html('Deseja excluir este registro ?');
   $('#mensagem1').modal('show');   
-  document.getElementById('id').value=id;
+  $('#id').val(id);
 }
 
 function excluir()
 {  
-  id = document.getElementById('id').value;
+  id = $('#id').val();
   $.post("../funcoes/excluir",
   {
     id: id
@@ -183,8 +183,8 @@ function alterar(id)
   {    
     $.each(data, function(funcoes,funcoes)
     {      
-      document.getElementById('descricao_alt').value=funcoes.descricao;
-      document.getElementById('id_alt').value=funcoes.id;
+      $('#descricao_alt').val(funcoes.descricao);
+      $('#id_alt').val(funcoes.id);
     });
   });
   $('#titulo_alt').html('Alterar função');
@@ -194,8 +194,8 @@ function alterar(id)
 
 function cadastrar()
 {    
-  document.getElementById('descricao_alt').value='';
-  document.getElementById('id_alt').value='';
+  $('#descricao_alt').val("");
+  $('#id_alt').val("");
   $('#titulo_alt').html('Cadastrar função');
   $('#alt_insert').toggle(150);
   $('#grid').toggle(150);
@@ -211,8 +211,8 @@ $("#descricao_alt").keyup(function(event)
 
 function confirmaalteracao()
 {
-  id        = document.getElementById('id_alt').value;
-  descricao = document.getElementById('descricao_alt').value;  
+  id =  $('#id_alt').val();
+  descricao =  $('#descricao_alt').val();
   $('#alterar-modal').modal('hide'); 
   $.post("../funcoes/alterar_inserir",
   {
