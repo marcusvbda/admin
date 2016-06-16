@@ -9,7 +9,6 @@
 <ol class="breadcrumb">
   <li><a href="{{asset('')}}"><i class="fa fa-dashboard"></i> Início</a></li>
   <li><a href="{{asset('usuarios')}}"><i class="glyphicon glyphicon-user"></i> Usuários</a></li>
-  <input id="id_user_logado" hidden value="{{Auth('id')}}">
 </ol>
 @stop
 
@@ -32,7 +31,13 @@
         <div class="col-md-3">
           <div class="box box-primary">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" id="alt_foto_prof" alt="User profile picture">
+              <img class="profile-user-img img-responsive img-circle" id="alt_foto_prof">
+              <p class="text-muted text-center">
+                  <input type="file" name="img_alt[]" id="img_alt"  class="inputfile" multiple>
+                  <label for="img_alt" ><a>Trocar foto</a></label> 
+              </p>
+
+
               <h3 class="profile-username text-center" id="alt_nome_prof">Nome do profile</h3>
               <p class="text-muted text-center" id="alt_status_prof">Status do profile</p>
               <p class="text-muted text-center" id="alt_funcao_prof">função do profile</p>
@@ -67,20 +72,21 @@
                       <div class="col-md-12">
                         <input type="text" id="id_alt" hidden>
                         <label>Nome</label>
-                        <input type="text" class="form-control" id="usuario_atl" maxlength="50">
+                        <input type="text" class="form-control"  id="usuario_atl" maxlength="50">
                       </div>
                     </div>
                     <div class="row"> 
                       <div class="col-md-2">
                         <label id="desc_tipo_pessoa_alt">Tipo Pessoa</label><br>
                         <label class="switch">
-                          <input type="checkbox" checked id="tipo_pessoa_atl" onclick="mudarpessoa()"> 
+                          <input type="checkbox" checked id="tipo_pessoa_atl"  onclick="mudarpessoa()"> 
                           <div class="slider round"></div>
                         </label>
                       </div>                    
                       <div class="col-md-7" id="div_desc_cpf_cnpj_atl">
                         <label id="desc_cpf_cnpj_atl">CGC</label>
-                        <input type="text" class="form-control" id="cpf_cnpj_atl" maxlength="30">
+                        <input type="text" onkeypress="mascara(this)" class="form-control" id="cpf_cnpj_atl" maxlength="30">
+                        <input type="text" hidden value='999.999.999-99' id="mascada_cgc_alt">
                       </div>       
                       <div class="col-md-3" id="div_dt_nascimento_atl">
                         <label>Nascimento</label>
@@ -99,6 +105,13 @@
                           <div class="slider round"></div>
                         </label>
                       </div>
+                    </div>
+                    <div class="row" style="margin-top:25px;">
+                      <div class="pull-right"> 
+                         <button onclick="salvarAlt()" class="btn btn-primary">Salvar Alterações</button> 
+                      </div>                
+                     
+                      
                     </div>
                   </div>
 
@@ -165,6 +178,39 @@
 
 <script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
 <script type="text/javascript">
+
+$('#img_alt').on('change', function() {
+    nova_foto = $('#img_alt');
+    _usuario  = $('#id_alt').val();
+    formData = new FormData();
+    formData.append('nova_foto', nova_foto[0].files[0]);
+    formData.append('usuario', _usuario);
+
+    $.ajax({  
+        url: "usuarios/trocafotoperfil",  
+        type: 'POST',   
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {  
+          $('#alt_foto_prof').attr('src','{{PASTA_PUBLIC}}/'+data); 
+        }  
+    });  
+
+}); 
+
+function mascara(t)
+ {
+   var i = t.value.length;
+   var mask = document.getElementById('mascada_cgc_alt').value;
+   var saida = mask.substring(1,0);
+   var texto = mask.substring(i);
+
+   if (texto.substring(0,1) != saida)
+   {
+      t.value += texto.substring(0,1);
+   }
+ }
 $("#filtro").keyup(function(event)
 {
     if(event.keyCode == 13)
@@ -180,7 +226,7 @@ $( document ).ready(function()
 
 function buscar()
 {
-  id = $('#id_user_logado').val();
+  id = {{Auth('id')}};
   $("#loading-div").show();
   $("#loading-div").show();  
   $("#tabela").hide();
@@ -201,12 +247,12 @@ function buscar()
     {      
       html=
       '<tr>'+
-          '<td><img  class="img-circle" src="{{PASTA_PUBLIC}}/template/img/'+result.foto+'" style="width:50px;"></td>'+
+          '<td><img  class="img-circle" src="{{PASTA_PUBLIC}}/'+result.foto+'" style="width:50px;"></td>'+
           '<td style="padding-top: 22px;">'+result.usuario+'</td>'+
           '<td style="padding-top: 22px;">'+result.email+'</td>'+
           '<td style="padding-top: 22px;">'+result.funcao+'</td>';
       html+='<td class="centro" style="widht:10px;padding-top: 22px;">';
-      if(($('#admin').val()=="S")||($('#id_user_logado').val()==result.id))
+      if(($('#admin').val()=="S")||({{Auth('id')}}==result.id))
         html+='<a title="Editar" onclick="alterar('+result.id+')" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>';
       else
         html+='<a disabled title="Necessário permissão para efetuar esta operação" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>';
@@ -236,7 +282,7 @@ function msgexcluir(id)
 
 function excluir()
 {  
-  id = document.getElementById('id').value;
+  id = $('#id').val();
   $.post("../funcoes/excluir",
   {
     id: id
@@ -263,7 +309,7 @@ function alterar(id)
       $('#alt_nome_prof').html(usuarios.usuario);
       $('#alt_funcao_prof').html(usuarios.descricao);
       $('#alt_email_prof').html(usuarios.email);
-      $('#alt_foto_prof').attr('src','{{PASTA_PUBLIC}}/template/img/'+usuarios.foto);
+      $('#alt_foto_prof').attr('src','{{PASTA_PUBLIC}}/'+usuarios.foto);
       if(usuarios.logado=='S')
         $('#alt_status_prof').html('<i class="fa fa-circle text-success"></i> Online');
       else
@@ -282,6 +328,7 @@ function alterar(id)
         $("#div_desc_cpf_cnpj_atl").removeClass();
         $("#div_desc_cpf_cnpj_atl").addClass('col-md-10');
         $("#div_dt_nascimento_atl").hide();
+        $("#mascada_cgc_alt").val('99.999.999/9999-99');
       }
       else
       {
@@ -291,6 +338,7 @@ function alterar(id)
         $("#div_dt_nascimento_atl").show();
         $('#desc_cpf_cnpj_atl').html('CPF');   
         $('#desc_tipo_pessoa_alt').html('Pessoa física'); 
+        $("#mascada_cgc_alt").val('999.999.999-99');
       }
 
       if($('#admin').val()=="S")
@@ -319,6 +367,7 @@ function alterar(id)
 
 function mudarpessoa()
 {
+  $("#cpf_cnpj_atl").val(null);
   if($('#tipo_pessoa_atl').is(':checked'))
   {
     $('#desc_cpf_cnpj_atl').html('CPF');
@@ -326,6 +375,7 @@ function mudarpessoa()
     $("#div_desc_cpf_cnpj_atl").removeClass();
     $("#div_desc_cpf_cnpj_atl").addClass('col-md-7');
     $("#div_dt_nascimento_atl").show();
+    $("#mascada_cgc_alt").val('999.999.999-99');
   }
   else
   {  
@@ -334,6 +384,7 @@ function mudarpessoa()
     $("#div_desc_cpf_cnpj_atl").removeClass();
     $("#div_desc_cpf_cnpj_atl").addClass('col-md-10');
     $("#div_dt_nascimento_atl").hide();
+    $("#mascada_cgc_alt").val('99.999.999/9999-99');
   }
 }
 

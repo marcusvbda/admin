@@ -54,3 +54,21 @@ function limitarTexto($texto, $limite,$adicao =""){
     return $texto;
   }
 } 
+
+function criardiretorio($diretorio ="")
+{
+	if (!is_dir($diretorio))
+		mkdir($diretorio);
+}
+
+function redimensionarimg($largura="200",$imagem)
+{
+ 	$imagem = imagecreatefromjpeg($imagem);
+ 	$largura_original = imagesx($imagem);
+ 	$altura_original = imagesy($imagem);
+ 	$altura_nova = intval( ( $altura_original * $largura_nova ) / $largura_original );
+ 	$nova_imagem = imagecreatetruecolor( $largura_nova, $altura_nova );
+ 	imagecopyresampled( $nova_imagem, $imagem, 0, 0, 0, 0, $largura_nova, $altura_nova, $largura_original, $altura_original );
+ 	header( 'Content-type: image/jpeg' );
+ 	return imagejpeg( $nova_imagem, NULL, 80 );
+}

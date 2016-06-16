@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 15-Jun-2016 às 22:08
+-- Generation Time: 16-Jun-2016 às 22:24
 -- Versão do servidor: 10.1.13-MariaDB
 -- PHP Version: 5.6.20
 
@@ -66,7 +66,8 @@ CREATE TABLE `funcoes` (
 
 INSERT INTO `funcoes` (`id`, `descricao`, `empresa`, `usado`, `excluido`, `created_at`, `updated_at`) VALUES
 (1, 'Vendedor', 1, 'S', 'N', '2016-06-14 20:31:45', '2016-06-14 21:20:00'),
-(8, 'teste', 1, 'N', 'S', '2016-06-15 14:34:15', '2016-06-15 19:34:15');
+(8, 'teste', 1, 'N', 'S', '2016-06-15 14:34:15', '2016-06-15 19:34:15'),
+(9, 'teste', 1, 'N', 'S', '2016-06-15 20:46:55', '2016-06-16 01:46:55');
 
 -- --------------------------------------------------------
 
@@ -111,7 +112,23 @@ INSERT INTO `log` (`id`, `usuario`, `descricao`, `created_at`, `updated_at`) VAL
 (25, 1, 'Saiu do sistema', '2016-06-16 01:00:49', NULL),
 (26, 1, 'Entrou do sistema', '2016-06-16 01:01:03', NULL),
 (27, 1, 'Saiu do sistema', '2016-06-16 01:01:22', NULL),
-(28, 1, 'Entrou do sistema', '2016-06-16 01:01:40', NULL);
+(28, 1, 'Entrou do sistema', '2016-06-16 01:01:40', NULL),
+(29, 1, 'Cadastrou a função de usuário descricao(teste)', '2016-06-16 01:46:51', NULL),
+(30, 1, 'Excluiu a função de usuário id(9), descrição(teste) ', '2016-06-16 01:46:55', NULL),
+(31, 1, 'Saiu do sistema', '2016-06-16 18:37:00', NULL),
+(32, 1, 'Entrou do sistema', '2016-06-16 18:37:11', NULL),
+(33, 1, 'Saiu do sistema', '2016-06-16 18:50:27', NULL),
+(34, 1, 'Entrou do sistema', '2016-06-16 18:50:55', NULL),
+(35, 1, 'Entrou do sistema', '2016-06-16 19:15:22', NULL),
+(36, 1, 'Entrou do sistema', '2016-06-16 19:16:42', NULL),
+(37, 1, 'Saiu do sistema', '2016-06-16 19:17:02', NULL),
+(38, 1, 'Entrou do sistema', '2016-06-16 19:17:06', NULL),
+(39, 1, 'Saiu do sistema', '2016-06-16 19:17:31', NULL),
+(40, 1, 'Entrou do sistema', '2016-06-16 19:19:03', NULL),
+(41, 1, 'Alterou a foto do perfil', '2016-06-16 19:21:14', NULL),
+(42, 1, 'Alterou a foto do perfil', '2016-06-16 19:47:24', NULL),
+(43, 1, 'Alterou a foto do perfil', '2016-06-16 19:47:34', NULL),
+(44, 1, 'Saiu do sistema', '2016-06-16 20:23:38', NULL);
 
 -- --------------------------------------------------------
 
@@ -142,8 +159,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `usuario`, `tipopessoa`, `CPF_CNPJ`, `dtnascimento`, `empresa`, `senha`, `foto`, `grupo_acesso`, `email`, `admin`, `logado`, `excluido`, `updated_at`, `created_at`) VALUES
-(1, 'Marcus Vinicius Bassalobre de Assis', 'F', '406.145.898-19', '1992-04-08 03:00:00', 1, '2578d734ff3c868c2ad68fa698d76730', 'user.png', NULL, 'marcusv.bda@icloud.com', 'S', 'S', 'N', '2016-06-16 01:01:40', NULL),
-(2, 'Driely da Silva Aoyama', 'F', '', '1993-09-05 03:00:00', 1, 'bee708867517a4563227ee6c2e9173e7', 'user.png', NULL, 'driely.aoayama@gmail.com', 'N', 'N', 'N', NULL, NULL);
+(1, 'Marcus Vinicius Bassalobre de Assis', 'F', '406.145.898-19', '1992-04-08 03:00:00', 1, '2578d734ff3c868c2ad68fa698d76730', 'uploads/fotos_profile/empresa_1/usuario_1/Screenshot_4.png', NULL, 'marcusv.bda@icloud.com', 'S', 'N', 'N', '2016-06-16 20:23:38', NULL),
+(2, 'Driely da Silva Aoyama', 'F', '', '1993-09-05 03:00:00', 1, 'bee708867517a4563227ee6c2e9173e7', 'uploads/fotos_profile/user.png', NULL, 'driely.aoayama@gmail.com', 'N', 'N', 'N', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -186,12 +203,12 @@ ALTER TABLE `empresas`
 -- AUTO_INCREMENT for table `funcoes`
 --
 ALTER TABLE `funcoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `usuarios`
 --
