@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 16-Jun-2016 às 22:24
+-- Generation Time: 17-Jun-2016 às 20:27
 -- Versão do servidor: 10.1.13-MariaDB
 -- PHP Version: 5.6.20
 
@@ -128,7 +128,10 @@ INSERT INTO `log` (`id`, `usuario`, `descricao`, `created_at`, `updated_at`) VAL
 (41, 1, 'Alterou a foto do perfil', '2016-06-16 19:21:14', NULL),
 (42, 1, 'Alterou a foto do perfil', '2016-06-16 19:47:24', NULL),
 (43, 1, 'Alterou a foto do perfil', '2016-06-16 19:47:34', NULL),
-(44, 1, 'Saiu do sistema', '2016-06-16 20:23:38', NULL);
+(44, 1, 'Saiu do sistema', '2016-06-16 20:23:38', NULL),
+(45, 1, 'Entrou do sistema', '2016-06-17 16:45:25', NULL),
+(46, 1, 'Saiu do sistema', '2016-06-17 17:58:56', NULL),
+(47, 1, 'Entrou do sistema', '2016-06-17 17:59:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -146,8 +149,8 @@ CREATE TABLE `usuarios` (
   `senha` varchar(200) NOT NULL,
   `foto` varchar(200) NOT NULL DEFAULT 'user.png',
   `grupo_acesso` int(11) DEFAULT NULL,
-  `email` varchar(200) NOT NULL DEFAULT '',
   `admin` varchar(1) NOT NULL DEFAULT 'N',
+  `email` varchar(200) NOT NULL,
   `logado` varchar(1) NOT NULL DEFAULT 'N',
   `excluido` varchar(1) NOT NULL DEFAULT 'N',
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -158,9 +161,9 @@ CREATE TABLE `usuarios` (
 -- Extraindo dados da tabela `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `usuario`, `tipopessoa`, `CPF_CNPJ`, `dtnascimento`, `empresa`, `senha`, `foto`, `grupo_acesso`, `email`, `admin`, `logado`, `excluido`, `updated_at`, `created_at`) VALUES
-(1, 'Marcus Vinicius Bassalobre de Assis', 'F', '406.145.898-19', '1992-04-08 03:00:00', 1, '2578d734ff3c868c2ad68fa698d76730', 'uploads/fotos_profile/empresa_1/usuario_1/Screenshot_4.png', NULL, 'marcusv.bda@icloud.com', 'S', 'N', 'N', '2016-06-16 20:23:38', NULL),
-(2, 'Driely da Silva Aoyama', 'F', '', '1993-09-05 03:00:00', 1, 'bee708867517a4563227ee6c2e9173e7', 'uploads/fotos_profile/user.png', NULL, 'driely.aoayama@gmail.com', 'N', 'N', 'N', NULL, NULL);
+INSERT INTO `usuarios` (`id`, `usuario`, `tipopessoa`, `CPF_CNPJ`, `dtnascimento`, `empresa`, `senha`, `foto`, `grupo_acesso`, `admin`, `email`, `logado`, `excluido`, `updated_at`, `created_at`) VALUES
+(1, 'Vinicius Bassalobre de Assis', 'F', '406.145.898-19', '1992-04-08 03:00:00', 1, '2578d734ff3c868c2ad68fa698d76730', 'uploads/fotos_profile/empresa_1/usuario_1/Screenshot_4.png', NULL, 'S', 'marcusv.bda@icloud.com', 'S', 'N', '2016-06-17 18:21:15', NULL),
+(2, 'Driely da Silva Aoyama', 'F', '', '1993-09-05 03:00:00', 1, 'bee708867517a4563227ee6c2e9173e7', 'uploads/fotos_profile/user.png', NULL, 'N', 'driely@hotmail.com', 'N', 'N', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -188,7 +191,8 @@ ALTER TABLE `log`
 -- Indexes for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -208,12 +212,12 @@ ALTER TABLE `funcoes`
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 --
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

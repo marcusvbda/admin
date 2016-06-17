@@ -161,4 +161,24 @@ class usuariosController extends controller
 			SalvaUsuario((object) $array);
 		}
 	}
+
+	function postAlterarusuario()
+	{
+		$usuario = $this->model->findOrFail($_POST['id']);
+		$usuario->email = $_POST['email'];
+		$usuario->usuario = $_POST['usuario'];
+		$usuario->tipopessoa = $_POST['tipo'];
+		$usuario->CPF_CNPJ = $_POST['cgc'];
+		$usuario->dtnascimento = $_POST['dt_nascimento'];
+		$usuario->admin = $_POST['admin'];		
+		if($usuario->save())
+		{
+			echo "SIM";
+			if(Auth('id')==$usuario->id)
+				$this->AtualizaSession($usuario->id);
+		}
+		else
+			echo "NAO";
+	}
+
 }

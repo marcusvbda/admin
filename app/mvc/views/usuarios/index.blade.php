@@ -98,7 +98,7 @@
                         <label>Email</label>
                         <input type="email" class="form-control" id="email_atl" maxlength="200">
                       </div>                    
-                       <div class="col-md-2" id="div_admin_atl">
+                       <div class="col-md-2" id="div_admin_alt">
                         <label>Administrador</label><br>
                         <label class="switch">
                           <input type="checkbox" checked id="admin_atl" onclick="mudaradmin()"> 
@@ -108,7 +108,7 @@
                     </div>
                     <div class="row" style="margin-top:25px;">
                       <div class="pull-right"> 
-                         <button onclick="salvarAlt()" class="btn btn-primary">Salvar Alterações</button> 
+                         <button id="salvarAlt" class="btn btn-primary">Salvar Alterações</button> 
                       </div>                
                      
                       
@@ -345,13 +345,13 @@ function alterar(id)
       {
         $("#div_email_atl").removeClass();
         $("#div_email_atl").addClass('col-md-10');
-        $("#div_admin_atl").show();
+        $("#div_admin_alt").show();
       }
       else
       {
         $("#div_email_atl").removeClass();
         $("#div_email_atl").addClass('col-md-12');
-        $("#div_admin_atl").hide();
+        $("#div_admin_alt").hide();
       }
 
       $('#cpf_cnpj_atl').val(usuarios.CPF_CNPJ);
@@ -454,6 +454,50 @@ function abrefechaform()
   $('#alt_insert').toggle(150);
   $('#grid').toggle(150);
 }
+
+
+$('#salvarAlt').on('click',function()
+{
+  dados = new FormData();
+  dados.append('id', $('#id_alt').val());
+  dados.append('email', $('#email_atl').val());
+  dados.append('usuario', $('#usuario_atl').val());
+  if($('#tipo_pessoa_atl').is(':checked'))
+    dados.append('tipo', 'F');
+   else
+    dados.append('tipo', 'J');
+  dados.append('cgc', $('#cpf_cnpj_atl').val());
+  dados.append('dt_nascimento', $('#dt_nascimento_atl').val());
+  if($('#admin_atl').is(':checked'))
+    dados.append('admin', 'S');
+  else
+    dados.append('admin', 'N');
+  $.ajaxSetup({ cache: false });
+  $.ajax({  
+        url: "usuarios/alterarusuario",  
+        type: 'POST',   
+        data: dados,
+        processData: false,
+        contentType: false,
+        success: function (result) {  
+          if(result=="SIM")
+          {
+            $('#titulo_msg2').html('Aviso');
+            $('#msg_msg2').html('Registro alterado');
+            $('#mensagem2').modal('show');            
+          }
+          else
+          {
+            $('#titulo_msg2').html('Aviso');
+            $('#msg_msg2').html('Registro não alterado');
+            $('#mensagem2').modal('show');
+          }
+          abrefechaform();
+          buscar();
+        }  
+  });  
+});
+
 
 </script>
 
