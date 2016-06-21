@@ -204,6 +204,26 @@
             </ul>
           </li>
 
+          <li class="treeview">
+            <a href="#">
+              <i class="glyphicon glyphicon-align-right"></i> <span>Relatórios</span>
+            </a>
+            <ul class="treeview-menu">
+                    <li><a href="{{asset('relatorios/customizados')}}"><i class="glyphicon glyphicon-equalizer"></i> <span>Customizados</span></a></li>
+            </ul>
+          </li>
+
+          @if(Auth('admin')=='S')
+          <li class="treeview">
+            <a href="#">
+              <i class="glyphicon glyphicon-wrench"></i> <span>Configurações</span>
+            </a>
+            <ul class="treeview-menu">
+                    <li><a href="{{asset('configuracoes/parametros')}}"><i class="glyphicon glyphicon-wrench"></i> <span>Parametros de sistema</span></a></li>
+            </ul>
+          </li> 
+          @endif
+
 
 
         <!-- itens menu -->

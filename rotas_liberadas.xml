@@ -18,10 +18,11 @@
 	<rota>
 		<controller>usuariosController</controller>
 		<metodo>getValidalogin</metodo>
+	</rota>	
+	<rota>
+		<controller>usuariosController</controller>
+		<metodo>postDefinirsenha</metodo>
 	</rota>
-
-
-
 	<rota>
 		<controller>serviceController</controller>
 		<metodo>getIndex</metodo>

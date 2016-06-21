@@ -114,6 +114,14 @@ class usuariosController extends controller
 		  echo 'NAO';
 	}
 
+	public function validanovoemail($email)
+	{		
+		if(count($this->model->where('email','=',$email)->where('excluido','=','N')->get())>0)	
+		  return false; // email ja cadastrado
+		else
+		  return true;
+	}
+
 	public function getValidalogin($email,$senha)
 	{
 		$usuario = $this->model
@@ -162,20 +170,25 @@ class usuariosController extends controller
 		}
 	}
 
-	public function postAlterarusuario()
+	public function postAlterar()
 	{
-		$usuario = $this->model->findOrFail($_POST['id']);
-		$usuario->email = $_POST['email'];
-		$usuario->usuario = $_POST['usuario'];
-		$usuario->tipopessoa = $_POST['tipo'];
-		$usuario->CPF_CNPJ = $_POST['cgc'];
-		$usuario->dtnascimento = $_POST['dt_nascimento'];
-		$usuario->admin = $_POST['admin'];		
-		if($usuario->save())
+		if($this->validanovoemail($_POST['email']))
 		{
-			echo "SIM";
-			if(Auth('id')==$usuario->id)
-				$this->AtualizaSession($usuario->id);
+			$usuario = $this->model->findOrFail($_POST['id']);
+			$usuario->email = $_POST['email'];
+			$usuario->usuario = $_POST['usuario'];
+			$usuario->tipopessoa = $_POST['tipo'];
+			$usuario->CPF_CNPJ = $_POST['cgc'];
+			$usuario->dtnascimento = $_POST['dt_nascimento'];
+			$usuario->admin = $_POST['admin'];		
+			if($usuario->save())
+			{
+				echo "SIM";
+				if(Auth('id')==$usuario->id)
+					$this->AtualizaSession($usuario->id);
+			}
+			else
+				echo "NAO";
 		}
 		else
 			echo "NAO";
@@ -196,5 +209,32 @@ class usuariosController extends controller
 		else
 			echo "NAO";
 	}
+
+	public function postCadastrar()
+	{
+		if($this->validanovoemail($_POST['email']))
+		{
+			$_POST['empresa']=Auth('empresa');
+			if($this->model->create($_POST))
+				echo "SIM";
+			else
+				echo "NAO";
+		}
+		else
+			echo "NAO";
+	}
+
+	public function postDefinirsenha()
+	{	
+		if($_POST['defseguranca']=='S')
+		{
+	   		 $usuario = $this->model->where('email','=',$_POST['defemail'])->get();	   		 
+	   		 $usuario = $this->model->findOrFail($usuario[0]->id);
+	   		 $usuario->senha=md5($_POST['defsenha']);
+	   		 $usuario->save();
+		}	
+		redirecionar(asset(''));
+	}
+
 
 }

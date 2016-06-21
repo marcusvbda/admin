@@ -13,27 +13,47 @@
 
 
 <?php $__env->startSection('conteudo'); ?>
-<p class="login-box-msg">Entre para iniciar sua sessão</p>
+<div id="form_login"  >
+  <p class="login-box-msg">Entre para iniciar sua sessão</p>
 
-    <!-- <form action="<?php echo e(asset('usuarios/logar')); ?>" method="post" onsubmit="return logar()"> -->
-      <div class="form-group has-feedback">
-        <input type="email" class="form-control" name="email" id="email" required=""  autocomplete="off" placeholder="Email" style="border:1px solid red;">
-        <input type="text" name="email" id="email_valida"  value="NAO" autocomplete="off" style="display: none;"/>
-        <!-- <div id="resultado"></div> -->
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" name="senha" id="senha" required="" minlength="4" maxlength="20" autocomplete="off" placeholder="Senha" style="border:1px solid red;">
-        <input type="password" name="password" id="password" id="senha" autocomplete="off" style="display: none;" />
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="row">        
-        <!-- /.col -->
-        <div class="col-xs-4 pull-right">
-          <button onclick="logar()" id="btn_entrar" class="btn btn-primary btn-block btn-flat">Entrar</button>
+      <!-- <form action="<?php echo e(asset('usuarios/logar')); ?>" method="post" onsubmit="return logar()"> -->
+        <div class="form-group has-feedback">
+          <input type="email" class="form-control" name="email" id="email" required=""  autocomplete="off" placeholder="Email" style="border:1px solid red;">
+          <input type="text" name="email" id="email_valida"  value="NAO" autocomplete="off" style="display: none;"/>
+          <!-- <div id="resultado"></div> -->
+          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
-        <!-- /.col -->
-      </div>
+        <div class="form-group has-feedback">
+          <input type="password" class="form-control" name="senha" id="senha" required="" minlength="4" maxlength="20" autocomplete="off" placeholder="Senha" style="border:1px solid red;">
+          <input type="password" name="password" id="password" id="senha" autocomplete="off" style="display: none;" />
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+        <div class="row">        
+          <!-- /.col -->
+          <div class="col-xs-4 pull-right">
+            <button onclick="logar()" id="btn_entrar" class="btn btn-primary btn-block btn-flat">Entrar</button>
+          </div>
+          <!-- /.col -->
+        </div>
+</div>
+
+
+
+
+<div id="form_nova_senha" style="display:none;">
+  <p class="login-box-msg">Defina sua senha de acesso, lembrando que a mesma deve ter no mínimo 4 e no máximo 20 caracteres.</p>
+  <div class="form-group has-feedback">
+    <input type="password" class="form-control" id="senha_nova" required="" minlength="4" maxlength="20" autocomplete="off" placeholder="Senha" style="border:1px solid red;">
+  </div>
+  <div class="form-group has-feedback">
+    <input type="password" class="form-control" name="repita_senha_nova" id="repita_senha_nova" required="" minlength="4" maxlength="20" autocomplete="off" placeholder="Repita a senha" style="border:1px solid red;">
+  </div>
+  <div class="row">   
+    <div class="col-xs-6 pull-right">
+      <button id="btn_definir_Senha" disabled class="btn btn-primary btn-block btn-flat">Definir senha</button>
+    </div>
+  </div>
+</div>
     <!-- </form> -->
 
 
@@ -87,6 +107,56 @@ $("input[name='senha']").on('keyup', function(){
 });
 
 
+$('#senha_nova').on('keyup', function()
+{
+    senha = $('#senha_nova').val();
+    if(senha.length>=4)
+    {
+      document.getElementById("senha_nova").style.border = "1px solid green";
+      confirmarsenhanova($('#senha_nova').val(),$('#repita_senha_nova').val());
+    }
+    else
+      document.getElementById("senha_nova").style.border = "1px solid red";
+});
+
+$('#repita_senha_nova').on('keyup', function()
+{
+    senha = $('#repita_senha_nova').val();
+    if(senha.length>=4)
+    {
+      document.getElementById("repita_senha_nova").style.border = "1px solid green";
+      confirmarsenhanova($('#senha_nova').val(),$('#repita_senha_nova').val());
+    }
+    else
+      document.getElementById("repita_senha_nova").style.border = "1px solid red";
+});
+
+function confirmarsenhanova(senha,repita)
+{
+  if((senha==repita)&&(senha.length>=4)&&(repita.length>=4))
+  {
+    document.getElementById("repita_senha_nova").style.border = "1px solid green";    
+    $('#btn_definir_Senha').removeAttr('disabled');
+  }
+  else
+  {
+    document.getElementById("repita_senha_nova").style.border = "1px solid red";
+    $('#btn_definir_Senha').attr('disabled','disabled');
+  }
+}
+
+
+$('#btn_definir_Senha').on('click',function()
+{  
+  var form = $('<form action="Definirsenha/" method="post">' +
+              '<input type="hidden" value="'+$('#email').val()+'" name="defemail" />' +
+              '<input type="hidden" value="S" name="defseguranca" />' +
+              '<input type="hidden" value="'+$('#senha_nova').val()+'" name="defsenha" />' +
+              '</form>');
+              $('body').append(form);
+              $(form).submit();  
+  });
+
 
 function logar()
 {
@@ -108,15 +178,33 @@ function logar()
           }
           else
           {
-            var form = $('<form action="logar/" method="post">' +
-            '<input type="hidden" value="'+email+'" name="email" />' +
-            '<input type="hidden" value="'+senha+'" name="senha" />' +
-            '</form>');
-            $('body').append(form);
-            $(form).submit();
+            if(senha=='0123456789')
+            {
+              $('#titulo_msg1').html('Aviso importante');
+              $('#msg_msg1').html('Este é seu primeiro acesso, por favor defina qual será sua senha de acesso');
+              $('#mensagem1').modal('show'); 
+              $('#form_nova_senha').toggle(150);
+              $('#form_login').toggle(150);
+              $('#sublink').html('<a onclick="voltaraologin()" > Voltar ao login</a>')
+            }
+            else
+            {
+              var form = $('<form action="logar/" method="post">' +
+              '<input type="hidden" value="'+email+'" name="email" />' +
+              '<input type="hidden" value="'+senha+'" name="senha" />' +
+              '</form>');
+              $('body').append(form);
+              $(form).submit();
+            }
           }
     });
   }
+}
+
+function voltaraologin()
+{
+  $('#form_nova_senha').toggle(150);
+  $('#form_login').toggle(150);
 }
 
    
@@ -152,7 +240,7 @@ function logar()
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('sublink'); ?>
-<div class="pull-left"><a href="<?php echo e(asset('usuarios/renovasenha')); ?>" " >Esqueci a senha</a></div>
+<div class="pull-left" id="sublink"><a href="<?php echo e(asset('usuarios/renovasenha')); ?>" " >Esqueci a senha</a></div>
 <?php $__env->stopSection(); ?>
 
 

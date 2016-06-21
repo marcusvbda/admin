@@ -34,14 +34,15 @@
               <img class="profile-user-img img-responsive img-circle" id="alt_foto_prof">
               <p class="text-muted text-center">
                   <input type="file" name="img_alt[]" id="img_alt"  class="inputfile" multiple>
-                  <label for="img_alt" ><a>Trocar foto</a></label> 
+                  <label for="img_alt" id="trocar_foto"><a>Trocar foto</a></label> 
               </p>
 
-
-              <h3 class="profile-username text-center" id="alt_nome_prof">Nome do profile</h3>
-              <p class="text-muted text-center" id="alt_status_prof">Status do profile</p>
-              <p class="text-muted text-center" id="alt_funcao_prof">função do profile</p>
-              <p class="text-muted text-center" id="alt_email_prof">email do profile</p>
+               <div id="campos_prof"> 
+                <h3 class="profile-username text-center" id="alt_nome_prof">Nome do profile</h3>
+                <p class="text-muted text-center" id="alt_status_prof">Status do profile</p>
+                <p class="text-muted text-center" id="alt_funcao_prof">função do profile</p>
+                <p class="text-muted text-center" id="alt_email_prof">email do profile</p>                
+              </div>
               <p class="text-muted text-center"> <strong><a onclick="abrefechaform()"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</a></strong></p>
             </div>
           </div>
@@ -50,11 +51,11 @@
       <div class="col-md-9">
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#atividades" data-toggle="tab" aria-expanded="true">Atividades</a></li>
-              <li class=""><a href="#informacoes" data-toggle="tab" aria-expanded="false">Informações</a></li>
+              <li id="aba_atividades" class=""><a href="#atividades" data-toggle="tab" aria-expanded="false">Atividades</a></li>
+              <li id="aba_informacoes" class="active"><a href="#informacoes" data-toggle="tab" aria-expanded="true">Informações</a></li>
             </ul>
             <div class="tab-content">
-              <div class="tab-pane active" id="atividades">
+              <div class="tab-pane" id="atividades">
 
                 <!-- The timeline -->
                 <p class="text-muted text-center"> <strong><a onclick=""><span class="glyphicon glyphicon-align-justify"></span> Log completo</a></strong></p>
@@ -66,7 +67,7 @@
               <!-- /.tab-pane -->
 
 
-              <div class="tab-pane" id="informacoes">
+              <div class="tab-pane active" id="informacoes">
                 
                     <div class="row">
                       <div class="col-md-12">
@@ -101,7 +102,7 @@
                        <div class="col-md-2" id="div_admin_alt">
                         <label>Administrador</label><br>
                         <label class="switch">
-                          <input type="checkbox" checked id="admin_atl" onclick="mudaradmin()"> 
+                          <input type="checkbox" id="admin_atl"> 
                           <div class="slider round"></div>
                         </label>
                       </div>
@@ -109,6 +110,7 @@
                     <div class="row" style="margin-top:25px;">
                       <div class="pull-right"> 
                          <button id="salvarAlt" class="btn btn-primary">Salvar Alterações</button> 
+                         <button id="btn_cadastrar" style="display:none;" class="btn btn-primary">Cadastrar</button> 
                       </div>                
                      
                       
@@ -162,7 +164,7 @@
         <hr>
         <div class="col-md-12"> 
         <?php if(Auth('admin')=="S"): ?>
-          <button class="btn btn-primary" onclick="cadastrar()" id="novo_reg"><span class="glyphicon glyphicon-plus"></span>  Cadastar</button>
+          <button class="btn btn-primary" id="novo_reg"><span class="glyphicon glyphicon-plus"></span>  Cadastar</button>
         <?php endif; ?>
         </div>
       </div>
@@ -303,6 +305,8 @@ function excluir()
 
 function alterar(id)
 {
+  $('#btn_cadastrar').hide();
+  $('#salvarAlt').show();
   $.ajaxSetup({ cache: false });
   $.getJSON("usuarios/encontrausuario/"+id, function(data)
   {    
@@ -311,6 +315,7 @@ function alterar(id)
       $('#alt_nome_prof').html(usuarios.usuario);
       $('#alt_funcao_prof').html(usuarios.descricao);
       $('#alt_email_prof').html(usuarios.email);
+      $('#campos_prof').show();
       $('#alt_foto_prof').attr('src','<?php echo e(PASTA_PUBLIC); ?>/'+usuarios.foto);
       if(usuarios.logado=='S')
         $('#alt_status_prof').html('<i class="fa fa-circle text-success"></i> Online');
@@ -322,6 +327,10 @@ function alterar(id)
       $('#usuario_atl').val(usuarios.usuario);
       $('#tipo_atl').val(usuarios.tipopessoa);
       $('#email_atl').val(usuarios.email);
+      if(usuarios.admin=="S")
+        $('#admin_atl').prop('checked', true); 
+      else
+        $('#admin_atl').prop('checked', false); 
       if(usuarios.tipopessoa=="J")
       {
         $('#tipo_pessoa_atl').prop('checked', false);        
@@ -358,7 +367,7 @@ function alterar(id)
 
       $('#cpf_cnpj_atl').val(usuarios.CPF_CNPJ);
       $('#dt_nascimento_atl').val(usuarios.dtnascimento);
-      $('#admin_alt').val(usuarios.admin);
+      
       // foto
     });
   });
@@ -407,49 +416,6 @@ function montar_timeline(id)
   }); 
 }
 
-function cadastrar()
-{    
-  $('#descricao_alt').val('');
-  $('#id_alt').val('');
-  $('#titulo_alt').html('Cadastrar função');
-  $('#alt_insert').toggle(150);
-  $('#grid').toggle(150);
-}
-
-$("#usuario_alt").keyup(function(event)
-{
-    if(event.keyCode == 13)
-    {
-        $("#btn_confirma_alt").click();
-    }
-});
-
-function confirmaalteracao()
-{
-  id = $('#titulo_alt').val('id_alt');
-  descricao = $('#titulo_alt').val('usuario_alt'); 
-  $('#alterar-modal').modal('hide'); 
-  $.post("../funcoes/alterar_inserir",
-  {
-    id: id,
-    descricao: descricao
-  },
-  function(resultado)
-  {
-    $('#titulo_msg2').html('Aviso');
-    if(resultado=="ALTERADO")
-      $('#msg_msg2').html('Registro alterado');
-    if((resultado=="NAOALTERADO"))
-      $('#msg_msg2').html('Registro não alterado pois está em uso.');
-    if(resultado=="INSERIDO")
-      $('#msg_msg2').html('Registro inserido');
-    if((resultado=="NAOINSERIDO"))
-      $('#msg_msg2').html('Registro não inserido, verifique...');
-    $('#mensagem2').modal('show');  
-  });
-  $("#btn-filtro").click();
-  abrefechaform();
-}
 
 function abrefechaform()
 {
@@ -476,7 +442,7 @@ $('#salvarAlt').on('click',function()
     dados.append('admin', 'N');
   $.ajaxSetup({ cache: false });
   $.ajax({  
-        url: "usuarios/alterarusuario",  
+        url: "usuarios/alterar",  
         type: 'POST',   
         data: dados,
         processData: false,
@@ -498,6 +464,77 @@ $('#salvarAlt').on('click',function()
           buscar();
         }  
   });  
+});
+
+
+$('#novo_reg').on('click', function() 
+{
+  limparcampos();
+  $('#campos_prof').hide();
+  $('#aba_informacoes').hide();
+  $('#trocar_foto').hide();
+  $('#salvarAlt').hide();
+  $('#btn_cadastrar').show();
+  $('#aba_atividades').hide();
+  $('#alt_insert').toggle(150);
+  $('#grid').toggle(150);
+});
+
+function limparcampos()
+{
+  $('#id_alt').val('');
+  $('#usuario_atl').val('');
+  $('#id_alt').val('');
+  $('#cpf_cnpj_atl').val('');
+  $('#email_atl').val('');
+  $('#dt_nascimento_atl').val('');
+  $('#admin_atl').prop('checked', false); 
+  $('#desc_tipo_pessoa_alt').html('Pessoa Física');
+  $('#desc_cpf_cnpj_atl').html('CPF');
+  $('#alt_foto_prof').attr('src','<?php echo e(PASTA_PUBLIC); ?>/uploads/fotos_profile/user.png');
+}
+
+
+
+$('#btn_cadastrar').on('click', function() 
+{
+    dados = new FormData();
+    dados.append('email', $('#email_atl').val());
+    dados.append('usuario', $('#usuario_atl').val());
+    
+    if($('#tipo_pessoa_atl').is(':checked'))
+      dados.append('tipopessoa', 'F');
+     else
+      dados.append('tipopessoa', 'J');
+    dados.append('CPF_CNPJ', $('#cpf_cnpj_atl').val());
+    dados.append('dtnascimento', $('#dt_nascimento_atl').val());
+    if($('#admin_atl').is(':checked'))
+      dados.append('admin', 'S');
+    else
+      dados.append('admin', 'N');
+    if(($('#email_atl').val()!="")&&($('#usuario_atl').val()!=""))
+    {
+        $.ajax({  
+            url: "usuarios/cadastrar",  
+            type: 'POST',   
+            data: dados,
+            processData: false,
+            contentType: false,
+            success: function (data) {  
+              $('#titulo_msg2').html('Aviso');
+              $('#msg_msg2').html('Preencha ao menos o email e o nome do usuário');
+              $('#mensagem2').modal('show'); 
+            }  
+        });
+        buscar();
+        abrefechaform();
+    }
+    else
+    {
+      $('#titulo_msg2').html('Aviso');
+      $('#msg_msg2').html('Preencha ao menos o email e o nome do usuário');
+      $('#mensagem2').modal('show');     
+    }
 });
 
 
