@@ -7,6 +7,9 @@ class inicioController extends controller
 {
 	public function getIndex()
 	{
-		echo $this->view('index',[]);
+		$qtde_usuarios_cadastrados=count(DB::table('usuarios')->where('empresa','=',Auth('empresa'))->where('excluido','=','N')->get());
+		echo $this->view('index',compact('qtde_usuarios_cadastrados'));
 	}	
+
+
 }

@@ -12,6 +12,22 @@
 
 <?php $__env->startSection('conteudo'); ?>
 
+<div class="row">
+	<div class="col-md-3">
+		<div class="small-box bg-yellow">
+		    <div class="inner">
+			    <h3><?php echo e($qtde_usuarios_cadastrados); ?></h3>
+		        <p>Usuários cadastrados</p>
+		    </div>
+		    <div class="icon">
+		        <i class="ion ion-person-add" style="margin-top: 20px;"></i>
+		    </div>
+		    <a href="<?php echo e(asset('usuarios')); ?>" class="small-box-footer">Veja mais <i class="fa fa-arrow-circle-right"></i></a>
+		</div>
+	</div>
+</div>
+
+
 <div class="box col-md-12">
 	<div class="box-header with-border">
 	  <h3 class="box-title">
@@ -23,6 +39,9 @@
 	<div class="box-body">
 	  <!-- conteudo -->
 			
+
+	  
+
 
 
 	</div>

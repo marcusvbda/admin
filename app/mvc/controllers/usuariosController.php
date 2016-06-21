@@ -126,7 +126,7 @@ class usuariosController extends controller
 		  echo 'NAO';
 	}
 
-	function postTrocafotoperfil()
+	public function postTrocafotoperfil()
 	{	
 		$usuario = $this->model->findOrFail($_POST['usuario']);
 		$diretorio = 'uploads/fotos_profile/'.'empresa_'.Auth('empresa');
@@ -148,7 +148,7 @@ class usuariosController extends controller
 		echo $usuario->foto;
 	}
 
-	function AtualizaSession($id)
+	public function AtualizaSession($id)
 	{
 		$usuarios = $this->model
 			->where('id','=',$id)
@@ -162,7 +162,7 @@ class usuariosController extends controller
 		}
 	}
 
-	function postAlterarusuario()
+	public function postAlterarusuario()
 	{
 		$usuario = $this->model->findOrFail($_POST['id']);
 		$usuario->email = $_POST['email'];
@@ -176,6 +176,22 @@ class usuariosController extends controller
 			echo "SIM";
 			if(Auth('id')==$usuario->id)
 				$this->AtualizaSession($usuario->id);
+		}
+		else
+			echo "NAO";
+	}
+
+	public function postExcluir()
+	{
+		//verifica campo em uso
+		$usuario = $this->model->findOrFail($_POST['id']);
+		$admins_ativos = count($this->model->where('empresa','=',Auth('empresa'))->where('excluido','=','N')->where('admin','=','S')->get());
+		if((count($usuario)>0)&&($usuario->logado=="N")&&($admins_ativos>=1))
+		{
+			registralog("Excluiu usuário id({$usuario->id}), nome({$usuario->usuario}) ");
+			$usuario->excluido="S";
+			$usuario->save();
+			echo "SIM";
 		}
 		else
 			echo "NAO";

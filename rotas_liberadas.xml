@@ -19,4 +19,11 @@
 		<controller>usuariosController</controller>
 		<metodo>getValidalogin</metodo>
 	</rota>
+
+
+
+	<rota>
+		<controller>serviceController</controller>
+		<metodo>getIndex</metodo>
+	</rota>
 </rotas_liberadas>

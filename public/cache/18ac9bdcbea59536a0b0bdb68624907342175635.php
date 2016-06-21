@@ -283,7 +283,7 @@ function msgexcluir(id)
 function excluir()
 {  
   id = $('#id').val();
-  $.post("../funcoes/excluir",
+  $.post("usuarios/excluir",
   {
     id: id
   },
@@ -293,7 +293,7 @@ function excluir()
     if(resultado=="SIM")
       $('#msg_msg2').html('Registro excluido');
     else
-      $('#msg_msg2').html('Registro não excluido pois está em uso.');
+      $('#msg_msg2').html('Registro não excluido.');
     $('#mensagem2').modal('show');     
   });
   $("#btn-filtro").click();
