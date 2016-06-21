@@ -73,7 +73,9 @@
       <div class="row">
         <hr>
         <div class="col-md-12"> 
+        <?php if(Auth('admin')=="S"): ?>
           <button class="btn btn-primary" onclick="cadastrar()" id="novo_reg"><span class="glyphicon glyphicon-plus"></span>  Cadastar</button>
+        <?php endif; ?>
         </div>
       </div>
 

@@ -75,7 +75,9 @@
       <div class="row">
         <hr>
         <div class="col-md-12"> 
+        @if(Auth('admin')=="S")
           <button class="btn btn-primary" onclick="cadastrar()" id="novo_reg"><span class="glyphicon glyphicon-plus"></span>  Cadastar</button>
+        @endif
         </div>
       </div>
 
