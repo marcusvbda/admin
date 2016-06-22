@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 21-Jun-2016 às 22:27
--- Versão do servidor: 10.1.13-MariaDB
--- PHP Version: 5.6.20
+-- Generation Time: 22-Jun-2016 às 05:02
+-- Versão do servidor: 10.1.10-MariaDB
+-- PHP Version: 7.0.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -146,7 +146,8 @@ INSERT INTO `log` (`id`, `usuario`, `descricao`, `created_at`, `updated_at`) VAL
 (59, 4, 'Entrou do sistema', '2016-06-21 20:14:45', NULL),
 (60, 4, 'Saiu do sistema', '2016-06-21 20:15:05', NULL),
 (61, 1, 'Entrou do sistema', '2016-06-21 20:15:22', NULL),
-(62, 1, 'Saiu do sistema', '2016-06-21 20:27:05', NULL);
+(62, 1, 'Saiu do sistema', '2016-06-21 20:27:05', NULL),
+(63, 1, 'Entrou do sistema', '2016-06-22 02:34:59', NULL);
 
 -- --------------------------------------------------------
 
@@ -159,11 +160,19 @@ CREATE TABLE `relatorio_customizado` (
   `nome` varchar(100) NOT NULL,
   `descricao` varchar(500) DEFAULT NULL,
   `empresa` int(11) NOT NULL,
+  `query` text NOT NULL,
   `formulario` text NOT NULL,
   `excluido` varchar(1) NOT NULL DEFAULT 'N',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `relatorio_customizado`
+--
+
+INSERT INTO `relatorio_customizado` (`id`, `nome`, `descricao`, `empresa`, `query`, `formulario`, `excluido`, `created_at`, `updated_at`) VALUES
+(1, 'usuarios', 'relatorio de todos usuários', 1, 'select * from usuarios\r\nwhere excluido=''N''', '', 'N', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -194,7 +203,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `usuario`, `tipopessoa`, `CPF_CNPJ`, `dtnascimento`, `empresa`, `senha`, `foto`, `grupo_acesso`, `admin`, `email`, `logado`, `excluido`, `updated_at`, `created_at`) VALUES
-(1, 'Vinicius Bassalobre de Assis', 'F', '406.145.898-19', '1992-04-08 03:00:00', 1, '2578d734ff3c868c2ad68fa698d76730', 'uploads/fotos_profile/empresa_1/usuario_1/Screenshot_4.png', NULL, 'S', 'marcusv.bda@icloud.com', 'N', 'N', '2016-06-21 20:27:05', NULL),
+(1, 'Vinicius Bassalobre de Assis', 'F', '406.145.898-19', '1992-04-08 03:00:00', 1, '2578d734ff3c868c2ad68fa698d76730', 'uploads/fotos_profile/empresa_1/usuario_1/Screenshot_4.png', NULL, 'S', 'marcusv.bda@icloud.com', 'S', 'N', '2016-06-22 02:34:59', NULL),
 (2, 'Driely da silva aoyama', 'F', '', '1993-09-05 03:00:00', 1, 'bee708867517a4563227ee6c2e9173e7', 'uploads/fotos_profile/user.png', NULL, 'N', 'driely@hotmail.com', 'N', 'N', '2016-06-21 17:55:46', NULL),
 (4, 'nayla', 'F', '', '0000-00-00 00:00:00', 1, '5ca3049442f0c6e643ad75f68ac9a6bf', 'uploads/fotos_profile/user.png', NULL, 'N', 'nayla@email.com.br', 'N', 'N', '2016-06-21 20:15:05', '2016-06-21 18:17:12');
 
@@ -250,12 +259,12 @@ ALTER TABLE `funcoes`
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT for table `relatorio_customizado`
 --
 ALTER TABLE `relatorio_customizado`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `usuarios`
 --

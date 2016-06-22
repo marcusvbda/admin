@@ -7,7 +7,7 @@
   <small>Painel de controle</small>
 </h1>
 <ol class="breadcrumb">
-  <li><i class="fa fa-dashboard"></i> Dashboard</li>
+  <li><i class="fa fa-dashboard"></i> Início</li>
 </ol>
 @stop
 
