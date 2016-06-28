@@ -52,17 +52,30 @@
 	         </div>
 	        </div>
 	      </div>
-	      <div class="row">
-	        <hr>
-	        <div class="col-md-12"> 
-	        <?php if(Auth('admin')=="S"): ?>
-	          <button class="btn btn-primary" onclick="cadastrar()" id="novo_reg"><span class="glyphicon glyphicon-plus"></span>  Cadastar</button>
-	        <?php endif; ?>
-	        </div>
-	      </div>
-
+	      
 	    </div>
 
+
+	    <div id="form_relatorio" style="display:none;">
+	    	<hr>
+	    	<div class="row">
+		    	<div class="col-md-12">
+		    		<form id="formulario_parametros" action="Gerarelatoriocustomizado" method="POST"> 	
+		    		</form>		    	
+		    	</div>
+		    </div>
+		    <hr>
+	    	<div class="row">
+		    	<div class="col-md-12">
+		    		<div class="pull-left">
+		    			<button class="btn btn-warning" onclick="cancelar()">Cancelar</button>
+		    		</div>
+		    		<div class="pull-right">
+		    			<button class="btn btn-primary" onclick="imprimir()">Gerar relatório</button>
+		    		</div>
+		    	</div>
+		    </div>
+	    </div>
 
 
 
@@ -108,19 +121,59 @@ function buscar()
     $("#tabela tr").remove();
     $('#tabela').append(
       '<tr>'+
-        '<th>Descrição</th>'+  
+        '<th>Nome</th>'+ 
+        '<th>Descrição</th>'+ 
+        '<th></th>' +
       '</tr>');
     $.each(data, function(index,r)
     {      
       html=
       '<tr>'+
+          '<td>'+r.nome+'</td>'+
           '<td>'+r.descricao+'</td>'+
+          '<td><a title="imprimir relatório" onclick="form_relatorio('+r.id+')"><i class="glyphicon glyphicon-print"></i></a></td>'+
         '</tr>';
       $('#tabela tr:last').after(html);
     });
   });
   $("#tabela").toggle(150);
   $("#loading-div").toggle(150);
+}
+
+
+function form_relatorio(id)
+{
+	$("#tabela").toggle(150);
+	$("#form_relatorio").toggle(150);
+	$('#formulario_parametros').append(gerarformulario(id));
+}
+
+function cancelar()
+{
+	$("#form_relatorio").toggle(150);	
+	$("#tabela").toggle(150);
+}
+function imprimir()
+{
+	$("#formulario_parametros").submit();
+}
+
+function gerarformulario(id)
+{	
+	texto_formulario ="<input id='id_relatorio' name='id_relatorio' hidden value='"+id+"' />";	
+	$.getJSON("formulariorelatoriocustomizado/"+id, function(data)
+	{  
+		alert(data);
+		$.each(data, function(index,i) 
+		{			
+		   	texto_formulario+=
+		   	"<div class='col-md-"+i.tamanho+"'>"+
+		   		"<label>"+i.label+"</label>"+
+		   		"<input type='"+i.tipo+"' class='form-control' required='"+i.required+"' name='"+i.nome+"' id='"+i.nome+"' />"+
+			"</div>";
+		});
+	});
+	return texto_formulario;
 }
 </script>
 <?php $__env->stopSection(); ?>

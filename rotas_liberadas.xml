@@ -24,6 +24,10 @@
 		<metodo>postDefinirsenha</metodo>
 	</rota>
 	<rota>
+		<controller>usuariosController</controller>
+		<metodo>postRenovarSenha</metodo>
+	</rota>
+	<rota>
 		<controller>serviceController</controller>
 		<metodo>getIndex</metodo>
 	</rota>

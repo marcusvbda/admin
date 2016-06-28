@@ -56,7 +56,7 @@ class usuariosController extends controller
 	public function getSair()
 	{
 		registralog("Saiu do sistema");
-		$this->setlogado(Auth('id'));
+		$this->setlogado(Auth('id'),'S');
 		LimpaUsuario();
 		redirecionar(asset(''));
 	}
@@ -69,7 +69,6 @@ class usuariosController extends controller
 
 	public function getRenovasenha()
 	{
-		registralog("Renovou a senha de acesso");
 		echo "aqui executa um processamento para renovar senha";
 	}
 
@@ -85,7 +84,7 @@ class usuariosController extends controller
 				'grupo_acesso'=>$usuarios[0]->grupo_acesso,'usuario'=>$usuarios[0]->usuario,
 					'email'=>$usuarios[0]->email,'foto'=>$usuarios[0]->foto];			
 			SalvaUsuario((object) $array);
-			$this->setlogado(Auth('id'));
+			$this->setlogado(Auth('id'),'S');
 			registralog("Entrou do sistema");
 			redirecionar(asset(''));
 		}
@@ -93,13 +92,10 @@ class usuariosController extends controller
 			voltar();		
 	}
 
-	public function Setlogado($id)
+	public function setlogado($id,$status)
 	{
 		$usuario = $this->model->findOrFail($id);
-		if($usuario->logado=="N")
-			$usuario->logado="S";
-		else
-			$usuario->logado="N";
+		$usuario->logado=$status;
 		$usuario->save();
 	}
 	public function getUsuarioexiste($email)
@@ -236,5 +232,13 @@ class usuariosController extends controller
 		redirecionar(asset(''));
 	}
 
+	public function postRenovarSenha()
+	{
+		$resultado = enviarEmail($_POST['renov_email'],'Renovação de senha '+APP_NOME,'teste');
+		if($resultado['resposta'])
+			echo "enviou";
+		else
+			echo "nao enviou -- ".$resultado['erro'];
+	}
 
 }

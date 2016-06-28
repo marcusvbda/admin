@@ -54,6 +54,23 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+<div id="form_esqueci_senha" style="display:none;">
+  <p class="login-box-msg">Digite o email para que seja enviada um link de renovação de senha.</p>
+  <div class="form-group has-feedback">
+    <input type="email" class="form-control" id="renova_email" minlength="4" maxlength="200" autocomplete="off" placeholder="Email" style="border:1px solid red;">
+    <input type="text" hidden value="NAO" id="renova_email_valida" name="">
+  </div>
+  <div class="row">   
+    <div class="col-xs-6 pull-right">
+      <button id="btn_renovar_senha" disabled class="btn btn-primary btn-block btn-flat">Enviar email</button>
+    </div>
+  </div>
+</div>
     <!-- </form> -->
 
 
@@ -201,11 +218,48 @@ function logar()
   }
 }
 
+$("#renova_email").on('keyup', function(){
+    email = $("#renova_email").val();
+    $.get('usuarioexiste/' + email,function(data)
+    {
+      if(data=='NAO')
+      {
+        document.getElementById("renova_email").style.border = "1px solid red";
+        $('#btn_renovar_senha').attr('disabled','disabled');
+      }
+      else
+      {
+        document.getElementById("renova_email").style.border = "1px solid green";  
+        $('#btn_renovar_senha').removeAttr('disabled');        
+      }
+    });
+});
+
 function voltaraologin()
 {
-  $('#form_nova_senha').toggle(150);
-  $('#form_login').toggle(150);
+  $('#form_nova_senha').hide();
+  $('#form_esqueci_senha').hide();
+  $('#form_login').show();
+  $('#sublink').html('<a id="esquecisenha" onclick="esquecisenha();" >Esqueci a senha</a></div>');
 }
+
+function esquecisenha()
+{
+  $('#form_login').toggle(150);
+  $('#form_esqueci_senha').toggle(150);
+  $('#sublink').html('<a onclick="voltaraologin()" > Voltar ao login</a>')
+}
+
+$("#btn_renovar_senha").on('click', function(){
+  var form = $('<form action="RenovarSenha/" method="post">' +
+              '<input type="hidden" value="'+ $('#renova_email').val()+'" name="renov_email" />' +
+              '</form>');
+  $('body').append(form);
+  $(form).submit();  
+});
+
+
+
 
    
 </script>
@@ -240,7 +294,7 @@ function voltaraologin()
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('sublink'); ?>
-<div class="pull-left" id="sublink"><a href="<?php echo e(asset('usuarios/renovasenha')); ?>" " >Esqueci a senha</a></div>
+<div class="pull-left" id="sublink"><a id="esquecisenha" onclick="esquecisenha();" >Esqueci a senha</a></div>
 <?php $__env->stopSection(); ?>
 
 

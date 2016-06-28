@@ -30,5 +30,21 @@ class relatoriosController extends controller
 
 		// $results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = '$someVariable'") );
 	}
+
+	public function postGerarelatoriocustomizado()
+	{
+		echo "Oi";
+
+	}
+
+	public function getFormulariorelatoriocustomizado($id)
+	{
+		$relatorio_customizado = DB::table('relatorio_customizado')
+		  	->where('empresa','=',Auth('empresa'))
+		  		->where('id','=',$id)
+		  			->get();
+		echo $relatorio_customizado[0]->formulario;
+	}
 	
 }
+

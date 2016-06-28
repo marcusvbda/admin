@@ -8,6 +8,7 @@ require_once __DIR__."/core/controller.php";
 require_once __DIR__."/core/auth.php";
 require_once __DIR__."/middleware/middleware.php";
 require_once __DIR__."/../vendor/dompdf/autoload.inc.php";
+require_once __DIR__."/../vendor/phpmailer/phpmailer/PHPMailerAutoload.php";
 
 
 // criarusuarioteste();
