@@ -234,11 +234,17 @@ class usuariosController extends controller
 
 	public function postRenovarSenha()
 	{
-		$resultado = enviarEmail($_POST['renov_email'],'Renovação de senha '+APP_NOME,'teste');
-		if($resultado['resposta'])
-			echo "enviou";
-		else
-			echo "nao enviou -- ".$resultado['erro'];
+		$usuario = $this->model->where('email','=',$_POST['renov_email'])->get();	   		 
+	   	$usuario = $this->model->findOrFail($usuario[0]->id);
+	   	$usuario->senha=md5('0123456789');
+	   	if($usuario->save())
+	   	{
+			$email = '<h4 style="text-align:center;">Renovação de senha</h4>';
+			$email.= '<span style="text-align:center;">A senha deste usuário foi alterada para <Strong> 0123456789 </strong>,</span>';
+			$email.= '<span style="text-align:center;">faça o primeiro <a href="'.asset('login').'">login</a> utilizando esta senha e altere-a.</span>';
+			enviarEmail($_POST['renov_email'],'Renovação de senha '.APP_NOME,$email);
+		}
+		redirecionar(asset(''));
 	}
 
 }

@@ -13,8 +13,6 @@ class relatoriosController extends controller
 	}
 
 
-
-
 	public function getCustomizados()
 	{
 		echo $this->view('relatorios.customizados',[]);
@@ -27,14 +25,14 @@ class relatoriosController extends controller
 				->where('empresa','=',Auth('empresa'))
 					->get();
 		echo json_encode($relatorioscustomizados);
-
-		// $results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = '$someVariable'") );
 	}
 
 	public function postGerarelatoriocustomizado()
 	{
-		echo "Oi";
+		$relatorio_customizado = $this->relatorio_customizado->findOrFail($_POST['id_relatorio_selecionado']);
+		$resultado =DB::select( DB::raw($relatorio_customizado->query));
 
+		print_r($resultado);
 	}
 
 	public function getFormulariorelatoriocustomizado($id)
@@ -43,7 +41,7 @@ class relatoriosController extends controller
 		  	->where('empresa','=',Auth('empresa'))
 		  		->where('id','=',$id)
 		  			->get();
-		echo $relatorio_customizado[0]->formulario;
+		echo json_encode($relatorio_customizado[0]->formulario);
 	}
 	
 }

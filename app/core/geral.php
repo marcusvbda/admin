@@ -81,42 +81,42 @@ function getConfiguracoesGerais($id)
 							'porta_email_adm'=>$row->porta_email_adm,
 								'smtp_email_adm'=>$row->smtp_email_adm,
 									'senha_email_adm'=>$row->senha_email_adm,
-										'autentica_email_adm'=>$row->autentica_email_adm,
-											'smtp_email_criptografia_adm'=>$row->smtp_email_criptografia_adm);
+										'autentica_email_adm'=>$row->autentica_email_adm);
 	return $resultado;
 }
 
-function enviarEmail($para,$assunto,$texto)
+function enviarEmail($para,$assunto,$texto,$anexo="")
 {	
 	$configuracoes_gerais = getConfiguracoesGerais(1);
 	$mail = new PHPMailer;
-	$resposta = array();
-	//confifura servidor / remetente
-	$mail->isSMTP();
-	$mail->setLanguage('pt');
+	// $mail->SMTPDebug  = 2; 
+	$mail->isSMTP();    
+	$mail->CharSet = 'UTF-8';                               
+	$mail->Host = $configuracoes_gerais['smtp_email_adm'];
 	if($configuracoes_gerais['autentica_email_adm']=="S")
-		$mail->SMTPAuth   = true;     
-	else
-		$mail->SMTPAuth   = false;   
-	$mail->SMTPDebug  = 2;  
-	$mail->SMTPSecure = $configuracoes_gerais['smtp_email_criptografia_adm'];
-	$mail->Host       = $configuracoes_gerais['smtp_email_adm'];
-	$mail->SMTPAuth   = $configuracoes_gerais['autentica_email_adm'];
-	$mail->Username   = $configuracoes_gerais['email_adm'];
-	$mail->Password   = $configuracoes_gerais['senha_email_adm'];
-	$mail->Port       = $configuracoes_gerais['porta_email_adm'];
+		$mail->SMTPAuth = true;  
+	else 
+		$mail->SMTPAuth = false;  
+	$mail->Username = $configuracoes_gerais['email_adm'];            
+	$mail->Password = $configuracoes_gerais['senha_email_adm'];                     
+	$mail->Port = $configuracoes_gerais['porta_email_adm'];                                    
 
-	//configura destinatario
-	$mail->SetFrom($configuracoes_gerais['email_adm']);
-	$mail->isHTML(true);
-	$mail->CharSet  = 'utf-8';
-	$mail->wordwrap = 70;
-	
-	$mail->Subject  = $assunto;
-    $mail->Body     = $texto;
+	$mail->setFrom($configuracoes_gerais['email_adm'],APP_NOME);
+	$mail->addAddress($para);    
 
-	if ($mail->Send())
-		$resposta = array('resposta'=>true);
-	else
-		$resposta = array('resposta'=>false,'erro'=>$mail->ErrorInfo);
+	if(!$anexo=="")
+		$mail->addAttachment($anexo);       
+
+	$mail->isHTML(true);                                
+
+	$mail->Subject = $assunto;
+	$mail->Body    = $texto;
+
+	if(!$mail->send()) {
+	    return false;
+	} else {
+	    return true;
+	}
+
+
 }

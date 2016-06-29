@@ -60,7 +60,8 @@
 	    	<hr>
 	    	<div class="row">
 		    	<div class="col-md-12">
-		    		<form id="formulario_parametros" action="Gerarelatoriocustomizado" method="POST"> 	
+		    		<form id="formulario_parametros" action="Gerarelatoriocustomizado" method="POST"> 
+		    			<input type="text" id="id_relatorio_selecionado" hidden name="id_relatorio_selecionado">	
 		    		</form>		    	
 		    	</div>
 		    </div>
@@ -145,7 +146,11 @@ function form_relatorio(id)
 {
 	$("#tabela").toggle(150);
 	$("#form_relatorio").toggle(150);
-	$('#formulario_parametros').append(gerarformulario(id));
+	$('#id_relatorio_selecionado').val(id);
+	$.getJSON("Formulariorelatoriocustomizado/"+id, function(data)
+	{  
+		$('#formulario_parametros').append(data);
+	});	
 }
 
 function cancelar()
@@ -158,23 +163,6 @@ function imprimir()
 	$("#formulario_parametros").submit();
 }
 
-function gerarformulario(id)
-{	
-	texto_formulario ="<input id='id_relatorio' name='id_relatorio' hidden value='"+id+"' />";	
-	$.getJSON("formulariorelatoriocustomizado/"+id, function(data)
-	{  
-		alert(data);
-		$.each(data, function(index,i) 
-		{			
-		   	texto_formulario+=
-		   	"<div class='col-md-"+i.tamanho+"'>"+
-		   		"<label>"+i.label+"</label>"+
-		   		"<input type='"+i.tipo+"' class='form-control' required='"+i.required+"' name='"+i.nome+"' id='"+i.nome+"' />"+
-			"</div>";
-		});
-	});
-	return texto_formulario;
-}
 </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('templates.principal.principal', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
