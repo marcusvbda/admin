@@ -1,0 +1,34 @@
+<rotas_liberadas>
+	<rota>
+		<controller>usuariosController</controller>
+		<metodo>getLogin</metodo>
+	</rota>
+	<rota>
+		<controller>usuariosController</controller>
+		<metodo>getRenovasenha</metodo>
+	</rota>
+	<rota>
+		<controller>usuariosController</controller>
+		<metodo>postLogar</metodo>
+	</rota>
+	<rota>
+		<controller>usuariosController</controller>
+		<metodo>getUsuarioexiste</metodo>
+	</rota>
+	<rota>
+		<controller>usuariosController</controller>
+		<metodo>getValidalogin</metodo>
+	</rota>	
+	<rota>
+		<controller>usuariosController</controller>
+		<metodo>postDefinirsenha</metodo>
+	</rota>
+	<rota>
+		<controller>usuariosController</controller>
+		<metodo>postRenovarSenha</metodo>
+	</rota>
+	<rota>
+		<controller>serviceController</controller>
+		<metodo>getIndex</metodo>
+	</rota>
+</rotas_liberadas>
