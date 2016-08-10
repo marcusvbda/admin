@@ -21,8 +21,8 @@ class importacaoController extends controller
 		if($this->existeArquivos())
 		{
 			$tempo_inicio = microtime(true);
-			try
-			{
+			// try
+			// {
 				ini_set('max_execution_time', 0);
 				foreach ($this->arq_importar as $arquivo):
 				if ($this->validaJSON($arquivo))
@@ -30,12 +30,12 @@ class importacaoController extends controller
 				endforeach;
 				$this->registrar_importacao('S',microtime(true) - $tempo_inicio);
 				$this->mover_arquivo('importados');					
-			}
-			catch(exception $e)
-			{
-				$this->registrar_importacao('N',microtime(true) - $tempo_inicio);
-				$this->mover_arquivo('erro');
-			}
+			// }
+			// catch(exception $e)
+			// {
+			// 	$this->registrar_importacao('N',microtime(true) - $tempo_inicio);
+			// 	$this->mover_arquivo('erro');
+			// }
 			// ini_set('max_execution_time', 30);
 		}
 	}
@@ -61,7 +61,7 @@ class importacaoController extends controller
 		if (!is_dir($pasta))
 			mkdir($pasta);
 		copy($pasta_importar.$this->arquivo,$pasta.$this->arquivo);
-		unlink($pasta_importar.$this->arquivo);
+		// unlink($pasta_importar.$this->arquivo);
 	}
 
 	private function existeArquivos()
@@ -144,23 +144,14 @@ class importacaoController extends controller
 		$this->model = $this->model($this->tabela);
 		switch (strtoupper($this->tipo_operacao)):			
 			case 'INSERT':
-				$objeto = new $this->model;
-				foreach ($linha as $campo => $valor):
-					$objeto->{$campo} = $valor;
-					$objeto->save();
-				endforeach;
-				unset($objeto);
-				return true;
+				$this->model
+					->create($linha);
 				break;
 			case 'UPDATE':				
-				$this->query = $this->model->findOrFail($this->query[0]->id);
-				foreach ($linha as $campo => $valor):
-					$this->query->{$campo} = $valor;
-					$this->query->save();
-				endforeach;
-				return true;
+				$this->model
+					->find($this->query[0]->id)
+						->update($linha);
 			default:
-				return false;
 				break;
 		endswitch;
 	}
