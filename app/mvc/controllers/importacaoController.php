@@ -21,21 +21,21 @@ class importacaoController extends controller
 		if($this->existeArquivos())
 		{
 			$tempo_inicio = microtime(true);
-			// try
-			// {
-				ini_set('max_execution_time', 0);
+			try
+			{
+				// ini_set('max_execution_time', 0);
 				foreach ($this->arq_importar as $arquivo):
 				if ($this->validaJSON($arquivo))
 					$this->importar($this->arquivo = $arquivo);
 				endforeach;
 				$this->registrar_importacao('S',microtime(true) - $tempo_inicio);
 				$this->mover_arquivo('importados');					
-			// }
-			// catch(exception $e)
-			// {
-			// 	$this->registrar_importacao('N',microtime(true) - $tempo_inicio);
-			// 	$this->mover_arquivo('erro');
-			// }
+			}
+			catch(exception $e)
+			{
+				$this->registrar_importacao('N',microtime(true) - $tempo_inicio);
+				$this->mover_arquivo('erro');
+			}
 			// ini_set('max_execution_time', 30);
 		}
 	}
