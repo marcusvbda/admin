@@ -68,3 +68,4 @@ input:checked + .slider:before {
   position: absolute;
   z-index: -1;
 }
+

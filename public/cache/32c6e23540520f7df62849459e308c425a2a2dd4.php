@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="<?php echo e(PASTA_PUBLIC); ?>/template/dist/css/skins/_all-skins.min.css">
   <link rel="stylesheet" href="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/css/custom.css">
 <style type="text/css"></style></head>
-<body class="skin-green sidebar-mini fixed" cz-shortcut-listen="true">
+<body class="skin-green sidebar-mini fixed" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -39,82 +39,6 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 20px;">
-              <i class="fa fa-envelope-o"></i>
-              <span class="label label-danger">1</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">Você possui <?php echo e(1); ?> mensagens</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                                
-                <!-- mesagem -->
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="<?php echo e(imagem); ?>" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Nome do remetente
-                        <small><i class="fa fa-clock-o"></i> <?php echo e(1); ?> dia atrás</small>
-                      </h4>
-                      <p> texto</p>
-                    </a>
-                  </li>
-                  <!-- mensagem -->
-
-
-
-                </ul>
-              </li>
-              <li class="footer"><a href="#">Ver todas mensagens</a></li>
-            </ul>
-          </li>
-          <!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 20px;">
-              <i class="fa fa-bell-o"></i>
-              <span class="label label-danger"> <?php echo e(0); ?></span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">Você tem <?php echo e(0); ?> notificações</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <!-- <li>
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
-                      page and may cause design problems
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-users text-red"></i> 5 new members joined
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-user text-red"></i> You changed your username
-                    </a>
-                  </li> -->
-                </ul>
-              </li>
-              <li class="footer"><a href="#">Ver todas</a></li>
-            </ul>
-          </li>
           
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
@@ -152,7 +76,7 @@
           </li>
           <!-- Control Sidebar Toggle Button -->
           <li>
-            <a href="#" data-toggle="control-sidebar" style="padding-bottom: 20px;"><i class="fa fa-gears" ></i></a>
+            <a href="#" data-toggle="control-sidebar" style="padding-bottom: 20px;"><i class="glyphicon glyphicon-envelope" ></i></a>
           </li>
         </ul>
       </div>
@@ -200,6 +124,14 @@
                   <ul class="treeview-menu">
                     <li><a href="<?php echo e(asset('usuarios')); ?>"><i class="glyphicon glyphicon-user"></i> <span>Usuários</span></a></li>
                     <li><a href="<?php echo e(asset('usuarios/funcoes')); ?>"><i class="glyphicon glyphicon-road"></i> <span>Funções</span></a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a href="#">
+                    <i class="glyphicon glyphicon-erase"></i> <span>Produtos</span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="<?php echo e(asset('produtos')); ?>"><i class="glyphicon glyphicon-erase"></i> <span>Produtos</span></a></li>
                   </ul>
               </li>
             </ul>
@@ -255,23 +187,58 @@
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Versão</b>00.00.00
+      <b>Versão</b> 00.00.00
     </div>
     <strong><a href="#">SITE DA EMPRESA</a></strong> Todos os direitos reservados.
   </footer>
-
   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
+
+
+  <aside class="control-sidebar control-sidebar-dark"  >
   
     <!-- Tab panes -->
-    <div class="tab-content">
+    <div class="tab-content" > 
+        <div id="chat_usuarios">
+            <!-- usuarios -->
+        </div> 
 
+
+        <div id="chat_mensagens" style="display:none;">
+          <a onclick="fechar_chat()"><span class="glyphicon glyphicon-arrow-left"></span> Lista de usuários</a>
+
+              <input type="number" id="txt_id_destinatario" name="txt_id_destinatario" hidden >
+          
+
+          <div class="row">
+            <div class="content">
+              <div style='overflow-x:none;overflow-y:scroll;height:450px;padding:25px;' id="campo_mensagens">
+
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="content">
+              <div class="input-group">
+                        <input type="text" name="mensagem" placeholder="Digite a mensagem..." id="txtmsg" class="form-control">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-success btn-flat" id="btn_enviar" onclick="enviar()">Enviar</button>
+                        </span>
+                        </div>
+            </div>
+          </div>
+
+
+        </div>
     </div>
 
 
-
-
   </aside>
+
+
+
+
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
@@ -323,3 +290,149 @@
       
     </div>
   </div>
+
+
+  
+<!-- Modal -->
+<div class="modal fade" id="mensagem1" role="dialog">
+  <div class="modal-dialog modal-sm">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title centro">
+          <div id="titulo_msg1"></div>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <p><div id="msg_msg1"></div></p>
+      </div>
+      <div  class="modal-footer" id="btn_msg1">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
+        <button type="button" onclick="excluir()" data-dismiss="modal" class="btn btn-primary">Sim</button>
+      </div>
+    </div>    
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="mensagem2" role="dialog">
+  <div class="modal-dialog modal-sm">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title centro">
+          <div id="titulo_msg2"></div>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <p><div id="msg_msg2"></div></p>
+      </div>
+      <div  class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Voltar</button>
+      </div>
+    </div>    
+  </div>
+</div>
+
+
+<script type="text/javascript">
+$("#txtmsg").keyup(function(event)
+{
+    if(event.keyCode == 13)
+    {
+        $("#btn_enviar").click();
+    }
+});
+
+setInterval(function(){ atualizachat($('#txt_id_destinatario').val())}, 10000);
+// carrega usuarios
+$(document).ready(function() 
+{
+  $('#chat_usuarios').html('');
+  $.getJSON("inicio/UsuariosChat", function(data)
+  {
+    $.each(data, function(usuarios,us)
+    {
+      $('#chat_usuarios').append(
+        '<a onclick="abrir_chat('+us.id+')">'+
+           '<img  class="img-circle" src="<?php echo e(PASTA_PUBLIC); ?>/'+us.foto+'" style="width:40px;">'+us.usuario+
+        '</a>'+
+        '<br>');
+    });
+  });
+});
+
+function abrir_chat(id)
+  {
+    $('#campo_mensagens').html(null);
+    $('#txt_id_destinatario').val(id);
+    atualizachat(id);
+    $('#chat_usuarios').toggle(150);
+    $('#chat_mensagens').toggle(150);
+    $("#campo_mensagens").animate({ scrollTop: 9999 }, "slow");
+  } 
+
+  function fechar_chat()
+  {
+    $('#chat_usuarios').toggle(150);
+      $('#chat_mensagens').toggle(150);
+  } 
+
+  function atualizachat(id)
+  {
+    var usuario_logado = <?php echo e(Auth('id')); ?>;
+    $('#campo_mensagens').html(null);
+    $.getJSON("inicio/mensagens/"+id, function(data)
+      {     
+        $.each(data, function(mensagens,msg)
+        {      
+          if(msg.id_destinatario==usuario_logado)
+          {
+            $('#campo_mensagens').append(
+              '<div class="direct-chat-msg">'+
+                            '<div class="direct-chat-info clearfix">'+
+                              '<span class="direct-chat-name pull-left">'+msg.remetente+'</span>'+
+                            '<span class="direct-chat-timestamp pull-right">'+msg.dt_envio+'</span>'+
+                            '</div>'+
+                          '<img class="direct-chat-img" src="<?php echo e(PASTA_PUBLIC); ?>/'+msg.foto_remetente+'" alt="message user image">'+
+                          '<div class="direct-chat-text">'+
+                            msg.mensagem+
+                        '</div>'+
+                      '</div>'
+              );
+          }
+          else
+          {
+            $('#campo_mensagens').append(
+              '<div class="direct-chat-msg right">'+
+                        '<div class="direct-chat-info clearfix">'+
+                          '<span class="direct-chat-name pull-right">'+msg.remetente+'</span>'+
+                          '<span class="direct-chat-timestamp pull-left">'+msg.dt_envio+'</span>'+
+                        '</div>'+
+                        '<img class="direct-chat-img" src="<?php echo e(PASTA_PUBLIC); ?>/'+msg.foto_remetente+'" alt="message user image">'+
+                        '<div class="direct-chat-text">'+
+                           msg.mensagem+
+                        '</div>'+
+                      '</div>'
+              );
+          } 
+            
+        });
+    });
+  }
+
+  function enviar()
+  {
+    $.getJSON("inicio/EnviarMensagem/"+$('#txtmsg').val()+'/'+$('#txt_id_destinatario').val(), function(data)
+    {
+        atualizachat($('#txt_id_destinatario').val());
+        $("#campo_mensagens").animate({ scrollTop: 9999 }, "slow");
+    });
+    $("#txtmsg").val(null);
+
+  }
+</script>

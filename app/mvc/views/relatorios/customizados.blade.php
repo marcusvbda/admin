@@ -96,20 +96,8 @@
 
 
 <script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
+<script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/crud.js"></script>
 <script type="text/javascript">
-$("#filtro").keyup(function(event)
-{
-    if(event.keyCode == 13)
-    {
-        $("#btn-filtro").click();
-    }
-});
-
-$( document ).ready(function()
-{
-    $("#btn-filtro").click();
-});
-
 function buscar()
 {
   admin = $("#admin").val();

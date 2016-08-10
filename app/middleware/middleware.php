@@ -5,15 +5,16 @@ class middleware
 	public function middleware_geral($controller, $metodo)
 	{	
 		$rota_requerida = $controller.'@'.strtoupper($metodo);
+
 		if ($this->RotaLiberada($rota_requerida))
-		{
 		  	return true;
-		   	die();		
-		}
-		if(CheckAuth())
-			return true;
 		else
-		   redirecionar('usuarios/login');
+		{
+			if(CheckAuth())
+				return true;
+			else
+			   redirecionar('usuarios/login');
+		}
 	}
 
 	private function RotaLiberada($rota_requerida)

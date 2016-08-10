@@ -1,14 +1,14 @@
-﻿@extends('templates.principal.principal')
+@extends('templates.principal.principal')
 
-@section('titulo','Usuários')
+@section('titulo','Produtos')
 
 @section('topo')
-<h1>Usuários
+<h1>Produtos
   <small>Listagem e cadastro</small>
 </h1>
 <ol class="breadcrumb">
   <li><a href="{{asset('admin/inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="{{asset('admin/usuarios')}}"><i class="glyphicon glyphicon-user"></i> Usuários</a></li>
+  <li><a href="{{asset('admin/produtos')}}"><i class="glyphicon glyphicon-erase"></i> Produtos</a></li>
 </ol>
 @stop
 
@@ -181,53 +181,8 @@
 </div>
 
 <script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
+<script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/crud.js"></script>
 <script type="text/javascript">
-
-$('#img_alt').on('change', function() {
-    nova_foto = $('#img_alt');
-    _usuario  = $('#id_alt').val();
-    formData = new FormData();
-    formData.append('nova_foto', nova_foto[0].files[0]);
-    formData.append('usuario', _usuario);
-
-    $.ajax({  
-        url: "usuarios/trocafotoperfil",  
-        type: 'POST',   
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (data) {  
-          $('#alt_foto_prof').attr('src','{{PASTA_PUBLIC}}/'+data); 
-        }  
-    });  
-
-}); 
-
-function mascara(t)
- {
-   var i = t.value.length;
-   var mask = document.getElementById('mascada_cgc_alt').value;
-   var saida = mask.substring(1,0);
-   var texto = mask.substring(i);
-
-   if (texto.substring(0,1) != saida)
-   {
-      t.value += texto.substring(0,1);
-   }
- }
-$("#filtro").keyup(function(event)
-{
-    if(event.keyCode == 13)
-    {
-        $("#btn-filtro").click();
-    }
-});
-
-$( document ).ready(function()
-{
-    $("#btn-filtro").click();
-});
-
 function buscar()
 {
   id = {{Auth('id')}};
@@ -274,262 +229,11 @@ function buscar()
   $("#tabela").toggle(150);
   $("#loading-div").toggle(150);
 }
-
-
-function msgexcluir(id)
-{  
-  $('#titulo_msg1').html('Confirmação');
-  $('#msg_msg1').html('Deseja excluir este registro ?');
-  $('#mensagem1').modal('show');   
-  $('#id').val(id);
-}
-
-function excluir()
-{  
-  id = $('#id').val();
-  $.post("usuarios/excluir",
-  {
-    id: id
-  },
-  function(resultado)
-  {
-    $('#titulo_msg2').html('Aviso');
-    if(resultado=="SIM")
-      $('#msg_msg2').html('Registro excluido');
-    else
-      $('#msg_msg2').html('Registro não excluido.');
-    $('#mensagem2').modal('show');     
-  });
-  $("#btn-filtro").click();
-}
-
-function alterar(id)
-{
-  $('#btn_cadastrar').hide();
-  $('#salvarAlt').show();
-  $.ajaxSetup({ cache: false });
-  $.getJSON("usuarios/encontrausuario/"+id, function(data)
-  {    
-    $.each(data, function(index,usuarios)
-    {      
-      $('#alt_nome_prof').html(usuarios.usuario);
-      $('#alt_funcao_prof').html(usuarios.descricao);
-      $('#alt_email_prof').html(usuarios.email);
-      $('#campos_prof').show();
-      $('#alt_foto_prof').attr('src','{{PASTA_PUBLIC}}/'+usuarios.foto);
-      if(usuarios.logado=='S')
-        $('#alt_status_prof').html('<i class="fa fa-circle text-success"></i> Online');
-      else
-        $('#alt_status_prof').html('<i class="fa fa-circle text-danger"></i> Offline');     
-      $('#id_alt').val(id);
-      montar_timeline(id);
-
-      $('#usuario_atl').val(usuarios.usuario);
-      $('#tipo_atl').val(usuarios.tipopessoa);
-      $('#email_atl').val(usuarios.email);
-      if(usuarios.admin=="S")
-        $('#admin_atl').prop('checked', true); 
-      else
-        $('#admin_atl').prop('checked', false); 
-      if(usuarios.tipopessoa=="J")
-      {
-        $('#tipo_pessoa_atl').prop('checked', false);        
-        $('#desc_cpf_cnpj_atl').html('CNPJ');
-        $('#desc_tipo_pessoa_alt').html('Pessoa jurídica');
-        $("#div_desc_cpf_cnpj_atl").removeClass();
-        $("#div_desc_cpf_cnpj_atl").addClass('col-md-10');
-        $("#div_dt_nascimento_atl").hide();
-        $("#mascada_cgc_alt").val('99.999.999/9999-99');
-      }
-      else
-      {
-        $('#tipo_pessoa_atl').prop('checked', true);
-        $("#div_desc_cpf_cnpj_atl").removeClass();
-        $("#div_desc_cpf_cnpj_atl").addClass('col-md-7');
-        $("#div_dt_nascimento_atl").show();
-        $('#desc_cpf_cnpj_atl').html('CPF');   
-        $('#desc_tipo_pessoa_alt').html('Pessoa física'); 
-        $("#mascada_cgc_alt").val('999.999.999-99');
-      }
-
-      if($('#admin').val()=="S")
-      {
-        $("#div_email_atl").removeClass();
-        $("#div_email_atl").addClass('col-md-10');
-        $("#div_admin_alt").show();
-      }
-      else
-      {
-        $("#div_email_atl").removeClass();
-        $("#div_email_atl").addClass('col-md-12');
-        $("#div_admin_alt").hide();
-      }
-
-      $('#cpf_cnpj_atl').val(usuarios.CPF_CNPJ);
-      $('#dt_nascimento_atl').val(usuarios.dtnascimento);
-      
-      // foto
-    });
-  });
- 
-  $('#alt_insert').toggle(150);
-  $('#grid').toggle(150);
-}
-
-function mudarpessoa()
-{
-  $("#cpf_cnpj_atl").val(null);
-  if($('#tipo_pessoa_atl').is(':checked'))
-  {
-    $('#desc_cpf_cnpj_atl').html('CPF');
-    $('#desc_tipo_pessoa_alt').html('Pessoa jurídica');
-    $("#div_desc_cpf_cnpj_atl").removeClass();
-    $("#div_desc_cpf_cnpj_atl").addClass('col-md-7');
-    $("#div_dt_nascimento_atl").show();
-    $("#mascada_cgc_alt").val('999.999.999-99');
-  }
-  else
-  {  
-    $('#desc_cpf_cnpj_atl').html('CNPJ');       
-    $('#desc_tipo_pessoa_alt').html('Pessoa física'); 
-    $("#div_desc_cpf_cnpj_atl").removeClass();
-    $("#div_desc_cpf_cnpj_atl").addClass('col-md-10');
-    $("#div_dt_nascimento_atl").hide();
-    $("#mascada_cgc_alt").val('99.999.999/9999-99');
-  }
-}
-
-function montar_timeline(id)
-{
-  $('#timeline_itens').html('');
-  $.ajaxSetup({ cache: false });
-  $.getJSON("log/selectlog/"+id, function(data)
-  {      
-    $.each(data, function(index,log)
-    {     
-       $('#timeline_itens').append( '<li><i class="fa bg-blue"></i>'+
-                                    '<div class="timeline-item">'+ 
-                                       '<span class="time"><div id="hr_atividade">'+log.created_at+'</div></span>'+ //formatar
-                                       '<div class="timeline-body">'+log.descricao+'</div>'+                     
-                                   '</div></li>');
-    });
-  }); 
-}
-
-
 function abrefechaform()
 {
   $('#alt_insert').toggle(150);
   $('#grid').toggle(150);
 }
-
-
-$('#salvarAlt').on('click',function()
-{
-  dados = new FormData();
-  dados.append('id', $('#id_alt').val());
-  dados.append('email', $('#email_atl').val());
-  dados.append('usuario', $('#usuario_atl').val());
-  if($('#tipo_pessoa_atl').is(':checked'))
-    dados.append('tipo', 'F');
-   else
-    dados.append('tipo', 'J');
-  dados.append('cgc', $('#cpf_cnpj_atl').val());
-  dados.append('dt_nascimento', $('#dt_nascimento_atl').val());
-  if($('#admin_atl').is(':checked'))
-    dados.append('admin', 'S');
-  else
-    dados.append('admin', 'N');
-  $.ajaxSetup({ cache: false });
-  $.ajax({  
-        url: "usuarios/alterar",  
-        type: 'POST',   
-        data: dados,
-        processData: false,
-        contentType: false,
-        success: function (result) 
-        {  
-          if(result=="NAO")
-          {
-            $('#titulo_msg2').html('Aviso');
-            $('#msg_msg2').html('Registro não alterado');
-            $('#mensagem2').modal('show');
-          }
-          abrefechaform();
-          buscar();
-        }  
-  });  
-});
-
-
-$('#novo_reg').on('click', function() 
-{
-  limparcampos();
-  $('#campos_prof').hide();
-  $('#aba_informacoes').hide();
-  $('#trocar_foto').hide();
-  $('#salvarAlt').hide();
-  $('#btn_cadastrar').show();
-  $('#aba_atividades').hide();
-  $('#alt_insert').toggle(150);
-  $('#grid').toggle(150);
-});
-
-function limparcampos()
-{
-  $('#id_alt').val('');
-  $('#usuario_atl').val('');
-  $('#id_alt').val('');
-  $('#cpf_cnpj_atl').val('');
-  $('#email_atl').val('');
-  $('#dt_nascimento_atl').val('');
-  $('#admin_atl').prop('checked', false); 
-  $('#desc_tipo_pessoa_alt').html('Pessoa Física');
-  $('#desc_cpf_cnpj_atl').html('CPF');
-  $('#alt_foto_prof').attr('src','{{PASTA_PUBLIC}}/uploads/fotos_profile/user.png');
-}
-
-
-
-$('#btn_cadastrar').on('click', function() 
-{
-  if(($('#email_atl').val()!="")&&($('#usuario_atl').val()!=""))
-  {
-      dados = new FormData();
-      dados.append('email', $('#email_atl').val());
-      dados.append('usuario', $('#usuario_atl').val());
-      
-      if($('#tipo_pessoa_atl').is(':checked'))
-        dados.append('tipopessoa', 'F');
-       else
-        dados.append('tipopessoa', 'J');
-      dados.append('CPF_CNPJ', $('#cpf_cnpj_atl').val());
-      dados.append('dtnascimento', $('#dt_nascimento_atl').val());
-      if($('#admin_atl').is(':checked'))
-        dados.append('admin', 'S');
-      else
-        dados.append('admin', 'N');
-   
-        $.ajax({  
-            url: "usuarios/cadastrar",  
-            type: 'POST',   
-            data: dados,
-            processData: false,
-            contentType: false,
-            success: function (data) {}  
-        });
-        buscar();
-        abrefechaform();
-    }
-    else
-    {
-      $('#titulo_msg2').html('Aviso');
-      $('#msg_msg2').html('Preencha ao menos o email e o nome do usuário');
-      $('#mensagem2').modal('show');     
-    }
-});
-
-
 </script>
 
 

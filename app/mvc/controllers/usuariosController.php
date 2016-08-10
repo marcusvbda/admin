@@ -147,22 +147,8 @@ class usuariosController extends controller
 		   registralog('Alterou a foto do perfil');
 		} 
 		if($_POST['usuario']==Auth('id'))
-			$this->AtualizaSession($_POST['usuario']);
+			AtualizaSession($_POST['usuario']);
 		echo $usuario->foto;
-	}
-
-	public function AtualizaSession($id)
-	{
-		$usuarios = $this->model
-			->where('id','=',$id)
-				->get();
-		if(count($usuarios)>0)	
-		{			
-			$array = ['id'=>$usuarios[0]->id,'empresa'=>$usuarios[0]->empresa ,'admin'=>$usuarios[0]->admin,
-				'grupo_acesso'=>$usuarios[0]->grupo_acesso,'usuario'=>$usuarios[0]->usuario,
-					'email'=>$usuarios[0]->email,'foto'=>$usuarios[0]->foto];			
-			SalvaUsuario((object) $array);
-		}
 	}
 
 	public function postAlterar()
@@ -180,7 +166,7 @@ class usuariosController extends controller
 			{
 				echo "SIM";
 				if(Auth('id')==$usuario->id)
-					$this->AtualizaSession($usuario->id);
+					AtualizaSession($usuario->id);
 			}
 			else
 				echo "NAO";

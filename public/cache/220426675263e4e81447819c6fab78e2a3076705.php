@@ -1,19 +1,17 @@
-@extends('templates.principal.principal')
+<?php $__env->startSection('titulo','Funções'); ?>
 
-@section('titulo','Funções')
-
-@section('topo')
+<?php $__env->startSection('topo'); ?>
 <h1>Funções de funcionários
   <small>Tabela auxiliar</small>
 </h1>
 <ol class="breadcrumb">
-   <li><a href="{{asset('')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-   <li><a href="{{asset('usuarios/funcoes')}}"><i class="glyphicon glyphicon-road"></i> Funções</a></li>
+   <li><a href="<?php echo e(asset('')); ?>"><i class="fa fa-dashboard"></i> Início</a></li>
+   <li><a href="<?php echo e(asset('usuarios/funcoes')); ?>"><i class="glyphicon glyphicon-road"></i> Funções</a></li>
 </ol>
-@stop
+<?php $__env->stopSection(); ?>
 
 
-@section('conteudo')
+<?php $__env->startSection('conteudo'); ?>
 <div class="col-md-12">
 	<div class="box">
 		<div class="box-header with-border">
@@ -39,7 +37,7 @@
         </div>
         <div class="col-md-1" style="margin-top:25px;">
           <button type="button" id="btn_confirma_alt" onclick="confirmaalteracao()" class="btn btn-primary">Salvar</button>
-          <input type="text" value="{{Auth('admin')}}" id="admin" hidden>
+          <input type="text" value="<?php echo e(Auth('admin')); ?>" id="admin" hidden>
         </div>
       </div>       
     </div>
@@ -66,7 +64,7 @@
 
           <div class="box-body table-responsive no-padding">
           <div id="loading-div" style="width:100%;" class="centro">
-            <img src="{{PASTA_PUBLIC}}/template/img/loading.gif">
+            <img src="<?php echo e(PASTA_PUBLIC); ?>/template/img/loading.gif">
           </div>
            <table class="table table-striped" id="tabela"></table>
          </div>
@@ -75,9 +73,9 @@
       <div class="row">
         <hr>
         <div class="col-md-12"> 
-        @if(Auth('admin')=="S")
+        <?php if(Auth('admin')=="S"): ?>
           <button class="btn btn-primary" onclick="cadastrar()" id="novo_reg"><span class="glyphicon glyphicon-plus"></span>  Cadastar</button>
-        @endif
+        <?php endif; ?>
         </div>
       </div>
 
@@ -92,7 +90,7 @@
 	</div>
 </div>
 
-<script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
 <script type="text/javascript">
 $("#filtro").keyup(function(event)
 {
@@ -295,4 +293,5 @@ function abrefechaform()
 
 
 
-@stop
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('templates.principal.principal', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
