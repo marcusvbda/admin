@@ -125,7 +125,7 @@ function enviarEmail($para,$assunto,$texto,$anexo="")
 function renomear_posicao_objeto($objeto,$nome_antigo,$novo_nome)
 {
 	$array = (array) $objeto;
-	unset($array['chave_primaria']);
+	unset($array['chaves_primarias']);
 	$auxiliar = $array[$nome_antigo];
 	unset($array[$nome_antigo]);
 	$array[$novo_nome]=$auxiliar;

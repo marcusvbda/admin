@@ -348,23 +348,23 @@ $("#txtmsg").keyup(function(event)
     }
 });
 
-setInterval(function(){ atualizachat($('#txt_id_destinatario').val())}, 10000);
+// setInterval(function(){ atualizachat($('#txt_id_destinatario').val())}, 10000);
 // carrega usuarios
-$(document).ready(function() 
-{
-  $('#chat_usuarios').html('');
-  $.getJSON("inicio/UsuariosChat", function(data)
-  {
-    $.each(data, function(usuarios,us)
-    {
-      $('#chat_usuarios').append(
-        '<a onclick="abrir_chat('+us.id+')">'+
-           '<img  class="img-circle" src="<?php echo e(PASTA_PUBLIC); ?>/'+us.foto+'" style="width:40px;">'+us.usuario+
-        '</a>'+
-        '<br>');
-    });
-  });
-});
+// $(document).ready(function() 
+// {
+//   $('#chat_usuarios').html('');
+//   $.getJSON("inicio/UsuariosChat", function(data)
+//   {
+//     $.each(data, function(usuarios,us)
+//     {
+//       $('#chat_usuarios').append(
+//         '<a onclick="abrir_chat('+us.id+')">'+
+//            '<img  class="img-circle" src="<?php echo e(PASTA_PUBLIC); ?>/'+us.foto+'" style="width:40px;">'+us.usuario+
+//         '</a>'+
+//         '<br>');
+//     });
+//   });
+// });
 
 function abrir_chat(id)
   {

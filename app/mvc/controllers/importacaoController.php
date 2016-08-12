@@ -11,8 +11,13 @@ class importacaoController extends controller
 	protected $tabela;
 	protected $tipo_operacao ="INSERT";
 	protected $chaves_primarias = array();
+	protected $chaves_com_valor = array();
 	protected $valores_chave = array();
+	protected $campos_tabela = array();
 	protected $query;
+	protected $registros = 0;
+	protected $inserts = 0;
+	protected $updates = 0;
 	
 
 
@@ -23,7 +28,7 @@ class importacaoController extends controller
 			$tempo_inicio = microtime(true);
 			try
 			{
-				// ini_set('max_execution_time', 0);
+				ini_set('max_execution_time', 0);
 				foreach ($this->arq_importar as $arquivo):
 				if ($this->validaJSON($arquivo))
 					$this->importar($this->arquivo = $arquivo);
@@ -36,7 +41,7 @@ class importacaoController extends controller
 				$this->registrar_importacao('N',microtime(true) - $tempo_inicio);
 				$this->mover_arquivo('erro');
 			}
-			// ini_set('max_execution_time', 30);
+			ini_set('max_execution_time', 30);
 		}
 	}
 
@@ -61,7 +66,7 @@ class importacaoController extends controller
 		if (!is_dir($pasta))
 			mkdir($pasta);
 		copy($pasta_importar.$this->arquivo,$pasta.$this->arquivo);
-		// unlink($pasta_importar.$this->arquivo);
+		unlink($pasta_importar.$this->arquivo);
 	}
 
 	private function existeArquivos()
@@ -87,7 +92,7 @@ class importacaoController extends controller
 	private function lerArquivo($arquivo)
 	{
 		$JSON = stream_get_contents(fopen($arquivo, 'r'));
-		return (object) json_decode($JSON);
+		return (object) json_decode(utf8_encode($JSON));
 	}
 
 	private function id_desktop($nome_campo)
@@ -101,22 +106,30 @@ class importacaoController extends controller
 
 	private function pega_nome_chaves_primarias($chave)
 	{
-		$chaves_primarias = array();
-		foreach ($chave as $_chave):	
-			array_push($chaves_primarias,$_chave);
+		$this->chaves_primarias = (array) $chave;
+	}
+
+	private function pega_dados_tabela($linha)
+	{		
+		$linha = (array) $linha;
+		unset($linha['chaves_primarias']);
+		foreach ($linha as $campo=>$info):
+			if(is_array($info))
+				$this->campos_tabela[$campo]=$info;
 		endforeach;
-		$this->chaves_primarias = $chaves_primarias;
+		return $linha;
 	}
 
 	private function pega_valor_chave_primaria($linha)
 	{
-		foreach ($this->chaves_primarias as $chave):
-			$chaves_com_valores[$chave.'_desktop'] = $linha->{$chave};
-			$linha = renomear_posicao_objeto($linha,$chave,$chave.'_desktop');	
+		unset ($this->chaves_com_valor);
+		foreach ($linha as $campo => $valor):	
+			foreach ($this->chaves_primarias as $chave):
+				// $this->chaves_com_valor[$chave] = $linha->{$chave};	
+				if($chave==$campo)
+					$this->chaves_com_valor[$campo]=$valor;			
+			endforeach;
 		endforeach;
-		$this->chaves_primarias =  null;
-		$this->chaves_primarias = $chaves_com_valores;
-		return $linha;
 	}
 
 	private function define_tabela($tabela)
@@ -128,9 +141,10 @@ class importacaoController extends controller
 	private function define_operacao($tabela)
 	{
 		$this->query = DB::table($tabela)
-			->where($this->chaves_primarias)
+			->where($this->chaves_com_valor)
 				->where('empresa','=',Auth('empresa'))
-					->get();
+					->get();			
+
 		if(count($this->query)>0)
 			$this->tipo_operacao='UPDATE';
 		else
@@ -141,33 +155,94 @@ class importacaoController extends controller
 	private function executa_operacao($linha)
 	{
 		$linha = (array) $linha;
-		$this->model = $this->model($this->tabela);
+		$linha['empresa']=Auth('empresa');
 		switch (strtoupper($this->tipo_operacao)):			
 			case 'INSERT':
-				$this->model
-					->create($linha);
+			    DB::table($this->tabela)->insert($linha);
+			    $this->inserts++;
 				break;
-			case 'UPDATE':				
-				$this->model
-					->find($this->query[0]->id)
-						->update($linha);
+			case 'UPDATE':
+				DB::table($this->tabela)
+					->where('sequencia','=',$this->query[0]->sequencia)
+						->update($linha);	
+				$this->updates++;	
 			default:
 				break;
 		endswitch;
+		$this->registros++;
+	}
+
+	private function atualizar_tabela($tabela)
+	{
+
+		$sql = "";	
+		$tabelas = DB::table('INFORMATION_SCHEMA.TABLES')
+			->where('TABLE_SCHEMA','=',DB_NOME)
+				->where('table_name','=',$tabela)
+					->get();
+		if(count($tabelas)<=0)
+		{
+			$sql = "CREATE TABLE $tabela(sequencia int NOT NULL AUTO_INCREMENT, ";				
+			foreach ($this->campos_tabela as $campo=>$info):
+				foreach ($info as $_info):
+				if((strtoupper($_info->tipo)=="CHAR")||(strtoupper($_info->tipo)=="VARCHAR"))
+					$sql.="$campo $_info->tipo($_info->tamanho),";
+				else
+					$sql.="$campo $_info->tipo,";
+				endforeach;				
+			endforeach;
+			$sql.="empresa int NOT NULL,PRIMARY KEY (sequencia))";	
+			DB::statement($sql);	
+		}
+		else
+		{
+			$novas_colunas = array();
+			$colunas = DB::select("SHOW COLUMNS FROM $tabela");			
+			foreach ($this->campos_tabela as $campo => $valor):
+				$contador=0;
+				foreach($colunas as $linha):
+					if(strtoupper($campo)==(strtoupper($linha->Field)))
+						$contador++;
+				endforeach;
+				if($contador==0)
+				{
+					$sql="ALTER TABLE $tabela ADD COLUMN ";
+					foreach ($valor as $valores => $_val):	
+						if((strtoupper($_val->tipo)=="CHAR")||(strtoupper($_val->tipo)=="VARCHAR"))					
+							$sql.="$campo $_val->tipo($_val->tamanho) NULL";
+						else
+							$sql.="$campo $_val->tipo NULL";
+					endforeach;
+					DB::statement($sql);
+				}
+			endforeach;			
+		}		
 	}
 
 	private function importar($arquivo)
-	{
+	{	
+		$primeira_execucao=true;
 		$JSON = $this->lerArquivo($this->pasta_importar.$arquivo);
-		foreach ($JSON as $tabela => $resultado):		 
-			$this->define_tabela($tabela);
+		foreach ($JSON as $tabela => $resultado):
+			$primeira_execucao=true;
 			foreach ($resultado as $linha):
-				$this->pega_nome_chaves_primarias($linha->chave_primaria);
-			 	$linha_atualizada = $this->pega_valor_chave_primaria($linha);
-			    $this->define_operacao($tabela);
-			    $this->executa_operacao($linha_atualizada);
-			endforeach;			
-		endforeach;		
+				$this->define_tabela($tabela);
+				if($primeira_execucao)
+				{
+					$this->pega_nome_chaves_primarias($linha->chaves_primarias);
+					$linha = $this->pega_dados_tabela($linha);
+				 	$this->atualizar_tabela($tabela);
+				}
+				else
+				{
+					$this->pega_valor_chave_primaria($linha);
+					$this->define_operacao($tabela);
+					$this->executa_operacao($linha);
+				}
+				$primeira_execucao=false;
+			endforeach;
+		endforeach;
+		echo json_encode(['qtde_registros'=>$this->registros,'qtde_inserts'=>$this->inserts,'qtde_updates'=>$this->updates]);
     }
 
 }
