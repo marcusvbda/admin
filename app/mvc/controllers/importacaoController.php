@@ -18,31 +18,47 @@ class importacaoController extends controller
 	protected $registros = 0;
 	protected $inserts = 0;
 	protected $updates = 0;
+	protected $arquivos_importados = 0;
 	
 
+	public function getQtde_arquivos($pasta)
+	{
+		$cnpj_empresa = DB::table('empresas')->find(Auth('empresa'))->CNPJ_CPF;
+		$this->pasta_importar = __DIR__."/../../../public/uploads/importacao/$pasta/{$cnpj_empresa}/";
+	   	$this->arq_importar = scandir($this->pasta_importar);
+	   	echo json_encode((count($this->arq_importar)-2));
+	}
 
-	public function getIndex()
+	public function getImportar()
 	{
 		if($this->existeArquivos())
 		{
 			$tempo_inicio = microtime(true);
 			try
 			{
-				ini_set('max_execution_time', 0);
 				foreach ($this->arq_importar as $arquivo):
-				if ($this->validaJSON($arquivo))
-					$this->importar($this->arquivo = $arquivo);
-				endforeach;
-				$this->registrar_importacao('S',microtime(true) - $tempo_inicio);
-				$this->mover_arquivo('importados');					
+					$this->registros = 0;
+					$this->inserts = 0;
+					$this->updates = 0;					
+					if ($this->validaJSON($arquivo))
+					{
+						ini_set('max_execution_time', 0);
+						$this->importar($this->arquivo = $arquivo);
+						$this->registrar_importacao('S',microtime(true) - $tempo_inicio);
+						$this->mover_arquivo('importados');	
+						$this->arquivos_importados++;		
+					}
+				endforeach;	
 			}
 			catch(exception $e)
 			{
+				echo json_encode('ERRO');				
 				$this->registrar_importacao('N',microtime(true) - $tempo_inicio);
 				$this->mover_arquivo('erro');
 			}
 			ini_set('max_execution_time', 30);
 		}
+		echo json_encode($this->arquivos_importados);
 	}
 
 	private function registrar_importacao($status,$tempo)
@@ -52,6 +68,9 @@ class importacaoController extends controller
 		$importacao->arquivo = $this->arquivo;
 		$importacao->importado=$status;
 		$importacao->tempo_execucao=$tempo;
+		$importacao->qtde_registros=$this->registros;
+		$importacao->qtde_inserts=$this->inserts;
+		$importacao->qtde_updates=$this->updates;
 		$importacao->usuario=Auth('id');
 		$importacao->empresa=Auth('empresa');
 		$importacao->save();
@@ -111,6 +130,7 @@ class importacaoController extends controller
 
 	private function pega_dados_tabela($linha)
 	{		
+		unset($this->campos_tabela);
 		$linha = (array) $linha;
 		unset($linha['chaves_primarias']);
 		foreach ($linha as $campo=>$info):
@@ -125,7 +145,6 @@ class importacaoController extends controller
 		unset ($this->chaves_com_valor);
 		foreach ($linha as $campo => $valor):	
 			foreach ($this->chaves_primarias as $chave):
-				// $this->chaves_com_valor[$chave] = $linha->{$chave};	
 				if($chave==$campo)
 					$this->chaves_com_valor[$campo]=$valor;			
 			endforeach;
@@ -242,7 +261,6 @@ class importacaoController extends controller
 				$primeira_execucao=false;
 			endforeach;
 		endforeach;
-		echo json_encode(['qtde_registros'=>$this->registros,'qtde_inserts'=>$this->inserts,'qtde_updates'=>$this->updates]);
     }
 
 }

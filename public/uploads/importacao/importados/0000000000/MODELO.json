@@ -1,9 +1,0 @@
-{
-	"teste": 
-		[
-			{"chaves_primarias": ["numero"],"numero":[{"tipo":"VARCHAR","tamanho":"10"}],"nome":[{"tipo":"VARCHAR","tamanho":"50"}],"excluido":[{"tipo":"VARCHAR","tamanho":"1"}]},
-			{"numero": "1",	"nome": "BANCO DO BRASIL","excluido": "N"}, 
-         		{"numero": "237","nome": "BRADESCO","excluido": "N"}, 
-			{"numero": "341","nome": "ITAU","excluido": "N"	}
-		]
-}

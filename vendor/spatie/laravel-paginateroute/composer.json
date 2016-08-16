@@ -1,0 +1,44 @@
+{
+    "name": "spatie/laravel-paginateroute",
+    "description": "Laravel outer extension to easily use laravel's paginator without the query string",
+    "keywords": [
+        "spatie",
+        "laravel-paginateroute",
+        "laravel",
+        "pagination",
+        "routing"
+    ],
+    "homepage": "https://github.com/spatie/laravel-paginateroute",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sebastian De Deyne",
+            "email": "sebastian@spatie.be",
+            "homepage": "https://spatie.be",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "4.*",
+        "scrutinizer/ocular": "~1.1",
+        "orchestra/testbench": "~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spatie\\PaginateRoute\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Spatie\\PaginateRoute\\Test\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

@@ -93,18 +93,8 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar" style="height: auto;">
       <!-- Sidebar user panel -->
-      <div class="user-panel">
-      </div>
-      <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Busca...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
+      
+     
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
@@ -117,13 +107,7 @@
             </a>
             <ul class="treeview-menu">
               <li>
-                  <a href="#">
-                    <i class="glyphicon glyphicon-user"></i> <span>Funcionários</span>
-                  </a>
-                  <ul class="treeview-menu">
-                    <li><a href="{{asset('usuarios')}}"><i class="glyphicon glyphicon-user"></i> <span>Usuários</span></a></li>
-                    <li><a href="{{asset('usuarios/funcoes')}}"><i class="glyphicon glyphicon-road"></i> <span>Funções</span></a></li>
-                  </ul>
+                  <a href="{{asset('clientes')}}"><i class="glyphicon glyphicon-user"></i> <span>Clientes</span></a>                  
               </li>
               <li>
                   <a href="#">
@@ -132,7 +116,12 @@
                   <ul class="treeview-menu">
                     <li><a href="{{asset('produtos')}}"><i class="glyphicon glyphicon-erase"></i> <span>Produtos</span></a></li>
                   </ul>
+                  @if(Auth('admin')=="S")
+                    <a href="{{asset('usuarios')}}"><i class="glyphicon glyphicon-user"></i> <span>Usuários</span></a>   
+                  @endif              
+
               </li>
+
             </ul>
           </li>
 
@@ -182,11 +171,12 @@
     </section>
     <!-- /.content -->
   </div>
+</div>
   <!-- /.content-wrapper -->
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Versão</b> 00.00.00
+      <b>Versão</b> 01.00.00
     </div>
     <strong><a href="#">SITE DA EMPRESA</a></strong> Todos os direitos reservados.
   </footer>
@@ -309,7 +299,7 @@
       </div>
       <div  class="modal-footer" id="btn_msg1">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
-        <button type="button" onclick="excluir()" data-dismiss="modal" class="btn btn-primary">Sim</button>
+        <button  id="btn_confirmar_mensagem1"  type="button" onclick="excluir()" data-dismiss="modal" class="btn btn-primary">Sim</button>
       </div>
     </div>    
   </div>
@@ -331,7 +321,7 @@
         <p><div id="msg_msg2"></div></p>
       </div>
       <div  class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Voltar</button>
+        <button  id="btn_voltar_mensagem2" type="button" class="btn btn-danger" data-dismiss="modal">Voltar</button>
       </div>
     </div>    
   </div>

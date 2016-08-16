@@ -8,7 +8,7 @@ function CheckAuth()
 		return true;
 	else
 	{
-		LimpaUsuario();
+		// LimpaUsuario();
 		return false;
 	}
 }

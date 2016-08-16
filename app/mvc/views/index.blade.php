@@ -16,18 +16,29 @@
 @section('conteudo')
 
 <div class="row">
-	<div class="col-md-3">
-		<div class="small-box bg-yellow">
-		    <div class="inner">
-			    <h3>{{$qtde_usuarios_cadastrados}}</h3>
-		        <p>Usuários cadastrados</p>
-		    </div>
-		    <div class="icon">
-		        <i class="ion ion-person-add" style="margin-top: 20px;"></i>
-		    </div>
-		    <a href="{{asset('usuarios')}}" class="small-box-footer">Veja mais <i class="fa fa-arrow-circle-right"></i></a>
+
+	<div id="importacao_notificacao" style="display:none;">
+		<div class="col-md-3">
+			<div class="small-box bg-red">
+			    <div class="inner">
+				    <h3 id="importacao_qtde">0</h3>
+			        <p id="importacao_texto">Arquivo aguardando importação</p>
+			    </div>
+			    <a id="importacao_btn_importar" class="small-box-footer">Importar <i class="fa fa-arrow-circle-right"></i></a>
+			</div>
 		</div>
 	</div>
+	<div id="importacao_loading" style="display:none;">
+		<div class="col-md-3">
+			<div class="small-box">
+			    <div class="centro">
+			        <p><img src="{{PASTA_PUBLIC}}/template/img/loading.gif"></p>
+			    </div>
+			    <a class="small-box-footer"> <strong style="color:black;">Importando ...  </strong></a>
+			</div>
+		</div>
+	</div>
+
 </div>
 
 
@@ -41,9 +52,7 @@
 	</div>
 	<div class="box-body">
 	  <!-- conteudo -->
-			
-
-	  
+		
 
 
 
@@ -52,4 +61,68 @@
 		<!-- rodapé -->
 	</div>
 </div>
+
+<script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
+<script type="text/javascript">
+	$( document ).ready(function()
+	{
+	    procura_arquivos_para_importar();
+	});
+
+	$('#importacao_btn_importar').on('click', function() 
+	{
+	    $('#titulo_msg1').html('<strong>Confirmação</strong>');
+		$('#msg_msg1').html('<strong>Confirma importação ?</strong><br>Este processo pode demorar alguns minutos.');
+		$('#btn_confirmar_mensagem1').attr("onclick","importar_arquivo()");		
+		$('#mensagem1').modal('show');   
+		$('#id').val(id);
+	}); 
+
+	function procura_arquivos_para_importar()
+	{
+		$.getJSON("importacao/qtde_arquivos/importar", function(qtde)
+	  	{ 
+	  		$('#importacao_notificacao').hide();
+			$('#importacao_loading').hide();
+
+	  			
+	  		if(qtde>0)
+	  		{
+		  		$('#importacao_notificacao').toggle(150);
+		  		$('#importacao_qtde').html(qtde);
+		  		if(qtde>1)
+		  			$('#importacao_texto').html("Arquivos aguardando importação");
+	  		}		
+
+	  	});
+	}
+
+	function importar_arquivo()
+	{
+		$('#importacao_loading').toggle(150);
+		$('#importacao_notificacao').toggle(150);
+		$.getJSON("importacao/importar", function(qtde_arquivos_importados)
+	  	{ 
+	  		if(qtde_arquivos_importados==0)
+	  		{
+	  			$('#titulo_msg2').html('<strong>ERRO</strong>');
+			    $('#msg_msg2').html('Erro ao importar arquivo(s) !');
+				$('#btn_voltar_mensagem2').attr("class","btn btn-danger");			    		    	
+				$('#btn_voltar_mensagem2').html("Voltar");			    		    	
+			    $('#mensagem2').modal('show'); 
+			    exit();    	
+	  		}
+	  		$('#titulo_msg2').html('<strong>Aviso</strong>');
+	  		if(qtde_arquivos_importados>1)
+		    	$('#msg_msg2').html('Arquivos importados com sucesso !');
+		    else
+		    	$('#msg_msg2').html('Arquivo importado com sucesso !');
+			$('#btn_voltar_mensagem2').attr("class","btn btn-success");			    		    	
+			$('#btn_voltar_mensagem2').html("Confirmar");			    		    	
+		    $('#mensagem2').modal('show'); 
+	    	procura_arquivos_para_importar();	
+
+	  	});
+	}
+</script>
 @stop

@@ -11,25 +11,29 @@ class usuariosController extends controller
 		$this->model = $this->model('usuario');
 	}
 
-
-
-
 	public function getIndex()
 	{
-		echo $this->view('usuarios.index',[]);
+		if(isset($_GET['filtro']))
+			$filtro = strtoupper($_GET['filtro']);
+		else
+			$filtro = "";
+		if(isset($_GET['pagina']))
+			$pagina = $_GET['pagina'];
+		else
+			$pagina = "1";
+
+		$filtro = strtoupper($filtro);
+		$usuarios =  DB::table('usuarios')
+						->whereRaw("excluido='N' and empresa=".Auth('empresa')." and 
+								(email like '%$filtro%' or
+								 usuario like '%$filtro%' or 
+								 CPF_CNPJ like '%$filtro%')")
+								->paginate(10, ['*'], "pagina", $pagina);
+		$usuarios->appends(['filtro'=>$filtro])->render();
+		echo $this->view('usuarios.index',compact('usuarios','filtro'));
 	}
 
-	public function getSelectusuarios($filtro = "")
-	{
-	    $usuarios = $this->model
-        	->leftJoin('funcoes', 'funcoes.id', '=', 'usuarios.empresa')
-        		->select('funcoes.descricao as funcao','usuarios.*')
-        			->where('usuarios.usuario','like',"%$filtro%")
-							->where('usuarios.empresa','=',Auth('empresa'))
-								->where('usuarios.excluido','=','N')
-		        					->get();
-		echo json_encode($usuarios);
-	}
+
 	public function getEncontrausuario($id)
 	{	
 		$usuario = $this->model
@@ -77,7 +81,8 @@ class usuariosController extends controller
 		$usuarios = $this->model
 			->where('email','=',$_POST['email'])
 				->where('senha','=',md5($_POST['senha']))
-					->get();
+					->where('excluido','=','N')
+						->get();
 		if(count($usuarios)>0)	
 		{			
 			$array = ['id'=>$usuarios[0]->id,'empresa'=>$usuarios[0]->empresa ,'admin'=>$usuarios[0]->admin,

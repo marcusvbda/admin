@@ -2,7 +2,7 @@
 
 <?php $__env->startSection('topo'); ?>
 <h1>Produtos
-  <small>Listagem e cadastro</small>
+  <small>Listagem</small>
 </h1>
 <ol class="breadcrumb">
   <li><a href="<?php echo e(asset('admin/inicio')); ?>"><i class="fa fa-dashboard"></i> Início</a></li>

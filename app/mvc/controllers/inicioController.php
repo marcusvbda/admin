@@ -15,13 +15,7 @@ class inicioController extends controller
 
 	public function getIndex()
 	{
-		$usuarios=DB::table('usuarios')
-			->where('empresa','=',Auth('empresa'))
-				->where('excluido','=','N')
-					->orderBy('usuario')
-						->get();
-		$qtde_usuarios_cadastrados = count($usuarios);
-		echo $this->view('index',compact('qtde_usuarios_cadastrados'));
+		echo $this->view('index');
 	}
 
 	public function getUsuariosChat()

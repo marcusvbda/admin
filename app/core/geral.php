@@ -7,6 +7,11 @@ function getInfo($valor,$tabela,$campo=1,$operador='=',$comparador=1)
 		return $row->{$valor};
 }
 
+function array_upper_case($array)
+{
+	return array_change_key_case(array_flip($array), CASE_UPPER);
+}
+
 function registralog($log = "")
 {
 	DB::table('log')->insert(['descricao' =>$log, 'usuario' => Auth('id'),'created_at'=>date("Y-m-d H:i:s")]);
@@ -132,3 +137,27 @@ function renomear_posicao_objeto($objeto,$nome_antigo,$novo_nome)
 	$array['empresa']=Auth('empresa');
 	return  (object) $array;
 }
+
+function montar_tabela($cabecalho,$dados)
+{
+    $tabela = "<table class='table table-striped' style='table-layout: auto;'>";
+        $tabela.='<thead>';
+            $tabela.='<tr>';
+                foreach ($cabecalho as $item =>$campo):
+                    $tabela.="<th>$campo</th>";                     
+                endforeach;
+            $tabela.='</tr>';
+        $tabela.='</thead>';
+        $tabela.='<tbody>';             
+            foreach ($dados as $dado):
+                $tabela.='<tr>';
+ 	               foreach ($cabecalho as $item =>$campo):
+                        $tabela.="<td>{$dado->{$item}}</td>";   
+                    endforeach; 
+                $tabela.='</tr>';
+            endforeach;
+        $tabela.='</tbody>';
+        $tabela .="</table>
+        <div class='paginacao'>{$dados->links()}</div>";
+        return $tabela;
+    }

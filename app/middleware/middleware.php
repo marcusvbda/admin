@@ -1,51 +1,46 @@
 <?php
 class middleware
 {
-
 	public function middleware_geral($controller, $metodo)
 	{	
-		$rota_requerida = $controller.'@'.strtoupper($metodo);
-
+		$rota_requerida = strtoupper($controller.'@'.$metodo);
 		if ($this->RotaLiberada($rota_requerida))
 		  	return true;
 		else
 		{
-			if(CheckAuth())
-				return true;
+			if((CheckAuth()) && ($this->RotaProtegida($rota_requerida)))
+			{
+				if(Auth('admin')=="S")
+					return true;
+				else
+					redirecionar('erros/403'); 
+			}
 			else
-			   redirecionar('usuarios/login');
+			{
+				if(CheckAuth())
+					return true;
+				else
+					redirecionar('usuarios/login'); 
+			}
 		}
 	}
 
 	private function RotaLiberada($rota_requerida)
 	{
-		$rotas_liberadas = $this->leArquivoRotasProtegidas();
-		$resultado = false;
-		if(count($rotas_liberadas)>0)
-		{
-			foreach ($rotas_liberadas as $rotas_liberada ) 
-			{
-			 	if( ($rotas_liberada->controller.'@'.strtoupper($rotas_liberada->metodo))==($rota_requerida))
-			 	{
-			 		$resultado = true;
-			 		break;
-			 	}
-			 	else
-			 		$resultado = false;
-			}
-		}
+		$rotas_liberadas = rotas_liberadas();
+		if(in_array($rota_requerida,$rotas_liberadas))
+			return true;
 		else
-			$resultado = false;
-		return $resultado;
+			return false;
 	}
 
-
-	private function leArquivoRotasProtegidas()
+	private function RotaProtegida($rota_requerida)
 	{
-		if(file_exists(__DIR__.'/../../rotas_liberadas.xml'))
-		   	return  simplexml_load_file(__DIR__.'/../../rotas_liberadas.xml');
+		$rotas_protegida = rotas_protegidas();
+		if(in_array($rota_requerida,$rotas_protegida))
+			return true;
 		else
-			return null;
+			return false;
 	}
 
 }

@@ -913,5 +913,109 @@
             }
         ],
         "description": "PHPMailer is a full-featured email creation and transfer class for PHP"
+    },
+    {
+        "name": "illuminate/pagination",
+        "version": "v5.2.43",
+        "version_normalized": "5.2.43.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/illuminate/pagination.git",
+            "reference": "a4450887251f443a1243ef537d98ce5bbea6b193"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/illuminate/pagination/zipball/a4450887251f443a1243ef537d98ce5bbea6b193",
+            "reference": "a4450887251f443a1243ef537d98ce5bbea6b193",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/contracts": "5.2.*",
+            "illuminate/support": "5.2.*",
+            "php": ">=5.5.9"
+        },
+        "time": "2016-08-01 13:49:14",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.2-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Illuminate\\Pagination\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Taylor Otwell",
+                "email": "taylor@laravel.com"
+            }
+        ],
+        "description": "The Illuminate Pagination package.",
+        "homepage": "http://laravel.com"
+    },
+    {
+        "name": "spatie/laravel-paginateroute",
+        "version": "2.2.2",
+        "version_normalized": "2.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/spatie/laravel-paginateroute.git",
+            "reference": "fb60c7c5652a24f3ce91fd5b206d3482341a0fd4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/spatie/laravel-paginateroute/zipball/fb60c7c5652a24f3ce91fd5b206d3482341a0fd4",
+            "reference": "fb60c7c5652a24f3ce91fd5b206d3482341a0fd4",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "orchestra/testbench": "~3.0",
+            "phpunit/phpunit": "4.*",
+            "scrutinizer/ocular": "~1.1"
+        },
+        "time": "2016-05-20 20:38:54",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Spatie\\PaginateRoute\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian De Deyne",
+                "email": "sebastian@spatie.be",
+                "homepage": "https://spatie.be",
+                "role": "Developer"
+            }
+        ],
+        "description": "Laravel outer extension to easily use laravel's paginator without the query string",
+        "homepage": "https://github.com/spatie/laravel-paginateroute",
+        "keywords": [
+            "laravel",
+            "laravel-paginateroute",
+            "pagination",
+            "routing",
+            "spatie"
+        ]
     }
 ]
