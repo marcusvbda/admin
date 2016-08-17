@@ -53,7 +53,7 @@ class app
 				unset($url[$this->posicao]); 
 			}
 			else
-				redirecionar('erros/404');
+				redirecionar(asset('erros/404'));
 		}
 		$this->metodo = strtolower($_SERVER['REQUEST_METHOD']).ucfirst($this->metodo);  
 		//mantedo assim getMetodo postMetodo

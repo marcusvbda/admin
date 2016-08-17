@@ -34,7 +34,14 @@
             </div>
           </form>
         </div>
-
+        <br>
+         <?php echo e($qtde_registros); ?> 
+          <?php if($qtde_registros>1): ?>
+            Registros
+          <?php else: ?>  
+            Registro
+          <?php endif; ?>
+          (<?php echo e(number_format($tempo_consulta,5)); ?> segundos)
         <hr>
 
         <div class="row">

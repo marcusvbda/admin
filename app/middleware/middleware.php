@@ -3,7 +3,7 @@ class middleware
 {
 	public function middleware_geral($controller, $metodo)
 	{	
-		$rota_requerida = strtoupper($controller.'@'.$metodo);
+		$rota_requerida = _route($controller.'@'.$metodo);
 		if ($this->RotaLiberada($rota_requerida))
 		  	return true;
 		else
@@ -13,14 +13,14 @@ class middleware
 				if(Auth('admin')=="S")
 					return true;
 				else
-					redirecionar('erros/403'); 
+					redirecionar(asset('erros/403'));
 			}
 			else
 			{
 				if(CheckAuth())
 					return true;
 				else
-					redirecionar('usuarios/login'); 
+					redirecionar(asset('usuarios/login'));
 			}
 		}
 	}

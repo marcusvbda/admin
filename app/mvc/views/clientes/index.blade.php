@@ -36,7 +36,14 @@
             </div>
           </form>
         </div>
-
+        <br>
+         {{$qtde_registros}} 
+          @if($qtde_registros>1)
+            Registros
+          @else  
+            Registro
+          @endif
+          ({{number_format($tempo_consulta,5)}} segundos)
         <hr>
 
         <div class="row">

@@ -18,6 +18,7 @@ class clientesController extends controller
 			$pagina = "1";
 
 		$filtro = strtoupper($filtro);
+      	$tempo_inicio = microtime(true);		
 		$clientes = DB::table('clientes')
 						->whereRaw("excluido='N' and empresa=".Auth('empresa')." and 
 							(numero like '%$filtro%' or 
@@ -25,8 +26,10 @@ class clientesController extends controller
 							cnpj like '%$filtro%' or 
 							razaosocial like '%$filtro%')")
 								->paginate(10, ['*'], "pagina", $pagina);
+      	$tempo_consulta = microtime(true) - $tempo_inicio;
+      	$qtde_registros = $clientes->total();      	
 		$clientes->appends(['filtro'=>$filtro])->render();
-		echo $this->view('clientes.index',compact('clientes','filtro'));
+		echo $this->view('clientes.index',compact('clientes','filtro','tempo_consulta','qtde_registros'));
 	}
 
 

@@ -5,10 +5,27 @@ use Illuminate\Database\Capsule\Manager as DB;
 function CheckAuth()
 {
 	if(isset($_SESSION['dados_usuario']->usuario)) 
-		return true;
+	{
+		if(isset($_SESSION['dados_usuario']->app_id))
+		{
+			if(Auth('app_id')==APP_ID)
+				return true;
+			else
+			{
+				LimpaUsuario();
+				return false;
+			}
+		}
+		else
+		{
+			LimpaUsuario();
+			return false;
+		}
+		
+	}
 	else
 	{
-		// LimpaUsuario();
+		LimpaUsuario();
 		return false;
 	}
 }

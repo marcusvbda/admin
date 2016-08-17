@@ -21,17 +21,65 @@ class usuariosController extends controller
 			$pagina = $_GET['pagina'];
 		else
 			$pagina = "1";
-
+      	$tempo_inicio = microtime(true);
 		$filtro = strtoupper($filtro);
 		$usuarios =  DB::table('usuarios')
 						->whereRaw("excluido='N' and empresa=".Auth('empresa')." and 
 								(email like '%$filtro%' or
-								 usuario like '%$filtro%' or 
-								 CPF_CNPJ like '%$filtro%')")
+								 usuario like '%$filtro%')")
 								->paginate(10, ['*'], "pagina", $pagina);
-		$usuarios->appends(['filtro'=>$filtro])->render();
-		echo $this->view('usuarios.index',compact('usuarios','filtro'));
+      	$tempo_consulta = microtime(true) - $tempo_inicio;
+      	$qtde_registros = $usuarios->total();  
+      	$usuarios->appends(['filtro'=>$filtro])->render();
+
+
+		echo $this->view('usuarios.index',compact('usuarios','filtro','tempo_consulta','qtde_registros'));
 	}
+
+
+
+	public function getShow($id)
+	{
+		if($id=="")
+			redirecionar(asset('erros/404'));
+		$usuario = DB::table('usuarios')
+			->select('usuarios.*','empresas.razao as empresa_razao')
+				->join('empresas','empresas.id','=','usuarios.empresa')
+					->where('usuarios.id','=',$id)->get();
+		// $usuario = DB::table('usuarios')->find($usuario[0]->id);
+		$usuario=$usuario[0];
+		echo $this->view('usuarios.show',compact('usuario'));
+	}
+
+	public function postEditar()
+	{		
+		if($this->emailemuso($_POST['email']))
+			unset($_POST['email']);
+		unset($_POST['admin_checkbox']);
+		$usuario = DB::table('usuarios')
+			->where('id', $_POST['id'])
+            	->update($_POST);
+		redirecionar(asset("usuarios/show/{$_POST['id']}"));
+	}
+
+
+	private function emailemuso($email)
+	{
+		$email = DB::table('usuarios')
+					->where('email','=',$email)
+						->where('excluido','=','N')
+							->get();
+		if(count($email)>0)
+			return true;
+		else 
+			return false;
+	}
+
+
+
+
+
+
 
 
 	public function getEncontrausuario($id)
@@ -87,7 +135,7 @@ class usuariosController extends controller
 		{			
 			$array = ['id'=>$usuarios[0]->id,'empresa'=>$usuarios[0]->empresa ,'admin'=>$usuarios[0]->admin,
 				'grupo_acesso'=>$usuarios[0]->grupo_acesso,'usuario'=>$usuarios[0]->usuario,
-					'email'=>$usuarios[0]->email,'foto'=>$usuarios[0]->foto];			
+					'email'=>$usuarios[0]->email,'app_id'=>APP_ID];			
 			SalvaUsuario((object) $array);
 			$this->setlogado(Auth('id'),'S');
 			registralog("Entrou do sistema");
@@ -107,7 +155,8 @@ class usuariosController extends controller
 	{		
 		$usuario = $this->model
 			->where('email','=',$email)
-				->get();
+				->where('excluido','=','N')
+					->get();
 
 		if(count($usuario)>0)	
 		  echo 'SIM';
@@ -135,26 +184,6 @@ class usuariosController extends controller
 		  echo 'NAO';
 	}
 
-	public function postTrocafotoperfil()
-	{	
-		$usuario = $this->model->findOrFail($_POST['usuario']);
-		$diretorio = 'uploads/fotos_profile/'.'empresa_'.Auth('empresa');
-		criardiretorio($diretorio);
-		$diretorio .= '/usuario_'.$_POST['usuario'].'/';
-		criardiretorio($diretorio);
-		$diretorio .= basename($_FILES['nova_foto']['name']);
-		if((trim(strtolower($usuario->foto))!=trim('uploads/fotos_profile/user.png'))&&(file_exists($usuario->foto)))
-			unlink($usuario->foto);
-		if (move_uploaded_file($_FILES['nova_foto']['tmp_name'], $diretorio)) 
-		{
-		   $usuario->foto=$diretorio;
-		   $usuario->save();		
-		   registralog('Alterou a foto do perfil');
-		} 
-		if($_POST['usuario']==Auth('id'))
-			AtualizaSession($_POST['usuario']);
-		echo $usuario->foto;
-	}
 
 	public function postAlterar()
 	{

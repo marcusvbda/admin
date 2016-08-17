@@ -34,7 +34,14 @@
             </div>
           </form>
         </div>
-
+        <br>
+         <?php echo e($qtde_registros); ?> 
+          <?php if($qtde_registros>1): ?>
+            Registros
+          <?php else: ?>  
+            Registro
+          <?php endif; ?>
+          (<?php echo e(number_format($tempo_consulta,5)); ?> segundos)
         <hr>
 
         <div class="row">
@@ -43,17 +50,17 @@
                <table class="table table-striped" id="tabela">
                <thead>
                   <tr>
-                      <th>id</th>
                       <th>Usuário</th>
                       <th>email</th>
+                      <th class="centro"><span class="glyphicon glyphicon-cog"></span></th>
                   </tr>
                </thead>
                <tbody>
                   <?php foreach($usuarios as $usuario): ?>
                   <tr>
-                    <td><?php echo e($usuario->id); ?></td>
                     <td><?php echo e($usuario->usuario); ?></td>
                     <td><?php echo e($usuario->email); ?></td>
+                    <td class="centro"><a href='<?php echo e(asset("usuarios/show/$usuario->id")); ?>' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a></td>
                   </tr>
                   <?php endforeach; ?>
                </tbody>

@@ -43,13 +43,11 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?php echo e(PASTA_PUBLIC.'/'.Auth('foto')); ?>" class="user-image" alt="User Image">
               <span class="hidden-xs"><?php echo e(limitarTexto(Auth('usuario'),20)); ?></span>
             </a>
             <ul class="dropdown-menu">
-              <!-- User image -->
-              <li class="user-header">
-                <img src="<?php echo e(PASTA_PUBLIC.'/'.Auth('foto')); ?>" class="img-circle" alt="User Image">
+              <!-- User image --> 
+              <li class="user-header" style="height:auto">
 
                 <p>
                   <?php echo e(limitarTexto(Auth('usuario'),20)); ?>
@@ -58,14 +56,7 @@
                 </p>
               </li>
               <!-- Menu Body -->
-              <li class="user-body">
-                <div class="row">
-                  <div class="col-xs-6 text-center pull-right">
-                    <a href="#">Amigos</a>
-                  </div>
-                </div>
-                <!-- /.row -->
-              </li>
+            
               <!-- Menu Footer-->
               <li class="user-footer">                
                 <div class="pull-right">
@@ -75,11 +66,10 @@
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
-          <li>
-            <a href="#" data-toggle="control-sidebar" style="padding-bottom: 20px;"><i class="glyphicon glyphicon-envelope" ></i></a>
-          </li>
+        
         </ul>
       </div>
+
 
 
 
@@ -107,16 +97,8 @@
               <i class="glyphicon glyphicon-inbox"></i> <span>Cadastros</span>
             </a>
             <ul class="treeview-menu">
-              <li>
-                  <a href="<?php echo e(asset('clientes')); ?>"><i class="glyphicon glyphicon-user"></i> <span>Clientes</span></a>                  
-              </li>
-              <li>
-                  <a href="#">
-                    <i class="glyphicon glyphicon-erase"></i> <span>Produtos</span>
-                  </a>
-                  <ul class="treeview-menu">
-                    <li><a href="<?php echo e(asset('produtos')); ?>"><i class="glyphicon glyphicon-erase"></i> <span>Produtos</span></a></li>
-                  </ul>
+              <li>                 
+                 
                   <?php if(Auth('admin')=="S"): ?>
                     <a href="<?php echo e(asset('usuarios')); ?>"><i class="glyphicon glyphicon-user"></i> <span>Usuários</span></a>   
                   <?php endif; ?>              
@@ -128,10 +110,11 @@
 
           <li class="treeview">
             <a href="#">
-              <i class="glyphicon glyphicon-align-right"></i> <span>Relatórios</span>
+              <i class="glyphicon glyphicon-align-right"></i> <span>Consultas</span>
             </a>
             <ul class="treeview-menu">
-                    <li><a href="<?php echo e(asset('relatorios/customizados')); ?>"><i class="glyphicon glyphicon-equalizer"></i> <span>Customizados</span></a></li>
+                    <li><a href="<?php echo e(asset('clientes')); ?>"><i class="glyphicon glyphicon-user"></i> <span>Clientes</span></a></li>
+                    <li><a href="<?php echo e(asset('produtos')); ?>"><i class="glyphicon glyphicon-erase"></i> <span>Produtos</span></a></li>
             </ul>
           </li>
 
@@ -183,48 +166,6 @@
   </footer>
   <!-- Control Sidebar -->
 
-
-  <aside class="control-sidebar control-sidebar-dark"  >
-  
-    <!-- Tab panes -->
-    <div class="tab-content" > 
-        <div id="chat_usuarios">
-            <!-- usuarios -->
-        </div> 
-
-
-        <div id="chat_mensagens" style="display:none;">
-          <a onclick="fechar_chat()"><span class="glyphicon glyphicon-arrow-left"></span> Lista de usuários</a>
-
-              <input type="number" id="txt_id_destinatario" name="txt_id_destinatario" hidden >
-          
-
-          <div class="row">
-            <div class="content">
-              <div style='overflow-x:none;overflow-y:scroll;height:450px;padding:25px;' id="campo_mensagens">
-
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="content">
-              <div class="input-group">
-                        <input type="text" name="mensagem" placeholder="Digite a mensagem..." id="txtmsg" class="form-control">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-success btn-flat" id="btn_enviar" onclick="enviar()">Enviar</button>
-                        </span>
-                        </div>
-            </div>
-          </div>
-
-
-        </div>
-    </div>
-
-
-  </aside>
 
 
 
@@ -328,101 +269,3 @@
   </div>
 </div>
 
-
-<script type="text/javascript">
-$("#txtmsg").keyup(function(event)
-{
-    if(event.keyCode == 13)
-    {
-        $("#btn_enviar").click();
-    }
-});
-
-// setInterval(function(){ atualizachat($('#txt_id_destinatario').val())}, 10000);
-// carrega usuarios
-// $(document).ready(function() 
-// {
-//   $('#chat_usuarios').html('');
-//   $.getJSON("inicio/UsuariosChat", function(data)
-//   {
-//     $.each(data, function(usuarios,us)
-//     {
-//       $('#chat_usuarios').append(
-//         '<a onclick="abrir_chat('+us.id+')">'+
-//            '<img  class="img-circle" src="<?php echo e(PASTA_PUBLIC); ?>/'+us.foto+'" style="width:40px;">'+us.usuario+
-//         '</a>'+
-//         '<br>');
-//     });
-//   });
-// });
-
-function abrir_chat(id)
-  {
-    $('#campo_mensagens').html(null);
-    $('#txt_id_destinatario').val(id);
-    atualizachat(id);
-    $('#chat_usuarios').toggle(150);
-    $('#chat_mensagens').toggle(150);
-    $("#campo_mensagens").animate({ scrollTop: 9999 }, "slow");
-  } 
-
-  function fechar_chat()
-  {
-    $('#chat_usuarios').toggle(150);
-      $('#chat_mensagens').toggle(150);
-  } 
-
-  function atualizachat(id)
-  {
-    var usuario_logado = <?php echo e(Auth('id')); ?>;
-    $('#campo_mensagens').html(null);
-    $.getJSON("inicio/mensagens/"+id, function(data)
-      {     
-        $.each(data, function(mensagens,msg)
-        {      
-          if(msg.id_destinatario==usuario_logado)
-          {
-            $('#campo_mensagens').append(
-              '<div class="direct-chat-msg">'+
-                            '<div class="direct-chat-info clearfix">'+
-                              '<span class="direct-chat-name pull-left">'+msg.remetente+'</span>'+
-                            '<span class="direct-chat-timestamp pull-right">'+msg.dt_envio+'</span>'+
-                            '</div>'+
-                          '<img class="direct-chat-img" src="<?php echo e(PASTA_PUBLIC); ?>/'+msg.foto_remetente+'" alt="message user image">'+
-                          '<div class="direct-chat-text">'+
-                            msg.mensagem+
-                        '</div>'+
-                      '</div>'
-              );
-          }
-          else
-          {
-            $('#campo_mensagens').append(
-              '<div class="direct-chat-msg right">'+
-                        '<div class="direct-chat-info clearfix">'+
-                          '<span class="direct-chat-name pull-right">'+msg.remetente+'</span>'+
-                          '<span class="direct-chat-timestamp pull-left">'+msg.dt_envio+'</span>'+
-                        '</div>'+
-                        '<img class="direct-chat-img" src="<?php echo e(PASTA_PUBLIC); ?>/'+msg.foto_remetente+'" alt="message user image">'+
-                        '<div class="direct-chat-text">'+
-                           msg.mensagem+
-                        '</div>'+
-                      '</div>'
-              );
-          } 
-            
-        });
-    });
-  }
-
-  function enviar()
-  {
-    $.getJSON("inicio/EnviarMensagem/"+$('#txtmsg').val()+'/'+$('#txt_id_destinatario').val(), function(data)
-    {
-        atualizachat($('#txt_id_destinatario').val());
-        $("#campo_mensagens").animate({ scrollTop: 9999 }, "slow");
-    });
-    $("#txtmsg").val(null);
-
-  }
-</script>

@@ -126,6 +126,10 @@ function enviarEmail($para,$assunto,$texto,$anexo="")
 
 }
 
+function _route($string)
+{
+	return strtoupper(trim($string));
+}
 
 function renomear_posicao_objeto($objeto,$nome_antigo,$novo_nome)
 {

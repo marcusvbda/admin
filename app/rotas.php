@@ -4,22 +4,22 @@ function rotas_liberadas()
 {
 	 $rotas_liberadas = array
 		(
-			"usuariosController@getLogin",
-			"usuariosController@getRenovasenha",
-			"usuariosController@postLogar",
-			"usuariosController@getUsuarioexiste",
-			"usuariosController@getValidalogin",
-			"usuariosController@postDefinirsenha",
-			"usuariosController@postRenovarSenha"
+			_route("usuariosController@getLogin"),
+			_route("usuariosController@getRenovasenha"),
+			_route("usuariosController@postLogar"),
+			_route("usuariosController@getUsuarioexiste"),
+			_route("usuariosController@getValidalogin"),
+			_route("usuariosController@postDefinirsenha"),
+			_route("usuariosController@postRenovarSenha"),
 		);
-	return array_upper_case($rotas_liberadas);
+	return $rotas_liberadas;
 }
 
 function rotas_protegidas()
 {
 	$rotas_protegidas = array
 		(
-			"usuariosController@getIndex"
+			_route("usuariosController@getIndex")
 		);
 	return array_upper_case($rotas_protegidas);
 }

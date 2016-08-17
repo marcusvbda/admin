@@ -36,7 +36,14 @@
             </div>
           </form>
         </div>
-
+        <br>
+         {{$qtde_registros}} 
+          @if($qtde_registros>1)
+            Registros
+          @else  
+            Registro
+          @endif
+          ({{number_format($tempo_consulta,5)}} segundos)
         <hr>
 
         <div class="row">
@@ -45,17 +52,17 @@
                <table class="table table-striped" id="tabela">
                <thead>
                   <tr>
-                      <th>id</th>
                       <th>Usuário</th>
                       <th>email</th>
+                      <th class="centro"><span class="glyphicon glyphicon-cog"></span></th>
                   </tr>
                </thead>
                <tbody>
                   @foreach($usuarios as $usuario)
                   <tr>
-                    <td>{{$usuario->id}}</td>
                     <td>{{$usuario->usuario}}</td>
                     <td>{{$usuario->email}}</td>
+                    <td class="centro"><a href='{{asset("usuarios/show/$usuario->id")}}' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a></td>
                   </tr>
                   @endforeach
                </tbody>
