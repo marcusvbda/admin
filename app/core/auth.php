@@ -8,7 +8,7 @@ function CheckAuth()
 	{
 		if(isset($_SESSION['dados_usuario']->app_id))
 		{
-			if(Auth('app_id')==APP_ID)
+			if((Auth('app_id')==APP_ID) && ChecarTimeOut(90))
 				return true;
 			else
 			{
@@ -20,8 +20,7 @@ function CheckAuth()
 		{
 			LimpaUsuario();
 			return false;
-		}
-		
+		}		
 	}
 	else
 	{
@@ -30,14 +29,39 @@ function CheckAuth()
 	}
 }
 
-function SalvaUsuario($usuario =  [])
+// fechou navegador , loga de novo 
+//logad0 = S no time out
+
+
+function SalvaUsuario($usuario)
 {
+	$usuario['ultima_atividade'] = time();
 	$_SESSION['dados_usuario'] = (object) $usuario;
 }
 
+function ChecarTimeOut($minutos = 15)
+{
+	if(Auth('manter_login')=="N")
+	{
+		if (Auth('ultima_atividade') + $minutos * 60 < time()) 
+			return false;
+		else 
+		    return true;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+function AtualizaUltimaAtividade()
+{
+	$_SESSION['dados_usuario']->ultima_atividade = time();
+}
 
 function LimpaUsuario()
 {
+	SetLogado('N');
 	unset($_SESSION['dados_usuario']);
 	session_destroy();
 }
@@ -67,4 +91,9 @@ function AtualizaSession($id)
 				'email'=>$usuarios[0]->email,'foto'=>$usuarios[0]->foto];			
 		SalvaUsuario((object) $array);
 	}
+}
+
+function SetLogado($logado = "S")
+{
+	$usuario = DB::table('usuarios')->where('id','=',Auth('id'))->update(array('logado'=>$logado));
 }

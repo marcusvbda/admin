@@ -53,13 +53,25 @@ class usuariosController extends controller
 
 	public function postEditar()
 	{		
-		if($this->emailemuso($_POST['email']))
-			unset($_POST['email']);
-		unset($_POST['admin_checkbox']);
 		$usuario = DB::table('usuarios')
 			->where('id', $_POST['id'])
             	->update($_POST);
 		redirecionar(asset("usuarios/show/{$_POST['id']}"));
+	}
+
+
+	public function getUsuarioexiste_editar($email,$id)
+	{		
+		$usuario = $this->model
+			->where('email','=',$email)
+				->where('excluido','=','N')
+					->where('id','!=',$id)
+						->get();
+
+		if(count($usuario)>0)	
+		  echo 'SIM';
+		else
+		  echo 'NAO';
 	}
 
 
@@ -76,10 +88,19 @@ class usuariosController extends controller
 	}
 
 
+	public function getNovo()
+	{
+		echo $this->view('usuarios.novo');		
+	}
 
 
-
-
+	public function postStore()
+	{
+		$usuario = $_POST;
+		$usuario['empresa'] = Auth('empresa');
+		$this->model->create($usuario);
+		redirecionar(asset('usuarios'));
+	}
 
 
 	public function getEncontrausuario($id)
@@ -93,11 +114,6 @@ class usuariosController extends controller
 		echo json_encode($usuario);
 	}	
 
-
-	public function getFuncoes()
-	{
-		echo $this->view('usuarios.funcoes',[]);
-	}
 	
 	public function getLogin()
 	{
@@ -108,15 +124,8 @@ class usuariosController extends controller
 	public function getSair()
 	{
 		registralog("Saiu do sistema");
-		$this->setlogado(Auth('id'),'S');
 		LimpaUsuario();
 		redirecionar(asset('usuarios/login'));
-	}
-
-	public function getCadastro()
-	{
-		LimpaUsuario();
-		echo $this->view('usuarios.cadastro',[]);
 	}
 
 	public function getRenovasenha()
@@ -131,13 +140,14 @@ class usuariosController extends controller
 				->where('senha','=',md5($_POST['senha']))
 					->where('excluido','=','N')
 						->get();
+
 		if(count($usuarios)>0)	
 		{			
-			$array = ['id'=>$usuarios[0]->id,'empresa'=>$usuarios[0]->empresa ,'admin'=>$usuarios[0]->admin,
+			$array = ['id'=>$usuarios[0]->id,'empresa'=>$usuarios[0]->empresa, 'sexo'=>$usuarios[0]->sexo ,'admin'=>$usuarios[0]->admin,
 				'grupo_acesso'=>$usuarios[0]->grupo_acesso,'usuario'=>$usuarios[0]->usuario,
-					'email'=>$usuarios[0]->email,'app_id'=>APP_ID];			
-			SalvaUsuario((object) $array);
-			$this->setlogado(Auth('id'),'S');
+					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID];			
+			SalvaUsuario($array);
+			SetLogado('S');
 			registralog("Entrou do sistema");
 			redirecionar(asset('inicio'));
 		}
@@ -145,12 +155,6 @@ class usuariosController extends controller
 			voltar();		
 	}
 
-	public function setlogado($id,$status)
-	{
-		$usuario = $this->model->findOrFail($id);
-		$usuario->logado=$status;
-		$usuario->save();
-	}
 	public function getUsuarioexiste($email)
 	{		
 		$usuario = $this->model
@@ -184,60 +188,6 @@ class usuariosController extends controller
 		  echo 'NAO';
 	}
 
-
-	public function postAlterar()
-	{
-		if($this->validanovoemail($_POST['email'],$_POST['id']))
-		{
-			$usuario = $this->model->findOrFail($_POST['id']);
-			$usuario->email = $_POST['email'];
-			$usuario->usuario = $_POST['usuario'];
-			$usuario->tipopessoa = $_POST['tipo'];
-			$usuario->CPF_CNPJ = $_POST['cgc'];
-			$usuario->dtnascimento = $_POST['dt_nascimento'];
-			$usuario->admin = $_POST['admin'];		
-			if($usuario->save())
-			{
-				echo "SIM";
-				if(Auth('id')==$usuario->id)
-					AtualizaSession($usuario->id);
-			}
-			else
-				echo "NAO";
-		}
-		else
-			echo "NAO";
-	}
-
-	public function postExcluir()
-	{
-		//verifica campo em uso
-		$usuario = $this->model->findOrFail($_POST['id']);
-		$admins_ativos = count($this->model->where('empresa','=',Auth('empresa'))->where('excluido','=','N')->where('admin','=','S')->get());
-		if((count($usuario)>0)&&($usuario->logado=="N")&&($admins_ativos>=1))
-		{
-			registralog("Excluiu usuário id({$usuario->id}), nome({$usuario->usuario}) ");
-			$usuario->excluido="S";
-			$usuario->save();
-			echo "SIM";
-		}
-		else
-			echo "NAO";
-	}
-
-	public function postCadastrar()
-	{
-		if($this->validanovoemail($_POST['email']))
-		{
-			$_POST['empresa']=Auth('empresa');
-			if($this->model->create($_POST))
-				echo "SIM";
-			else
-				echo "NAO";
-		}
-		else
-			echo "NAO";
-	}
 
 	public function postDefinirsenha()
 	{	

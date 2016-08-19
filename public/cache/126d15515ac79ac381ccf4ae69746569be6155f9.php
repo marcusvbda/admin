@@ -24,9 +24,11 @@
           <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-          <input type="password" class="form-control" name="senha" id="senha" required="" minlength="4" maxlength="20" autocomplete="off" placeholder="Senha" style="border:1px solid red;">
+          <input type="password" class="form-control" name="senha" id="senha" required="" maxlength="20" autocomplete="off" placeholder="Senha" style="border:1px solid red;">
           <input type="password" name="password" id="password" id="senha" autocomplete="off" style="display: none;" />
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          <input type="text" id="manter_login" value="N" hidden="">
+          <p class="login-box-msg pull-left" style="padding-left:0px;padding-top:10px;" ><input type="checkbox" id="chk_manter_login">Manter-me logado</p>    
         </div>
         <div class="row">        
           <!-- /.col -->
@@ -43,7 +45,7 @@
 <div id="form_nova_senha" style="display:none;">
   <p class="login-box-msg">Defina sua senha de acesso, lembrando que a mesma deve ter no mínimo 4 e no máximo 20 caracteres.</p>
   <div class="form-group has-feedback">
-    <input type="password" class="form-control" id="senha_nova" required="" minlength="4" maxlength="20" autocomplete="off" placeholder="Senha" style="border:1px solid red;">
+    <input type="password" class="form-control" id="senha_nova" required="" maxlength="20" autocomplete="off" placeholder="Senha" style="border:1px solid red;">
   </div>
   <div class="form-group has-feedback">
     <input type="password" class="form-control" name="repita_senha_nova" id="repita_senha_nova" required="" minlength="4" maxlength="20" autocomplete="off" placeholder="Repita a senha" style="border:1px solid red;">
@@ -112,7 +114,13 @@ $("input[name='email']").on('keyup', function(){
     });
 });
 
-
+$("#chk_manter_login").on('change', function()
+{
+    if($('#manter_login').val()=='S')
+      $('#manter_login').val("N");
+    else
+      $('#manter_login').val("S");
+});
 
 // verifica senha
 $("input[name='senha']").on('keyup', function(){
@@ -166,9 +174,9 @@ function confirmarsenhanova(senha,repita)
 $('#btn_definir_Senha').on('click',function()
 {  
   var form = $('<form action="Definirsenha/" method="post">' +
-              '<input type="hidden" value="'+$('#email').val()+'" name="defemail" />' +
-              '<input type="hidden" value="S" name="defseguranca" />' +
-              '<input type="hidden" value="'+$('#senha_nova').val()+'" name="defsenha" />' +
+                '<input type="hidden" value="'+$('#email').val()+'" name="defemail" />' +
+                '<input type="hidden" value="S" name="defseguranca" />' +
+                '<input type="hidden" value="'+$('#senha_nova').val()+'" name="defsenha" />' +
               '</form>');
               $('body').append(form);
               $(form).submit();  
@@ -208,7 +216,8 @@ function logar()
             {
               var form = $('<form action="logar/" method="post">' +
               '<input type="hidden" value="'+email+'" name="email" />' +
-              '<input type="hidden" value="'+senha+'" name="senha" />' +
+              '<input type="hidden" value="'+senha+'" name="senha" />' +              
+              '<input type="hidden" value="'+$('#manter_login').val()+'" name="manter_login" />' +
               '</form>');
               $('body').append(form);
               $(form).submit();

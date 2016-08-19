@@ -94,7 +94,18 @@ body {
   background: #555;
 }
 
+.title_box
+{
+  background-color:#D6D6D6;
+  margin:-10;
+  margin-bottom:20px;
+  padding-bottom:5px;
+  font-size:15px;
+  font-weight:lighter;
+  padding-left:10px;
+}
 
+/*
 input[type=checkbox] {
   visibility: hidden;
 }
@@ -173,4 +184,4 @@ input[type=checkbox] {
 
 .slideThree input[type=checkbox]:checked + label {
   left: 43px;
-}
+}*/

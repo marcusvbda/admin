@@ -7,10 +7,7 @@ function getInfo($valor,$tabela,$campo=1,$operador='=',$comparador=1)
 		return $row->{$valor};
 }
 
-function array_upper_case($array)
-{
-	return array_change_key_case(array_flip($array), CASE_UPPER);
-}
+
 
 function registralog($log = "")
 {
@@ -122,13 +119,11 @@ function enviarEmail($para,$assunto,$texto,$anexo="")
 	} else {
 	    return true;
 	}
-
-
 }
 
 function _route($string)
 {
-	return strtoupper(trim($string));
+	return strtoupper($string);
 }
 
 function renomear_posicao_objeto($objeto,$nome_antigo,$novo_nome)
@@ -165,3 +160,9 @@ function montar_tabela($cabecalho,$dados)
         <div class='paginacao'>{$dados->links()}</div>";
         return $tabela;
     }
+
+function primeiro_nome($nome)
+{
+  	$pos_espaco = strpos($nome, ' ');
+	return substr($nome, 0, $pos_espaco);
+}

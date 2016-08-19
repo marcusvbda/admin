@@ -2,12 +2,12 @@
 
 <?php $__env->startSection('topo'); ?>
 <h1>Usuários
-  <small>Consulta / Alteração</small>
+  <small>Novo usuário</small>
 </h1>
 <ol class="breadcrumb">
   <li><a href="<?php echo e(asset('admin/inicio')); ?>"><i class="fa fa-dashboard"></i> Início</a></li>
   <li><a href="<?php echo e(asset('admin/usuarios')); ?>"><i class="glyphicon glyphicon-user"></i> Usuários</a></li>
-  <li><a><i class="glyphicon glyphicon-search"></i> Consulta / Alteração</a></li>
+  <li><a><i class="glyphicon glyphicon-plus"></i> Novo usuário</a></li>
 </ol>
 <?php $__env->stopSection(); ?>
 
@@ -15,36 +15,41 @@
 <?php $__env->startSection('conteudo'); ?>
 
 <div class="col-md-12">
+  <!-- <form action="<?php echo e(asset('usuarios/store')); ?>" method="POST" id="formulario"> -->
     <div class="box" style="padding-bottom:20px;">
       <div class="box-header with-border">
         <p class="title_box">Dados do Usuário</p>
         <div class="box-tools pull-right">
         </div>
 
-        
+      
           <div class="row" >
             <div class="col-md-4">
-              <input type="text" id="id" value="<?php echo e($usuario->id); ?>" hidden>
               <label>Nome Completo</label>
-              <input class="form-control" value="<?php echo e($usuario->usuario); ?>" required type="text" maxlength="50" placeholder="Nome Completo" name="usuario" id="usuario" readonly>
+              <input class="form-control" required type="text" maxlength="50" placeholder="Nome Completo" name="usuario" id="usuario">
             </div>
             <div class="col-md-4">
               <label>Sexo</label>
-              <select name="sexo" id="sexo" class="form-control" required readonly>
-                <?php if($usuario->sexo=="M"): ?>
-                  <option value="M" selected>Masculino</option>
-                  <option value="F">Feminino</option>
-                <?php else: ?>
-                  <option value="M">Masculino</option>
-                  <option value="F" selected>Feminino</option>
-                <?php endif; ?>
+              <select name="sexo" id="sexo" class="form-control" required>
+                <option value="M" selected>Masculino</option>
+                <option value="F">Feminino</option>
               </select>
             </div>  
             <div class="col-md-4">
               <label>Email</label>
-              <input class="form-control" value="<?php echo e($usuario->email); ?>" required type="email" maxlength="200" placeholder="Email" name="email" id="email" readonly>
+              <input class="form-control" required type="email" maxlength="200" placeholder="Email" name="email" id="email">
             </div>          
-          </div>          
+          </div>
+          <div class="row" >
+            <div class="col-md-6">
+              <label>Senha</label>
+              <input class="form-control" required type="password" maxlength="20" placeholder="Senha" name="senha" id="senha">
+            </div>
+            <div class="col-md-6">
+              <label>Confirme a Senha</label>
+              <input class="form-control" required type="password" maxlength="20" placeholder="Confirme a Senha" name="confirme_senha" id="confirme_senha">
+            </div>          
+          </div>      
 
       </div>      
     </div> 
@@ -55,15 +60,9 @@
 
         <div class="row">
           <div class="col-md-12">
-          <?php if($usuario->admin=="N"): ?>
             <input type="text" id="admin" value="N" hidden="">
-            <input onclick="setAdmin('S')" type="radio" name="rd_admin" id="rd_admin" value="S" readonly><span style="margin-right:10px;"> Usuário Administrador</span>
-            <input onclick="setAdmin('N')" type="radio" name="rd_admin" id="rd_admin" value="N" checked readonly><span> Usuário Comum</span>
-          <?php else: ?>
-            <input type="text" id="admin" value="S" hidden="">
-            <input onclick="setAdmin('S')" type="radio" name="rd_admin" id="rd_admin" value="S" checked readonly><span style="margin-right:10px;"> Usuário Administrador</span>
-            <input onclick="setAdmin('N')" type="radio" name="rd_admin" id="rd_admin" value="N" readonly><span> Usuário Comum</span>
-          <?php endif; ?>
+            <input onclick="setAdmin('S')" type="radio" name="rd_admin" id="rd_admin" value="S"><span style="margin-right:10px;"> Usuário Administrador</span>
+            <input onclick="setAdmin('N')" type="radio" name="rd_admin" id="rd_admin" value="N" checked><span> Usuário Comum</span>
           </div>
 
         </div>
@@ -71,18 +70,9 @@
       </div>
     </div>
 
-   
     <div class="row">
-      <div id="btn_visualizacao">
-        <div class="col-md-6">
-          <button id="btn_alterar" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Alterar</button>
-        </div>
-      </div>
-      <div id="btn_alteracao" style="display:none;">
-        <div class="col-md-6">
-          <button id="btn_cancelar" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> Cancelar</button>
-          <button id="btn_confirmar" class="btn btn-success"><span class="glyphicon glyphicon-okl"></span> Confirmar</button>
-        </div>
+      <div class="col-md-6">
+        <button id="btn_confirmar" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Cadastrar</button>
       </div>
     </div>
 
@@ -91,27 +81,6 @@
 
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
 <script type="text/javascript">
-
-$('#btn_alterar').on('click', function() 
-{
-    $('#usuario').attr('readonly', false);
-    $('#email').attr('readonly', false);
-    $('#sexo').attr('readonly', false);
-    $('#rd_admin').attr('readonly', false);
-    $('#btn_visualizacao').toggle(150);
-    $('#btn_alteracao').toggle(150);
-}); 
-
-$('#btn_cancelar').on('click', function() 
-{
-    $('#usuario').attr('readonly', true);
-    $('#email').attr('readonly', true);
-    $('#sexo').attr('readonly', true);
-    $('#rd_admin').attr('readonly', true);
-    $('#btn_alteracao').toggle(150);    
-    $('#btn_visualizacao').toggle(150);
-}); 
-
 
 $('#btn_confirmar').on('click', function() 
 {
@@ -133,9 +102,7 @@ $('#btn_confirmar').on('click', function()
       }
       else
       {
-        email = $('#email').val();
-        id = $('#id').val();
-        $.get('../Usuarioexiste_editar/'+email+'/'+id,function(data)
+        $.get('usuarioexiste/' + $('#email').val(),function(data)
         {
             if(data=='SIM')
             {
@@ -144,21 +111,21 @@ $('#btn_confirmar').on('click', function()
             }
             else
             {
-              alterar();
+              cadastrar();
             }            
         });
       }
-  }    
+  }
+    
 }); 
 
-
-function alterar()
+function cadastrar()
 {
-  var form = $('<form action="../editar" method="post">' +
+  var form = $('<form action="store" method="post">' +
                 '<input type="hidden" value="'+$('#usuario').val()+'" name="usuario" />' +
-                '<input type="hidden" value="'+$('#id').val()+'" name="id" />' +
                 '<input type="hidden" value="'+$('#email').val()+'" name="email" />' +
                 '<input type="hidden" value="'+$('#sexo').val()+'" name="sexo" />' +
+                '<input type="hidden" value="'+$('#senha').val()+'" name="senha" />' +
                 '<input type="hidden" value="'+$('#admin').val()+'" name="admin" />' +
               '</form>');
               $('body').append(form);

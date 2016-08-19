@@ -10,7 +10,7 @@ function rotas_liberadas()
 			_route("usuariosController@getUsuarioexiste"),
 			_route("usuariosController@getValidalogin"),
 			_route("usuariosController@postDefinirsenha"),
-			_route("usuariosController@postRenovarSenha"),
+			_route("usuariosController@postRenovarSenha")
 		);
 	return $rotas_liberadas;
 }
@@ -21,5 +21,5 @@ function rotas_protegidas()
 		(
 			_route("usuariosController@getIndex")
 		);
-	return array_upper_case($rotas_protegidas);
+	return $rotas_protegidas;
 }

@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/dist/css/skins/_all-skins.min.css">
   <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/bootstrap/css/custom.css">
 <style type="text/css"></style></head>
-<body class="skin-green sidebar-mini fixed" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
+<body class="skin-blue sidebar-mini fixed" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -43,14 +43,21 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">{{limitarTexto(Auth('usuario'),20)}}</span>
+              <span class="hidden-xs">
+              @if(Auth('sexo')=="M") 
+                Bem vindo,
+              @endif
+              @if(Auth('sexo')=="F") 
+                Bem vinda,              
+              @endif
+               <strong> {{primeiro_nome(Auth('usuario'))}} </strong>
             </a>
             <ul class="dropdown-menu">
               <!-- User image --> 
               <li class="user-header" style="height:auto">
 
                 <p>
-                  {{limitarTexto(Auth('usuario'),20)}}
+                  {{Auth('usuario')}}
                   <small>{{Auth('email')}}</small>
                 </p>
               </li>
@@ -91,21 +98,18 @@
         <li class="header">Menu Principal</li>
 
         <!-- itens menu -->
+        @if(Auth('admin')=="S")
           <li class="treeview">
             <a href="#">
               <i class="glyphicon glyphicon-inbox"></i> <span>Cadastros</span>
             </a>
             <ul class="treeview-menu">
-              <li>                 
-                 
-                  @if(Auth('admin')=="S")
-                    <a href="{{asset('usuarios')}}"><i class="glyphicon glyphicon-user"></i> <span>Usuários</span></a>   
-                  @endif              
-
+              <li>              
+                <a href="{{asset('usuarios')}}"><i class="glyphicon glyphicon-user"></i> <span>Usuários</span></a>   
               </li>
-
             </ul>
           </li>
+        @endif  
 
           <li class="treeview">
             <a href="#">

@@ -62,7 +62,10 @@
                   <tr>
                     <td>{{$usuario->usuario}}</td>
                     <td>{{$usuario->email}}</td>
-                    <td class="centro"><a href='{{asset("usuarios/show/$usuario->id")}}' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a></td>
+                    <td class="centro">
+                      <a href='{{asset("usuarios/show/$usuario->id")}}' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a>
+                      <a onclick="excluir('{{$usuario->id}}')" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
                   </tr>
                   @endforeach
                </tbody>
@@ -70,13 +73,24 @@
              {{$usuarios->links()}}
             </div>
           </div>
-        </div>
-      </div>
-
-          
+        </div>        
+      </div>          
   </div>  
+
+  <div class="row">
+    <div class="col-md-1">
+      <a href="{{asset('usuarios/novo')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Cadastrar</a>
+    </div>
+  </div>
 </div>
 
 
+<script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
+<script type="text/javascript">
+function excluir(id)
+{
+  alert('aqui pergunta se deseja mesmo excluir');
+}
+</script>
 
 @stop

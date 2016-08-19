@@ -8,19 +8,21 @@ class middleware
 		  	return true;
 		else
 		{
-			if((CheckAuth()) && ($this->RotaProtegida($rota_requerida)))
+			if(CheckAuth())
 			{
-				if(Auth('admin')=="S")
-					return true;
+				if($this->RotaProtegida($rota_requerida))
+				{
+					if(Auth('admin')=="S")
+						return true;
+					else
+						redirecionar(asset('erros/403'));
+				}
 				else
-					redirecionar(asset('erros/403'));
+					return true;
 			}
 			else
 			{
-				if(CheckAuth())
-					return true;
-				else
-					redirecionar(asset('usuarios/login'));
+				redirecionar(asset('usuarios/login'));
 			}
 		}
 	}

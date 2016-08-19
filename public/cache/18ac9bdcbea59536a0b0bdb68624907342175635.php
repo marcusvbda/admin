@@ -60,7 +60,10 @@
                   <tr>
                     <td><?php echo e($usuario->usuario); ?></td>
                     <td><?php echo e($usuario->email); ?></td>
-                    <td class="centro"><a href='<?php echo e(asset("usuarios/show/$usuario->id")); ?>' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a></td>
+                    <td class="centro">
+                      <a href='<?php echo e(asset("usuarios/show/$usuario->id")); ?>' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a>
+                      <a onclick="excluir('<?php echo e($usuario->id); ?>')" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
                   </tr>
                   <?php endforeach; ?>
                </tbody>
@@ -69,14 +72,25 @@
 
             </div>
           </div>
-        </div>
-      </div>
-
-          
+        </div>        
+      </div>          
   </div>  
+
+  <div class="row">
+    <div class="col-md-1">
+      <a href="<?php echo e(asset('usuarios/novo')); ?>" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Cadastrar</a>
+    </div>
+  </div>
 </div>
 
 
+<script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
+<script type="text/javascript">
+function excluir(id)
+{
+  alert('aqui pergunta se deseja mesmo excluir');
+}
+</script>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('templates.principal.principal', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
