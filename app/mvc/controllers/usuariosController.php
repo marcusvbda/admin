@@ -115,6 +115,7 @@ class usuariosController extends controller
 	public function postStore()
 	{
 		$usuario = $_POST;
+		$usuario['senha'] = md5($usuario['senha']);
 		foreach (Auth('empresa') as $empresa):			
 			$usuario['empresa'] = $empresa;
 			$this->model->create($usuario);

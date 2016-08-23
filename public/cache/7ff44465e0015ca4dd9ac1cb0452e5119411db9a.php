@@ -53,8 +53,28 @@
 
       </div>      
     </div> 
+</div>
 
-    <div class="box" style="padding-bottom:20px;">
+<div class="col-md-8" style="display:none;" id="empresas_selecao">
+    <div class="box">
+      <div class="box-header with-border">
+          <p class="title_box">Empresas Selecionadas (<span id="qtde_selecionada">0</span>) : <strong id="nome_rede"></strong></p>     
+
+            
+              <div class="row">
+                <div class="box-body table-responsive no-padding">  
+                  <div class="col-md-12">
+                     <table class="table table-striped" id="tabela"></table>
+                  </div>
+                </div>
+              </div>        
+
+        </div>
+    </div>
+</div> 
+
+<div class="col-md-12" id="div_tipo">
+  <div class="box" style="padding-bottom:20px;">
       <div class="box-header with-border">
         <p class="title_box">Tipo de Usuário</p>
 
@@ -68,16 +88,18 @@
         </div>
           
       </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <button id="btn_confirmar" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Cadastrar</button>
-      </div>
-    </div>
-
+    </div>   
 </div>
 
+ 
+
+<div class="col-md-12">
+  <div class="row">
+    <div class="col-md-6">
+      <button id="btn_confirmar" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Cadastrar</button>
+    </div>
+  </div>
+</div>
 
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
 <script type="text/javascript">
@@ -168,6 +190,61 @@ function desabilitar_inputs(disabled)
   $("#admin_checkbox").prop('disabled', disabled);
 }
 
+
+jQuery( document ).ready(function( $ ) 
+{
+  admin_rede = "<?php echo e(Auth('admin_rede')); ?>";
+  if(admin_rede=="S")
+  {
+    $('#empresas_selecao').show();
+     $("#div_tipo").removeClass("col-md-12");
+     $("#div_tipo").addClass("col-md-4");
+    atualiza_tabela_selecao();
+  }
+});
+
+function atualiza_tabela_selecao()
+{
+  var qtde_selecionado = 0;
+  var nome_rede = "";
+  $.getJSON("../empresa/BuscaEmpresas/", function(data) 
+  {
+        $("#tabela tr").remove();
+      $('#tabela').append(
+         '<tr>'+                        
+          '<th></th>'+                     
+          '<th>Série</th>'+                     
+          '<th>Razão Social</th>'+
+          '<th>Nome Fantasia</th>'+
+          '<th>CNPJ</th>'+
+      '</tr>');
+      $.each(data, function(index,r)
+      {      
+        html="";
+          if(r.selecionado=="S")   
+          {         
+              html +='<tr style="background-color:#c4ffc4;" onclick="desmarcar('+r.id+');">'+
+              '<td><span style="color:green;" class="glyphicon glyphicon-check"></span></td>';
+            qtde_selecionado++;
+        }
+          else
+            html +='<tr style="background-color:#ffd1d1;" onclick="marcar('+r.id+');">'+
+              '<td><span style="color:red;" class="glyphicon glyphicon-unchecked"></span></td>';
+            
+          html+=  '<td>'+r.serie+'</td>'+
+            '<td>'+r.razao+'</td>'+
+            '<td>'+r.CNPJ_CPF+'</td>'+
+            '<td>'+r.nome+'</td>'+
+          '</tr>';
+        $('#tabela tr:last').after(html);
+          nome_rede = r.nome_rede;       
+      });
+      $('#qtde_selecionada').html(qtde_selecionado);
+      $('#nome_rede').html(nome_rede);
+    }).fail(function(d) {
+        msg("ERRO","Erro ao consultar empresas");
+    });
+}
 
 </script>
 <?php $__env->stopSection(); ?>

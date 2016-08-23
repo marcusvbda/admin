@@ -76,7 +76,8 @@ function array_unico($array)
 
 function remove_empresa($empresa)
 {
-	unset($_SESSION['dados_usuario']->empresa[array_search($empresa,Auth('empresa'))]);
+	if(count(Auth('empresa'))>1)
+		unset($_SESSION['dados_usuario']->empresa[array_search($empresa,Auth('empresa'))]);
 	$_SESSION['dados_usuario']->empresa = array_diff( $_SESSION['dados_usuario']->empresa , array( '' ) );
 }
 
