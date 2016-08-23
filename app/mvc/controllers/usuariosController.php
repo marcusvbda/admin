@@ -24,9 +24,10 @@ class usuariosController extends controller
       	$tempo_inicio = microtime(true);
 		$filtro = strtoupper($filtro);
 		$usuarios =  DB::table('usuarios')
-						->whereRaw("excluido='N' and empresa=".Auth('empresa')." and 
+						->whereRaw("excluido='N'and 
 								(email like '%$filtro%' or
 								 usuario like '%$filtro%')")
+							->wherein('empresa',Auth('empresa'))
 								->paginate(10, ['*'], "pagina", $pagina);
       	$tempo_consulta = microtime(true) - $tempo_inicio;
       	$qtde_registros = $usuarios->total();  
@@ -36,7 +37,22 @@ class usuariosController extends controller
 		echo $this->view('usuarios.index',compact('usuarios','filtro','tempo_consulta','qtde_registros'));
 	}
 
+	public function postDestroy()
+	{
+		if($this->valida_exclusao($_POST['id_usuario']))
+		{
+			$usuario = $this->model->find($_POST['id_usuario']);
+			$usuario->excluido="S";
+			$usuario->save();
+		}
+		redirecionar(asset('usuarios'));
+	}
 
+	private function valida_exclusao($id)
+	{
+		// pensar em uma logica
+		return true;
+	}
 
 	public function getShow($id)
 	{
@@ -45,7 +61,9 @@ class usuariosController extends controller
 		$usuario = DB::table('usuarios')
 			->select('usuarios.*','empresas.razao as empresa_razao')
 				->join('empresas','empresas.id','=','usuarios.empresa')
-					->where('usuarios.id','=',$id)->get();
+					->where('usuarios.id','=',$id)
+						->wherein('empresa',Auth('empresa'))
+							->get();
 		// $usuario = DB::table('usuarios')->find($usuario[0]->id);
 		$usuario=$usuario[0];
 		echo $this->view('usuarios.show',compact('usuario'));
@@ -97,8 +115,10 @@ class usuariosController extends controller
 	public function postStore()
 	{
 		$usuario = $_POST;
-		$usuario['empresa'] = Auth('empresa');
-		$this->model->create($usuario);
+		foreach (Auth('empresa') as $empresa):			
+			$usuario['empresa'] = $empresa;
+			$this->model->create($usuario);
+		endforeach;		
 		redirecionar(asset('usuarios'));
 	}
 
@@ -108,7 +128,7 @@ class usuariosController extends controller
 		$usuario = $this->model
         	->leftJoin('funcoes', 'funcoes.id', '=', 'usuarios.empresa')
         		->where('usuarios.id','=',$id)
-        			->where('usuarios.empresa','=',Auth('empresa'))
+        			->wherein('usuarios.empresa',Auth('empresa'))
         				->where('usuarios.excluido','=','N')
 		        			->get();
 		echo json_encode($usuario);
@@ -143,7 +163,7 @@ class usuariosController extends controller
 
 		if(count($usuarios)>0)	
 		{			
-			$array = ['id'=>$usuarios[0]->id,'empresa'=>$usuarios[0]->empresa, 'sexo'=>$usuarios[0]->sexo ,'admin'=>$usuarios[0]->admin,
+			$array = ['id'=>$usuarios[0]->id,'empresa'=>array($usuarios[0]->empresa), 'sexo'=>$usuarios[0]->sexo ,'admin_rede'=>$usuarios[0]->admin_rede,'admin'=>$usuarios[0]->admin,
 				'grupo_acesso'=>$usuarios[0]->grupo_acesso,'usuario'=>$usuarios[0]->usuario,
 					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID];			
 			SalvaUsuario($array);

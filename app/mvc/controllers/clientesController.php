@@ -20,12 +20,13 @@ class clientesController extends controller
 		$filtro = strtoupper($filtro);
       	$tempo_inicio = microtime(true);		
 		$clientes = DB::table('clientes')
-						->whereRaw("excluido='N' and empresa=".Auth('empresa')." and 
+						->whereRaw("excluido='N' and 
 							(numero like '%$filtro%' or 
 							nome like '%$filtro%' or
 							cnpj like '%$filtro%' or 
 							razaosocial like '%$filtro%')")
-								->paginate(10, ['*'], "pagina", $pagina);
+								->wherein('empresa',Auth('empresa'))
+									->paginate(10, ['*'], "pagina", $pagina);
       	$tempo_consulta = microtime(true) - $tempo_inicio;
       	$qtde_registros = $clientes->total();      	
 		$clientes->appends(['filtro'=>$filtro])->render();

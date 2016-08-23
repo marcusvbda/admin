@@ -15,7 +15,7 @@
 <div class="col-md-12">
   <div class="box">
     <div class="box-header with-border">
-      <h3 class="box-title"></h3>
+      <p class="title_box"></p>
       <div class="box-tools pull-right">
         <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div> -->
       </div>
@@ -61,8 +61,8 @@
                     <td><?php echo e($usuario->usuario); ?></td>
                     <td><?php echo e($usuario->email); ?></td>
                     <td class="centro">
-                      <a href='<?php echo e(asset("usuarios/show/$usuario->id")); ?>' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a>
-                      <a onclick="excluir('<?php echo e($usuario->id); ?>')" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                      <a title="Visualizar / Alterar" href='<?php echo e(asset("usuarios/show/$usuario->id")); ?>' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a>
+                      <a title="Excluir" onclick="excluir('<?php echo e($usuario->id); ?>')" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
                     </td>
                   </tr>
                   <?php endforeach; ?>
@@ -85,11 +85,24 @@
 
 
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/js/custom.js"></script>
 <script type="text/javascript">
 function excluir(id)
 {
-  alert('aqui pergunta se deseja mesmo excluir');
+  msg_confirm('<strong>Confirmação</strong>','Deseja excluir este usuário','excluir_registro('+id+')');
 }
+
+function excluir_registro(id)
+{
+  action ="<?php echo e(asset('usuarios/destroy')); ?>";
+  var form = $('<form action="'+action+'" method="post">' +
+                '<input type="hidden" value="'+id+'" name="id_usuario" />' +
+              '</form>');
+  $('body').append(form);
+  $(form).submit();  
+}
+
+// msg, titulo, texto
 </script>
 
 <?php $__env->stopSection(); ?>

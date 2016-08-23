@@ -63,10 +63,13 @@
 </div>
 
 <script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
+<script src="{{PASTA_PUBLIC}}/template/bootstrap/js/custom.js"></script>
 <script type="text/javascript">
 	$( document ).ready(function()
 	{
-	    procura_arquivos_para_importar();
+		admin_rede = "{{Auth('admin_rede')}}";
+		if(admin_rede=="N")
+	    	procura_arquivos_para_importar();
 	});
 
 	$('#importacao_btn_importar').on('click', function() 
@@ -74,7 +77,8 @@
 	    $('#titulo_msg1').html('<strong>Confirmação</strong>');
 		$('#msg_msg1').html('<strong>Confirma importação ?</strong><br>Este processo pode demorar alguns minutos.');
 		$('#btn_confirmar_mensagem1').attr("onclick","importar_arquivo()");		
-		$('#mensagem1').modal('show');   
+		$('#mensagem1').modal('show');  
+		msg_confirm('<strong>Confirmação</strong>','<strong>Confirma importação ?</strong><br>Este processo pode demorar alguns minutos.',"importar_arquivo()"); 
 		$('#id').val(id);
 	}); 
 

@@ -31,7 +31,54 @@ function CheckAuth()
 
 // fechou navegador , loga de novo 
 //logad0 = S no time out
+function arrayUnique($myArray){
+    if(!is_array($myArray))
+        return $myArray;
 
+    foreach ($myArray as &$myvalue){
+        $myvalue=serialize($myvalue);
+    }
+
+    $myArray=array_unique($myArray);
+
+    foreach ($myArray as &$myvalue){
+        $myvalue=unserialize($myvalue);
+    }
+
+    return $myArray;
+
+} 
+
+function append_empresa($empresa)
+{
+	array_push($_SESSION['dados_usuario']->empresa, $empresa);
+	$_SESSION['dados_usuario']->empresa = array_unico($_SESSION['dados_usuario']->empresa);
+}
+
+function array_unico($array)
+{
+	$novo_array = array();
+	array_push($novo_array,$array[0]);
+	for ($i=1; $i < count($array); $i++):
+		$achou = false;
+		foreach ($novo_array as $novos):
+			if($novos==$array[$i])
+			{
+				$achou = true;
+				break;
+			}
+		endforeach;
+		if(!$achou)
+		array_push($novo_array,$array[$i]);
+	endfor;
+	return $novo_array;
+}
+
+function remove_empresa($empresa)
+{
+	unset($_SESSION['dados_usuario']->empresa[array_search($empresa,Auth('empresa'))]);
+	$_SESSION['dados_usuario']->empresa = array_diff( $_SESSION['dados_usuario']->empresa , array( '' ) );
+}
 
 function SalvaUsuario($usuario)
 {

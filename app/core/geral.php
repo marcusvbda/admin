@@ -126,17 +126,6 @@ function _route($string)
 	return strtoupper($string);
 }
 
-function renomear_posicao_objeto($objeto,$nome_antigo,$novo_nome)
-{
-	$array = (array) $objeto;
-	unset($array['chaves_primarias']);
-	$auxiliar = $array[$nome_antigo];
-	unset($array[$nome_antigo]);
-	$array[$novo_nome]=$auxiliar;
-	$array['empresa']=Auth('empresa');
-	return  (object) $array;
-}
-
 function montar_tabela($cabecalho,$dados)
 {
     $tabela = "<table class='table table-striped' style='table-layout: auto;'>";

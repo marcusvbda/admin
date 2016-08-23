@@ -17,7 +17,7 @@
 <div class="col-md-12">
 	<div class="box">
 		<div class="box-header with-border">
-		  <h3 class="box-title">
+      	<p class="title_box"></p>
 
 		  </h3>
 		  <div class="box-tools pull-right">

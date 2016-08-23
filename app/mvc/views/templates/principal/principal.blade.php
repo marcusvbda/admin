@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>@yield('titulo')</title>
+  <title>Admin - @yield('titulo')</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -127,7 +127,8 @@
               <i class="glyphicon glyphicon-wrench"></i> <span>Configurações</span>
             </a>
             <ul class="treeview-menu">
-                    <li><a href="{{asset('configuracoes/parametros')}}"><i class="glyphicon glyphicon-wrench"></i> <span>Parametros de sistema</span></a></li>
+                 <li><a href="{{asset('empresa')}}"><i class="glyphicon glyphicon-object-align-bottom"></i> <span>Empresa</span></a></li>
+                 <li><a href="{{asset('configuracoes/parametros')}}"><i class="glyphicon glyphicon-wrench"></i> <span>Parametros de sistema</span></a></li>
             </ul>
           </li> 
           @endif

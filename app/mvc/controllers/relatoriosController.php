@@ -22,7 +22,7 @@ class relatoriosController extends controller
 	{
 		$relatorioscustomizados = $this->relatorio_customizado
 			->where('excluido','=','N')
-				->where('empresa','=',Auth('empresa'))
+				->wherein('empresa',Auth('empresa'))
 					->get();
 		echo json_encode($relatorioscustomizados);
 	}
@@ -38,7 +38,7 @@ class relatoriosController extends controller
 	public function getFormulariorelatoriocustomizado($id)
 	{
 		$relatorio_customizado = DB::table('relatorio_customizado')
-		  	->where('empresa','=',Auth('empresa'))
+		  	->wherein('empresa',Auth('empresa'))
 		  		->where('id','=',$id)
 		  			->get();
 		$JSON = $relatorio_customizado[0]->formulario;
