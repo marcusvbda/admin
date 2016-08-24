@@ -25,18 +25,7 @@
 			        <div class="row">
 			          <div class="box-body table-responsive no-padding">  
 			            <div class="col-md-12">
-			               <table class="table table-striped" id="tabela">
-			               <tbody>
-			                      	<!-- <tr style="background-color:#c4ffc4;">
-					                  		<td><a href="<?php echo e(asset('empresa/Deschecar_empresa')); ?>/<?php echo e($empresa->id); ?>"><span style="color:green;" class="glyphicon glyphicon-check"></span></a></td> -->
-					               <!-- 
-					                 	<tr style="background-color:#ffd1d1;">
-					                  		<td><a href="<?php echo e(asset('empresa/Checar_empresa')); ?>/<?php echo e($empresa->id); ?>"><span style="color:red;" class="glyphicon glyphicon-unchecked"></span></a></td>
-					               	 -->
-				                   
-				                  </tr>
-			               </tbody>
-			             </table>
+			               <table class="table table-striped" id="tabela"></table>
 			            </div>
 			          </div>
 			        </div>        
@@ -44,6 +33,8 @@
 	  		</div>
 		</div>
 	</div>	
+
+
 
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/js/custom.js"></script>
@@ -57,6 +48,7 @@ function atualizarTable()
 {
 	var qtde_selecionado = 0;
 	var nome_rede = "";
+	var admin_rede = "<?php echo e(Auth('admin_rede')); ?>";
 	$.getJSON("empresa/BuscaEmpresas/", function(data) 
 	{
         $("#tabela tr").remove();
@@ -73,15 +65,30 @@ function atualizarTable()
 	    $.each(data, function(index,r)
 	    {      
 	      html="";
-	      	if(r.selecionado=="S")	 
-	      	{     		
-	          	html +='<tr style="background-color:#c4ffc4;" onclick="desmarcar('+r.id+');">'+
-	      			'<td><span style="color:green;" class="glyphicon glyphicon-check"></span></td>';
-	      		qtde_selecionado++;
-	     	}
-	      	else
-	      		html +='<tr style="background-color:#ffd1d1;" onclick="marcar('+r.id+');">'+
-	      			'<td><span style="color:red;" class="glyphicon glyphicon-unchecked"></span></td>';
+		    if(admin_rede=="S")
+		    {
+		      	if(r.selecionado=="S")	 
+		      	{     		
+		          	html +='<tr style="background-color:#c4ffc4;" onclick="desmarcar('+r.id+');">'+
+		      			'<td><span style="color:green;" class="glyphicon glyphicon-check"></span></td>';
+		      		qtde_selecionado++;
+		     	}
+		      	else
+		      		html +='<tr style="background-color:#ffd1d1;" onclick="marcar('+r.id+');">'+
+		      			'<td><span style="color:red;" class="glyphicon glyphicon-unchecked"></span></td>';
+		    } 
+		    else
+		    {
+		    	if(r.selecionado=="S")	 
+		      	{     		
+		          	html +='<tr style="background-color:#c4ffc4;">'+
+		      			'<td><span style="color:green;" class="glyphicon glyphicon-check"></span></td>';
+		      		qtde_selecionado++;
+		     	}
+		      	else
+		      		html +='<tr style="background-color:#ffd1d1;">'+
+		      			'<td><span style="color:red;" class="glyphicon glyphicon-unchecked"></span></td>';
+		    }  	
 	          
 	        html+=  '<td>'+r.serie+'</td>'+
 	          '<td>'+r.razao+'</td>'+

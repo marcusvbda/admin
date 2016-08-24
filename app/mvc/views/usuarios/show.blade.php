@@ -90,7 +90,6 @@
 
 </div>
 
-
 <script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
 <script type="text/javascript">
 

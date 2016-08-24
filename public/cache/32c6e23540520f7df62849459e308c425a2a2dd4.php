@@ -132,6 +132,15 @@
                  <li><a href="<?php echo e(asset('configuracoes/parametros')); ?>"><i class="glyphicon glyphicon-wrench"></i> <span>Parametros de sistema</span></a></li>
             </ul>
           </li> 
+          <?php else: ?>
+            <li class="treeview">
+              <a href="#">
+                <i class="glyphicon glyphicon-wrench"></i> <span>Configurações</span>
+              </a>
+              <ul class="treeview-menu">
+                   <li><a href="<?php echo e(asset('empresa')); ?>"><i class="glyphicon glyphicon-object-align-bottom"></i> <span>Empresa</span></a></li>
+              </ul>
+          </li> 
           <?php endif; ?>
 
 

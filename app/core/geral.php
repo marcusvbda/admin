@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Database\Capsule\Manager as DB;
 
+
 function getInfo($valor,$tabela,$campo=1,$operador='=',$comparador=1)
 {
 	foreach(DB::table($tabela)->where($campo,$operador,$comparador)->get() as $row)
@@ -24,17 +25,6 @@ function asset($diretorio = "",$url = "")
 	return $url = 'http://'.$_SERVER['SERVER_NAME'].'/'.PASTA_PROJETO.'/'.$diretorio;
 }
 
-function gerarpdf($html ="",$arq= "PDF_TEMPORARIO",$donwload = false, $tamanho='A4',$formato="portrait")
-{
-	if(isset($dompdf))
-		unset($dompdf);
-	$dompdf = new Dompdf();
-	$dompdf->loadHtml($html);
-	$dompdf->setPaper($tamanho, $formato);
-	$dompdf->render();
-	$dompdf->stream($arq, array("Attachment" => $donwload));
-	unset($dompdf);
-}
 
 function redirecionar($caminho)
 {
@@ -154,4 +144,37 @@ function primeiro_nome($nome)
 {
   	$pos_espaco = strpos($nome, ' ');
 	return substr($nome, 0, $pos_espaco);
+}
+
+function string_virgulas_array($string)
+{
+	return explode(',', $string);
+}
+
+function object_search($valor,$campo,$objeto)
+{
+	$posicao = 0;
+	for($i=0;$i<count($objeto);$i++):
+		if($objeto[$i]->{$campo}==$valor)
+		{
+			$posicao = $i;
+			break;
+		}
+	endfor;
+	return $posicao;
+}
+
+function add_campo_objeto($campo,$valor,$objeto)
+{
+	foreach($objeto as $ob):
+	    $ob->{$campo} = $valor;
+	endforeach;	
+	return $objeto;
+}
+
+
+function remove_repeticao_array($array)
+{
+	print_r($array);exit();
+	return $array;
 }

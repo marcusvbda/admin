@@ -42,6 +42,7 @@
             Registro
           <?php endif; ?>
           (<?php echo e(number_format($tempo_consulta,5)); ?> segundos)
+           <button title="Gerar Relatório" onclick="imprimir();" class="btn btn-default pull-right"><span class="glyphicon glyphicon-print"></span></button>
         <hr>
 
         <div class="row">
@@ -50,10 +51,11 @@
                <table class="table table-striped" id="tabela">
                <thead>
                   <tr>
-                      <th>id</th>
+                      <th>Número</th>
                       <th>Nome</th>
                       <th>Razão Social</th>
                       <th>CNPJ</th>
+                      <th class="centro"><span class="glyphicon glyphicon-cog"></span></th>                      
                   </tr>
                </thead>
                <tbody>
@@ -63,6 +65,9 @@
                     <td><?php echo e($cliente->nome); ?></td>
                     <td><?php echo e($cliente->razaosocial); ?></td>
                     <td><?php echo e($cliente->cnpj); ?></td>
+                    <td class="centro">
+                      <a title="Visualizar" href='<?php echo e(asset("clientes/show/$cliente->sequencia")); ?>' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a>
+                    </td>
                   </tr>
                   <?php endforeach; ?>
                </tbody>
@@ -78,7 +83,19 @@
   </div>  
 </div>
 
-
+<script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/js/custom.js"></script>
+<script type="text/javascript">
+function imprimir()
+{
+  var action = "<?php echo e(asset('clientes/relatorio_simples')); ?>";
+  var form = '<form action="'+action+'" method="post">' +
+                '<input type="hidden" value="'+$('#filtro').val()+'" name="filtro" />' +
+              '</form>';
+  $('body').append(form);
+  $(form).submit();  
+}
+</script>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('templates.principal.principal', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -52,27 +52,9 @@ function arrayUnique($myArray){
 function append_empresa($empresa)
 {
 	array_push($_SESSION['dados_usuario']->empresa, $empresa);
-	$_SESSION['dados_usuario']->empresa = array_unico($_SESSION['dados_usuario']->empresa);
+	$_SESSION['dados_usuario']->empresa = array_diff( $_SESSION['dados_usuario']->empresa , array( '' ) );
 }
 
-function array_unico($array)
-{
-	$novo_array = array();
-	array_push($novo_array,$array[0]);
-	for ($i=1; $i < count($array); $i++):
-		$achou = false;
-		foreach ($novo_array as $novos):
-			if($novos==$array[$i])
-			{
-				$achou = true;
-				break;
-			}
-		endforeach;
-		if(!$achou)
-		array_push($novo_array,$array[$i]);
-	endfor;
-	return $novo_array;
-}
 
 function remove_empresa($empresa)
 {
@@ -144,4 +126,18 @@ function AtualizaSession($id)
 function SetLogado($logado = "S")
 {
 	$usuario = DB::table('usuarios')->where('id','=',Auth('id'))->update(array('logado'=>$logado));
+}
+
+
+function AtualizarAuth()
+{
+	$usuarios = DB::table('usuarios')->where('id','=',Auth('id'))->get();
+	if(count($usuarios)>0)	
+	{			
+		$array = ['id'=>$usuarios[0]->id,'empresa'=>array($usuarios[0]->empresa), 'sexo'=>$usuarios[0]->sexo,
+		'admin_rede'=>$usuarios[0]->admin_rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
+		'email'=>$usuarios[0]->email,'manter_login'=>Auth('manter_login'),'app_id'=>APP_ID];			
+		SalvaUsuario($array);
+	}
+
 }

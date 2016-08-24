@@ -34,7 +34,7 @@
                   </div>
               </div>
             </div>
-          </form>
+          </form>          
         </div>
         <br>
          {{$qtde_registros}} 
@@ -44,6 +44,8 @@
             Registro
           @endif
           ({{number_format($tempo_consulta,5)}} segundos)
+            <button title="Gerar Relatório" onclick="imprimir();" class="btn btn-default pull-right"><span class="glyphicon glyphicon-print"></span></button>
+
         <hr>
 
         <div class="row">
@@ -103,7 +105,16 @@ function excluir_registro(id)
   $(form).submit();  
 }
 
-// msg, titulo, texto
+function imprimir()
+{
+  var filtro = $('#filtro').val();
+  var action = "{{asset('usuarios/relatorio_simples')}}";
+  var form = '<form action="'+action+'" method="post">' +
+                '<input type="hidden" value="'+filtro+'" name="filtro" />' +
+              '</form>';
+  $('body').append(form);
+  $(form).submit();  
+}
 </script>
 
 @stop

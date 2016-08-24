@@ -34,6 +34,41 @@ class clientesController extends controller
 	}
 
 
+	public function getShow($id)
+	{
+      	ini_set('max_execution_time', 0);
+		if($id=="")
+			redirecionar(asset('erros/404'));
+		$cliente = DB::table('clientes')			
+				->where('sequencia','=',$id)
+					->where('excluido','=','N')
+						->wherein('empresa',Auth('empresa'))
+							->get();
+		if(count($cliente)==0)
+			redirecionar(asset('erros/404'));
+		$cliente=$cliente[0];
+		echo $this->view('clientes.show',compact('cliente'));
+	}
 
 
+	public function postRelatorio_simples()
+	{     	
+		if(isset($_POST['filtro']))
+			$filtro = strtoupper($_POST['filtro']);
+		else
+			$filtro = "";
+
+		$clientes = DB::table('clientes')
+						->whereRaw("excluido='N' and 
+							(numero like '%$filtro%' or 
+							nome like '%$filtro%' or
+							cnpj like '%$filtro%' or 
+							razaosocial like '%$filtro%')")
+								->wherein('empresa',Auth('empresa'))
+								->get();
+		$campo_relatorio = array('Número'=>'numero','Nome'=>'nome','Razão'=>'razaosocial','CPF / CNPJ'=>'cnpj');
+
+		$html = prepararelatorio($campo_relatorio,$clientes,"Relatório Simples de Clientes");
+        gerarpdf($html);
+	}
 }

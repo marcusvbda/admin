@@ -22,7 +22,6 @@ class usuariosController extends controller
 		else
 			$pagina = "1";
       	$tempo_inicio = microtime(true);
-		$filtro = strtoupper($filtro);
 		$usuarios =  DB::table('usuarios')
 						->whereRaw("excluido='N'and 
 								(email like '%$filtro%' or
@@ -65,6 +64,8 @@ class usuariosController extends controller
 						->wherein('empresa',Auth('empresa'))
 							->get();
 		// $usuario = DB::table('usuarios')->find($usuario[0]->id);
+		if(count($usuario)==0)
+			redirecionar(asset('erros/404'));
 		$usuario=$usuario[0];
 		echo $this->view('usuarios.show',compact('usuario'));
 	}
@@ -114,9 +115,12 @@ class usuariosController extends controller
 
 	public function postStore()
 	{
+		$empresas = Auth('empresa');
+		if(Auth('admin_rede')=="S")
+			$empresas  = string_virgulas_array(substr_replace($_POST['empresas'], '', -1));
 		$usuario = $_POST;
 		$usuario['senha'] = md5($usuario['senha']);
-		foreach (Auth('empresa') as $empresa):			
+		foreach ($empresas as $empresa):			
 			$usuario['empresa'] = $empresa;
 			$this->model->create($usuario);
 		endforeach;		
@@ -129,7 +133,7 @@ class usuariosController extends controller
 		$usuario = $this->model
         	->leftJoin('funcoes', 'funcoes.id', '=', 'usuarios.empresa')
         		->where('usuarios.id','=',$id)
-        			->wherein('usuarios.empresa',Auth('empresa'))
+        			->wherein('usuarios.empresa',$empresas)
         				->where('usuarios.excluido','=','N')
 		        			->get();
 		echo json_encode($usuario);
@@ -164,8 +168,7 @@ class usuariosController extends controller
 
 		if(count($usuarios)>0)	
 		{			
-			$array = ['id'=>$usuarios[0]->id,'empresa'=>array($usuarios[0]->empresa), 'sexo'=>$usuarios[0]->sexo ,'admin_rede'=>$usuarios[0]->admin_rede,'admin'=>$usuarios[0]->admin,
-				'grupo_acesso'=>$usuarios[0]->grupo_acesso,'usuario'=>$usuarios[0]->usuario,
+			$array = ['id'=>$usuarios[0]->id,'empresa'=>array($usuarios[0]->empresa), 'sexo'=>$usuarios[0]->sexo ,'admin_rede'=>$usuarios[0]->admin_rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
 					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID];			
 			SalvaUsuario($array);
 			SetLogado('S');
@@ -236,5 +239,25 @@ class usuariosController extends controller
 		}
 		redirecionar(asset(''));
 	}
+
+	public function postRelatorio_simples()
+	{
+		if(isset($_POST['filtro']))
+			$filtro = strtoupper($_POST['filtro']);
+		else
+			$filtro = "";
+
+		$usuarios =  DB::table('usuarios')
+						->whereRaw("excluido='N'and 
+								(email like '%$filtro%' or
+								 usuario like '%$filtro%')")
+							->wherein('empresa',Auth('empresa'))
+								->get();
+		$campo_relatorio = array('Nome'=>'usuario','Email'=>'email','Sexo'=>'sexo','Administrador'=>'admin');
+
+		$html = prepararelatorio($campo_relatorio,$usuarios,"Relatório Simples de Usuários");
+        gerarpdf($html);
+	}
+
 
 }
