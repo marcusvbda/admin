@@ -151,6 +151,11 @@ function string_virgulas_array($string)
 	return explode(',', $string);
 }
 
+function limpa_vazios_array($array)
+{
+	return array_diff( $array , array( '' ) );
+}
+
 function object_search($valor,$campo,$objeto)
 {
 	$posicao = 0;
@@ -175,6 +180,16 @@ function add_campo_objeto($campo,$valor,$objeto)
 
 function remove_repeticao_array($array)
 {
-	print_r($array);exit();
-	return $array;
+	$array_aux2 = array();
+	$achou = false;
+	foreach ($array as $array_original):
+		foreach ($array as $array_aux):
+			if($array_original==$array_aux)
+				$achou = true;
+			if($achou)
+				array_push($array_aux2, $array_original);
+			$achou = false;
+		endforeach;
+	endforeach;
+	return $array_aux2;
 }

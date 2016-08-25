@@ -37,17 +37,11 @@ class empresaController extends controller
 	   	echo json_encode($empresas_da_rede);
 	}
 
-	public function getChecar_empresa($empresa)
+	public function postSelecionar_empresas()
 	{
-		append_empresa($empresa);
-		print_r(Auth('empresa'));
-	}
-
-
-	public function getDeschecar_empresa($empresa)
-	{
-		if(count(Auth('empresa'))>1)
-			remove_empresa($empresa);
+		$empresas_selecionadas =  remove_repeticao_array(limpa_vazios_array(string_virgulas_array($_POST['empresas_selecionadas'])));
+		append_empresa($empresas_selecionadas);
+		redirecionar(asset('empresa'));
 	}
 
 	public function getBuscaEmpresasEspecificas($operacao,$nova,$selecionadas)

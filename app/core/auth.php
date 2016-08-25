@@ -49,18 +49,17 @@ function arrayUnique($myArray){
 
 } 
 
-function append_empresa($empresa)
+function append_empresa($empresas )
 {
-	array_push($_SESSION['dados_usuario']->empresa, $empresa);
-	$_SESSION['dados_usuario']->empresa = array_diff( $_SESSION['dados_usuario']->empresa , array( '' ) );
+	remove_empresas();
+	$_SESSION['dados_usuario']->empresa = $empresas;
 }
 
 
-function remove_empresa($empresa)
+function remove_empresas()
 {
-	if(count(Auth('empresa'))>1)
-		unset($_SESSION['dados_usuario']->empresa[array_search($empresa,Auth('empresa'))]);
-	$_SESSION['dados_usuario']->empresa = array_diff( $_SESSION['dados_usuario']->empresa , array( '' ) );
+	if(count(Auth('empresa'))>0)
+		unset($_SESSION['dados_usuario']->empresa);
 }
 
 function SalvaUsuario($usuario)

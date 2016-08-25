@@ -88,9 +88,11 @@
 <script type="text/javascript">
 function imprimir()
 {
+  var pagina = "<?php echo e($pagina); ?>";
   var action = "<?php echo e(asset('clientes/relatorio_simples')); ?>";
   var form = '<form action="'+action+'" method="post">' +
                 '<input type="hidden" value="'+$('#filtro').val()+'" name="filtro" />' +
+                '<input type="hidden" value="'+pagina+'" name="pagina" />' +
               '</form>';
   $('body').append(form);
   $(form).submit();  

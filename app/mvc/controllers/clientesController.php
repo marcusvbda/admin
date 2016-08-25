@@ -30,7 +30,7 @@ class clientesController extends controller
       	$tempo_consulta = microtime(true) - $tempo_inicio;
       	$qtde_registros = $clientes->total();      	
 		$clientes->appends(['filtro'=>$filtro])->render();
-		echo $this->view('clientes.index',compact('clientes','filtro','tempo_consulta','qtde_registros'));
+		echo $this->view('clientes.index',compact('clientes','filtro','tempo_consulta','qtde_registros','pagina'));
 	}
 
 
@@ -58,6 +58,11 @@ class clientesController extends controller
 		else
 			$filtro = "";
 
+		if(isset($_POST['pagina']))
+			$pagina = strtoupper($_POST['pagina']);
+		else
+			$pagina = "";
+
 		$clientes = DB::table('clientes')
 						->whereRaw("excluido='N' and 
 							(numero like '%$filtro%' or 
@@ -65,7 +70,7 @@ class clientesController extends controller
 							cnpj like '%$filtro%' or 
 							razaosocial like '%$filtro%')")
 								->wherein('empresa',Auth('empresa'))
-								->get();
+									->paginate(10, ['*'], "pagina", $pagina);
 		$campo_relatorio = array('Número'=>'numero','Nome'=>'nome','Razão'=>'razaosocial','CPF / CNPJ'=>'cnpj');
 
 		$html = prepararelatorio($campo_relatorio,$clientes,"Relatório Simples de Clientes");

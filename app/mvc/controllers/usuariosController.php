@@ -33,7 +33,7 @@ class usuariosController extends controller
       	$usuarios->appends(['filtro'=>$filtro])->render();
 
 
-		echo $this->view('usuarios.index',compact('usuarios','filtro','tempo_consulta','qtde_registros'));
+		echo $this->view('usuarios.index',compact('usuarios','filtro','tempo_consulta','qtde_registros','pagina'));
 	}
 
 	public function postDestroy()
@@ -117,7 +117,7 @@ class usuariosController extends controller
 	{
 		$empresas = Auth('empresa');
 		if(Auth('admin_rede')=="S")
-			$empresas  = string_virgulas_array(substr_replace($_POST['empresas'], '', -1));
+			$empresas =  remove_repeticao_array(limpa_vazios_array(string_virgulas_array($_POST['empresas_selecionadas'])));
 		$usuario = $_POST;
 		$usuario['senha'] = md5($usuario['senha']);
 		foreach ($empresas as $empresa):			
@@ -246,13 +246,17 @@ class usuariosController extends controller
 			$filtro = strtoupper($_POST['filtro']);
 		else
 			$filtro = "";
+		if(isset($_POST['pagina']))
+			$pagina = strtoupper($_POST['pagina']);
+		else
+			$pagina = "";
 
 		$usuarios =  DB::table('usuarios')
 						->whereRaw("excluido='N'and 
 								(email like '%$filtro%' or
 								 usuario like '%$filtro%')")
 							->wherein('empresa',Auth('empresa'))
-								->get();
+								->paginate(10, ['*'], "pagina", $pagina);
 		$campo_relatorio = array('Nome'=>'usuario','Email'=>'email','Sexo'=>'sexo','Administrador'=>'admin');
 
 		$html = prepararelatorio($campo_relatorio,$usuarios,"Relatório Simples de Usuários");

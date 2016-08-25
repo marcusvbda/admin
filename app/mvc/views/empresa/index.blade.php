@@ -18,6 +18,7 @@
 
 
 @section('conteudo')
+<div class="row">
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header with-border">
@@ -27,6 +28,9 @@
 			        <div class="row">
 			          <div class="box-body table-responsive no-padding">  
 			            <div class="col-md-12">
+			            	<input type="text" id="empresas" hidden>
+			            	<input type="text" id="qtde_empresas" hidden>
+			            	<input type="text" id="cliques" value="0" hidden>
 			               <table class="table table-striped" id="tabela"></table>
 			            </div>
 			          </div>
@@ -35,16 +39,32 @@
 	  		</div>
 		</div>
 	</div>	
+</div>
+
+<div class="row" >
+    <div class="col-md-6">
+      <button id="btn_salvar" style="display:none;" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Salvar Alteração</button>
+    </div>
+</div>
 
 
 
 <script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
 <script src="{{PASTA_PUBLIC}}/template/bootstrap/js/custom.js"></script>
 <script type="text/javascript">
+var cliques = 0;
 jQuery( document ).ready(function( $ ) 
 {
 	atualizarTable();	
 });
+
+function habilita_salvar()
+{
+	$('#cliques').val(parseInt($('#cliques').val())+1);		
+	cliques = parseInt($('#cliques').val());
+	if(cliques>0)
+		$('#btn_salvar').show();
+}
 
 function atualizarTable()
 {
@@ -71,13 +91,20 @@ function atualizarTable()
 		    {
 		      	if(r.selecionado=="S")	 
 		      	{     		
-		          	html +='<tr style="background-color:#c4ffc4;" onclick="desmarcar('+r.id+');">'+
-		      			'<td><span style="color:green;" class="glyphicon glyphicon-check"></span></td>';
+		          	html +='<tr id="tr_checkbox_'+r.id+'" style="background-color:#c4ffc4;" onclick="desmarcar('+r.id+');">' +
+		      			'<td>'+
+		      				'<span id="span_checkbox_'+r.id+'" style="color:green;" class="glyphicon glyphicon-check"></span></td>';
+		      		if(qtde_selecionado==0)		
+						$('#empresas').val(r.id);
+					else
+						$('#empresas').val($('#empresas').val()+','+r.id);						
+
 		      		qtde_selecionado++;
 		     	}
 		      	else
-		      		html +='<tr style="background-color:#ffd1d1;" onclick="marcar('+r.id+');">'+
-		      			'<td><span style="color:red;" class="glyphicon glyphicon-unchecked"></span></td>';
+		      		html +='<tr id="tr_checkbox_'+r.id+'" style="background-color:#ffd1d1;" onclick="marcar('+r.id+');">'+
+		      			'<td>'+
+		      				'<span id="span_checkbox_'+r.id+'" style="color:red;" class="glyphicon glyphicon-unchecked"></span></td>';
 		    } 
 		    else
 		    {
@@ -104,6 +131,7 @@ function atualizarTable()
 	    });
 	    $('#qtde_selecionada').html(qtde_selecionado);
 	    $('#nome_rede').html(nome_rede);
+	    $('#qtde_empresas').val(qtde_selecionado);
     }).fail(function(d) {
         msg("ERRO","Erro ao consultar empresas");
     });
@@ -111,23 +139,63 @@ function atualizarTable()
 
 function marcar(id)
 {
-	$.getJSON("empresa/Checar_empresa/"+id, function(data){});
-	atualizarTable();
+	if(($('#empresas').val()!="")&&($('#empresas').val()!=null))
+		$('#empresas').val($('#empresas').val()+','+id);
+	else
+		$('#empresas').val(id);		
+	$("#tr_checkbox_"+id).attr("onclick","desmarcar("+id+")");	
+
+	$('#qtde_empresas').val(parseInt($('#qtde_empresas').val())+1);
+
+	$("#span_checkbox_"+id).removeClass("glyphicon glyphicon-unchecked");
+    $("#span_checkbox_"+id).addClass("glyphicon glyphicon-check");
+    $("#span_checkbox_"+id).css("color","green");
+    $("#tr_checkbox_"+id).css("background-color","#c4ffc4");
+    habilita_salvar();
 }
 
 function desmarcar(id)
 {
-	if($('#qtde_selecionada').html()==1)
+	qtde_empresas = parseInt($('#qtde_empresas').val());
+	if(qtde_empresas>1)
 	{
-		msg("Aviso","Não é possível selecionar menos de 1 (uma) empresa para esta sessão !");
-		return false;
+		var empresas = $('#empresas').val();
+		empresas = empresas.replace(id, "");	
+		$('#empresas').val(empresas);
+		$("#tr_checkbox_"+id).attr("onclick","marcar("+id+")");	
+
+		$('#qtde_empresas').val(parseInt(qtde_empresas)-1);
+
+
+		$("#span_checkbox_"+id).removeClass("glyphicon glyphicon-check");
+	    $("#span_checkbox_"+id).addClass("glyphicon glyphicon-unchecked");
+	    $("#span_checkbox_"+id).css("color","red");
+	    $("#tr_checkbox_"+id).css("background-color","#ffd1d1");
+		habilita_salvar();
 	}
 	else
 	{
-		$.getJSON("empresa/Deschecar_empresa/"+id, function(data){});
-		atualizarTable();
+		msg('AVISO','É necessário ao menos 1 (uma) empresa selecionada !');
 	}
 }
+
+function salvar()
+{
+ 	var action = "{{asset('empresa/selecionar_empresas')}}";
+  	var form = '<form action="'+action+'" method="post">' +
+                '<input type="hidden" value="'+$('#empresas').val()+'" name="empresas_selecionadas" />' +
+              '</form>';
+  	$('body').append(form);
+  	$(form).submit();  
+}
+
+$('#btn_salvar').on('click', function() 
+{
+	msg_confirm('<strong>Confirmação</strong>','Selecionar estas empresas?',"salvar()"); 
+
+}); 
+
+
 </script>
 
 @stop
