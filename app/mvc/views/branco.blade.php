@@ -3,25 +3,23 @@
 @section('titulo','PÁGINA EM BRANCO')
 
 @section('topo')
-<!-- <h1>Dashboard
-  <small>Subtitulo</small>
-</h1> -->
-<!-- <ol class="breadcrumb">
-  <li><a href="#"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="#">Pagina em branco</a></li> 
-</ol> -->
+<h1>TITULO
+  <small>SUBTITULO</small>
+</h1>
+<ol class="breadcrumb">
+  <li><a href="{{asset('')}}"><i class="fa fa-dashboard"></i> Início</a></li>
+  <li><i class="fa fa-dashboard"></i> PAGINA ATUAL</li>
+</ol>
 @stop
 
 
 @section('conteudo')
 <div class="col-md-12">
 	<div class="box">
-		<div class="box-header with-border">
-      	<p class="title_box"></p>
-
-		  </h3>
-		  <div class="box-tools pull-right">
-		    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div>
+		<div class="box-header">
+	      	<p class="title_box"></p>			 
+			<div class="box-tools pull-right">
+			</div>
 		</div>
 		<div class="box-body">
 		  <!-- conteudo -->

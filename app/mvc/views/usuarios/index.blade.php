@@ -108,11 +108,9 @@ function excluir_registro(id)
 function imprimir()
 {
   var filtro = $('#filtro').val();
-  var pagina = "{{$pagina}}";
   var action = "{{asset('usuarios/relatorio_simples')}}";
   var form = '<form action="'+action+'" method="post">' +
                 '<input type="hidden" value="'+filtro+'" name="filtro" />' +
-                '<input type="hidden" value="'+pagina+'" name="pagina" />' +
               '</form>';
   $('body').append(form);
   $(form).submit();  

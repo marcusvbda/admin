@@ -5,6 +5,12 @@ use Jenssegers\Blade\Blade;
 
 class empresaController extends controller
 {
+
+	protected $usuario;
+	public function __construct()
+	{
+		$this->usuario = $this->model('usuario');
+	}
 	
 	public function getIndex()
 	{
@@ -41,6 +47,10 @@ class empresaController extends controller
 	{
 		$empresas_selecionadas =  remove_repeticao_array(limpa_vazios_array(string_virgulas_array($_POST['empresas_selecionadas'])));
 		append_empresa($empresas_selecionadas);
+		$usuario = $this->usuario->find(Auth('id'));
+		$usuario->empresa = separa_array_virgulas($empresas_selecionadas);
+		$usuario->save();
+        registralog("Alterou emprsas selecionadas");
 		redirecionar(asset('empresa'));
 	}
 

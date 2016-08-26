@@ -30,7 +30,7 @@ class clientesController extends controller
       	$tempo_consulta = microtime(true) - $tempo_inicio;
       	$qtde_registros = $clientes->total();      	
 		$clientes->appends(['filtro'=>$filtro])->render();
-		echo $this->view('clientes.index',compact('clientes','filtro','tempo_consulta','qtde_registros','pagina'));
+		echo $this->view('clientes.index',compact('clientes','filtro','tempo_consulta','qtde_registros'));
 	}
 
 
@@ -47,6 +47,8 @@ class clientesController extends controller
 		if(count($cliente)==0)
 			redirecionar(asset('erros/404'));
 		$cliente=$cliente[0];
+		registralog("Visualizou o cliente :".$id);	
+
 		echo $this->view('clientes.show',compact('cliente'));
 	}
 
@@ -58,11 +60,6 @@ class clientesController extends controller
 		else
 			$filtro = "";
 
-		if(isset($_POST['pagina']))
-			$pagina = strtoupper($_POST['pagina']);
-		else
-			$pagina = "";
-
 		$clientes = DB::table('clientes')
 						->whereRaw("excluido='N' and 
 							(numero like '%$filtro%' or 
@@ -70,10 +67,12 @@ class clientesController extends controller
 							cnpj like '%$filtro%' or 
 							razaosocial like '%$filtro%')")
 								->wherein('empresa',Auth('empresa'))
-									->paginate(10, ['*'], "pagina", $pagina);
-		$campo_relatorio = array('Número'=>'numero','Nome'=>'nome','Razão'=>'razaosocial','CPF / CNPJ'=>'cnpj');
+									->get();
+		$campo_relatorio = array(''=>'numero','Nome'=>'nome','Razão'=>'razaosocial','CPF / CNPJ'=>'cnpj');
 
 		$html = prepararelatorio($campo_relatorio,$clientes,"Relatório Simples de Clientes");
+		registralog("Imprimiu relatório simples de clientes");
         gerarpdf($html);
+
 	}
 }

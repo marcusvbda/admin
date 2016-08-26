@@ -128,7 +128,7 @@
             </a>
             <ul class="treeview-menu">
                  <li><a href="{{asset('empresa')}}"><i class="glyphicon glyphicon-object-align-bottom"></i> <span>Empresa</span></a></li>
-                 <li><a href="{{asset('configuracoes/parametros')}}"><i class="glyphicon glyphicon-wrench"></i> <span>Parametros de sistema</span></a></li>
+                 <li><a href="{{asset('configuracoes')}}"><i class="glyphicon glyphicon-wrench"></i> <span>Parametros de sistema</span></a></li>
             </ul>
           </li> 
           @else

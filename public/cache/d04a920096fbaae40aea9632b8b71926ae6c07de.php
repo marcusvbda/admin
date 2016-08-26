@@ -50,7 +50,6 @@
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/js/custom.js"></script>
 <script type="text/javascript">
-var cliques = 0;
 jQuery( document ).ready(function( $ ) 
 {
 	atualizarTable();	
@@ -58,11 +57,14 @@ jQuery( document ).ready(function( $ )
 
 function habilita_salvar()
 {
-	$('#cliques').val(parseInt($('#cliques').val())+1);		
-	cliques = parseInt($('#cliques').val());
-	if(cliques>0)
-		$('#btn_salvar').show();
+	var cliques = parseInt($('#cliques').val());
+	if(cliques==0)
+	{
+		$('#cliques').val(cliques+1);
+		$('#btn_salvar').toggle(150);
+	}
 }
+
 
 function atualizarTable()
 {
@@ -197,4 +199,5 @@ $('#btn_salvar').on('click', function()
 </script>
 
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('templates.principal.principal', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -8,7 +8,7 @@ function CheckAuth()
 	{
 		if(isset($_SESSION['dados_usuario']->app_id))
 		{
-			if((Auth('app_id')==APP_ID) && ChecarTimeOut(90))
+			if((Auth('app_id')==APP_ID) && ChecarTimeOut(Parametro('timeout_login')))
 				return true;
 			else
 			{
@@ -68,6 +68,12 @@ function SalvaUsuario($usuario)
 	$_SESSION['dados_usuario'] = (object) $usuario;
 }
 
+function SalvaParametros($parametro)
+{
+	$_SESSION['dados_usuario']->parametros = (object) $parametro;
+}
+
+
 function ChecarTimeOut($minutos = 15)
 {
 	if(Auth('manter_login')=="N")
@@ -108,19 +114,19 @@ function Auth($variavel="id")
 		return null;
 }
 
-function AtualizaSession($id)
+function Parametro($variavel="id")
 {
-	$usuarios = DB::table('usuarios')
-		->where('id','=',$id)
-			->get();
-	if(count($usuarios)>0)	
-	{			
-		$array = ['id'=>$usuarios[0]->id,'empresa'=>$usuarios[0]->empresa ,'admin'=>$usuarios[0]->admin,
-			'grupo_acesso'=>$usuarios[0]->grupo_acesso,'usuario'=>$usuarios[0]->usuario,
-				'email'=>$usuarios[0]->email,'foto'=>$usuarios[0]->foto];			
-		SalvaUsuario((object) $array);
+	if(isset($_SESSION['dados_usuario']))
+	{
+		if($_SESSION['dados_usuario']->parametros->{$variavel}=="")
+			return null;
+		else
+			return $_SESSION['dados_usuario']->parametros->{$variavel};
 	}
+	else
+		return null;
 }
+
 
 function SetLogado($logado = "S")
 {
@@ -128,15 +134,3 @@ function SetLogado($logado = "S")
 }
 
 
-function AtualizarAuth()
-{
-	$usuarios = DB::table('usuarios')->where('id','=',Auth('id'))->get();
-	if(count($usuarios)>0)	
-	{			
-		$array = ['id'=>$usuarios[0]->id,'empresa'=>array($usuarios[0]->empresa), 'sexo'=>$usuarios[0]->sexo,
-		'admin_rede'=>$usuarios[0]->admin_rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
-		'email'=>$usuarios[0]->email,'manter_login'=>Auth('manter_login'),'app_id'=>APP_ID];			
-		SalvaUsuario($array);
-	}
-
-}

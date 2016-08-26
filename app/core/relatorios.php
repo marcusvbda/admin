@@ -1,3 +1,4 @@
+
 <?php
 use Dompdf\Adapter\CPDF;
 use Dompdf\Dompdf;
@@ -6,23 +7,26 @@ use Dompdf\Options;
 
 function gerarpdf($html ="",$donwload = false,$arq= "PDF_TEMPORARIO", $tamanho='A4',$formato="portrait")
 {
-	ini_set('max_execution_time', 0);
-	if(isset($dompdf))
-		unset($dompdf);
-	$dompdf = new Dompdf();
-	$dompdf->loadHtml($html);
-	$canvas = $dompdf->get_canvas();
-    // $canvas->page_text(1,1, "{PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0,0,0));
-	$dompdf->setPaper($tamanho, $formato);
-	$dompdf->render();
-	$dompdf->stream($arq, array("Attachment" => $donwload));
-	unset($dompdf);
-	ini_set('max_execution_time', 30);
+	ini_set('max_execution_time', 0);	
+	$mpdf = new mPDF();
+	$mpdf->pagenumPrefix = 'Página ';
+	$mpdf->nbpgPrefix = ' de ';
+	$mpdf->nbpgSuffix = ' Pagina(s)';
+	$mpdf->SetFooter('{PAGENO}{nbpg}');
+	$css = file_get_contents(PASTA_PUBLIC."/template/bootstrap/css/bootstrap.min.css");
+	$mpdf->WriteHTML($css,1);
+	$mpdf->WriteHTML($html);
+	if($donwload)
+		$mpdf->Output($arq.'.pdf', 'D');
+	else
+		$mpdf->Output();
+	ini_set('max_execution_time', 30);	
+
 }
 
 function gera_cabecalho_relatorio($campos=[])
 {
-	$cabecalho = "<table class='w3-table w3-bordered w3-striped w3-small' style='margin: 0px auto;'>
+	$cabecalho = "<table class='table-striped' style='width:100%;'>
 					<tr>";
 	foreach ($campos as $campo =>$campo_real):
 		$cabecalho .= "<th>{$campo}</th>";	
@@ -63,24 +67,53 @@ function template($titulo,$corpo)
 {
 	$data = date('d/m/Y');
 	$hora = date('H:i:s');
+	// $template = 
+	// "
+	// <html>
+	// 	<head>
+	// 		<meta charset='utf-8'>
+	// 		<title>{$titulo}</title>
+	// 		<link rel='stylesheet' href='http://www.w3schools.com/lib/w3.css'>			
+ //  		</head>
+	// 	<body>
+	// 		<div style='padding:20px;padding-bottom:0;'>
+	// 			<h4 style='text-align:center;margin-top:0;'><strong>{$titulo}</strong></h4><hr>
+	// 			<p style='text-align:right;margin-top:0;margin-bottom:0;'>Emissão : {$data}  -  {$hora}</p>
+	// 			<hr>
+	// 		</div>
+	// 		<div style='padding:20px;text-align:center;padding-top:0;'>
+	// 			{$corpo}
+	// 			<hr>
+	// 		</div>			
+	// 	</body>
+	// </html>";
+
 	$template = 
 	"
 	<html>
 		<head>
 			<meta charset='utf-8'>
-			<title>{$titulo}</title>
-			<link rel='stylesheet' href='http://www.w3schools.com/lib/w3.css'>			
+			<title>{$titulo}</title>	
+			<style>
+				.centro 
+				{
+					text-align:center;
+				}
+				".file_get_contents(PASTA_PUBLIC."/template/bootstrap/css/bootstrap.min.css")."
+			</style>	
   		</head>
 		<body>
-			<div style='padding:20px;padding-bottom:0;'>
-				<h4 style='text-align:center;margin-top:0;'><strong>{$titulo}</strong></h4><hr>
-				<p style='text-align:right;margin-top:0;margin-bottom:0;'>Emissão : {$data}  -  {$hora}</p>
-				<hr>
-			</div>
-			<div style='padding:20px;text-align:center;padding-top:0;'>
-				{$corpo}
-				<hr>
-			</div>			
+			<div class='container'>
+				<div class='row centro'>
+					<h1>{$titulo}</h1>
+					<hr>
+					<p style='text-align:right;margin-top:0;margin-bottom:0;'>Emissão : {$data}  -  {$hora}</p>
+					<hr>
+				</div>
+				<div class='row centro'>
+					{$corpo}
+				</div>
+			</div>	
 		</body>
 	</html>";
 	return $template;

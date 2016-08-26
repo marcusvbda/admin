@@ -19,7 +19,10 @@ function rotas_protegidas()
 {
 	$rotas_protegidas = array
 		(
-			_route("usuariosController@getIndex")
+			_route("usuariosController@getIndex"),
+			_route("configuracoesController@getIndex"),
+			_route("configuracoesController@getBuscaparametros"),
+			_route("configuracoesController@postSalvar")
 		);
 	return $rotas_protegidas;
 }

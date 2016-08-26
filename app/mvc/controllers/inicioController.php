@@ -7,11 +7,6 @@ class inicioController extends controller
 {
 
 	protected $mensagens;
-    public function __construct()
-	{
-        AtualizarAuth();
-		$this->mensagens = $this->model('mensagem');
-	}
 
 	public function getIndex()
 	{

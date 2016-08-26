@@ -14,7 +14,7 @@
 
 <?php $__env->startSection('conteudo'); ?>
 <div id="form_login"  >
-  <p class="login-box-msg">Entre para iniciar sua sessão</p>
+  <p class="login-box-msg">Entre com os dados para iniciar sua sessão</p>
 
       <!-- <form action="<?php echo e(asset('usuarios/logar')); ?>" method="post" onsubmit="return logar()"> -->
         <div class="form-group has-feedback">
@@ -97,7 +97,7 @@ $("#senha").keyup(function(event){
 $("input[name='email']").on('keyup', function(){
     var email = document.getElementById("email").value;
     var senha = document.getElementById("senha").value;
-    $.get('usuarioexiste/' + email,function(data)
+    $.getJSON('usuarioexiste/' + email,function(data)
     {
       if(data=='NAO')
       {

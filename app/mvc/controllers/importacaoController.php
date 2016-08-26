@@ -48,13 +48,16 @@ class importacaoController extends controller
 						$this->mover_arquivo('importados');	
 						$this->arquivos_importados++;		
 					}
-				endforeach;	
+        			registralog("Importou com sucesso o arquivo :".$this->arquivo);
+				endforeach;
 			}
 			catch(exception $e)
 			{
 				echo json_encode('ERRO');				
 				$this->registrar_importacao('N',microtime(true) - $tempo_inicio);
 				$this->mover_arquivo('erro');
+        		registralog("Erro ao importar arquivo :".$this->arquivo);
+
 			}
 			ini_set('max_execution_time', 30);
 		}

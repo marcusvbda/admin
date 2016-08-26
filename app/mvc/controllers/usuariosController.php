@@ -32,8 +32,7 @@ class usuariosController extends controller
       	$qtde_registros = $usuarios->total();  
       	$usuarios->appends(['filtro'=>$filtro])->render();
 
-
-		echo $this->view('usuarios.index',compact('usuarios','filtro','tempo_consulta','qtde_registros','pagina'));
+		echo $this->view('usuarios.index',compact('usuarios','filtro','tempo_consulta','qtde_registros'));
 	}
 
 	public function postDestroy()
@@ -43,6 +42,7 @@ class usuariosController extends controller
 			$usuario = $this->model->find($_POST['id_usuario']);
 			$usuario->excluido="S";
 			$usuario->save();
+        	registralog("Excluiu usuário : ".$_POST['id_usuario']);
 		}
 		redirecionar(asset('usuarios'));
 	}
@@ -67,6 +67,7 @@ class usuariosController extends controller
 		if(count($usuario)==0)
 			redirecionar(asset('erros/404'));
 		$usuario=$usuario[0];
+        registralog("Visualizou usuário : ".$id);
 		echo $this->view('usuarios.show',compact('usuario'));
 	}
 
@@ -75,6 +76,7 @@ class usuariosController extends controller
 		$usuario = DB::table('usuarios')
 			->where('id', $_POST['id'])
             	->update($_POST);
+        registralog("Editou usuário : ".$_POST['id']);
 		redirecionar(asset("usuarios/show/{$_POST['id']}"));
 	}
 
@@ -153,26 +155,34 @@ class usuariosController extends controller
 		redirecionar(asset('usuarios/login'));
 	}
 
-	public function getRenovasenha()
-	{
-		echo "aqui executa um processamento para renovar senha";
-	}
-
 	public function postLogar()
 	{
 		$usuarios = $this->model
-			->where('email','=',$_POST['email'])
-				->where('senha','=',md5($_POST['senha']))
-					->where('excluido','=','N')
-						->get();
+			->join('redes_empresas','redes_empresas.empresa','=','usuarios.empresa')
+				->select('usuarios.*','redes_empresas.rede')
+					->where('usuarios.email','=',$_POST['email'])
+						->where('usuarios.senha','=',md5($_POST['senha']))
+							->where('usuarios.excluido','=','N')
+								->get();
 
 		if(count($usuarios)>0)	
 		{			
-			$array = ['id'=>$usuarios[0]->id,'empresa'=>array($usuarios[0]->empresa), 'sexo'=>$usuarios[0]->sexo ,'admin_rede'=>$usuarios[0]->admin_rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
-					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID];			
+			$array = ['id'=>$usuarios[0]->id, 'sexo'=>$usuarios[0]->sexo ,'admin_rede'=>$usuarios[0]->admin_rede,'rede'=>$usuarios[0]->rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
+					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID];
+	
+			if($usuarios[0]->admin_rede=="S")				
+				$array['empresa'] = remove_repeticao_array(limpa_vazios_array(string_virgulas_array($usuarios[0]->empresa)));	
+			else
+				$array['empresa'] =	array($usuarios[0]->empresa);
 			SalvaUsuario($array);
 			SetLogado('S');
 			registralog("Entrou do sistema");
+			$parametros = DB::table('empresa_parametros')
+				->join('parametros','parametros.id','=','empresa_parametros.id_parametro')
+   							->wherein('empresa',Auth('empresa'))
+									->get();
+			$array = [$parametros[0]->parametro=>$parametros[0]->valor];
+			SalvaParametros($array);	
 			redirecionar(asset('inicio'));
 		}
 		else
@@ -187,9 +197,9 @@ class usuariosController extends controller
 					->get();
 
 		if(count($usuario)>0)	
-		  echo 'SIM';
+		  echo json_encode('SIM');
 		else
-		  echo 'NAO';
+		  echo json_encode('NAO');
 	}
 
 	public function validanovoemail($email,$id=0)
@@ -217,10 +227,11 @@ class usuariosController extends controller
 	{	
 		if($_POST['defseguranca']=='S')
 		{
-	   		 $usuario = $this->model->where('email','=',$_POST['defemail'])->get();	   		 
-	   		 $usuario = $this->model->findOrFail($usuario[0]->id);
-	   		 $usuario->senha=md5($_POST['defsenha']);
-	   		 $usuario->save();
+	   		$usuario = $this->model->where('email','=',$_POST['defemail'])->get();	   		 
+	   		$usuario = $this->model->findOrFail($usuario[0]->id);
+	   		$usuario->senha=md5($_POST['defsenha']);
+	   		$usuario->save();
+			registralog($_POST['defemail']." redefiniu senha para padrão inicial");	
 		}	
 		redirecionar(asset(''));
 	}
@@ -236,6 +247,8 @@ class usuariosController extends controller
 			$email.= '<span style="text-align:center;">A senha deste usuário foi alterada para <Strong> 0123456789 </strong>,</span>';
 			$email.= '<span style="text-align:center;">faça o primeiro <a href="'.asset('login').'">login</a> utilizando esta senha e altere-a.</span>';
 			enviarEmail($_POST['renov_email'],'Renovação de senha '.APP_NOME,$email);
+			registralog("Enviado email de renovação de senha para :".$_POST['renov_email']);	
+
 		}
 		redirecionar(asset(''));
 	}
@@ -246,20 +259,18 @@ class usuariosController extends controller
 			$filtro = strtoupper($_POST['filtro']);
 		else
 			$filtro = "";
-		if(isset($_POST['pagina']))
-			$pagina = strtoupper($_POST['pagina']);
-		else
-			$pagina = "";
+		
 
 		$usuarios =  DB::table('usuarios')
 						->whereRaw("excluido='N'and 
 								(email like '%$filtro%' or
 								 usuario like '%$filtro%')")
 							->wherein('empresa',Auth('empresa'))
-								->paginate(10, ['*'], "pagina", $pagina);
+								->get();
 		$campo_relatorio = array('Nome'=>'usuario','Email'=>'email','Sexo'=>'sexo','Administrador'=>'admin');
 
 		$html = prepararelatorio($campo_relatorio,$usuarios,"Relatório Simples de Usuários");
+		registralog("Imprimiu relatório simples de usuários");		
         gerarpdf($html);
 	}
 

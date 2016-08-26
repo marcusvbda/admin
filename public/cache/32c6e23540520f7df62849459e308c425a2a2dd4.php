@@ -129,7 +129,7 @@
             </a>
             <ul class="treeview-menu">
                  <li><a href="<?php echo e(asset('empresa')); ?>"><i class="glyphicon glyphicon-object-align-bottom"></i> <span>Empresa</span></a></li>
-                 <li><a href="<?php echo e(asset('configuracoes/parametros')); ?>"><i class="glyphicon glyphicon-wrench"></i> <span>Parametros de sistema</span></a></li>
+                 <li><a href="<?php echo e(asset('configuracoes')); ?>"><i class="glyphicon glyphicon-wrench"></i> <span>Parametros de sistema</span></a></li>
             </ul>
           </li> 
           <?php else: ?>

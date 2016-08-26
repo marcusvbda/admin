@@ -8,7 +8,16 @@ function getInfo($valor,$tabela,$campo=1,$operador='=',$comparador=1)
 		return $row->{$valor};
 }
 
-
+function separa_array_virgulas($array)
+{
+	$string = "";
+	for ($i=0; $i < count($array) ; $i++):
+		$string .= $array[$i];
+		if($i<count($array)-1)
+			$string .= ",";
+	endfor;
+	return $string;
+}
 
 function registralog($log = "")
 {
