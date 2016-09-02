@@ -15,7 +15,7 @@ class configuracoesController extends controller
 	{
 		$parametros_acesso = $this->model
 						->join('parametros','parametros.id','=','empresa_parametros.id_parametro')
-   							->wherein('empresa',Auth('empresa'))
+   							->wherein('empresa',Auth('empresa_selecionada'))
    								->groupby('parametro')
 									->get();
 		SalvaParametros([$parametros_acesso[0]->parametro=>$parametros_acesso[0]->valor]);	
@@ -27,7 +27,7 @@ class configuracoesController extends controller
 		$parametros = $this->model
 				->join('parametros','parametros.id','=','empresa_parametros.id_parametro')
 						->where('parametros.classificacao','!=',"MULTIEMPRESA")
-   							->wherein('empresa_parametros.empresa',Auth('empresa'))
+   							->wherein('empresa_parametros.empresa',Auth('empresa_selecionada'))
 	   							->groupby('parametro')
 									->get();
 		echo json_encode($parametros);
@@ -35,7 +35,7 @@ class configuracoesController extends controller
 
 	public function postSalvar()
 	{
-		if((Auth('admin_rede')=="S")&&(count(Auth('empresa'))>1))
+		if((Auth('admin_rede')=="S")&&(count(Auth('empresa_selecionada'))>1))
 		{
 			$nova_configuracao = $_POST;
 			$id_parametros = array();
@@ -46,7 +46,7 @@ class configuracoesController extends controller
 			foreach ($_POST as $parametro =>$valor):
 				$config = $this->model
 						->where("id_parametro",'=',$parametro)
-							->wherein('empresa',Auth('empresa'))
+							->wherein('empresa',Auth('empresa_selecionada'))
 								->update(['valor'=>$valor]);
 			endforeach;
 		}
@@ -56,7 +56,7 @@ class configuracoesController extends controller
 			foreach ($_POST as $parametro =>$valor):
 				$config = $this->model
 						->where("id_parametro",'=',$parametro)
-							->wherein('empresa',Auth('empresa'))
+							->wherein('empresa',Auth('empresa_selecionada'))
 								->update(['valor'=>$valor]);
 			endforeach;
 		}

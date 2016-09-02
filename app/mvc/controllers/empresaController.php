@@ -19,12 +19,15 @@ class empresaController extends controller
 	
 	public function getBuscaEmpresas()
 	{
-		$id_empresa_principal = DB::table('usuarios')->find(Auth('id'))->empresa;
-		$empresa = DB::table('empresas')->find($id_empresa_principal);
+		$id_empresas= remove_repeticao_array(limpa_vazios_array(string_virgulas_array(DB::table('usuarios')->find(Auth('id'))->empresa)));		
 
-		$rede_empresa_principal = DB::table('redes_empresas')->where('empresa','=',$id_empresa_principal)->get();
-		$rede = DB::table('redes_empresas')->where('empresa','=',$id_empresa_principal)->get();
+		$rede_empresa = DB::table('redes_empresas')->wherein('empresa',$id_empresas)->get();
+	
+		$rede = DB::table('redes_empresas')->where('empresa','=',$rede_empresa[0]->rede)->get();
+
 		$id_rede = $rede[0]->id;
+
+
 		$empresas_da_rede = DB::table('redes_empresas')
 			->join('redes','redes_empresas.rede' ,'=', 'redes.id')
 				->join('empresas','empresas.id' ,'=', 'redes_empresas.empresa')
@@ -36,7 +39,8 @@ class empresaController extends controller
 		$nome_rede = $empresas_da_rede[0]->nome_rede;
 
 		$empresas_da_rede = add_campo_objeto('selecionado','N',$empresas_da_rede);
-      	foreach(Auth('empresa') as $emp_selecionada):
+
+      	foreach(Auth('empresa_selecionada') as $emp_selecionada):
 	   		$empresas_da_rede[object_search($emp_selecionada,"id",$empresas_da_rede)]->selecionado = "S";
 	   	endforeach;	
 
@@ -48,7 +52,7 @@ class empresaController extends controller
 		$empresas_selecionadas =  remove_repeticao_array(limpa_vazios_array(string_virgulas_array($_POST['empresas_selecionadas'])));
 		append_empresa($empresas_selecionadas);
 		$usuario = $this->usuario->find(Auth('id'));
-		$usuario->empresa = separa_array_virgulas($empresas_selecionadas);
+		$usuario->empresa_selecionada = separa_array_virgulas($empresas_selecionadas);
 		$usuario->save();
         registralog("Alterou emprsas selecionadas");
 		redirecionar(asset('empresa'));

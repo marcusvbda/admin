@@ -13,6 +13,7 @@ class usuariosController extends controller
 
 	public function getIndex()
 	{
+		print_r(Auth('empresa_selecionada'));
 		if(isset($_GET['filtro']))
 			$filtro = strtoupper($_GET['filtro']);
 		else
@@ -23,11 +24,11 @@ class usuariosController extends controller
 			$pagina = "1";
       	$tempo_inicio = microtime(true);
 		$usuarios =  DB::table('usuarios')
-						->whereRaw("excluido='N'and 
-								(email like '%$filtro%' or
-								 usuario like '%$filtro%')")
-							->wherein('empresa',Auth('empresa'))
-								->paginate(10, ['*'], "pagina", $pagina);
+						->where('excluido','=',"N")
+							->whereRaw("(email like '%$filtro%' or
+									 usuario like '%$filtro%')")
+								->wherein('empresa',Auth('empresa_selecionada'))
+									->paginate(10, ['*'], "pagina", $pagina);
       	$tempo_consulta = microtime(true) - $tempo_inicio;
       	$qtde_registros = $usuarios->total();  
       	$usuarios->appends(['filtro'=>$filtro])->render();
@@ -61,7 +62,7 @@ class usuariosController extends controller
 			->select('usuarios.*','empresas.razao as empresa_razao')
 				->join('empresas','empresas.id','=','usuarios.empresa')
 					->where('usuarios.id','=',$id)
-						->wherein('empresa',Auth('empresa'))
+						->wherein('empresa',Auth('empresa_selecionada'))
 							->get();
 		// $usuario = DB::table('usuarios')->find($usuario[0]->id);
 		if(count($usuario)==0)
@@ -170,10 +171,9 @@ class usuariosController extends controller
 			$array = ['id'=>$usuarios[0]->id, 'sexo'=>$usuarios[0]->sexo ,'admin_rede'=>$usuarios[0]->admin_rede,'rede'=>$usuarios[0]->rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
 					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID];
 	
-			if($usuarios[0]->admin_rede=="S")				
-				$array['empresa'] = remove_repeticao_array(limpa_vazios_array(string_virgulas_array($usuarios[0]->empresa)));	
-			else
-				$array['empresa'] =	array($usuarios[0]->empresa);
+			$array['empresa_selecionada'] = remove_repeticao_array(limpa_vazios_array(string_virgulas_array($usuarios[0]->empresa_selecionada)));
+			$array['empresa'] =	array($usuarios[0]->empresa);
+
 			SalvaUsuario($array);
 			SetLogado('S');
 			registralog("Entrou do sistema");

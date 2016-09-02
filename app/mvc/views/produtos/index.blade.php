@@ -68,7 +68,7 @@
                     <td>{{$produto->nomefantasia}}</td>
                     <td>{{$produto->descricao}}</td>
                     <td class="centro">
-                      <a title="Visualizar" href='{{asset("produtos/show/$produtos->sequencia")}}' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a>
+                      <a title="Visualizar" href='{{asset("produtos/show/$produto->sequencia")}}' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a>
                     </td>
                   </tr>
                   @endforeach

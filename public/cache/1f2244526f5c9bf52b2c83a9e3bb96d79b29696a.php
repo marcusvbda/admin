@@ -1,13 +1,13 @@
 <?php $__env->startSection('titulo','Usuários'); ?>
 
 <?php $__env->startSection('topo'); ?>
-<h1>Usuários
-  <small>Consulta / Alteração</small>
+<h1>Clientes
+  <small>Consulta</small>
 </h1>
 <ol class="breadcrumb">
   <li><a href="<?php echo e(asset('admin/inicio')); ?>"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="<?php echo e(asset('admin/usuarios')); ?>"><i class="glyphicon glyphicon-user"></i> Usuários</a></li>
-  <li><a><i class="glyphicon glyphicon-search"></i> Consulta / Alteração</a></li>
+  <li><a href="<?php echo e(asset('admin/clientes')); ?>"><i class="glyphicon glyphicon-user"></i> Clientes</a></li>
+  <li><a><i class="glyphicon glyphicon-search"></i> Consulta</a></li>
 </ol>
 <?php $__env->stopSection(); ?>
 
@@ -17,7 +17,7 @@
 <div class="col-md-12">
     <div class="box" style="padding-bottom:20px;">
       <div class="box-header with-border">
-        <p class="title_box">Dados do Usuário</p>
+        <p class="title_box">Dados do Clientes</p>
         <div class="box-tools pull-right">
         </div>
 

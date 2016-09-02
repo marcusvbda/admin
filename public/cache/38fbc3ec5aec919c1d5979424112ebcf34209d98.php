@@ -66,7 +66,7 @@
                     <td><?php echo e($produto->nomefantasia); ?></td>
                     <td><?php echo e($produto->descricao); ?></td>
                     <td class="centro">
-                      <a title="Visualizar" href='<?php echo e(asset("produtos/show/$produtos->sequencia")); ?>' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a>
+                      <a title="Visualizar" href='<?php echo e(asset("produtos/show/$produto->sequencia")); ?>' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a>
                     </td>
                   </tr>
                   <?php endforeach; ?>

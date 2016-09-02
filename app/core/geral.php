@@ -202,3 +202,17 @@ function remove_repeticao_array($array)
 	endforeach;
 	return $array_aux2;
 }
+
+function data_formatada($data)
+{
+	$data =  date("d/m/Y", strtotime($data) );
+	if($data=='31/12/1969')
+		return null;
+	else
+		return $data;
+}
+
+function format_reais($valor)
+{
+	return 'R$' .' '.number_format($valor, 2);
+}

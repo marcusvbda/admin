@@ -49,16 +49,16 @@ function arrayUnique($myArray){
 
 } 
 
-function append_empresa($empresas )
+function append_empresa($empresas)
 {
-	remove_empresas();
-	$_SESSION['dados_usuario']->empresa = $empresas;
+	remove_empresas();	
+	$_SESSION['dados_usuario']->empresa_selecionada = $empresas;
 }
 
 
 function remove_empresas()
 {
-	if(count(Auth('empresa'))>0)
+	if(count(Auth('empresa_selecionadas'))>0)
 		unset($_SESSION['dados_usuario']->empresa);
 }
 

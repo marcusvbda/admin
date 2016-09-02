@@ -20,12 +20,12 @@ class clientesController extends controller
 		$filtro = strtoupper($filtro);
       	$tempo_inicio = microtime(true);		
 		$clientes = DB::table('clientes')
-						->whereRaw("excluido='N' and 
-							(numero like '%$filtro%' or 
+						->where('excluido','=','N')
+						->whereRaw("(numero like '%$filtro%' or 
 							nome like '%$filtro%' or
 							cnpj like '%$filtro%' or 
 							razaosocial like '%$filtro%')")
-								->wherein('empresa',Auth('empresa'))
+								->wherein('empresa',Auth('empresa_selecionada'))
 									->paginate(10, ['*'], "pagina", $pagina);
       	$tempo_consulta = microtime(true) - $tempo_inicio;
       	$qtde_registros = $clientes->total();      	
@@ -36,13 +36,12 @@ class clientesController extends controller
 
 	public function getShow($id)
 	{
-      	ini_set('max_execution_time', 0);
 		if($id=="")
 			redirecionar(asset('erros/404'));
 		$cliente = DB::table('clientes')			
 				->where('sequencia','=',$id)
 					->where('excluido','=','N')
-						->wherein('empresa',Auth('empresa'))
+						->wherein('empresa',Auth('empresa_selecionada'))
 							->get();
 		if(count($cliente)==0)
 			redirecionar(asset('erros/404'));
@@ -66,7 +65,7 @@ class clientesController extends controller
 							nome like '%$filtro%' or
 							cnpj like '%$filtro%' or 
 							razaosocial like '%$filtro%')")
-								->wherein('empresa',Auth('empresa'))
+								->wherein('empresa',Auth('empresa_selecionada'))
 									->get();
 		$campo_relatorio = array(''=>'numero','Nome'=>'nome','Razão'=>'razaosocial','CPF / CNPJ'=>'cnpj');
 

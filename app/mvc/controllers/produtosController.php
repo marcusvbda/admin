@@ -29,7 +29,7 @@ class produtosController extends controller
 							(descricao like '%$filtro%' or 
 							nomefantasia like '%$filtro%' or
 							codigo like '%$filtro%')")
-								->wherein('empresa',Auth('empresa'))
+								->wherein('empresa',Auth('empresa_selecionada'))
 									->paginate(10, ['*'], "pagina", $pagina);
       	$tempo_consulta = microtime(true) - $tempo_inicio;
       	$qtde_registros = $produtos->total();      	
@@ -45,17 +45,34 @@ class produtosController extends controller
 			$filtro = "";
 
 		$produtos = DB::table('produtos')
-						->whereRaw("excluido='N' and 
-							(descricao like '%$filtro%' or 
+						->where('excluido','=','N')
+						->whereRaw("(descricao like '%$filtro%' or 
 							nomefantasia like '%$filtro%' or
 							codigo like '%$filtro%')")
-								->wherein('empresa',Auth('empresa'))
+								->wherein('empresa',Auth('empresa_selecionada'))
 									->get();
 		$campo_relatorio = array('Código'=>'codigo','Código Estendido'=>'codigoestendido','Nome'=>'nomefantasia','Descrição'=>'descricao');
 		$html = prepararelatorio($campo_relatorio,$produtos,"Relatório Simples de Produtos");
 		registralog("Imprimiu relatório simples de produtos");
         gerarpdf($html);
 
+	}
+
+	public function getShow($id)
+	{
+		if($id=="")
+			redirecionar(asset('erros/404'));
+		$produtos = DB::table('produtos')			
+				->where('sequencia','=',$id)
+					->where('excluido','=','N')
+						->wherein('empresa',Auth('empresa_selecionada'))
+							->get();
+		if(count($produtos)==0)
+			redirecionar(asset('erros/404'));
+		$produto=$produtos[0];
+		registralog("Visualizou o produto :".$id);	
+
+		echo $this->view('produtos.show',compact('produto'));
 	}
 
 
