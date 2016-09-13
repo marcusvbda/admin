@@ -53,7 +53,6 @@
 		
 
 
-
 	</div>
 	<div class="box-footer">
 		<!-- rodapé -->
@@ -66,7 +65,7 @@
 	$( document ).ready(function()
 	{
 		admin_rede = "<?php echo e(Auth('admin_rede')); ?>";
-		if(admin_rede=="N")
+		// if(admin_rede=="N")
 	    	procura_arquivos_para_importar();
 	});
 
@@ -126,6 +125,10 @@
 
 	  	});
 	}
+
+
+	
+	
 </script>
 <?php $__env->stopSection(); ?>
 

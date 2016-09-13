@@ -24,12 +24,10 @@
 
           <div class="row">
             <div class="col-md-2">
-              <label>Código</label>
-              <input type="text" readonly class="form-control" value="<?php echo e($produto->codigo); ?>">
+              <h4><strong>Código : </strong><?php echo e($produto->codigo); ?></h4>
             </div>
             <div class="col-md-10">
-              <label>Descrição</label>
-              <input type="text" readonly class="form-control" value="<?php echo e($produto->descricao); ?>">
+              <h4><strong>Descrição : </strong><?php echo e($produto->descricao); ?></h4>
             </div>
           </div>
           <hr>
@@ -78,11 +76,11 @@
                   <div class="row">
                     <div class="col-md-6">
                       <label>Tipo Produto</label>
-                      <input type="text" readonly class="form-control" >
+                      <input type="text" readonly class="form-control" value="<?php echo e($produto->desc_tipoproduto); ?>">
                     </div> 
                     <div class="col-md-6">
                       <label>Grupo Produto</label>
-                      <input type="text" readonly class="form-control" >
+                      <input type="text" readonly class="form-control" value="<?php echo e($produto->desc_grupoproduto); ?>">
                     </div> 
                   </div>
                   <div class="row">
@@ -168,7 +166,7 @@
                     </div>
                     <div class="col-md-3">
                       <label>Cód.NCM</label>
-                      <input type="text" class="form-control" readonly="" value="">
+                      <input type="text" class="form-control" readonly="" value="<?php echo e($produto->codigo_nbmsh); ?>">
                     </div>
                   </div>              
                   
@@ -179,7 +177,7 @@
                     </div>
                     <div class="col-md-3">
                       <label>Cód.Ticket</label>
-                      <input type="text" class="form-control" readonly="" value="">
+                      <input type="text" class="form-control" readonly="" value="<?php echo e($produto->codigoticket); ?>">
                     </div>
                     <div class="col-md-3">
                       <label>Cód.Tp.Serviço</label>
@@ -191,17 +189,7 @@
                     </div>
                   </div>            
                  
-                 
-                  <div class="row">
-                    <div class="col-md-2">
-                      <label>Cód.Sefaz</label>
-                      <input type="text" class="form-control" readonly="" value="<?php echo e($produto->codigo_produtosefaz); ?>">
-                    </div>
-                    <div class="col-md-10">
-                      <label>Descrição SEFAZ</label>
-                      <input type="text" class="form-control" readonly="" value="">
-                    </div>
-                  </div>
+                                 
 
                   <div class="row">
                     <div class="col-md-3">
@@ -217,7 +205,6 @@
 
 
 
-
                 <div id="tributacao" class="tab-pane fade">
                 <br>
                   <div class="row">
@@ -227,7 +214,7 @@
                     </div>
                     <div class="col-md-10">
                       <label>Descrição</label>
-                      <input type="text" class="form-control" readonly value="">
+                      <input type="text" class="form-control" readonly value="<?php echo e($produto->desc_cstsaida); ?>">
                     </div>
                   </div>
                   <div class="row">
@@ -237,7 +224,7 @@
                     </div>
                     <div class="col-md-10">
                       <label>Descrição</label>
-                      <input type="text" class="form-control" readonly value="">
+                      <input type="text" class="form-control" readonly value="<?php echo e($produto->desc_cst_entrada); ?>">
                     </div>
                   </div>
 
@@ -252,15 +239,15 @@
                     </div>
                     <div class="col-md-4">
                       <label>CST PIS</label>
-                      <input type="text" class="form-control" readonly value="">
+                      <input type="text" class="form-control" readonly  value="<?php echo e($produto->cstpis); ?>">
                     </div>
                     <div class="col-md-4">
-                      <label>CST PIST Entrada</label>
-                      <input type="text" class="form-control" readonly value="">
+                      <label>CST PIS Entrada</label>
+                      <input type="text" class="form-control" readonly  value="<?php echo e($produto->cstpisentrada); ?>">
                     </div>
                     <div class="col-md-4">
                       <label>Aliquota PIS</label>
-                      <input type="text" class="form-control" readonly value="">
+                      <input type="text" class="form-control" readonly value="<?php echo e($produto->aliquotapis); ?>">
                     </div>
 
                     <div class="col-md-4">
@@ -273,15 +260,15 @@
                     </div>
                     <div class="col-md-4">
                       <label>CST COFINS</label>
-                      <input type="text" class="form-control" readonly value="">
+                      <input type="text" class="form-control" readonly  value="<?php echo e($produto->cstcofins); ?>">
                     </div>
                     <div class="col-md-4">
                       <label>CST COFINS Entrada</label>
-                      <input type="text" class="form-control" readonly value="">
+                      <input type="text" class="form-control" readonly  value="<?php echo e($produto->cstcofinsentrada); ?>">
                     </div>
                     <div class="col-md-4">
                       <label>Aliquota COFINS</label>
-                      <input type="text" class="form-control" readonly value="">
+                      <input type="text" class="form-control" readonly  value="<?php echo e($produto->aliquotacofins); ?>">
                     </div>
 
                     <div class="col-md-4">
@@ -294,11 +281,11 @@
                     </div>
                     <div class="col-md-4">
                       <label>Aliquota ICMS Reduzida</label>
-                      <input type="text" class="form-control" readonly>
+                      <input type="text" class="form-control" readonly  value="<?php echo e($produto->aliquotaicmsreduzida); ?>">
                     </div>
                     <div class="col-md-4">
                       <label>Aliquota MVA ST</label>
-                      <input type="text" class="form-control" readonly>
+                      <input type="text" class="form-control" readonly  value="<?php echo e($produto->mvast); ?>">
                     </div>
                   </div>
 

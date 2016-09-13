@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/dist/css/skins/_all-skins.min.css">
   <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/bootstrap/css/custom.css">
+  <link rel='icon' href={{FAVICON}} type='image/gif'>
+
 <style type="text/css"></style></head>
 <body class="skin-blue sidebar-mini fixed" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
 <!-- Site wrapper -->
@@ -19,9 +21,9 @@
     <!-- Logo -->
     <a href="{{asset('')}}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>AD</b>M</span>
+      <span class="logo-mini"><b><img src="{{FAVICON}}" width=50></b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>AD</b>MIN</span>
+      <span class="logo-lg"><b><img src="{{FAVICON}}" width=55>DMIN</b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -111,13 +113,40 @@
           </li>
         @endif  
 
-          <li class="treeview">
+        <li class="treeview">
             <a href="#">
               <i class="glyphicon glyphicon-align-right"></i> <span>Consultas</span>
             </a>
             <ul class="treeview-menu">
                     <li><a href="{{asset('clientes')}}"><i class="glyphicon glyphicon-user"></i> <span>Clientes</span></a></li>
-                    <li><a href="{{asset('produtos')}}"><i class="glyphicon glyphicon-erase"></i> <span>Produtos</span></a></li>
+                    <li class="treeview">
+                      <a href="#">
+                        <i class="glyphicon glyphicon-erase"></i> <span>Produtos</span>
+                      </a>
+                      <ul class="treeview-menu">
+                        <li><a href="{{asset('produtos')}}"><i class="glyphicon glyphicon-erase"></i> <span>Produtos</span></a></li>
+                        <li><a href="{{asset('produtos/tipos')}}"><i class="glyphicon glyphicon-erase"></i> <span>Tipos de Produto</span></a></li>
+                        <li><a href="{{asset('produtos/grupos')}}"><i class="glyphicon glyphicon-erase"></i> <span>Grupos de Produto</span></a></li>
+                      </ul>
+                    </li>
+                    <li><a href="{{asset('tanques')}}"><i class="glyphicon glyphicon-tasks"></i> <span>Tanques</span></a></li>                 
+            </ul>
+          </li>
+
+
+          <li class="treeview">
+            <a href="#">
+              <i class="glyphicon glyphicon-list-alt"></i> <span>Relatórios</span>
+            </a>
+            <ul class="treeview-menu">
+              <li class="treeview">
+                <a href="#">
+                  <i class="glyphicon glyphicon-erase"></i> <span>Produtos</span>
+                </a>
+                <ul class="treeview-menu">
+                  <li><a href="{{asset('relatorios/tributacoes_codigos')}}"><i class="glyphicon glyphicon-erase"></i> <span>Tributações / Códigos</span></a></li>
+                </ul>
+              </li>            
             </ul>
           </li>
 
@@ -128,7 +157,7 @@
             </a>
             <ul class="treeview-menu">
                  <li><a href="{{asset('empresa')}}"><i class="glyphicon glyphicon-object-align-bottom"></i> <span>Empresa</span></a></li>
-                 <li><a href="{{asset('configuracoes')}}"><i class="glyphicon glyphicon-wrench"></i> <span>Parametros de sistema</span></a></li>
+                 <li><a href="{{asset('configuracoes')}}"><i class="glyphicon glyphicon-tasks"></i> <span>Parametros de sistema</span></a></li>
             </ul>
           </li> 
           @else
@@ -192,7 +221,6 @@
 
 
 <!-- jQuery 2.2.0 -->
-<script async="" src="//www.google-analytics.com/analytics.js"></script>
 <script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
 
 

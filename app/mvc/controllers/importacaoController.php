@@ -23,7 +23,7 @@ class importacaoController extends controller
 
 	public function getQtde_arquivos($pasta)
 	{
-		$cnpj_empresa = DB::table('empresas')->find(Auth('empresa'))->CNPJ_CPF;
+		$cnpj_empresa = DB::table('empresas')->find(Auth('empresa')[0])->CNPJ_CPF;
 		$this->pasta_importar = __DIR__."/../../../public/uploads/importacao/$pasta/{$cnpj_empresa}/";
 	   	$this->arq_importar = scandir($this->pasta_importar);
 	   	echo json_encode((count($this->arq_importar)-2));
@@ -75,14 +75,14 @@ class importacaoController extends controller
 		$importacao->qtde_inserts=$this->inserts;
 		$importacao->qtde_updates=$this->updates;
 		$importacao->usuario=Auth('id');
-		$importacao->empresa=Auth('empresa');
+		$importacao->empresa=Auth('empresa')[0];
 		$importacao->save();
 		unset($importacao);
 	}
 
 	private function mover_arquivo($pasta)
 	{
-		$cnpj_empresa = DB::table('empresas')->find(Auth('empresa'))->CNPJ_CPF;
+		$cnpj_empresa = DB::table('empresas')->find(Auth('empresa')[0])->CNPJ_CPF;
 		$pasta_importar = __DIR__."/../../../public/uploads/importacao/importar/{$cnpj_empresa}/";
 		$pasta =          __DIR__."/../../../public/uploads/importacao/$pasta/{$cnpj_empresa}/";
 		if (!is_dir($pasta))
@@ -93,7 +93,7 @@ class importacaoController extends controller
 
 	private function existeArquivos()
 	{
-		$cnpj_empresa = DB::table('empresas')->find(Auth('empresa'))->CNPJ_CPF;
+		$cnpj_empresa = DB::table('empresas')->find(Auth('empresa')[0])->CNPJ_CPF;
 		$this->pasta_importar = __DIR__."/../../../public/uploads/importacao/importar/{$cnpj_empresa}/";
 	   	$this->arq_importar = scandir($this->pasta_importar);
 	   	if(count($this->arq_importar)>2)
@@ -164,7 +164,7 @@ class importacaoController extends controller
 	{
 		$this->query = DB::table($tabela)
 			->where($this->chaves_com_valor)
-				->where('empresa','=',Auth('empresa'))
+				->where('empresa','=',Auth('empresa')[0])
 					->get();			
 
 		if(count($this->query)>0)
@@ -177,7 +177,7 @@ class importacaoController extends controller
 	private function executa_operacao($linha)
 	{
 		$linha = (array) $linha;
-		$linha['empresa']=Auth('empresa');
+		$linha['empresa']=Auth('empresa')[0];
 		switch (strtoupper($this->tipo_operacao)):			
 			case 'INSERT':
 			    DB::table($this->tabela)->insert($linha);

@@ -216,3 +216,16 @@ function format_reais($valor)
 {
 	return 'R$' .' '.number_format($valor, 2);
 }
+
+function vazio($variavel)
+{
+	if ((isset($variavel)) && ($variavel!="") && (trim($variavel)!="") && (!is_null($variavel)))
+		return false;
+	else
+		return true;
+}
+
+function query($sql)
+{
+	return  DB::select(DB::raw($sql));
+}

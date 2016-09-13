@@ -197,7 +197,6 @@ $('#btn_salvar').on('click', function()
 
 }); 
 
-
 </script>
 
 @stop

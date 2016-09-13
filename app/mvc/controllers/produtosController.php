@@ -22,7 +22,6 @@ class produtosController extends controller
 		else
 			$pagina = "1";
 
-		$filtro = strtoupper($filtro);
       	$tempo_inicio = microtime(true);		
 		$produtos = DB::table('produtos')
 						->whereRaw("excluido='N' and 
@@ -55,7 +54,26 @@ class produtosController extends controller
 		$html = prepararelatorio($campo_relatorio,$produtos,"Relatório Simples de Produtos");
 		registralog("Imprimiu relatório simples de produtos");
         gerarpdf($html);
+	}
 
+	public function postRelatorio_simples_tipos()
+	{     	
+		if(isset($_GET['filtro']))
+			$filtro = strtoupper($_GET['filtro']);
+		else
+			$filtro = "";
+
+		$tipos = 
+		DB::table('tiposprodutos')
+			->wherein('empresa',Auth('empresa'))
+				->where('excluido','=','N')
+					->whereRaw("descricao like '%$filtro%'")
+						->get();
+
+		$campo_relatorio = array('Número'=>'numero','Descrição'=>'descricao','Entradas'=>'entradas','Saidas'=>'saidas');
+		$html = prepararelatorio($campo_relatorio,$tipos,"Relatório Simples de Tipos de Produto");
+		registralog("Imprimiu relatório simples de Tipos de produtos");
+        gerarpdf($html);
 	}
 
 	public function getShow($id)
@@ -63,10 +81,20 @@ class produtosController extends controller
 		if($id=="")
 			redirecionar(asset('erros/404'));
 		$produtos = DB::table('produtos')			
-				->where('sequencia','=',$id)
-					->where('excluido','=','N')
-						->wherein('empresa',Auth('empresa_selecionada'))
-							->get();
+		->where('produtos.sequencia','=',$id)
+			->where('produtos.excluido','=','N')
+				->where('tiposprodutos.excluido','=','N')
+					->where('gruposprodutos.excluido','=','N')
+						->wherein('tiposprodutos.empresa',Auth('empresa_selecionada'))
+							->wherein('produtos.empresa',Auth('empresa_selecionada'))
+								->wherein('gruposprodutos.empresa',Auth('empresa_selecionada'))
+									->join('tiposprodutos','tiposprodutos.numero','=','produtos.codigo_tipoproduto')
+										->join('gruposprodutos','gruposprodutos.codigo','=','produtos.codigo_grupoproduto')
+											->join('produto_empresa','produto_empresa.codigo_produto','=','produtos.codigo')
+												->join('situacoestributarias','situacoestributarias.codigo','=','produtos.codigo_st')
+													->join('situacoestributarias as sit_entrada','sit_entrada.codigo','=','produtos.codigo_stentrada')
+														->select('produtos.*','tiposprodutos.descricao as desc_tipoproduto','gruposprodutos.descricao as desc_grupoproduto','produto_empresa.*','situacoestributarias.descricao as desc_cstsaida','sit_entrada.descricao as desc_cst_entrada')
+															->get();
 		if(count($produtos)==0)
 			redirecionar(asset('erros/404'));
 		$produto=$produtos[0];
@@ -75,5 +103,54 @@ class produtosController extends controller
 		echo $this->view('produtos.show',compact('produto'));
 	}
 
+	public function getTipos()
+	{
+		if(isset($_GET['filtro']))
+			$filtro = strtoupper($_GET['filtro']);
+		else
+			$filtro = "";
+		if(isset($_GET['pagina']))
+			$pagina = $_GET['pagina'];
+		else
+			$pagina = "1";
 
+      	$tempo_inicio = microtime(true);	
+
+		$tipos = 
+		DB::table('tiposprodutos')
+			->wherein('empresa',Auth('empresa'))
+				->where('excluido','=','N')
+					->whereRaw("descricao like '%$filtro%'")
+						->paginate(10, ['*'], "pagina", $pagina);
+      	$tempo_consulta = microtime(true) - $tempo_inicio;
+      	$qtde_registros = $tipos->total();      	
+		$tipos->appends(['filtro'=>$filtro])->render();
+		echo $this->view('produtos.tipos',compact('tipos','filtro','tempo_consulta','qtde_registros'));
+	}
+
+	public function getGrupos()
+	{
+		if(isset($_GET['filtro']))
+			$filtro = strtoupper($_GET['filtro']);
+		else
+			$filtro = "";
+		if(isset($_GET['pagina']))
+			$pagina = $_GET['pagina'];
+		else
+			$pagina = "1";
+
+      	$tempo_inicio = microtime(true);	
+
+		$grupos = 
+		DB::table('gruposprodutos')
+			->wherein('empresa',Auth('empresa'))
+				->where('excluido','=','N')
+					->whereRaw("descricao like '%$filtro%'")
+						->paginate(10, ['*'], "pagina", $pagina);
+      	$tempo_consulta = microtime(true) - $tempo_inicio;
+      	$qtde_registros = $grupos->total();      	
+		$grupos->appends(['filtro'=>$filtro])->render();
+		echo $this->view('produtos.grupos',compact('grupos','filtro','tempo_consulta','qtde_registros'));
+
+	}
 }

@@ -51,7 +51,7 @@ function gera_table_relatorio($campos,$array)
 
 function prepararelatorio_corpo($corpo,$titulo)
 {
-	$html = template($titulo,$corpo);
+	$html = template_relatorio($titulo,$corpo);
 	return $html;
 }
 
@@ -59,35 +59,14 @@ function prepararelatorio($campo_relatorio,$consulta,$titulo)
 {
 	$table = gera_cabecalho_relatorio($campo_relatorio); 
 	$table .= gera_table_relatorio($campo_relatorio,$consulta);
-	$html = template($titulo,$table,count($consulta));
+	$html = template_relatorio($titulo,$table,count($consulta));
 	return $html;
 }
 
-function template($titulo,$corpo)
+function template_relatorio($titulo,$corpo)
 {
 	$data = date('d/m/Y');
 	$hora = date('H:i:s');
-	// $template = 
-	// "
-	// <html>
-	// 	<head>
-	// 		<meta charset='utf-8'>
-	// 		<title>{$titulo}</title>
-	// 		<link rel='stylesheet' href='http://www.w3schools.com/lib/w3.css'>			
- //  		</head>
-	// 	<body>
-	// 		<div style='padding:20px;padding-bottom:0;'>
-	// 			<h4 style='text-align:center;margin-top:0;'><strong>{$titulo}</strong></h4><hr>
-	// 			<p style='text-align:right;margin-top:0;margin-bottom:0;'>Emissão : {$data}  -  {$hora}</p>
-	// 			<hr>
-	// 		</div>
-	// 		<div style='padding:20px;text-align:center;padding-top:0;'>
-	// 			{$corpo}
-	// 			<hr>
-	// 		</div>			
-	// 	</body>
-	// </html>";
-
 	$template = 
 	"
 	<html>

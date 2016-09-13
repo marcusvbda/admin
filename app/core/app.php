@@ -44,7 +44,7 @@ class app
 		$this->controller = new $this->controller;
 
 
-		//define o metodo
+		//define o metodo 
 		if(isset($url[$this->posicao]))
 		{
 			if(method_exists($this->controller, strtolower($_SERVER['REQUEST_METHOD']).ucfirst($url[$this->posicao])))
@@ -65,6 +65,7 @@ class app
 		{
 			call_user_func_array([$this->controller,$this->metodo],$this->parametros);
 		}
+		
 	}
 
 	public function parseUrl()

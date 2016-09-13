@@ -55,7 +55,6 @@
 		
 
 
-
 	</div>
 	<div class="box-footer">
 		<!-- rodapé -->
@@ -68,7 +67,7 @@
 	$( document ).ready(function()
 	{
 		admin_rede = "{{Auth('admin_rede')}}";
-		if(admin_rede=="N")
+		// if(admin_rede=="N")
 	    	procura_arquivos_para_importar();
 	});
 
@@ -128,5 +127,9 @@
 
 	  	});
 	}
+
+
+	
+	
 </script>
 @stop

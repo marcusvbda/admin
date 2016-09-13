@@ -195,7 +195,6 @@ $('#btn_salvar').on('click', function()
 
 }); 
 
-
 </script>
 
 <?php $__env->stopSection(); ?>

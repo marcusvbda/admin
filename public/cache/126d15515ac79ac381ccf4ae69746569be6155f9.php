@@ -28,7 +28,7 @@
           <input type="password" name="password" id="password" id="senha" autocomplete="off" style="display: none;" />
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           <input type="text" id="manter_login" value="N" hidden="">
-          <p class="login-box-msg pull-left" style="padding-left:0px;padding-top:10px;" ><input type="checkbox" id="chk_manter_login">Manter-me logado</p>    
+          <p  class="login-box-msg pull-left" style="padding-left:0px;padding-top:10px;" ><input type="checkbox" id="chk_manter_login">Manter-me logado</p>    
         </div>
         <div class="row">        
           <!-- /.col -->
@@ -88,6 +88,12 @@ $("#email").keyup(function(event){
 
 //clica no entrar quando da enter
 $("#senha").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#btn_entrar").click();
+    }
+});
+
+$("#chk_manter_login").keyup(function(event){
     if(event.keyCode == 13){
         $("#btn_entrar").click();
     }
