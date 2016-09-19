@@ -8,20 +8,21 @@ use Dompdf\Options;
 function gerarpdf($html ="",$donwload = false,$arq= "PDF_TEMPORARIO", $tamanho='A4',$formato="portrait")
 {
 	ini_set('max_execution_time', 0);	
-	$mpdf = new mPDF();
+	$mpdf = new mPDF('UTF-8','A4');
 	$mpdf->pagenumPrefix = 'Página ';
 	$mpdf->nbpgPrefix = ' de ';
 	$mpdf->nbpgSuffix = ' Pagina(s)';
 	$mpdf->SetFooter('{PAGENO}{nbpg}');
-	$css = file_get_contents(PASTA_PUBLIC."/template/bootstrap/css/bootstrap.min.css");
-	$mpdf->WriteHTML($css,1);
+	$mpdf->SetDisplayMode('fullpage');
+	$mpdf->useSubstitutions=false;
+	$mpdf->simpleTables = true;
+	$mpdf->WriteHTML(file_get_contents(PASTA_PUBLIC."/template/bootstrap/css/bootstrap.min.css"),1);
 	$mpdf->WriteHTML($html);
 	if($donwload)
 		$mpdf->Output($arq.'.pdf', 'D');
 	else
 		$mpdf->Output();
 	ini_set('max_execution_time', 30);	
-
 }
 
 function gera_cabecalho_relatorio($campos=[])
@@ -67,6 +68,7 @@ function template_relatorio($titulo,$corpo)
 {
 	$data = date('d/m/Y');
 	$hora = date('H:i:s');
+	$css = PASTA_PUBLIC."/template/bootstrap/css/bootstrap.min.css";
 	$template = 
 	"
 	<html>
@@ -78,8 +80,9 @@ function template_relatorio($titulo,$corpo)
 				{
 					text-align:center;
 				}
-				".file_get_contents(PASTA_PUBLIC."/template/bootstrap/css/bootstrap.min.css")."
-			</style>	
+			</style>
+ 			<link rel='stylesheet' href='".$css."'>
+  			<link rel='icon' href=".FAVICON." type='image/gif'>
   		</head>
 		<body>
 			<div class='container'>
@@ -89,11 +92,16 @@ function template_relatorio($titulo,$corpo)
 					<p style='text-align:right;margin-top:0;margin-bottom:0;'>Emissão : {$data}  -  {$hora}</p>
 					<hr>
 				</div>
-				<div class='row centro'>
 					{$corpo}
-				</div>
 			</div>	
 		</body>
 	</html>";
 	return $template;
+}
+
+function imprimir($conteudo)
+{
+	echo $conteudo;
+	if(Parametro('imprimir_direto')=="S")
+		echo "<script>window.print();</script>";
 }

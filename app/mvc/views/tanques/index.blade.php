@@ -67,13 +67,13 @@
 				[
 					{
 						type: "doughnut",
-						toolTipContent: "<strong>{y}</strong> Litros",
+						toolTipContent: "<strong>#percent%</strong>",
 						showInLegend: true,
 					    explodeOnClick: true,
 						dataPoints: 
 						[
 							{y: parseFloat("{{$tanque->capacidade-$tanque->volumeatual}}"),legendText: "Vazio"},
-							{y: parseFloat("{{$tanque->volumeatual}}"), indexLabel: "#percent% cheio" , legendText: "Cheio" }
+							{y: parseFloat("{{$tanque->volumeatual}}"), indexLabel: "{y} Litros" , legendText: "Cheio" }
 						]
 					}
 				]

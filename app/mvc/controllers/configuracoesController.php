@@ -13,13 +13,17 @@ class configuracoesController extends controller
 
 	public function getIndex()
 	{
-		$parametros_acesso = $this->model
+		$parametros = $this->model
 						->join('parametros','parametros.id','=','empresa_parametros.id_parametro')
    							->wherein('empresa',Auth('empresa_selecionada'))
    								->groupby('parametro')
 									->get();
-		SalvaParametros([$parametros_acesso[0]->parametro=>$parametros_acesso[0]->valor]);	
-		echo $this->view('configuracoes.index',compact('parametros_acesso'));
+		$array=array();						
+		for ($i=0; $i < count($parametros); $i++):
+			$array[$parametros[$i]->parametro] = $parametros[$i]->valor;				
+		endfor;
+		SalvaParametros($array);	
+		echo $this->view('configuracoes.index',compact('parametros'));
 	}
 
 	public function getBuscaparametros()

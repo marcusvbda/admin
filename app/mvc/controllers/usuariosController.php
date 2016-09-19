@@ -181,7 +181,10 @@ class usuariosController extends controller
 				->join('parametros','parametros.id','=','empresa_parametros.id_parametro')
    							->wherein('empresa',Auth('empresa'))
 									->get();
-			$array = [$parametros[0]->parametro=>$parametros[0]->valor];
+			$array=array();						
+			for ($i=0; $i < count($parametros); $i++):
+				$array[$parametros[$i]->parametro] = $parametros[$i]->valor;				
+			endfor;
 			SalvaParametros($array);	
 			redirecionar(asset('inicio'));
 		}
@@ -271,7 +274,7 @@ class usuariosController extends controller
 
 		$html = prepararelatorio($campo_relatorio,$usuarios,"Relatório Simples de Usuários");
 		registralog("Imprimiu relatório simples de usuários");		
-        gerarpdf($html);
+        imprimir($html);
 	}
 
 

@@ -65,13 +65,13 @@
 				[
 					{
 						type: "doughnut",
-						toolTipContent: "<strong>{y}</strong> Litros",
+						toolTipContent: "<strong>#percent%</strong>",
 						showInLegend: true,
 					    explodeOnClick: true,
 						dataPoints: 
 						[
 							{y: parseFloat("<?php echo e($tanque->capacidade-$tanque->volumeatual); ?>"),legendText: "Vazio"},
-							{y: parseFloat("<?php echo e($tanque->volumeatual); ?>"), indexLabel: "#percent% cheio" , legendText: "Cheio" }
+							{y: parseFloat("<?php echo e($tanque->volumeatual); ?>"), indexLabel: "{y} Litros" , legendText: "Cheio" }
 						]
 					}
 				]

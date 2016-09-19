@@ -231,72 +231,78 @@
                   </div>
 
                   <div class="col-md-12" style="border:1px solid #D2D6DE;margin-top:30px;margin-bottom:30px;padding-top:30px;padding-bottom:30px;">
-                    <div class="col-md-4">
-                      <label>Calcula PIS</label>
-                      @if($produto->calculapis=="S")
-                        <input type="text" class="form-control" readonly value="SIM">
-                      @else
-                        <input type="text" class="form-control" readonly value="NÃO">
-                      @endif 
+                    <div class="col-md-12">
+                      <div class="col-md-2">
+                        <label>Calcula PIS</label>
+                        @if($produto->calculapis=="S")
+                          <input type="text" class="form-control" readonly value="SIM">
+                        @else
+                          <input type="text" class="form-control" readonly value="NÃO">
+                        @endif 
+                      </div>
+                      <div class="col-md-2">
+                        <label>CST PIS</label>
+                        <input type="text" class="form-control" readonly  value="{{$produto->cstpis}}">
+                      </div>
+                      <div class="col-md-2">
+                        <label>CST PIS Entrada</label>
+                        <input type="text" class="form-control" readonly  value="{{$produto->cstpisentrada}}">
+                      </div>
+                      <div class="col-md-2">
+                        <label>Aliquota PIS</label>
+                        <input type="text" class="form-control" readonly value="{{$produto->aliquotapis}}">
+                      </div>
                     </div>
-                    <div class="col-md-4">
-                      <label>CST PIS</label>
-                      <input type="text" class="form-control" readonly  value="{{$produto->cstpis}}">
-                    </div>
-                    <div class="col-md-4">
-                      <label>CST PIS Entrada</label>
-                      <input type="text" class="form-control" readonly  value="{{$produto->cstpisentrada}}">
-                    </div>
-                    <div class="col-md-4">
-                      <label>Aliquota PIS</label>
-                      <input type="text" class="form-control" readonly value="{{$produto->aliquotapis}}">
+                    <div class="col-md-12">                    
+                      <div class="col-md-2">
+                        <label>Calcula COFINS</label>
+                        @if($produto->calculacofins=="S")
+                          <input type="text" class="form-control" readonly value="SIM">
+                        @else
+                          <input type="text" class="form-control" readonly value="NÃO">
+                        @endif 
+                      </div>
+                      <div class="col-md-2">
+                        <label>CST COFINS</label>
+                        <input type="text" class="form-control" readonly  value="{{$produto->cstcofins}}">
+                      </div>
+                      <div class="col-md-2">
+                        <label>CST COFINS Entrada</label>
+                        <input type="text" class="form-control" readonly  value="{{$produto->cstcofinsentrada}}">
+                      </div>
+                      <div class="col-md-2">
+                        <label>Aliquota COFINS</label>
+                        <input type="text" class="form-control" readonly  value="{{$produto->aliquotacofins}}">
+                      </div>
                     </div>
 
-                    <div class="col-md-4">
-                      <label>Calcula COFINS</label>
-                      @if($produto->calculacofins=="S")
-                        <input type="text" class="form-control" readonly value="SIM">
-                      @else
-                        <input type="text" class="form-control" readonly value="NÃO">
-                      @endif 
-                    </div>
-                    <div class="col-md-4">
-                      <label>CST COFINS</label>
-                      <input type="text" class="form-control" readonly  value="{{$produto->cstcofins}}">
-                    </div>
-                    <div class="col-md-4">
-                      <label>CST COFINS Entrada</label>
-                      <input type="text" class="form-control" readonly  value="{{$produto->cstcofinsentrada}}">
-                    </div>
-                    <div class="col-md-4">
-                      <label>Aliquota COFINS</label>
-                      <input type="text" class="form-control" readonly  value="{{$produto->aliquotacofins}}">
+                    <div class="col-md-12">                    
+                      <div class="col-md-2">
+                        <label>Aliquota ICMS</label>
+                        <input type="text" class="form-control" readonly value="{{$produto->aliquotaicms}}">
+                      </div>
+                      <div class="col-md-2">
+                        <label>Aliquota ISS</label>
+                        <input type="text" class="form-control" readonly value="{{$produto->aliquotaiss}}">
+                      </div>
+                      <div class="col-md-3">
+                        <label>Aliquota ICMS Reduzida</label>
+                        <input type="text" class="form-control" readonly  value="{{$produto->aliquotaicmsreduzida}}">
+                      </div>
+                      <div class="col-md-2">
+                        <label>Aliquota MVA ST</label>
+                        <input type="text" class="form-control" readonly  value="{{$produto->mvast}}">
+                      </div>
                     </div>
 
-                    <div class="col-md-4">
-                      <label>Aliquota ICMS</label>
-                      <input type="text" class="form-control" readonly value="{{$produto->aliquotaicms}}">
-                    </div>
-                    <div class="col-md-4">
-                      <label>Aliquota ISS</label>
-                      <input type="text" class="form-control" readonly value="{{$produto->aliquotaiss}}">
-                    </div>
-                    <div class="col-md-4">
-                      <label>Aliquota ICMS Reduzida</label>
-                      <input type="text" class="form-control" readonly  value="{{$produto->aliquotaicmsreduzida}}">
-                    </div>
-                    <div class="col-md-4">
-                      <label>Aliquota MVA ST</label>
-                      <input type="text" class="form-control" readonly  value="{{$produto->mvast}}">
-                    </div>
                   </div>
 
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                     <label>Aliquota IPI</label>
                       <input type="text" class="form-control" readonly value="{{$produto->aliquotaipi}}">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                     <label>ICMS Outros UF</label>
                       <input type="text" class="form-control" readonly value="{{$produto->icmsoutros}}">
                     </div>

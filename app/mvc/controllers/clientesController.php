@@ -71,7 +71,7 @@ class clientesController extends controller
 
 		$html = prepararelatorio($campo_relatorio,$clientes,"Relatório Simples de Clientes");
 		registralog("Imprimiu relatório simples de clientes");
-        gerarpdf($html);
+        imprimir($html);
 
 	}
 }

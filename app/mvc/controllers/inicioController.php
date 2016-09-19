@@ -12,6 +12,11 @@ class inicioController extends controller
 	{
 		echo $this->view('index');
 	}
+
+	public function getExemplo()
+	{
+		echo $this->view('exemplo');		
+	}
 	
 }
 

@@ -53,7 +53,7 @@ class produtosController extends controller
 		$campo_relatorio = array('Código'=>'codigo','Código Estendido'=>'codigoestendido','Nome'=>'nomefantasia','Descrição'=>'descricao');
 		$html = prepararelatorio($campo_relatorio,$produtos,"Relatório Simples de Produtos");
 		registralog("Imprimiu relatório simples de produtos");
-        gerarpdf($html);
+        imprimir($html);
 	}
 
 	public function postRelatorio_simples_tipos()
@@ -73,7 +73,7 @@ class produtosController extends controller
 		$campo_relatorio = array('Número'=>'numero','Descrição'=>'descricao','Entradas'=>'entradas','Saidas'=>'saidas');
 		$html = prepararelatorio($campo_relatorio,$tipos,"Relatório Simples de Tipos de Produto");
 		registralog("Imprimiu relatório simples de Tipos de produtos");
-        gerarpdf($html);
+        imprimir($html);
 	}
 
 	public function getShow($id)
