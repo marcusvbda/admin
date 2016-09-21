@@ -103,6 +103,50 @@
 </div>
 
 <div class="col-md-12">
+	<div class="box">
+		<div class="box-header" style="height: 30px;padding-bottom: 0px;">
+      		<p class="title_box">Configurações de Ferramentas</p>
+		  <div class="box-tools pull-right">
+		  </div>
+		</div>
+		<div class="box-body">
+		  <!-- conteudo -->
+				<div class="row">
+					<?php foreach($parametros as $parametro): ?>
+						<?php if($parametro->classificacao=="FERRAMENTAS"): ?>
+							<div class="col-md-2">							
+								<?php if($parametro->tipo=="CHECKBOX"): ?>
+									<?php if($parametro->valor=="S"): ?>
+									<label>
+										<input onchange="clique()" type="checkbox" checked id="<?php echo e($parametro->id); ?>" name="<?php echo e($parametro->id); ?>">
+											<?php echo e($parametro->titulo); ?><br>
+										<small style="font-weight:lighter;"><?php echo e($parametro->descricao); ?></small>
+									</label>
+									<?php else: ?>
+									<label>
+										<input onchange="clique()" type="checkbox"  id="<?php echo e($parametro->id); ?>" name="<?php echo e($parametro->id); ?>">
+											<?php echo e($parametro->titulo); ?><br>
+										<small style="font-weight:lighter;"><?php echo e($parametro->descricao); ?></small>
+									</label>
+									<?php endif; ?>
+								<?php elseif($parametro->tipo=="TEXTO"): ?>
+									<label><?php echo e($parametro->titulo); ?></label>
+									<input onchange="clique()" type="text" id="<?php echo e($parametro->id); ?>" value="<?php echo e($parametro->valor); ?>" name="<?php echo e($parametro->id); ?>"><br>
+									<small><?php echo e($parametro->descricao); ?></small>
+								<?php elseif($parametro->tipo=="NUMERO"): ?>
+									<label><?php echo e($parametro->titulo); ?></label>									
+									<input onkeyup="clique()" onchange="clique()" type="number" id="<?php echo e($parametro->id); ?>" value="<?php echo e($parametro->valor); ?>" name="<?php echo e($parametro->id); ?>"><br>
+									<small><?php echo e($parametro->descricao); ?></small>
+								<?php endif; ?>							
+							</div>	
+						<?php endif; ?>
+					<?php endforeach; ?>			
+				</div>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-12">
 	<button class="btn btn-primary" id="btn_salvar" style="display:none;"><span class="glyphicon glyphicon-ok"></span> Salvar Alterações</button>
 </div>
 

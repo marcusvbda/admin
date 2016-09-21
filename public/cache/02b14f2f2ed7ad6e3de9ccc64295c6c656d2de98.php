@@ -289,7 +289,7 @@
                       </div>
                       <div class="col-md-2">
                         <label>Aliquota MVA ST</label>
-                        <input type="text" class="form-control centro" readonly  value="<?php echo e($produto->mvast); ?>">
+                        <input type="text" class="form-control" readonly  value="<?php echo e($produto->mvast); ?>">
                       </div>
                     </div>
 

@@ -105,6 +105,50 @@
 </div>
 
 <div class="col-md-12">
+	<div class="box">
+		<div class="box-header" style="height: 30px;padding-bottom: 0px;">
+      		<p class="title_box">Configurações de Ferramentas</p>
+		  <div class="box-tools pull-right">
+		  </div>
+		</div>
+		<div class="box-body">
+		  <!-- conteudo -->
+				<div class="row">
+					@foreach($parametros as $parametro)
+						@if($parametro->classificacao=="FERRAMENTAS")
+							<div class="col-md-2">							
+								@if($parametro->tipo=="CHECKBOX")
+									@if($parametro->valor=="S")
+									<label>
+										<input onchange="clique()" type="checkbox" checked id="{{$parametro->id}}" name="{{$parametro->id}}">
+											{{$parametro->titulo}}<br>
+										<small style="font-weight:lighter;">{{$parametro->descricao}}</small>
+									</label>
+									@else
+									<label>
+										<input onchange="clique()" type="checkbox"  id="{{$parametro->id}}" name="{{$parametro->id}}">
+											{{$parametro->titulo}}<br>
+										<small style="font-weight:lighter;">{{$parametro->descricao}}</small>
+									</label>
+									@endif
+								@elseif($parametro->tipo=="TEXTO")
+									<label>{{$parametro->titulo}}</label>
+									<input onchange="clique()" type="text" id="{{$parametro->id}}" value="{{$parametro->valor}}" name="{{$parametro->id}}"><br>
+									<small>{{$parametro->descricao}}</small>
+								@elseif($parametro->tipo=="NUMERO")
+									<label>{{$parametro->titulo}}</label>									
+									<input onkeyup="clique()" onchange="clique()" type="number" id="{{$parametro->id}}" value="{{$parametro->valor}}" name="{{$parametro->id}}"><br>
+									<small>{{$parametro->descricao}}</small>
+								@endif							
+							</div>	
+						@endif
+					@endforeach			
+				</div>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-12">
 	<button class="btn btn-primary" id="btn_salvar" style="display:none;"><span class="glyphicon glyphicon-ok"></span> Salvar Alterações</button>
 </div>
 

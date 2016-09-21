@@ -266,5 +266,19 @@ class importacaoController extends controller
 		endforeach;
     }
 
+    public function getDadosImportacoes()
+    {
+    	$query = 
+    	query("select * from importacoes where id = (select max(id) as id from importacoes where empresa='".Auth('empresa')."')");
+    	if(count($query)>0)
+    		$dados = ['data_ultima_importacao'=>data_formatada($query[0]->created_at)];
+    	else
+    		$dados = ['data_ultima_importacao'=>'0'];
+
+    	$query = query("select count(importado) as nao_importados FROM importacoes WHERE importado='N' ");
+    	$dados['nao_importados'] = $query[0]->nao_importados;
+    	echo json_encode($dados);
+    }
+
 }
 

@@ -56,27 +56,22 @@ class relatoriosController extends controller
 		$this->limpa_conteudo();
 
 		foreach ($consulta as $linha):
-			$this->linha("<br>Grupo : {$linha->grupo_produto}");
+			$this->linha("<br><strong>{$linha->grupo_produto}</strong>");
 			$this->linha("<hr style='margin-top:5;margin-bottom:10;border:solid black 1px;'>");
 			$this->linha
 			(
-				"<div class='col-xs-2'>
-					Cód. : {$linha->codigo}
+				"<div class='col-xs-12 text-left'>
+					<strong>Produto. :</strong> {$linha->codigo} : {$linha->descricao} - <strong>NCM :</strong> {$linha->codigo_nbmsh}
 				</div>
-				<div class='col-xs-8'>
-					Descrição : {$linha->descricao}
+
+				<div class='col-xs-3 text-left'>
+					<strong>CEST :</strong> {$linha->codigo_cest}
 				</div>
-				<div class='col-xs-2'>
-					NCM : {$linha->codigo_nbmsh}
-				</div>
-				<div class='col-xs-2'>
-					CEST : {$linha->codigo_cest}
-				</div>
-				<div class='col-xs-2'>
-					CST Saída : {$linha->codigo_st}
-				</div>
-				<div class='col-xs-2'>
-					CST Ent. : {$linha->codigo_stentrada}
+				<div class='col-xs-6 text-center'>
+					<strong>CST Saída :</strong> {$linha->codigo_st}
+				</div>	
+				<div class='col-xs-3 text-right'>
+					<strong>CST Ent. :</strong> {$linha->codigo_stentrada}
 				</div>"		
 			);
 			$this->linha("<hr style='margin-top:5;margin-bottom:10;border:dashed black 1px;'>");
@@ -84,13 +79,13 @@ class relatoriosController extends controller
 			$this->linha
 			(										
 				"<div class='col-xs-3 text-left'>
-					CST PIS : {$linha->cstpis}
+					<strong>CST PIS :</strong> {$linha->cstpis}
 				</div>
-				<div class='col-xs-4 text-center'>
-					CST PIS Ent. : {$linha->cstpisentrada}
+				<div class='col-xs-6 text-center'>
+					<strong>CST PIS Ent. :</strong> {$linha->cstpisentrada}
 				</div>	
 				<div class='col-xs-3 text-right'>
-					Aliquota PIS : {$linha->aliquotapis}
+					<strong>Aliquota PIS :</strong> {$linha->aliquotapis}
 				</div>"
 			);
 			endif;
@@ -98,48 +93,40 @@ class relatoriosController extends controller
 			$this->linha
 			(										
 				"<div class='col-xs-3 text-left'>
-					CST COFINS : {$linha->cstcofins}
+					<strong>CST COFINS :</strong> {$linha->cstcofins}
 				</div>
-				<div class='col-xs-4 text-center'>
-					CST COFINS Ent. : {$linha->cstcofinsentrada}
+				<div class='col-xs-6 text-center'>
+					<strong>CST COFINS Ent. :</strong> {$linha->cstcofinsentrada}
 				</div>	
 				<div class='col-xs-3 text-right'>
-					Aliquota COFINS : {$linha->aliquotacofins}
+					<strong>Aliquota COFINS :</strong> {$linha->aliquotacofins}
 				</div>"
 			);
 			endif;
 			// $this->linha("<hr style='margin-top:5;margin-bottom:10;border:dashed black 1px;'>");
-			$this->linha
-			(										
-				"<div class='col-xs-2'>
-					CST Saída : {$linha->codigo_st}
-				</div>
-				<div class='col-xs-2'>
-					CST Ent. : {$linha->codigo_stentrada}
-				</div>"	
-			);
+			
 			$this->linha
 			(										
 				"<div class='col-xs-3 text-left'>
-					Aliquota ICMS : {$linha->aliquotaicms}
+					<strong>Aliquota ICMS :</strong> {$linha->aliquotaicms}
 				</div>	
-				<div class='col-xs-4 text-center'>
-					Aliquota ISS : {$linha->aliquotaiss}
+				<div class='col-xs-6 text-center'>
+					<strong>Aliquota ISS :</strong> {$linha->aliquotaiss}
 				</div>									
 				<div class='col-xs-3 text-right'>
-					Aliquota ICMS Red. : {$linha->aliquotaicmsreduzida}
+					<strong>Aliquota ICMS Red. :</strong> {$linha->aliquotaicmsreduzida}
 				</div>"
 			);
 			$this->linha
 			(										
 				"<div class='col-xs-3 text-left'>
-					Aliquota MVA ST : {$linha->mvast}
+					<strong>Aliquota MVA ST :</strong> {$linha->mvast}
 				</div>	
-				<div class='col-xs-4 text-center'>
-					Aliquota IPI : {$linha->aliquotaipi}
+				<div class='col-xs-6 text-center'>
+					<strong>Aliquota IPI :</strong> {$linha->aliquotaipi}
 				</div>									
 				<div class='col-xs-3 text-right'>
-					ICMS Outros UF. : {$linha->icmsoutros}
+					<strong>ICMS Outros UF. :</strong> {$linha->icmsoutros}
 				</div>"
 			);
 			$this->linha("<hr style='margin-top:5;margin-bottom:10;border:dashed black 1px;'>");

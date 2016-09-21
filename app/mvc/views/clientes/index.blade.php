@@ -68,7 +68,11 @@
                     <td>{{$cliente->razaosocial}}</td>
                     <td>{{$cliente->cnpj}}</td>
                     <td class="centro">
-                      <a title="Visualizar" href='{{asset("clientes/show/$cliente->sequencia")}}' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a>
+                      <div class="tools">                      
+                        <a title="Visualizar" href='{{asset("clientes/show/$cliente->sequencia")}}'>
+                          <i class="fa fa-search" style="color:#3C8DBC;" title="Visualizar"></i>
+                        </a>                       
+                      </div>
                     </td>
                   </tr>
                   @endforeach

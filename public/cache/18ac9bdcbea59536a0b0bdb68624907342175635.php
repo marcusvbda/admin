@@ -21,7 +21,6 @@
       </div>
 
    
-
         <div class="row">
           <form method="GET" action="<?php echo e(asset('usuarios')); ?>">
             <div class="col-md-12">
@@ -63,8 +62,16 @@
                     <td><?php echo e($usuario->usuario); ?></td>
                     <td><?php echo e($usuario->email); ?></td>
                     <td class="centro">
-                      <a title="Visualizar / Alterar" href='<?php echo e(asset("usuarios/show/$usuario->id")); ?>' class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></a>
-                      <a title="Excluir" onclick="excluir('<?php echo e($usuario->id); ?>')" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+
+                      <div class="tools">                      
+                        <a title="Visualizar / Alterar" href='<?php echo e(asset("usuarios/show/$usuario->id")); ?>'>
+                          <i class="fa fa-edit" style="color:#3C8DBC;" title="Editar"></i>
+                        </a>
+                        <a title="Excluir" onclick="excluir('<?php echo e($usuario->id); ?>')">
+                          <i class="fa fa-trash-o" style="color:#DD4B39;" title="Editar"></i>
+                        </a>  
+                      </div>
+
                     </td>
                   </tr>
                   <?php endforeach; ?>
