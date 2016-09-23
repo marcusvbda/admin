@@ -14,13 +14,17 @@
 
 <style type="text/css"></style></head>
 <body class="hold-transition register-page" cz-shortcut-listen="true" style="overflow-y: hidden;">
-	<div class="register-box">
-	   <div class="register-logo"><b>AD</b>MIN</div>
+	<div class="register-box">	
+    <div class="contero_total">
+        <div class="register-logo">
+          <p><img src="{{FAVICON}}"></p>
+        </div>
 
-	   <div class="register-box-body">
-	    	@yield('conteudo')
-	   </div>
-	   		@yield('sublink')	   
+  	   <div class="register-box-body">
+  	    	@yield('conteudo')
+  	   </div>
+  	   		@yield('sublink')	
+    </div>   
 	</div>
   <!-- /.form-box -->
 </div>

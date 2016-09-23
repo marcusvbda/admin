@@ -1,15 +1,5 @@
 <?php $__env->startSection('titulo','Login'); ?>
 
-<?php $__env->startSection('topo'); ?>
-<h1>
-  Nome da página
-  <small>Subtitulo</small>
-</h1>
-<ol class="breadcrumb">
-  <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-  <li><a href="#">Pagina em branco</a></li>
-</ol>
-<?php $__env->stopSection(); ?>
 
 
 <?php $__env->startSection('conteudo'); ?>

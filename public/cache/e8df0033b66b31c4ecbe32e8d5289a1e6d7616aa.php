@@ -68,7 +68,7 @@
                     <td class="centro">
                       <div class="tools">                      
                         <a title="Visualizar" href='<?php echo e(asset("clientes/show/$cliente->sequencia")); ?>'>
-                          <i class="fa fa-search" style="color:#3C8DBC;" title="Editar"></i>
+                          <i class="fa fa-search" style="color:#3C8DBC;" title="Visualizar"></i>
                         </a>                       
                       </div>
                     </td>

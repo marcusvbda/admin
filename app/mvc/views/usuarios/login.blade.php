@@ -2,16 +2,6 @@
 
 @section('titulo','Login')
 
-@section('topo')
-<h1>
-  Nome da página
-  <small>Subtitulo</small>
-</h1>
-<ol class="breadcrumb">
-  <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-  <li><a href="#">Pagina em branco</a></li>
-</ol>
-@stop
 
 
 @section('conteudo')

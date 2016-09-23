@@ -22,7 +22,8 @@ function rotas_protegidas()
 			_route("usuariosController@getIndex"),
 			_route("configuracoesController@getIndex"),
 			_route("configuracoesController@getBuscaparametros"),
-			_route("configuracoesController@postSalvar")
+			_route("configuracoesController@postSalvar"),
+			_route("importacao@getIndex")
 		);
 	return $rotas_protegidas;
 }

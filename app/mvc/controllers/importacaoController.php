@@ -8,6 +8,9 @@ class importacaoController extends controller
 	protected $arquivo;
 	protected $tabelas_importacao = array();
 	protected $pasta_importar;
+	protected $cnpj_empresa;
+	protected $pasta_importados;
+	protected $pasta_erro;
 	protected $tabela;
 	protected $tipo_operacao ="INSERT";
 	protected $chaves_primarias = array();
@@ -21,15 +24,27 @@ class importacaoController extends controller
 	protected $arquivos_importados = 0;
 	
 
-	public function getQtde_arquivos($pasta)
+	public function __construct()
 	{
-		$cnpj_empresa = DB::table('empresas')->find(Auth('empresa')[0])->CNPJ_CPF;
-		$this->pasta_importar = __DIR__."/../../../public/uploads/importacao/$pasta/{$cnpj_empresa}/";
-	   	$this->arq_importar = scandir($this->pasta_importar);
-	   	echo json_encode((count($this->arq_importar)-2));
+		$this->cnpj_empresa = DB::table('empresas')->find(Auth('empresa')[0])->CNPJ_CPF;
+		$this->pasta_importar = __DIR__."/../../../public/uploads/importacao/importar/{$this->cnpj_empresa}/";
+		$this->pasta_importados = __DIR__."/../../../public/uploads/importacao/importados/{$this->cnpj_empresa}/";
+		$this->pasta_erro = __DIR__."/../../../public/uploads/importacao/erro/{$this->cnpj_empresa}/";
 	}
 
-	public function getImportar()
+	public function postQtde_arquivos($pasta)
+	{
+	   	echo json_encode($this->Qtde_arquivos($pasta));
+	}
+
+	public function Qtde_arquivos($pasta)
+	{
+		
+	   	$this->arq_importar = scandir( __DIR__."/../../../public/uploads/importacao/{$pasta}/{$this->cnpj_empresa}/");
+	   	return (count($this->arq_importar)-2);
+	}
+
+	public function postImportar()
 	{
 		if($this->existeArquivos())
 		{
@@ -82,19 +97,15 @@ class importacaoController extends controller
 
 	private function mover_arquivo($pasta)
 	{
-		$cnpj_empresa = DB::table('empresas')->find(Auth('empresa')[0])->CNPJ_CPF;
-		$pasta_importar = __DIR__."/../../../public/uploads/importacao/importar/{$cnpj_empresa}/";
-		$pasta =          __DIR__."/../../../public/uploads/importacao/$pasta/{$cnpj_empresa}/";
+		$pasta = __DIR__."/../../../public/uploads/importacao/$pasta/{$this->cnpj_empresa}/";
 		if (!is_dir($pasta))
 			mkdir($pasta);
-		copy($pasta_importar.$this->arquivo,$pasta.$this->arquivo);
-		unlink($pasta_importar.$this->arquivo);
+		copy($this->pasta_importar.$this->arquivo,$pasta.$this->arquivo);
+		unlink($this->pasta_importar.$this->arquivo);
 	}
 
 	private function existeArquivos()
 	{
-		$cnpj_empresa = DB::table('empresas')->find(Auth('empresa')[0])->CNPJ_CPF;
-		$this->pasta_importar = __DIR__."/../../../public/uploads/importacao/importar/{$cnpj_empresa}/";
 	   	$this->arq_importar = scandir($this->pasta_importar);
 	   	if(count($this->arq_importar)>2)
 	   		return true;
@@ -268,16 +279,97 @@ class importacaoController extends controller
 
     public function getDadosImportacoes()
     {
-    	$query = 
-    	query("select * from importacoes where id = (select max(id) as id from importacoes where empresa='".Auth('empresa')."')");
-    	if(count($query)>0)
-    		$dados = ['data_ultima_importacao'=>data_formatada($query[0]->created_at)];
-    	else
-    		$dados = ['data_ultima_importacao'=>'0'];
+    	$dados['importados'] = $this->Qtde_arquivos('IMPORTADOS');
+    	if($dados['importados']>0)
+    	{
+    		$query = 
+	    	query("select * from importacoes where id = (select max(id) as id from importacoes where empresa='".Auth('empresa')."')");
+	    	if(count($query)>0)
+	    		$dados['data_ultima_importacao']=data_formatada($query[0]->created_at);
+	    	else
+	    		$dados['data_ultima_importacao']='0';
+	    }
 
-    	$query = query("select count(importado) as nao_importados FROM importacoes WHERE importado='N' ");
-    	$dados['nao_importados'] = $query[0]->nao_importados;
+    	$dados['nao_importados'] = $this->Qtde_arquivos('ERRO');
     	echo json_encode($dados);
+    }
+
+    private function getDataGeracaoArquivo($arq)
+    {
+    	return substr($arq,6,2)."/".substr($arq,4,2)."/".substr($arq,0,4);
+    }
+
+    public function Arquivos_Pasta($pasta)
+    {
+    	$retornos = array();
+    	$cont = 0;
+    	if($pasta=="TODAS")
+    	{
+			$arquivos = scandir($this->pasta_importados);	   	
+			foreach ($arquivos as $arq):
+				if(($arq!=".")&&($arq!="..")):
+		       		$retornos[$cont]=(object)['diretorio'=>PASTA_PUBLIC."/uploads/importacao/importados/{$this->cnpj_empresa}/{$arq}",'arquivo'=>$arq,'pasta'=>'IMPORTADOS','data_geracao'=>$this->getDataGeracaoArquivo($arq)];
+		       		$cont++;
+		       	endif;
+			endforeach;
+			$arquivos = scandir($this->pasta_erro);	   	
+			foreach ($arquivos as $arq):
+				if(($arq!=".")&&($arq!="..")):
+		       		$retornos[$cont]=(object)['diretorio'=>PASTA_PUBLIC."/uploads/importacao/erro/{$this->cnpj_empresa}/{$arq}",'arquivo'=>$arq,'pasta'=>'ERRO','data_geracao'=>$this->getDataGeracaoArquivo($arq)];
+		       		$cont++;
+		       	endif;
+			endforeach;
+			$arquivos = scandir($this->pasta_importar);	   	
+			foreach ($arquivos as $arq):
+				if(($arq!=".")&&($arq!="..")):
+		       		$retornos[$cont]=(object)['diretorio'=>PASTA_PUBLIC."/uploads/importacao/importar/{$this->cnpj_empresa}/{$arq}",'arquivo'=>$arq,'pasta'=>'IMPORTAR','data_geracao'=>$this->getDataGeracaoArquivo($arq)];
+		       		$cont++;
+		       	endif;
+			endforeach;
+		}
+		else
+		{
+			$arquivos = scandir(__DIR__."/../../../public/uploads/importacao/{$pasta}/{$this->cnpj_empresa}/");	
+			foreach ($arquivos as $arq):
+				if(($arq!=".")&&($arq!="..")):
+		       		$retornos[$cont]=(object)['diretorio'=>PASTA_PUBLIC."/uploads/importacao/{$pasta}/{$this->cnpj_empresa}/{$arq}",'arquivo'=>$arq,'pasta'=>$pasta,'data_geracao'=>$this->getDataGeracaoArquivo($arq)];
+		       		$cont++;
+		       	endif;
+			endforeach;
+		}
+	   	return $retornos;
+    }
+
+
+    public function getIndex($pasta="TODAS")
+    {
+    	$qtde_importar   = $this->Qtde_arquivos("IMPORTAR");
+    	$qtde_erro       = $this->Qtde_arquivos("ERRO");
+    	$qtde_importados = $this->Qtde_arquivos("IMPORTADOS");
+    	$arquivos = $this->Arquivos_Pasta($pasta);
+		echo $this->view('importacao.index',compact('arquivos','qtde_importar','qtde_erro','qtde_importados'));
+    }
+
+    public function postExcluirArquivo()
+    {
+    	$pasta   = $_POST['pasta'];
+    	$arquivo   = $_POST['arquivo'];
+		unlink(__DIR__."/../../../public/uploads/importacao/{$pasta}/{$this->cnpj_empresa}/{$arquivo}");
+    }
+
+    public function getImportados()
+    {
+    	$this->getIndex("IMPORTADOS");
+    }
+
+    public function getErro()
+    {
+    	$this->getIndex("ERRO");
+    }
+
+    public function getImportar()
+    {
+    	$this->getIndex("IMPORTAR");
     }
 
 }

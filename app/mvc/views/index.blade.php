@@ -52,13 +52,13 @@
 						</div>
 					</div>
 
-					<div class="col-md-4">
+					<div class="col-md-4" id="btn_ultima_importacao">
 						<div class="small-box bg-green">
 							<div class="inner">
 								<h3><i class="glyphicon glyphicon-thumbs-up"></i></h3>
 							    <p id="data_ultima_importacao">20/09/2016</p>
 							</div>
-							<a href="{{asset('importacoes/sucesso')}}" class="small-box-footer"> Ver Importações Com Sucesso <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="{{asset('importacao/Importados')}}" class="small-box-footer"> Ver Importações Com Sucesso <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 					</div>
 
@@ -68,7 +68,7 @@
 								<h3><i class="glyphicon glyphicon-thumbs-down"></i></h3>
 							    <p id="qtde_com_erro">0</p>
 							</div>
-							<a href="{{asset('importacoes/erro')}}" class="small-box-footer"> Ver Importações Com Erro <i class="fa fa-arrow-circle-right"></i></a>
+							<a href="{{asset('importacao/erro')}}" class="small-box-footer"> Ver Importações Com Erro <i class="fa fa-arrow-circle-right"></i></a>
 						</div>
 					</div>
 
@@ -142,7 +142,6 @@
 	    if(lista_de_afazeres=="S")
 	    	atualizar_afazeres();
 
-
 	});
 
 	$('#importacao_btn_importar').on('click', function() 
@@ -157,10 +156,12 @@
 
 	function procura_arquivos_para_importar()
 	{
-		$.getJSON("importacao/qtde_arquivos/importar", function(qtde)
+		$.post("importacao/qtde_arquivos/importar", function(qtde)
 	  	{ 
-	  		// $('#importacao_notificacao').show();
-			$('#importacao_loading').hide();	  			
+	  		$('#importacao_notificacao').hide();
+			$('#importacao_loading').hide();	
+			$('#btn_importacao_erro').hide();
+	  		$('#btn_ultima_importacao').hide();  			
 	  		if(qtde>0)
 	  		{
 		  		$('#importacao_notificacao').toggle(150);
@@ -173,21 +174,23 @@
 	
 	  	$.getJSON("{{asset('importacao/DadosImportacoes')}}", function(dados)
 	  	{ 
-	  		if(dados.data_ultima_importacao!="0")
-	  			$('#data_ultima_importacao').html("Última importação, "+dados.data_ultima_importacao);
-	  		else
-	  			$('#data_ultima_importacao').html("Ainda não houveram importações");
-	  		if(dados.nao_importados==0)
-	  			$('#btn_importacao_erro').hide();
-	  		else
+	  		if(dados.nao_importados>0)	  		
 	  		{
 		  		if(dados.nao_importados>1)	  			
 		  			$('#qtde_com_erro').html(dados.nao_importados+" Arquivos com erro");
 		  		else
 		  			$('#qtde_com_erro').html(dados.nao_importados+" Arquivo com erro");	 
 	  			$('#btn_importacao_erro').toggle(150);
+		  	} 		
 
-		  	} 			
+		  	if(dados.importados>0)	  		
+	  		{
+		  		if(dados.data_ultima_importacao!="0")
+	  				$('#data_ultima_importacao').html("Última importação, "+dados.data_ultima_importacao);
+	  			else
+	  				$('#data_ultima_importacao').html("Não foi possível capturar a data da ultima importação");
+	  			$('#btn_ultima_importacao').toggle(150);
+		  	} 		
 	  	});
 	}
 
@@ -195,7 +198,7 @@
 	{
 		$('#importacao_loading').toggle(150);
 		$('#importacao_notificacao').toggle(150);
-		$.getJSON("importacao/importar", function(qtde_arquivos_importados)
+		$.post("importacao/importar", function(qtde_arquivos_importados)
 	  	{ 
 	  		if(qtde_arquivos_importados==0)
 	  		{
@@ -333,6 +336,7 @@
 			msg_confirm('<strong>Confirmação</strong>','Deseja Excluir afazer?',"excluir_afazer("+id+",true)"); 
 
 	}
-	
+
+
 </script>
 @stop
