@@ -6,7 +6,6 @@ use Jenssegers\Blade\Blade;
 class inicioController extends controller
 {
 
-	protected $mensagens;
 
 	public function getIndex()
 	{

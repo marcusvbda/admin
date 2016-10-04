@@ -7,8 +7,8 @@
   <small>SUBTITULO</small>
 </h1>
 <ol class="breadcrumb">
-  <li><a href="{{asset('')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><i class="fa fa-dashboard"></i> PAGINA ATUAL</li>
+  <li><a href="{{asset('')}}"><i class="glyphicon glyphicon-stats"></i> Início</a></li>
+  <li><i class="glyphicon glyphicon-stats"></i> PAGINA ATUAL</li>
 </ol>
 @stop
 

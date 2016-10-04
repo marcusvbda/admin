@@ -13,7 +13,7 @@
   <link rel='icon' href=<?php echo e(FAVICON); ?> type='image/gif'>
 
 <style type="text/css"></style></head>
-<body class="skin-blue sidebar-mini fixed" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
+<body class="skin-blue sidebar-mini fixed sidebar-collapse" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -115,6 +115,12 @@
         <?php endif; ?>  
 
         <li class="treeview">
+            <a href="<?php echo e(asset('caixas')); ?>">
+              <i class="glyphicon glyphicon-stats"></i> <span>Caixas</span>
+            </a>
+        </li>
+
+        <li class="treeview">
             <a href="#">
               <i class="glyphicon glyphicon-align-right"></i> <span>Consultas</span>
             </a>
@@ -198,7 +204,6 @@
     </section>
     <!-- /.content -->
   </div>
-</div>
   <!-- /.content-wrapper -->
 
   <footer class="main-footer">

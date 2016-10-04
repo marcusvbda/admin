@@ -47,13 +47,13 @@ function voltar()
 
 function limitarTexto($texto, $limite,$adicao =""){
   $contador = strlen($texto);
-  if ( $contador >= $limite ) {      
+  if ( $contador >= $limite )
+  {   
       $texto = substr($texto, 0, strrpos(substr($texto, 0, $limite), ' ')) . $adicao;
       return $texto;
   }
-  else{
+  else
     return $texto;
-  }
 } 
 
 function criardiretorio($diretorio ="")
@@ -113,11 +113,10 @@ function enviarEmail($para,$assunto,$texto,$anexo="")
 	$mail->Subject = $assunto;
 	$mail->Body    = $texto;
 
-	if(!$mail->send()) {
+	if(!$mail->send())
 	    return false;
-	} else {
+	else
 	    return true;
-	}
 }
 
 function _route($string)
@@ -169,11 +168,10 @@ function object_search($valor,$campo,$objeto)
 {
 	$posicao = 0;
 	for($i=0;$i<count($objeto);$i++):
-		if($objeto[$i]->{$campo}==$valor)
-		{
+		if($objeto[$i]->{$campo}==$valor):
 			$posicao = $i;
 			break;
-		}
+		endif;
 	endfor;
 	return $posicao;
 }
@@ -225,7 +223,14 @@ function vazio($variavel)
 		return true;
 }
 
-function query($sql)
+
+function query($sql,$campo=null)
 {
-	return  DB::select(DB::raw($sql));
+	if(is_null($campo))
+		return  DB::select(DB::raw($sql));
+	else
+	{
+		$query = DB::select(DB::raw($sql));
+		return $query[0]->{$campo};
+	}
 }

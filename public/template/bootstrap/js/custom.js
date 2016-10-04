@@ -12,3 +12,8 @@ function msg(titulo,texto)
     $('#msg_msg2').html(texto);
     $('#mensagem2').modal('show'); 
 }
+
+function format_numero(numero,casas)
+{
+	return numero.toFixed(casas);
+}

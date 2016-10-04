@@ -113,6 +113,50 @@ body {
   position:absolute;
   top:50%;
   left:50%;
-  margin-top:-50px;
-  margin-left:-50px;
+}
+
+.bnt-col
+{
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.btn-quad
+{
+  width:100%;
+  height: 100px;
+  padding-right: 5px;
+  padding-left: 5px;
+
+}
+
+.btn-quad-grande
+{
+  width: 60px;
+  height: 80px
+}
+
+.btn-quad-grande-2
+{
+  width: 255px;
+  height: 80px
+}
+.btn-quad-grande-3
+{
+  width: 385px;
+  height: 80px
+}
+.espacado
+{
+  margin-bottom: 5px;
+}
+
+.slim
+{
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.table td :hover{
+background: grey;
 }

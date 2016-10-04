@@ -65,10 +65,10 @@
 
                       <div class="tools">                      
                         <a title="Visualizar / Alterar" href='<?php echo e(asset("usuarios/show/$usuario->id")); ?>'>
-                          <i class="fa fa-edit" style="color:#3C8DBC;" title="Editar"></i>
+                          <i class="fa fa-edit" style="color:#3C8DBC;" ></i>
                         </a>
                         <a title="Excluir" onclick="excluir('<?php echo e($usuario->id); ?>')">
-                          <i class="fa fa-trash-o" style="color:#DD4B39;" title="Editar"></i>
+                          <i class="fa fa-trash-o" style="color:#DD4B39;"></i>
                         </a>  
                       </div>
 

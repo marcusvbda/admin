@@ -144,6 +144,15 @@
 
 	});
 
+
+	$("#afazer_0").keyup(function(event)
+	{
+		  if(event.keyCode == 13)
+		  {
+		    salvar_afazer(0,false);
+		  }
+	});
+
 	$('#importacao_btn_importar').on('click', function() 
 	{
 	    $('#titulo_msg1').html('<strong>Confirmação</strong>');
