@@ -101,7 +101,11 @@ function template_relatorio($titulo,$corpo)
 
 function imprimir($conteudo)
 {
-	echo $conteudo;
+	if(Parametro('imprimir_pdf')=='S')
+		gerarpdf($conteudo);
+	else
+		echo $conteudo;
+	
 	if(Parametro('imprimir_direto')=="S")
 		echo "<script>window.print();</script>";
 }

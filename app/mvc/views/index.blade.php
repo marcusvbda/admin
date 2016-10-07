@@ -170,7 +170,7 @@
 	  		$('#importacao_notificacao').hide();
 			$('#importacao_loading').hide();	
 			$('#btn_importacao_erro').hide();
-	  		$('#btn_ultima_importacao').hide();  			
+	  		$('#btn_ultima_importacao').hide();  	
 	  		if(qtde>0)
 	  		{
 		  		$('#importacao_notificacao').toggle(150);

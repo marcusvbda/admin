@@ -21,7 +21,15 @@ function separa_array_virgulas($array)
 
 function registralog($log = "")
 {
-	DB::table('log')->insert(['descricao' =>$log, 'usuario' => Auth('id'),'created_at'=>date("Y-m-d H:i:s")]);
+	if(tabela_existe('log'))
+		DB::table('log')->insert(['descricao' =>$log, 'usuario' => Auth('id'),'created_at'=>date("Y-m-d H:i:s")]);
+	else
+		{
+			query('create table log (id int(11) NOT NULL, usuario int(11) NOT NULL,  descricao varchar(500) NOT NULL,
+						  created_at timestamp NULL DEFAULT NULL, updated_at timestamp NULL DEFAULT NULL)');
+			query('alter TABLE log ADD PRIMARY KEY (id)');
+			query('alter TABLE log  MODIFY id int(11) NOT NULL AUTO_INCREMENT');
+		}
 }
 
 function mensagem($mensagem= "")
@@ -233,4 +241,13 @@ function query($sql,$campo=null)
 		$query = DB::select(DB::raw($sql));
 		return $query[0]->{$campo};
 	}
+}
+
+function tabela_existe($tabela)
+{
+	$tabelas =  query("SHOW TABLES LIKE '".$tabela."'");
+	if(count($tabelas)>0)
+		return true;
+	else
+		return false;
 }

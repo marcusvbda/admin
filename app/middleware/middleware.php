@@ -21,9 +21,7 @@ class middleware
 					return true;
 			}
 			else
-			{
 				redirecionar(asset('usuarios/login'));
-			}
 		}
 	}
 

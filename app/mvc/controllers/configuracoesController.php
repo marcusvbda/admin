@@ -13,11 +13,7 @@ class configuracoesController extends controller
 
 	public function getIndex()
 	{
-		$parametros = $this->model
-						->join('parametros','parametros.id','=','empresa_parametros.id_parametro')
-   							->wherein('empresa',Auth('empresa_selecionada'))
-   								->groupby('parametro')
-									->get();
+		$parametros = $this->model->get();
 		$array=array();						
 		for ($i=0; $i < count($parametros); $i++):
 			$array[$parametros[$i]->parametro] = $parametros[$i]->valor;				
@@ -59,9 +55,8 @@ class configuracoesController extends controller
 			$nova_configuracao = $_POST;	
 			foreach ($_POST as $parametro =>$valor):
 				$config = $this->model
-						->where("id_parametro",'=',$parametro)
-							->wherein('empresa',Auth('empresa_selecionada'))
-								->update(['valor'=>$valor]);
+						->where("parametro",'=',$parametro)
+							->update(['valor'=>$valor]);
 			endforeach;
 		}
 		redirecionar(asset('configuracoes'));

@@ -13,7 +13,7 @@
   <link rel='icon' href=<?php echo e(FAVICON); ?> type='image/gif'>
 
 <style type="text/css"></style></head>
-<body class="skin-blue sidebar-mini fixed sidebar-collapse" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
+<body class="sidebar-mini skin-blue sidebar-collapse" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -114,11 +114,7 @@
           </li>
         <?php endif; ?>  
 
-        <li class="treeview">
-            <a href="<?php echo e(asset('caixas')); ?>">
-              <i class="glyphicon glyphicon-stats"></i> <span>Caixas</span>
-            </a>
-        </li>
+
 
         <li class="treeview">
             <a href="#">

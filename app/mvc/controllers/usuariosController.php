@@ -13,7 +13,6 @@ class usuariosController extends controller
 
 	public function getIndex()
 	{
-		print_r(Auth('empresa_selecionada'));
 		if(isset($_GET['filtro']))
 			$filtro = strtoupper($_GET['filtro']);
 		else
@@ -23,16 +22,16 @@ class usuariosController extends controller
 		else
 			$pagina = "1";
       	$tempo_inicio = microtime(true);
-		$usuarios =  DB::table('usuarios')
-						->where('excluido','=',"N")
-							->whereRaw("(email like '%$filtro%' or
-									 usuario like '%$filtro%')")
-								->wherein('empresa',Auth('empresa_selecionada'))
-									->paginate(10, ['*'], "pagina", $pagina);
+		$usuarios =  DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
+						->where('empresa','=',Auth('serie_empresa'))
+							->where('excluido','=',"N")
+								->whereRaw("(email like '%$filtro%' or
+										 usuario like '%$filtro%')")
+									->wherein('empresa',Auth('empresa_selecionada'))
+										->paginate(10, ['*'], "pagina", $pagina);
       	$tempo_consulta = microtime(true) - $tempo_inicio;
       	$qtde_registros = $usuarios->total();  
       	$usuarios->appends(['filtro'=>$filtro])->render();
-
 		echo $this->view('usuarios.index',compact('usuarios','filtro','tempo_consulta','qtde_registros'));
 	}
 
@@ -43,7 +42,6 @@ class usuariosController extends controller
 			$usuario = $this->model->find($_POST['id_usuario']);
 			$usuario->excluido="S";
 			$usuario->save();
-        	registralog("Excluiu usuário : ".$_POST['id_usuario']);
 		}
 		redirecionar(asset('usuarios'));
 	}
@@ -58,7 +56,8 @@ class usuariosController extends controller
 	{
 		if($id=="")
 			redirecionar(asset('erros/404'));
-		$usuario = DB::table('usuarios')
+	
+		$usuario = DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
 			->select('usuarios.*','empresas.razao as empresa_razao')
 				->join('empresas','empresas.id','=','usuarios.empresa')
 					->where('usuarios.id','=',$id)
@@ -68,16 +67,14 @@ class usuariosController extends controller
 		if(count($usuario)==0)
 			redirecionar(asset('erros/404'));
 		$usuario=$usuario[0];
-        registralog("Visualizou usuário : ".$id);
 		echo $this->view('usuarios.show',compact('usuario'));
 	}
 
 	public function postEditar()
 	{		
-		$usuario = DB::table('usuarios')
+		$usuario = DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
 			->where('id', $_POST['id'])
             	->update($_POST);
-        registralog("Editou usuário : ".$_POST['id']);
 		redirecionar(asset("usuarios/show/{$_POST['id']}"));
 	}
 
@@ -99,7 +96,7 @@ class usuariosController extends controller
 
 	private function emailemuso($email)
 	{
-		$email = DB::table('usuarios')
+		$email = DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
 					->where('email','=',$email)
 						->where('excluido','=','N')
 							->get();
@@ -118,16 +115,21 @@ class usuariosController extends controller
 
 	public function postStore()
 	{
-		$empresas = Auth('empresa');
+		$empresas_selecionadas = '';
+		$empresa = Auth('serie_empresa');
+
 		if(Auth('admin_rede')=="S")
-			$empresas =  remove_repeticao_array(limpa_vazios_array(string_virgulas_array($_POST['empresas_selecionadas'])));
+			$empresas_selecionadas =  $_POST['empresas_selecionadas'];
+		else
+			$empresas_selecionadas =  $empresa;
+
+
 		$usuario = $_POST;
-		$usuario['senha'] = md5($usuario['senha']);
-		foreach ($empresas as $empresa):			
-			$usuario['empresa'] = $empresa;
-			$this->model->create($usuario);
-		endforeach;		
-		redirecionar(asset('usuarios'));
+		$usuario['senha'] = md5($usuario['senha']);	
+		$usuario['empresa'] = $empresa;
+		$usuario['empresa_selecionada'] = $empresas_selecionadas;
+		$this->model->create($usuario);
+		// redirecionar(asset('usuarios'));
 	}
 
 
@@ -151,41 +153,54 @@ class usuariosController extends controller
 
 	public function getSair()
 	{
-		registralog("Saiu do sistema");
 		LimpaUsuario();
 		redirecionar(asset('usuarios/login'));
 	}
 
 	public function postLogar()
 	{
-		$usuarios = $this->model
-			->join('redes_empresas','redes_empresas.empresa','=','usuarios.empresa')
-				->select('usuarios.*','redes_empresas.rede')
-					->where('usuarios.email','=',$_POST['email'])
-						->where('usuarios.senha','=',md5($_POST['senha']))
-							->where('usuarios.excluido','=','N')
-								->get();
+		$usuarios = query(
+			"select 
+				u.id as id_usuario,
+				u.usuario,
+			    u.sexo as sexo_usuario,
+			    u.empresa as serie_empresa_usuario,
+			    u.empresa_selecionada as serie_empresa_selecionada_usuario,
+			    u.admin,
+			    u.admin_rede,
+			    u.email,
+			    u.empresa_selecionada,
+			    e.razao as razao_empresa,
+			    e.nome as nome_empresa,
+			    e.inscricao_municipal as im_empresa,
+			    e.inscricao_estadual as ie_empresa,
+			    e.CNPJ_CPF as cnpj_empresa,
+			    e.rede
+			from 
+				".BANCO_DE_DADOS_USUARIOS.".usuarios u 
+			    join ".BANCO_DE_DADOS_USUARIOS.".empresas e on e.serie=u.empresa
+			  	where u.email='".$_POST['email']."' and u.senha='".md5($_POST['senha'])."'			    
+			");
+
+		
 
 		if(count($usuarios)>0)	
 		{			
-			$array = ['id'=>$usuarios[0]->id, 'sexo'=>$usuarios[0]->sexo ,'admin_rede'=>$usuarios[0]->admin_rede,'rede'=>$usuarios[0]->rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
-					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID];
+			$array = ['id'=>$usuarios[0]->id_usuario, 'sexo'=>$usuarios[0]->sexo_usuario ,'admin_rede'=>$usuarios[0]->admin_rede,'rede'=>$usuarios[0]->rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
+					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID,'serie_empresa'=>$usuarios[0]->serie_empresa_usuario,'empresa'=>$usuarios[0]->empresa,'razao_empresa'=>$usuarios[0]->razao_empresa,'nome_empresa'=>$usuarios[0]->nome_empresa,'im_empresa'=>$usuarios[0]->im_empresa,'ie_empresa'=>$usuarios[0]->ie_empresa,'cnpj_empresa'=>$usuarios[0]->cnpj_empresa];
 	
 			$array['empresa_selecionada'] = remove_repeticao_array(limpa_vazios_array(string_virgulas_array($usuarios[0]->empresa_selecionada)));
-			$array['empresa'] =	array($usuarios[0]->empresa);
-
+	
 			SalvaUsuario($array);
 			SetLogado('S');
-			registralog("Entrou do sistema");
-			$parametros = DB::table('empresa_parametros')
-				->join('parametros','parametros.id','=','empresa_parametros.id_parametro')
-   							->wherein('empresa',Auth('empresa'))
-									->get();
+			$parametros = query("select * From ".BANCO_DE_DADOS.".empresa_parametros ep 
+				join ".BANCO_DE_DADOS.".parametros p on ep.id_parametro=p.id where ep.empresa in (".separa_array_virgulas($array['empresa_selecionada']).")");
 			$array=array();						
 			for ($i=0; $i < count($parametros); $i++):
 				$array[$parametros[$i]->parametro] = $parametros[$i]->valor;				
 			endfor;
 			SalvaParametros($array);	
+			SetLogado('S');
 			redirecionar(asset('inicio'));
 		}
 		else
@@ -234,7 +249,6 @@ class usuariosController extends controller
 	   		$usuario = $this->model->findOrFail($usuario[0]->id);
 	   		$usuario->senha=md5($_POST['defsenha']);
 	   		$usuario->save();
-			registralog($_POST['defemail']." redefiniu senha para padrão inicial");	
 		}	
 		redirecionar(asset(''));
 	}
@@ -249,8 +263,7 @@ class usuariosController extends controller
 			$email = '<h4 style="text-align:center;">Renovação de senha</h4>';
 			$email.= '<span style="text-align:center;">A senha deste usuário foi alterada para <Strong> 0123456789 </strong>,</span>';
 			$email.= '<span style="text-align:center;">faça o primeiro <a href="'.asset('login').'">login</a> utilizando esta senha e altere-a.</span>';
-			enviarEmail($_POST['renov_email'],'Renovação de senha '.APP_NOME,$email);
-			registralog("Enviado email de renovação de senha para :".$_POST['renov_email']);	
+			enviarEmail($_POST['renov_email'],'Renovação de senha '.APP_NOME,$email);	
 
 		}
 		redirecionar(asset(''));
@@ -273,7 +286,6 @@ class usuariosController extends controller
 		$campo_relatorio = array('Nome'=>'usuario','Email'=>'email','Sexo'=>'sexo','Administrador'=>'admin');
 
 		$html = prepararelatorio($campo_relatorio,$usuarios,"Relatório Simples de Usuários");
-		registralog("Imprimiu relatório simples de usuários");		
         imprimir($html);
 	}
 

@@ -130,7 +130,7 @@ function Parametro($variavel="id")
 
 function SetLogado($logado = "S")
 {
-	$usuario = DB::table('usuarios')->where('id','=',Auth('id'))->update(array('logado'=>$logado));
+	$usuario = DB::table($db_usuarios .BANCO_DE_DADOS_USUARIOS.'.usuarios')->where('id','=',Auth('id'))->update(array('logado'=>$logado));
 }
 
 

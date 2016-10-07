@@ -26,10 +26,28 @@ class importacaoController extends controller
 
 	public function __construct()
 	{
-		$this->cnpj_empresa = DB::table('empresas')->find(Auth('empresa')[0])->CNPJ_CPF;
+		$this->cnpj_empresa = Auth('cnpj_empresa');
 		$this->pasta_importar = __DIR__."/../../../public/uploads/importacao/importar/{$this->cnpj_empresa}/";
 		$this->pasta_importados = __DIR__."/../../../public/uploads/importacao/importados/{$this->cnpj_empresa}/";
 		$this->pasta_erro = __DIR__."/../../../public/uploads/importacao/erro/{$this->cnpj_empresa}/";
+		if(!tabela_existe('importacoes'))
+		{
+			query('create TABLE importacoes (
+					  id int(11) NOT NULL,
+					  arquivo varchar(100) DEFAULT NULL,
+					  importado varchar(1) DEFAULT NULL,
+					  usuario int(11) DEFAULT NULL,
+					  empresa int(11) DEFAULT NULL,
+					  tempo_execucao float DEFAULT NULL,
+					  qtde_registros int(11) DEFAULT NULL,
+					  qtde_inserts int(11) DEFAULT NULL,
+					  qtde_updates int(11) DEFAULT NULL,
+					  created_at timestamp NULL DEFAULT NULL,
+					  updated_at timestamp NULL DEFAULT NULL
+					)');
+			query('alter TABLE importacoes ADD PRIMARY KEY (id)');
+			query('alter TABLE importacoes  MODIFY id int(11) NOT NULL AUTO_INCREMENT');
+		}
 	}
 
 	public function postQtde_arquivos($pasta)
@@ -44,6 +62,12 @@ class importacaoController extends controller
 	   	return (count($this->arq_importar)-2);
 	}
 
+
+	public function getImportarManualmente()
+	{
+		$this->postImportar();
+	}
+
 	public function postImportar()
 	{
 		if($this->existeArquivos())
@@ -54,7 +78,7 @@ class importacaoController extends controller
 				foreach ($this->arq_importar as $arquivo):
 					$this->registros = 0;
 					$this->inserts = 0;
-					$this->updates = 0;					
+					$this->updates = 0;	
 					if ($this->validaJSON($arquivo))
 					{
 						ini_set('max_execution_time', 0);
@@ -72,7 +96,6 @@ class importacaoController extends controller
 				$this->registrar_importacao('N',microtime(true) - $tempo_inicio);
 				$this->mover_arquivo('erro');
         		registralog("Erro ao importar arquivo :".$this->arquivo);
-
 			}
 			ini_set('max_execution_time', 30);
 		}
@@ -175,7 +198,6 @@ class importacaoController extends controller
 	{
 		$this->query = DB::table($tabela)
 			->where($this->chaves_com_valor)
-				->where('empresa','=',Auth('empresa')[0])
 					->get();			
 
 		if(count($this->query)>0)
@@ -188,7 +210,6 @@ class importacaoController extends controller
 	private function executa_operacao($linha)
 	{
 		$linha = (array) $linha;
-		$linha['empresa']=Auth('empresa')[0];
 		switch (strtoupper($this->tipo_operacao)):			
 			case 'INSERT':
 			    DB::table($this->tabela)->insert($linha);
@@ -224,7 +245,7 @@ class importacaoController extends controller
 					$sql.="$campo $_info->tipo,";
 				endforeach;				
 			endforeach;
-			$sql.="empresa int NOT NULL,PRIMARY KEY (sequencia))";	
+			$sql.=" PRIMARY KEY (sequencia))";	
 			DB::statement($sql);	
 		}
 		else
@@ -282,8 +303,7 @@ class importacaoController extends controller
     	$dados['importados'] = $this->Qtde_arquivos('IMPORTADOS');
     	if($dados['importados']>0)
     	{
-    		$query = 
-	    	query("select * from importacoes where id = (select max(id) as id from importacoes where empresa='".Auth('empresa')."')");
+    		$query = query("select * from importacoes where id = (select max(id) as id from importacoes)");	
 	    	if(count($query)>0)
 	    		$dados['data_ultima_importacao']=data_formatada($query[0]->created_at);
 	    	else
