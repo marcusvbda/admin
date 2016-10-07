@@ -17,3 +17,13 @@ function format_numero(numero,casas)
 {
 	return numero.toFixed(casas);
 }
+
+function aspas(texto)
+{
+	return "'"+texto+"'";
+}
+
+function aspas_duplas(texto)
+{
+	return '"'+texto+'"';
+}

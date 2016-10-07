@@ -175,10 +175,13 @@ class usuariosController extends controller
 			    e.inscricao_municipal as im_empresa,
 			    e.inscricao_estadual as ie_empresa,
 			    e.CNPJ_CPF as cnpj_empresa,
-			    e.rede
+			    re.id as id_rede,
+			    red.nome as nome_rede
 			from 
 				".BANCO_DE_DADOS_USUARIOS.".usuarios u 
 			    join ".BANCO_DE_DADOS_USUARIOS.".empresas e on e.serie=u.empresa
+			    join ".BANCO_DE_DADOS_USUARIOS.".redes_empresas re on re.serie_empresa=e.serie
+			    join ".BANCO_DE_DADOS_USUARIOS.".redes red on red.id=re.rede
 			  	where u.email='".$_POST['email']."' and u.senha='".md5($_POST['senha'])."'			    
 			");
 
@@ -186,15 +189,14 @@ class usuariosController extends controller
 
 		if(count($usuarios)>0)	
 		{			
-			$array = ['id'=>$usuarios[0]->id_usuario, 'sexo'=>$usuarios[0]->sexo_usuario ,'admin_rede'=>$usuarios[0]->admin_rede,'rede'=>$usuarios[0]->rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
-					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID,'serie_empresa'=>$usuarios[0]->serie_empresa_usuario,'empresa'=>$usuarios[0]->empresa,'razao_empresa'=>$usuarios[0]->razao_empresa,'nome_empresa'=>$usuarios[0]->nome_empresa,'im_empresa'=>$usuarios[0]->im_empresa,'ie_empresa'=>$usuarios[0]->ie_empresa,'cnpj_empresa'=>$usuarios[0]->cnpj_empresa];
+			$array = ['id'=>$usuarios[0]->id_usuario, 'sexo'=>$usuarios[0]->sexo_usuario ,'admin_rede'=>$usuarios[0]->admin_rede,'rede'=>$usuarios[0]->id_rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
+					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID,'serie_empresa'=>$usuarios[0]->serie_empresa_usuario,'empresa'=>$usuarios[0]->empresa,'razao_empresa'=>$usuarios[0]->razao_empresa,'nome_empresa'=>$usuarios[0]->nome_empresa,'im_empresa'=>$usuarios[0]->im_empresa,'ie_empresa'=>$usuarios[0]->ie_empresa,'cnpj_empresa'=>$usuarios[0]->cnpj_empresa,'nome_rede'=>$usuarios[0]->nome_rede];
 	
 			$array['empresa_selecionada'] = remove_repeticao_array(limpa_vazios_array(string_virgulas_array($usuarios[0]->empresa_selecionada)));
 	
 			SalvaUsuario($array);
 			SetLogado('S');
-			$parametros = query("select * From ".BANCO_DE_DADOS.".empresa_parametros ep 
-				join ".BANCO_DE_DADOS.".parametros p on ep.id_parametro=p.id where ep.empresa in (".separa_array_virgulas($array['empresa_selecionada']).")");
+			$parametros = query("select * From ".PREFIXO_BANCO.Auth('serie_empresa').".parametros");
 			$array=array();						
 			for ($i=0; $i < count($parametros); $i++):
 				$array[$parametros[$i]->parametro] = $parametros[$i]->valor;				

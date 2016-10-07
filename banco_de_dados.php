@@ -1,6 +1,6 @@
 <?php
-define("BANCO_DE_DADOS", "db_admin_".$_SESSION['dados_usuario']->serie_empresa);
-define("BANCO_DE_DADOS_USUARIOS", "db_admin_usuarios");
+define("BANCO_DE_DADOS", PREFIXO_BANCO.$_SESSION['dados_usuario']->serie_empresa);
+define("BANCO_DE_DADOS_USUARIOS", PREFIXO_BANCO."usuarios");
 
 if (Ja_Logado()) 
 {

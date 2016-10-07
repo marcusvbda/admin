@@ -19,29 +19,16 @@ class empresaController extends controller
 	
 	public function getBuscaEmpresas()
 	{
-		$id_empresas= remove_repeticao_array(limpa_vazios_array(string_virgulas_array(DB::table('usuarios')->find(Auth('id'))->empresa)));		
+		$id_empresas= Auth('empresa_selecionada');	
 
-		$rede_empresa = DB::table('redes_empresas')->wherein('empresa',$id_empresas)->get();
-	
-		$rede = DB::table('redes_empresas')->where('empresa','=',$rede_empresa[0]->rede)->get();
+		$empresas_da_rede = query('select * from '.BANCO_DE_DADOS_USUARIOS.'.empresas e join '.BANCO_DE_DADOS_USUARIOS.'.redes_empresas re on re.serie_empresa=e.serie where re.rede='.Auth('rede'));
 
-		$id_rede = $rede[0]->id;
-
-
-		$empresas_da_rede = DB::table('redes_empresas')
-			->join('redes','redes_empresas.rede' ,'=', 'redes.id')
-				->join('empresas','empresas.id' ,'=', 'redes_empresas.empresa')
-					->select('empresas.*','redes.nome as nome_rede')
-						->where('redes_empresas.rede','=',$id_rede)	
-							->get();
-
-      	
-		$nome_rede = $empresas_da_rede[0]->nome_rede;
-
+		$nome_rede = Auth('nome_rede');
 		$empresas_da_rede = add_campo_objeto('selecionado','N',$empresas_da_rede);
 
+
       	foreach(Auth('empresa_selecionada') as $emp_selecionada):
-	   		$empresas_da_rede[object_search($emp_selecionada,"id",$empresas_da_rede)]->selecionado = "S";
+	   		$empresas_da_rede[object_search($emp_selecionada,"serie",$empresas_da_rede)]->selecionado = "S";
 	   	endforeach;	
 
 	   	echo json_encode($empresas_da_rede);

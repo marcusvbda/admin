@@ -93,20 +93,20 @@ function atualizarTable()
 		    {
 		      	if(r.selecionado=="S")	 
 		      	{     		
-		          	html +='<tr id="tr_checkbox_'+r.id+'" style="background-color:#c4ffc4;" onclick="desmarcar('+r.id+');">' +
+		          	html +='<tr id="tr_checkbox_'+r.serie+'" style="background-color:#c4ffc4;" onclick="desmarcar('+aspas(r.serie)+');">' +
 		      			'<td>'+
-		      				'<span id="span_checkbox_'+r.id+'" style="color:green;" class="glyphicon glyphicon-check"></span></td>';
+		      				'<span id="span_checkbox_'+r.serie+'" style="color:green;" class="glyphicon glyphicon-check"></span></td>';
 		      		if(qtde_selecionado==0)		
-						$('#empresas').val(r.id);
+						$('#empresas').val(r.serie);
 					else
-						$('#empresas').val($('#empresas').val()+','+r.id);						
+						$('#empresas').val($('#empresas').val()+','+r.serie);						
 
 		      		qtde_selecionado++;
 		     	}
 		      	else
-		      		html +='<tr id="tr_checkbox_'+r.id+'" style="background-color:#ffd1d1;" onclick="marcar('+r.id+');">'+
+		      		html +='<tr id="tr_checkbox_'+r.serie+'" style="background-color:#ffd1d1;" onclick="marcar('+aspas(r.serie)+');">'+
 		      			'<td>'+
-		      				'<span id="span_checkbox_'+r.id+'" style="color:red;" class="glyphicon glyphicon-unchecked"></span></td>';
+		      				'<span id="span_checkbox_'+r.serie+'" style="color:red;" class="glyphicon glyphicon-unchecked"></span></td>';
 		    } 
 		    else
 		    {
@@ -139,40 +139,40 @@ function atualizarTable()
     });
 }
 
-function marcar(id)
+function marcar(serie)
 {
 	if(($('#empresas').val()!="")&&($('#empresas').val()!=null))
-		$('#empresas').val($('#empresas').val()+','+id);
+		$('#empresas').val($('#empresas').val()+','+serie);
 	else
 		$('#empresas').val(id);		
-	$("#tr_checkbox_"+id).attr("onclick","desmarcar("+id+")");	
+	$("#tr_checkbox_"+serie).attr("onclick","desmarcar("+aspas(serie)+")");	
 
 	$('#qtde_empresas').val(parseInt($('#qtde_empresas').val())+1);
 
-	$("#span_checkbox_"+id).removeClass("glyphicon glyphicon-unchecked");
-    $("#span_checkbox_"+id).addClass("glyphicon glyphicon-check");
-    $("#span_checkbox_"+id).css("color","green");
-    $("#tr_checkbox_"+id).css("background-color","#c4ffc4");
+	$("#span_checkbox_"+serie).removeClass("glyphicon glyphicon-unchecked");
+    $("#span_checkbox_"+serie).addClass("glyphicon glyphicon-check");
+    $("#span_checkbox_"+serie).css("color","green");
+    $("#tr_checkbox_"+serie).css("background-color","#c4ffc4");
     habilita_salvar();
 }
 
-function desmarcar(id)
+function desmarcar(serie)
 {
 	qtde_empresas = parseInt($('#qtde_empresas').val());
 	if(qtde_empresas>1)
 	{
 		var empresas = $('#empresas').val();
-		empresas = empresas.replace(id, "");	
+		empresas = empresas.replace(serie, "");	
 		$('#empresas').val(empresas);
-		$("#tr_checkbox_"+id).attr("onclick","marcar("+id+")");	
+		$("#tr_checkbox_"+serie).attr("onclick","marcar("+aspas(serie)+")");	
 
 		$('#qtde_empresas').val(parseInt(qtde_empresas)-1);
 
 
-		$("#span_checkbox_"+id).removeClass("glyphicon glyphicon-check");
-	    $("#span_checkbox_"+id).addClass("glyphicon glyphicon-unchecked");
-	    $("#span_checkbox_"+id).css("color","red");
-	    $("#tr_checkbox_"+id).css("background-color","#ffd1d1");
+		$("#span_checkbox_"+serie).removeClass("glyphicon glyphicon-check");
+	    $("#span_checkbox_"+serie).addClass("glyphicon glyphicon-unchecked");
+	    $("#span_checkbox_"+serie).css("color","red");
+	    $("#tr_checkbox_"+serie).css("background-color","#ffd1d1");
 		habilita_salvar();
 	}
 	else
