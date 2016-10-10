@@ -14,7 +14,10 @@ class todolistController extends controller
 	public function getAfazeres()
 	{
 		$afazeres = query('select * from TodoList where excluido="N" and usuario ='.Auth('id'));
-		$porcentagem =((count(query('select * from TodoList where excluido="N" and feito="S" and usuario ='.Auth('id')))*100)/count($afazeres));
+		if(count($afazeres)>0)
+			$porcentagem =((count(query('select * from TodoList where excluido="N" and feito="S" and usuario ='.Auth('id')))*100)/count($afazeres));
+		else
+			$porcentagem = 0;
 		$porcentagem = round($porcentagem,2);
 		echo json_encode(compact('afazeres','porcentagem'));
 	}

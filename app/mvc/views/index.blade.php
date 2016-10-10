@@ -16,7 +16,7 @@
 @section('conteudo')
 
 
-<div class="row" >
+<div class="row" style="display: none;" id="div_importacao_dados">
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header">
@@ -165,15 +165,13 @@
 
 	function procura_arquivos_para_importar()
 	{
+		$('#div_importacao_dados').hide();
+
 		$.post("importacao/qtde_arquivos/importar", function(qtde)
 	  	{ 
-	  		$('#importacao_notificacao').hide();
-			$('#importacao_loading').hide();	
-			$('#btn_importacao_erro').hide();
-	  		$('#btn_ultima_importacao').hide();  	
 	  		if(qtde>0)
 	  		{
-		  		$('#importacao_notificacao').toggle(150);
+		  		$('#importacao_notificacao').show();
 		  		$('#importacao_qtde').html(qtde);
 		  		if(qtde>1)
 		  			$('#importacao_texto').html("Arquivos aguardando importação");
@@ -189,7 +187,7 @@
 		  			$('#qtde_com_erro').html(dados.nao_importados+" Arquivos com erro");
 		  		else
 		  			$('#qtde_com_erro').html(dados.nao_importados+" Arquivo com erro");	 
-	  			$('#btn_importacao_erro').toggle(150);
+	  			$('#btn_importacao_erro').show();
 		  	} 		
 
 		  	if(dados.importados>0)	  		
@@ -198,9 +196,10 @@
 	  				$('#data_ultima_importacao').html("Última importação, "+dados.data_ultima_importacao);
 	  			else
 	  				$('#data_ultima_importacao').html("Não foi possível capturar a data da ultima importação");
-	  			$('#btn_ultima_importacao').toggle(150);
+	  			$('#btn_ultima_importacao').show();
 		  	} 		
 	  	});
+		$('#div_importacao_dados').toggle(150);
 	}
 
 	function importar_arquivo()
@@ -226,6 +225,8 @@
 			$('#btn_voltar_mensagem2').attr("class","btn btn-success");			    		    	
 			$('#btn_voltar_mensagem2').html("Confirmar");			    		    	
 		    $('#mensagem2').modal('show'); 
+		    $('#importacao_loading').hide();
+			$('#importacao_notificacao').hide();
 	    	procura_arquivos_para_importar();	
 	  	});
 	}

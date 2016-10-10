@@ -121,6 +121,7 @@
               <i class="glyphicon glyphicon-align-right"></i> <span>Consultas</span>
             </a>
             <ul class="treeview-menu">
+                    <li><a href="<?php echo e(asset('caixas')); ?>"><i class="glyphicon glyphicon-indent-left"></i> <span>Caixas</span></a></li>
                     <li><a href="<?php echo e(asset('clientes')); ?>"><i class="glyphicon glyphicon-user"></i> <span>Clientes</span></a></li>
                     <li class="treeview">
                       <a href="#">
@@ -198,6 +199,7 @@
       <?php echo $__env->yieldContent('conteudo'); ?>
 
     </section>
+    </div>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->

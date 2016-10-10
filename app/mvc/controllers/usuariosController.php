@@ -58,11 +58,8 @@ class usuariosController extends controller
 			redirecionar(asset('erros/404'));
 	
 		$usuario = DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
-			->select('usuarios.*','empresas.razao as empresa_razao')
-				->join('empresas','empresas.id','=','usuarios.empresa')
-					->where('usuarios.id','=',$id)
-						->wherein('empresa',Auth('empresa_selecionada'))
-							->get();
+				->where('usuarios.id','=',$id)
+					->get();
 		// $usuario = DB::table('usuarios')->find($usuario[0]->id);
 		if(count($usuario)==0)
 			redirecionar(asset('erros/404'));
@@ -129,7 +126,7 @@ class usuariosController extends controller
 		$usuario['empresa'] = $empresa;
 		$usuario['empresa_selecionada'] = $empresas_selecionadas;
 		$this->model->create($usuario);
-		// redirecionar(asset('usuarios'));
+		redirecionar(asset('usuarios'));
 	}
 
 

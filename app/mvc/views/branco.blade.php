@@ -33,4 +33,11 @@
 		</div>
 	</div>
 </div>
+
+<script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
+<script src="{{PASTA_PUBLIC}}/template/bootstrap/js/custom.js"></script>
+<script type="text/javascript">
+	
+
+</script>
 @stop

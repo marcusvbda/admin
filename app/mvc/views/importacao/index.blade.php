@@ -14,10 +14,29 @@
 
 
 @section('conteudo')
-<div class="col-md-12">
+
+<div class="col-md-2">
   <div class="box">
     <div class="box-header with-border">
-        <p class="title_box"></p>  
+        <p class="title_box">Pastas</p>  
+        <div class="col-md-12 text-center">
+          <a href="{{asset('importacao/importar')}}"><button  class="btn btn-success">Importar</button></a>
+        </div>
+        <div class="col-md-12 text-center">
+          <a href="{{asset('importacao/importados')}}"><button class="btn btn-warning">Importados</button></a>
+        </div>
+        <div class="col-md-12 text-center">
+          <a href="{{asset('importacao/erro')}}"><button class="btn btn-danger">Erro</button></a>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-md-10">
+  <div class="box">
+    <div class="box-header with-border">
+        <p class="title_box">Arquivos</p>  
       <div class="box-tools pull-right">
         <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div> -->
       </div>
@@ -39,15 +58,14 @@
                   <tr>
                     <td>{{$arq->arquivo}}</td>
                     <td>{{$arq->data_geracao}}</td>       
-                    <td>{{$arq->pasta}}</td>  
+                    <td>{{$arq->pasta}}</td>
                      <td class="centro">
-                      <div class="tools">                      
-                        <a title="Visualizar" onclick="Visualizar('{{$arq->arquivo}}');">
-                          <i class="glyphicon glyphicon-search" style="color:#3C8DBC;"></i>
-                        </a>
-                        <a title="Mover Arquivo" >
+                      <div class="tools">                   
+                        @if($arq->pasta=='IMPORTAR')                         
+                        <a title="Mover Arquivo" title="Importar Arquivo" onclick="importar_arquivo('{{$arq->arquivo}}')">
                           <i class="glyphicon glyphicon-share-alt " style="color:#1FA65A;"></i>
                         </a>
+                        @endif
                         <a title="Excluir" onclick="excluir('{{$arq->arquivo}}','{{$arq->pasta}}')">
                           <i class="fa fa-trash-o" style="color:#DD4B39;"></i>
                         </a>  
@@ -78,6 +96,17 @@ function excluir(arquivo,pasta,excluir=false)
   }
   else
     msg_confirm('<strong>Confirmação</strong>','Deseja excluir este arquivo?',"excluir('"+arquivo+"','"+pasta+"',true)"); 
+}
+
+function importar_arquivo(arq,importar=false)
+{
+  if(importar)
+  {
+    $.post("{{asset('importacao/Importar')}}", { arquivo: arq});
+    location.reload();
+  }
+  else
+    msg_confirm('<strong>Confirmação</strong>','Deseja Importar o arquivo ('+arq+')?',"importar_arquivo('"+arq+"',true)"); 
 }
 </script>
 

@@ -12,10 +12,29 @@
 
 
 <?php $__env->startSection('conteudo'); ?>
-<div class="col-md-12">
+
+<div class="col-md-2">
   <div class="box">
     <div class="box-header with-border">
-        <p class="title_box"></p>  
+        <p class="title_box">Pastas</p>  
+        <div class="col-md-12 text-center">
+          <a href="<?php echo e(asset('importacao/importar')); ?>"><button  class="btn btn-success">Importar</button></a>
+        </div>
+        <div class="col-md-12 text-center">
+          <a href="<?php echo e(asset('importacao/importados')); ?>"><button class="btn btn-warning">Importados</button></a>
+        </div>
+        <div class="col-md-12 text-center">
+          <a href="<?php echo e(asset('importacao/erro')); ?>"><button class="btn btn-danger">Erro</button></a>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-md-10">
+  <div class="box">
+    <div class="box-header with-border">
+        <p class="title_box">Arquivos</p>  
       <div class="box-tools pull-right">
         <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div> -->
       </div>
@@ -37,15 +56,14 @@
                   <tr>
                     <td><?php echo e($arq->arquivo); ?></td>
                     <td><?php echo e($arq->data_geracao); ?></td>       
-                    <td><?php echo e($arq->pasta); ?></td>  
+                    <td><?php echo e($arq->pasta); ?></td>
                      <td class="centro">
-                      <div class="tools">                      
-                        <a title="Visualizar" onclick="Visualizar('<?php echo e($arq->arquivo); ?>');">
-                          <i class="glyphicon glyphicon-search" style="color:#3C8DBC;"></i>
-                        </a>
-                        <a title="Mover Arquivo" >
+                      <div class="tools">                   
+                        <?php if($arq->pasta=='IMPORTAR'): ?>                         
+                        <a title="Mover Arquivo" title="Importar Arquivo" onclick="importar_arquivo('<?php echo e($arq->arquivo); ?>')">
                           <i class="glyphicon glyphicon-share-alt " style="color:#1FA65A;"></i>
                         </a>
+                        <?php endif; ?>
                         <a title="Excluir" onclick="excluir('<?php echo e($arq->arquivo); ?>','<?php echo e($arq->pasta); ?>')">
                           <i class="fa fa-trash-o" style="color:#DD4B39;"></i>
                         </a>  
@@ -76,6 +94,17 @@ function excluir(arquivo,pasta,excluir=false)
   }
   else
     msg_confirm('<strong>Confirmação</strong>','Deseja excluir este arquivo?',"excluir('"+arquivo+"','"+pasta+"',true)"); 
+}
+
+function importar_arquivo(arq,importar=false)
+{
+  if(importar)
+  {
+    $.post("<?php echo e(asset('importacao/Importar')); ?>", { arquivo: arq});
+    location.reload();
+  }
+  else
+    msg_confirm('<strong>Confirmação</strong>','Deseja Importar o arquivo ('+arq+')?',"importar_arquivo('"+arq+"',true)"); 
 }
 </script>
 

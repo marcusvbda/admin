@@ -75,20 +75,38 @@ class importacaoController extends controller
 			$tempo_inicio = microtime(true);
 			try
 			{
-				foreach ($this->arq_importar as $arquivo):
+				if(!isset($_POST['arquivo']))
+				{
+					foreach ($this->arq_importar as $arquivo):
+						$this->registros = 0;
+						$this->inserts = 0;
+						$this->updates = 0;	
+						if ($this->validaJSON($arquivo))
+						{
+							set_time_limit(0);
+							$this->importar($this->arquivo = $arquivo);
+							$this->registrar_importacao('S',microtime(true) - $tempo_inicio);
+							$this->mover_arquivo('importados');	
+							$this->arquivos_importados++;		
+						}
+	        			registralog("Importou com sucesso o arquivo :".$this->arquivo);
+					endforeach;	
+				}
+				else
+				{
 					$this->registros = 0;
 					$this->inserts = 0;
 					$this->updates = 0;	
-					if ($this->validaJSON($arquivo))
+					if ($this->validaJSON($_POST['arquivo']))
 					{
-						ini_set('max_execution_time', 0);
-						$this->importar($this->arquivo = $arquivo);
+						set_time_limit(0);
+						$this->importar($this->arquivo = $_POST['arquivo']);
 						$this->registrar_importacao('S',microtime(true) - $tempo_inicio);
 						$this->mover_arquivo('importados');	
 						$this->arquivos_importados++;		
 					}
-        			registralog("Importou com sucesso o arquivo :".$this->arquivo);
-				endforeach;
+	        		registralog("Importou com sucesso o arquivo :".$this->arquivo);
+				}				
 			}
 			catch(exception $e)
 			{
@@ -242,7 +260,10 @@ class importacaoController extends controller
 				if((strtoupper($_info->tipo)=="CHAR")||(strtoupper($_info->tipo)=="VARCHAR"))
 					$sql.="$campo $_info->tipo($_info->tamanho),";
 				else
-					$sql.="$campo $_info->tipo,";
+					if((strtoupper($_info->tipo)=="DATE")||(strtoupper($_info->tipo)=="DATETIME"))
+						$sql.="$campo varchar(15),";
+					else
+						$sql.="$campo $_info->tipo,";
 				endforeach;				
 			endforeach;
 			$sql.=" PRIMARY KEY (sequencia))";	
@@ -363,11 +384,16 @@ class importacaoController extends controller
 
     public function getIndex($pasta="TODAS")
     {
-    	$qtde_importar   = $this->Qtde_arquivos("IMPORTAR");
-    	$qtde_erro       = $this->Qtde_arquivos("ERRO");
-    	$qtde_importados = $this->Qtde_arquivos("IMPORTADOS");
-    	$arquivos = $this->Arquivos_Pasta($pasta);
-		echo $this->view('importacao.index',compact('arquivos','qtde_importar','qtde_erro','qtde_importados'));
+    	if(Auth('admin_rede')=='N')
+    	{
+	    	$qtde_importar   = $this->Qtde_arquivos("IMPORTAR");
+	    	$qtde_erro       = $this->Qtde_arquivos("ERRO");
+	    	$qtde_importados = $this->Qtde_arquivos("IMPORTADOS");
+	    	$arquivos = $this->Arquivos_Pasta($pasta);
+			echo $this->view('importacao.index',compact('arquivos','qtde_importar','qtde_erro','qtde_importados'));
+		}
+		else
+			redirecionar(asset('erros/403'));
     }
 
     public function postExcluirArquivo()
