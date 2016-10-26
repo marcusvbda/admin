@@ -56,7 +56,8 @@ class caixasController extends controller
 
 		$dias_permanencia = dif_datas($caixa->dataabertura,$caixa->datafechamento);
 		$horas_permanencia = dif_horas($caixa->horafechamento,$caixa->horaabertura);
-		echo $this->view('caixas.show',compact('caixa','dias_permanencia','horas_permanencia'));		
+		$porcentagem_teste = 80;
+		echo $this->view('caixas.show',compact('caixa','dias_permanencia','horas_permanencia','porcentagem_teste'));		
 	}
 }
 

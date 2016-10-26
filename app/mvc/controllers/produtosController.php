@@ -28,7 +28,6 @@ class produtosController extends controller
 							(descricao like '%$filtro%' or 
 							nomefantasia like '%$filtro%' or
 							codigo like '%$filtro%')")
-								->wherein('empresa',Auth('empresa_selecionada'))
 									->paginate(10, ['*'], "pagina", $pagina);
       	$tempo_consulta = microtime(true) - $tempo_inicio;
       	$qtde_registros = $produtos->total();      	
@@ -48,7 +47,6 @@ class produtosController extends controller
 						->whereRaw("(descricao like '%$filtro%' or 
 							nomefantasia like '%$filtro%' or
 							codigo like '%$filtro%')")
-								->wherein('empresa',Auth('empresa_selecionada'))
 									->get();
 		$campo_relatorio = array('Código'=>'codigo','Código Estendido'=>'codigoestendido','Nome'=>'nomefantasia','Descrição'=>'descricao');
 		$html = prepararelatorio($campo_relatorio,$produtos,"Relatório Simples de Produtos");
@@ -65,12 +63,32 @@ class produtosController extends controller
 
 		$tipos = 
 		DB::table('tiposprodutos')
-			->wherein('empresa',Auth('empresa'))
 				->where('excluido','=','N')
 					->whereRaw("descricao like '%$filtro%'")
 						->get();
 
 		$campo_relatorio = array('Número'=>'numero','Descrição'=>'descricao','Entradas'=>'entradas','Saidas'=>'saidas');
+		$html = prepararelatorio($campo_relatorio,$tipos,"Relatório Simples de Tipos de Produto");
+		registralog("Imprimiu relatório simples de Tipos de produtos");
+        imprimir($html);
+	}
+
+
+	public function postRelatorio_simples_grupos()
+	{     	
+		if(isset($_GET['filtro']))
+			$filtro = strtoupper($_GET['filtro']);
+		else
+			$filtro = "";
+
+		$tipos = 
+		$grupos = 
+		DB::table('gruposprodutos')
+				->where('excluido','=','N')
+					->whereRaw("descricao like '%$filtro%'")
+						->get();
+
+		$campo_relatorio = array('Código'=>'codigo','Descrição'=>'descricao','Codigo ST'=>'codigo_st','Aliquota IPI'=>'aliquota_ipi','Aliquota ISS'=>"aliquota_iss","Calcula PIS"=>"calcula_pis","Calcula Cofins"=>"calcula_cofins");
 		$html = prepararelatorio($campo_relatorio,$tipos,"Relatório Simples de Tipos de Produto");
 		registralog("Imprimiu relatório simples de Tipos de produtos");
         imprimir($html);
@@ -85,16 +103,13 @@ class produtosController extends controller
 			->where('produtos.excluido','=','N')
 				->where('tiposprodutos.excluido','=','N')
 					->where('gruposprodutos.excluido','=','N')
-						->wherein('tiposprodutos.empresa',Auth('empresa_selecionada'))
-							->wherein('produtos.empresa',Auth('empresa_selecionada'))
-								->wherein('gruposprodutos.empresa',Auth('empresa_selecionada'))
-									->join('tiposprodutos','tiposprodutos.numero','=','produtos.codigo_tipoproduto')
-										->join('gruposprodutos','gruposprodutos.codigo','=','produtos.codigo_grupoproduto')
-											->join('produto_empresa','produto_empresa.codigo_produto','=','produtos.codigo')
-												->join('situacoestributarias','situacoestributarias.codigo','=','produtos.codigo_st')
-													->join('situacoestributarias as sit_entrada','sit_entrada.codigo','=','produtos.codigo_stentrada')
-														->select('produtos.*','tiposprodutos.descricao as desc_tipoproduto','gruposprodutos.descricao as desc_grupoproduto','produto_empresa.*','situacoestributarias.descricao as desc_cstsaida','sit_entrada.descricao as desc_cst_entrada')
-															->get();
+						->join('tiposprodutos','tiposprodutos.numero','=','produtos.codigo_tipoproduto')
+							->join('gruposprodutos','gruposprodutos.codigo','=','produtos.codigo_grupoproduto')
+								->join('produto_empresa','produto_empresa.codigo_produto','=','produtos.codigo')
+									->join('situacoestributarias','situacoestributarias.codigo','=','produtos.codigo_st')
+										->join('situacoestributarias as sit_entrada','sit_entrada.codigo','=','produtos.codigo_stentrada')
+											->select('produtos.*','tiposprodutos.descricao as desc_tipoproduto','gruposprodutos.descricao as desc_grupoproduto','produto_empresa.*','situacoestributarias.descricao as desc_cstsaida','sit_entrada.descricao as desc_cst_entrada')
+												->get();
 		if(count($produtos)==0)
 			redirecionar(asset('erros/404'));
 		$produto=$produtos[0];
@@ -118,7 +133,6 @@ class produtosController extends controller
 
 		$tipos = 
 		DB::table('tiposprodutos')
-			->wherein('empresa',Auth('empresa'))
 				->where('excluido','=','N')
 					->whereRaw("descricao like '%$filtro%'")
 						->paginate(10, ['*'], "pagina", $pagina);
@@ -143,7 +157,6 @@ class produtosController extends controller
 
 		$grupos = 
 		DB::table('gruposprodutos')
-			->wherein('empresa',Auth('empresa'))
 				->where('excluido','=','N')
 					->whereRaw("descricao like '%$filtro%'")
 						->paginate(10, ['*'], "pagina", $pagina);

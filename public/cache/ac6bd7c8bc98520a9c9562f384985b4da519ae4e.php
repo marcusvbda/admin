@@ -54,18 +54,54 @@
 							<input type="text" class="form-control" value="<?php echo e($caixa->situacao); ?>" readonly>
 					</div>
 				</div>
-				
-
+				<hr>
 
 		</div>
 	</div>
 </div>
 
+<div class="col-md-6">
+	<div class="box">
+		<div class="box-header" style="height: 10px">
+	      	<p class="title_box">Movimento</p>		
+		</div>
+		<div class="box-body"> 
+		  <!-- conteudo -->
+		  	<div class="row">
+		  		<div class="col-md-3 text-center">
+		  			<label>Cigarros</label>
+					<div id="circulo_porcentagem_cervejas" style="padding-left: 12px;padding-right: 12px;" data-percent="1"></div>
+				</div>
+				<div class="col-md-3 text-center">
+		  			<label>Cervejas</label>
+					<div id="circulo_porcentagem_cigarros" style="padding-left: 12px;padding-right: 12px;" data-percent="6"></div>
+				</div>
+				<div class="col-md-3 text-center">
+		  			<label>Lubrificantes</label>
+					<div id="circulo_porcentagem_lubrificantes" style="padding-left: 12px;padding-right: 12px;" data-percent="15"></div>
+				</div>
+				<div class="col-md-3 text-center">
+		  			<label>Combustiveis</label>
+					<div id="circulo_porcentagem_combustiveis" style="padding-left: 12px;padding-right: 12px;" data-percent="78"></div>
+				</div>
+			</div>
+
+					
+
+			<hr>				
+		</div>
+	</div>
+</div>
+
+
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/js/custom.js"></script>
-<script type="text/javascript">
-	
-
+<script src="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/js/percent_circle.js"></script>
+<script type="text/javascript">		
+$('#circulo_porcentagem_cervejas').percentcircle();
+$('#circulo_porcentagem_cigarros').percentcircle();
+$('#circulo_porcentagem_lubrificantes').percentcircle();
+$('#circulo_porcentagem_combustiveis').percentcircle();
 </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('templates.principal.principal', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

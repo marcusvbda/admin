@@ -13,7 +13,7 @@
   <link rel='icon' href={{FAVICON}} type='image/gif'>
 
 <style type="text/css"></style></head>
-<body class="sidebar-mini skin-blue sidebar-collapse" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
+<body class="sidebar-mini skin-blue sidebar-collapse fixed" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
 <!-- Site wrapper -->
 <div class="wrapper">
 

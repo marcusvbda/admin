@@ -13,7 +13,7 @@ class tanquesController extends controller
 		$tanques=DB::table('tanque')
 			->join('produtos','produtos.codigo','=','tanque.numero_produto')
 				->select('tanque.capacidade','tanque.volumeatual','tanque.id','produtos.nomefantasia','tanque.sequencia')
-					->wherein('tanque.empresa',Auth('empresa_selecionada'))->orderby('tanque.id')
+					->orderby('tanque.id')
 						->get();
 		echo $this->view('tanques.index', compact('tanques'));
 	}

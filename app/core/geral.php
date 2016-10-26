@@ -268,8 +268,10 @@ function tabela_existe($tabela)
 
 function string_to_date($string,$dias="0")
 {
-	$data = explode('/', $data);
-	$data =  $data[1]."/".$data[0]."/".$data[2];
+	$dia = substr($string,0,2);
+	$mes = substr($string,3,2);
+	$ano = substr($string,6,4);
+	$data =  $mes."/".$dia."/".$ano;
 	$time = strtotime($data);
 	return  $newformat = date('Y-m-d', strtotime("{$dias} days", $time));
 }

@@ -25,7 +25,6 @@ class clientesController extends controller
 							nome like '%$filtro%' or
 							cnpj like '%$filtro%' or 
 							razaosocial like '%$filtro%')")
-								->wherein('empresa',Auth('empresa_selecionada'))
 									->paginate(10, ['*'], "pagina", $pagina);
       	$tempo_consulta = microtime(true) - $tempo_inicio;
       	$qtde_registros = $clientes->total();      	
@@ -41,7 +40,6 @@ class clientesController extends controller
 		$cliente = DB::table('clientes')			
 				->where('sequencia','=',$id)
 					->where('excluido','=','N')
-						->wherein('empresa',Auth('empresa_selecionada'))
 							->get();
 		if(count($cliente)==0)
 			redirecionar(asset('erros/404'));
@@ -65,7 +63,6 @@ class clientesController extends controller
 							nome like '%$filtro%' or
 							cnpj like '%$filtro%' or 
 							razaosocial like '%$filtro%')")
-								->wherein('empresa',Auth('empresa_selecionada'))
 									->get();
 		$campo_relatorio = array(''=>'numero','Nome'=>'nome','Razão'=>'razaosocial','CPF / CNPJ'=>'cnpj');
 
