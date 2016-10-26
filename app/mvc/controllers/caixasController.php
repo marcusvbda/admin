@@ -47,5 +47,14 @@ class caixasController extends controller
 		$ultimo_caixa = query("select * from caixa where id=(select max(id) as id from caixa)");
 		return $ultimo_caixa=$ultimo_caixa[0];
 	}
+
+	public function getShow($id)
+	{
+		$caixa = query("select * from caixa where id={$id}",true);
+		if(is_null($caixa))
+			redirecionar(asset('erros/404'));
+
+		echo $this->view('caixas.show',compact('caixa'));
+	}
 }
 

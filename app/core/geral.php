@@ -234,14 +234,28 @@ function vazio($variavel)
 
 function query($sql,$campo=null)
 {
+	DB::beginTransaction();
 	if(is_null($campo))
+	{
 		return  DB::select(DB::raw($sql));
+		DB::commit();
+	}
 	else
 	{
-		$query = DB::select(DB::raw($sql));
-		return $query[0]->{$campo};
+		if($campo==true)
+		{
+			$query = DB::select(DB::raw($sql));
+			return $query[0];
+		}
+		else
+		{
+			$query = DB::select(DB::raw($sql));
+			return $query[0]->{$campo};
+		}
+
 	}
 }
+
 
 function tabela_existe($tabela)
 {

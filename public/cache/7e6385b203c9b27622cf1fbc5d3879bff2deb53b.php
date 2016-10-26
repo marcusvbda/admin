@@ -92,7 +92,7 @@
 					<a onclick="voltar_selecao();"><button class="btn btn-warning">Voltar</button></a>
 				</div>
 				<div class="col-md-2 text-right">
-					<a><button class="btn btn-primary">Visualizar</button></a>
+					<a id="btn_visualizar"><button class="btn btn-primary">Visualizar</button></a>
 				</div>
 			</div>
 				
@@ -113,12 +113,12 @@ $("#data_fim").keyup(function(event)
   	if(event.keyCode == 13)
 	    consultar();
 });
-function click_caixa(id)
+function click_caixa(sequencia)
 {
 	$('#div_selec_caixa').removeClass("col-md-12");
 	$('#div_selec_caixa').addClass("col-md-8"); 	
 	$('#div_visualizacao_caixa').hide();
-	visualizar_caixa(id);
+	visualizar_caixa(sequencia);
 }
 
 function voltar_selecao()
@@ -141,6 +141,7 @@ function visualizar_caixa(sequencia)
 		$('#responsavel').html(caixa.numero_funcionario+" - "+caixa.nome_funcionario);
 		$('#vlr_inicial').html("R$ "+caixa.valorinicial.toFixed(2));
 		$('#situacao').html(caixa.situacao);
+		$('#btn_visualizar').attr("href","<?php echo e(asset('caixas/show')); ?>"+"/"+caixa.id);	
 	});
 	div_periodo('DIMINUIR');
 	$('#div_visualizacao_caixa').toggle(150);	
