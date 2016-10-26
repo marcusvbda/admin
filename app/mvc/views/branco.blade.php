@@ -16,20 +16,18 @@
 @section('conteudo')
 <div class="col-md-12">
 	<div class="box">
-		<div class="box-header">
-	      	<p class="title_box"></p>			 
-			<div class="box-tools pull-right">
-			</div>
+		<div class="box-header" style="height: 10px">
+	      	<p class="title_box">TITULO</p>		
 		</div>
-		<div class="box-body">
+		<div class="box-body"> 
 		  <!-- conteudo -->
 				
+				<div class="col-md-12">
+				<h1>teste</h1>
+				</div>
 				
 
 
-		</div>
-		<div class="box-footer">
-			<!-- rodapé -->
 		</div>
 	</div>
 </div>

@@ -54,7 +54,9 @@ class caixasController extends controller
 		if(is_null($caixa))
 			redirecionar(asset('erros/404'));
 
-		echo $this->view('caixas.show',compact('caixa'));
+		$dias_permanencia = dif_datas($caixa->dataabertura,$caixa->datafechamento);
+		$horas_permanencia = dif_horas($caixa->horafechamento,$caixa->horaabertura);
+		echo $this->view('caixas.show',compact('caixa','dias_permanencia','horas_permanencia'));		
 	}
 }
 

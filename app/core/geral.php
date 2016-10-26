@@ -268,10 +268,53 @@ function tabela_existe($tabela)
 
 function string_to_date($string,$dias="0")
 {
-	$dia = substr($string,0,2);
-	$mes = substr($string,3,2);
-	$ano = substr($string,6,4);
-	$data =  $mes."/".$dia."/".$ano;
+	$data = explode('/', $data);
+	$data =  $data[1]."/".$data[0]."/".$data[2];
 	$time = strtotime($data);
 	return  $newformat = date('Y-m-d', strtotime("{$dias} days", $time));
+}
+
+function dia_semana($data)
+{
+	$data = explode('/', $data);
+	$dia_da_semana =  jddayofweek ( cal_to_jd(CAL_GREGORIAN, $data[1],$data[0],$data[2]) , 0 ); 
+
+	switch ($dia_da_semana) 
+	{
+		case 0:
+			Return "Domingo";
+			break;
+		case 1:
+			Return "Segunda-Feira";
+			break;
+		case 2:
+			Return "Terça-Feira";
+			break;
+		case 3:
+			Return "Quarta-Feira";
+			break;
+		case 4:
+			Return "Quinta-Feira";
+			break;
+		case 5:
+			Return "Sexta-Feira";
+			break;
+		case 6:
+			Return "Sabado";
+			break;
+	}
+}
+
+function dif_datas($data1,$data2)
+{
+	$partes1 = explode('/', $data1);
+	$partes2 = explode('/', $data2);
+	$data1 =  mktime(0, 0, 0, $partes1[1], $partes1[0], $partes1[2]);
+	$data2 =  mktime(0, 0, 0, $partes2[1], $partes2[0], $partes2[2]);
+	return ($data2-$data1);
+}
+
+function dif_horas($horaInicial,$horaFinal)
+{
+	return date('H:i',(strtotime($horaInicial ) - strtotime($horaFinal)));
 }

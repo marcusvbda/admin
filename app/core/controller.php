@@ -25,11 +25,11 @@ class controller
 
     private function limpaCacheBlade()
     {
-        if(is_dir(__DIR__.'/../mvc/views/blade/cache')):
-            $diretorio = opendir( __DIR__.'/../../public/cache');
+        if(is_dir(PASTA_PUBLIC.'/cache')):
+            $diretorio = opendir( PASTA_PUBLIC.'/cache');
             while ($arq = readdir($diretorio)) :
                 if(($arq != '.') && ($arq != '..'))
-                   unlink( __DIR__.'/../../public/cache'); 
+                   unlink(PASTA_PUBLIC.'/cache/'.$arq); 
             endwhile;
         endif;
     }
