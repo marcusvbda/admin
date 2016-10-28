@@ -26,7 +26,7 @@
 				<div class="row">
 					<div class="col-md-2">
 						<label>N° Caixa</label>
-						<input type="text" class="form-control" value="{{$caixa->id}}" readonly>
+						<input type="text" class="form-control" value="{{$caixa->numero}}" readonly>
 					</div>
 					<div class="col-md-4">
 						<label>Ilha</label>

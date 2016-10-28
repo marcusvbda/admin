@@ -300,7 +300,7 @@ class importacaoController extends controller
 	}
 
 
-	private function criar_tabela($tabela)
+	private function criar_tabela($tabela,$chaves_primarias)
 	{
 		$sql = "";	
 		$tabelas = DB::table('INFORMATION_SCHEMA.TABLES')
@@ -316,8 +316,15 @@ class importacaoController extends controller
 				else
 					$sql.=" $campo {$info->tipo} NULL,";					
 			endforeach;
-			$sql.=" PRIMARY KEY (sequencia))";	
+			$sql.=" PRIMARY KEY (sequencia))";			
 			DB::statement($sql);
+			if(count($chaves_primarias)>0):
+				$sql_index = "";
+				DB::statement("CREATE INDEX idx_sequencia_{$tabela} on {$tabela}(sequencia);");				
+				foreach ($chaves_primarias as $chave):
+					DB::statement("CREATE INDEX idx_{$tabela}_{$chave} on {$tabela}($chave);");
+				endforeach;
+			endif;
 		}
 		else
 		{
@@ -514,20 +521,32 @@ class importacaoController extends controller
                 WHERE
                   R.RDB$RELATION_NAME='."'".$tabela."'");
 	    	$array = array();
+	    	$chaves_primarias = array();
 	    	foreach ($campos_tabela as $linha):
 	    		if(trim(strtolower($linha['NOME']))!="sincro")
+	    		{
 	    			$array[trim(strtolower($linha['NOME']))]=(object) array("tipo"=>strtoupper(trim($linha['TIPO'])),"tamanho"=>$linha['TAMANHO']);
+	    			if(trim(strtolower($linha['PRIMARY_KEY']))=="sim")
+	    				array_push($chaves_primarias, trim(strtolower($linha['NOME']))  );
+	    		}
 	    	endforeach;
 	    	$this->campos_tabela = json_decode(json_encode($array));
-			$this->criar_tabela($tabela);
+			$this->criar_tabela($tabela,$chaves_primarias);
 		}
     	$resultado = $this->query_firebird("select * from {$tabela}");
      	query("truncate {$tabela}");    
 
+     	$contador = 0;
     	for ($i=0; $i < count($resultado) ; $i++) :
     		unset($resultado[$i]['SINCRO']);
     		DB::table($tabela)->insert($resultado[$i]);
-    		clearstatcache(); 
+    		if($contador>=500)
+    		{
+    			clearstatcache(); 
+    			$contador=0;
+    		}
+    		else
+    			$contador ++;
     	endfor;
     	echo "Pronto";
     }

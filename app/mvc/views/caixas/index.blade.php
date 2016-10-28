@@ -56,7 +56,7 @@
 							<tr onclick="click_caixa({{$caixa->sequencia}})">
 				  				<td></td>
 				  				<td>{{$caixa->numero_ilha}}</td>
-				  				<td>{{$caixa->id}}</td>
+				  				<td>{{$caixa->numero}}</td>
 				  				<td>{{$caixa->dataabertura_formatada}}</td>
 				  				<td>{{$caixa->datafechamento_formatada}}</td>
 				  			</tr>
@@ -143,7 +143,7 @@ function visualizar_caixa(sequencia)
 		$('#responsavel').html(caixa.numero_funcionario+" - "+caixa.nome_funcionario);
 		$('#vlr_inicial').html("R$ "+caixa.valorinicial.toFixed(2));
 		$('#situacao').html(caixa.situacao);
-		$('#btn_visualizar').attr("href","{{asset('caixas/show')}}"+"/"+caixa.id);	
+		$('#btn_visualizar').attr("href","{{asset('caixas/show')}}"+"/"+caixa.numero);	
 	});
 	div_periodo('DIMINUIR');
 	$('#div_visualizacao_caixa').toggle(150);	

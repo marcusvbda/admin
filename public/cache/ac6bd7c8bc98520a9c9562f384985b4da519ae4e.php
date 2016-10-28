@@ -24,7 +24,7 @@
 				<div class="row">
 					<div class="col-md-2">
 						<label>N° Caixa</label>
-						<input type="text" class="form-control" value="<?php echo e($caixa->id); ?>" readonly>
+						<input type="text" class="form-control" value="<?php echo e($caixa->numero); ?>" readonly>
 					</div>
 					<div class="col-md-4">
 						<label>Ilha</label>

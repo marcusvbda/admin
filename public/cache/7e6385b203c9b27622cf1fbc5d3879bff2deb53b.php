@@ -54,7 +54,7 @@
 							<tr onclick="click_caixa(<?php echo e($caixa->sequencia); ?>)">
 				  				<td></td>
 				  				<td><?php echo e($caixa->numero_ilha); ?></td>
-				  				<td><?php echo e($caixa->id); ?></td>
+				  				<td><?php echo e($caixa->numero); ?></td>
 				  				<td><?php echo e($caixa->dataabertura_formatada); ?></td>
 				  				<td><?php echo e($caixa->datafechamento_formatada); ?></td>
 				  			</tr>
@@ -141,7 +141,7 @@ function visualizar_caixa(sequencia)
 		$('#responsavel').html(caixa.numero_funcionario+" - "+caixa.nome_funcionario);
 		$('#vlr_inicial').html("R$ "+caixa.valorinicial.toFixed(2));
 		$('#situacao').html(caixa.situacao);
-		$('#btn_visualizar').attr("href","<?php echo e(asset('caixas/show')); ?>"+"/"+caixa.id);	
+		$('#btn_visualizar').attr("href","<?php echo e(asset('caixas/show')); ?>"+"/"+caixa.numero);	
 	});
 	div_periodo('DIMINUIR');
 	$('#div_visualizacao_caixa').toggle(150);	
