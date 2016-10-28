@@ -404,7 +404,6 @@ class Connection implements ConnectionInterface
             }
 
             $bindings = $me->prepareBindings($bindings);
-
             return $me->getPdo()->prepare($query)->execute($bindings);
         });
     }

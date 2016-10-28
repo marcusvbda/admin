@@ -11,8 +11,11 @@ class caixasController extends controller
 		$ultimo_caixa = $this->getUltimoCaixa();
 		$data_fim = string_to_date($ultimo_caixa->dataabertura);
 		$data_inicio = string_to_date($ultimo_caixa->dataabertura,"-10");
-		$caixas = query("select * FROM caixa WHERE STR_TO_DATE(dataabertura, '%d/%m/%Y') >= date('".$data_inicio."') and
-		STR_TO_DATE(dataabertura, '%d/%m/%Y') <= date('".$data_fim."') order by numero");
+		$caixas = query("select *,
+		  DATE_FORMAT(dataabertura, '%d/%m/%Y') as dataabertura_formatada,
+		  DATE_FORMAT(datafechamento, '%d/%m/%Y') as datafechamento_formatada
+		   FROM caixa WHERE dataabertura >= date('".$data_inicio."') and
+		dataabertura <= date('".$data_fim."') order by numero");
 		echo $this->view('caixas.index',compact('caixas','data_inicio','data_fim'));	
 	}
 
@@ -29,15 +32,21 @@ class caixasController extends controller
 		else
 			$data_inicio = $_POST['data_inicio'];
 
-		 $caixas = query("select * FROM caixa WHERE STR_TO_DATE(dataabertura, '%d/%m/%Y') >= date('".$data_inicio."') and
-		 STR_TO_DATE(dataabertura, '%d/%m/%Y') <= date('".$data_fim."') order by numero");
+		 $caixas = query("select *,
+		  DATE_FORMAT(dataabertura, '%d/%m/%Y') as dataabertura_formatada,
+		  DATE_FORMAT(datafechamento, '%d/%m/%Y') as datafechamento_formatada
+		   FROM caixa WHERE dataabertura >= date('".$data_inicio."') and
+		dataabertura <= date('".$data_fim."') order by numero");
 		 echo $this->view('caixas.index',compact('caixas','data_inicio','data_fim'));	
 	}
 
 
 	public function getCaixa_especifico($id)
 	{
-		$caixa = query("select * from caixa where sequencia=".$id);
+		$caixa = query("select *,
+		  DATE_FORMAT(dataabertura, '%d/%m/%Y') as dataabertura_formatada,
+		  DATE_FORMAT(datafechamento, '%d/%m/%Y') as datafechamento_formatada 
+		  from caixa where sequencia=".$id);
 		$caixa = $caixa[0];
 		echo json_encode($caixa);
 	}
@@ -50,7 +59,10 @@ class caixasController extends controller
 
 	public function getShow($id)
 	{
-		$caixa = query("select * from caixa where id={$id}",true);
+		$caixa = query("select *,
+		  DATE_FORMAT(dataabertura, '%d/%m/%Y') as dataabertura_formatada,
+		  DATE_FORMAT(datafechamento, '%d/%m/%Y') as datafechamento_formatada
+		  from caixa where id={$id}",false);
 		if(is_null($caixa))
 			redirecionar(asset('erros/404'));
 

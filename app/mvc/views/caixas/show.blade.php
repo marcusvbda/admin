@@ -41,11 +41,11 @@
 				<div class="row">
 					<div class="col-md-3">
 						<label>Abertura</label>
-						<input type="text" class="form-control" value="{{dia_semana($caixa->dataabertura)}} , {{$caixa->dataabertura}} , {{$caixa->horaabertura}}" readonly>
+						<input type="text" class="form-control" value="{{dia_semana($caixa->dataabertura)}} , {{$caixa->dataabertura_formatada}} , {{$caixa->horaabertura}}" readonly>
 					</div>
 					<div class="col-md-3">
 						<label>Fechamento</label>
-						<input type="text" class="form-control" value="{{dia_semana($caixa->dataabertura)}} , {{$caixa->datafechamento}}, {{$caixa->horafechamento}}" readonly>
+						<input type="text" class="form-control" value="{{dia_semana($caixa->dataabertura)}} , {{$caixa->datafechamento_formatada}}, {{$caixa->horafechamento}}" readonly>
 					</div>
 					<div class="col-md-3">
 						<label>Permanencia</label>

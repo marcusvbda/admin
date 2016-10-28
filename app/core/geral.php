@@ -237,12 +237,13 @@ function query($sql,$campo=null)
 	DB::beginTransaction();
 	if(is_null($campo))
 	{
-		return  DB::select(DB::raw($sql));
+		$resultado = DB::select(DB::raw($sql));
 		DB::commit();
+		return $resultado;
 	}
 	else
 	{
-		if($campo==true)
+		if($campo==false)
 		{
 			$query = DB::select(DB::raw($sql));
 			return $query[0];
@@ -252,7 +253,7 @@ function query($sql,$campo=null)
 			$query = DB::select(DB::raw($sql));
 			return $query[0]->{$campo};
 		}
-
+		DB::rollback();
 	}
 }
 
@@ -268,9 +269,9 @@ function tabela_existe($tabela)
 
 function string_to_date($string,$dias="0")
 {
-	$dia = substr($string,0,2);
-	$mes = substr($string,3,2);
-	$ano = substr($string,6,4);
+	$ano = substr($string,0,4);
+	$mes = substr($string,5,2);
+	$dia = substr($string,8,2);
 	$data =  $mes."/".$dia."/".$ano;
 	$time = strtotime($data);
 	return  $newformat = date('Y-m-d', strtotime("{$dias} days", $time));

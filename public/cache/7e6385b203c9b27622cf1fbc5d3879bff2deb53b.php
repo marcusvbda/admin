@@ -55,8 +55,8 @@
 				  				<td></td>
 				  				<td><?php echo e($caixa->numero_ilha); ?></td>
 				  				<td><?php echo e($caixa->id); ?></td>
-				  				<td><?php echo e($caixa->dataabertura); ?></td>
-				  				<td><?php echo e($caixa->datafechamento); ?></td>
+				  				<td><?php echo e($caixa->dataabertura_formatada); ?></td>
+				  				<td><?php echo e($caixa->datafechamento_formatada); ?></td>
 				  			</tr>
 				  			<?php endforeach; ?>
 						</tbody>
@@ -135,8 +135,8 @@ function visualizar_caixa(sequencia)
 	{ 
 		$('#numero_caixa_titulo').html(caixa.numero);
 		$('#id_caixa').html(caixa.numero);
-		$('#dt_abertura').html(caixa.dataabertura+" - "+caixa.horaabertura);
-		$('#dt_fechamento').html(caixa.datafechamento+" - "+caixa.horafechamento);
+		$('#dt_abertura').html(caixa.dataabertura_formatada+" - "+caixa.horaabertura);
+		$('#dt_fechamento').html(caixa.datafechamento_formatada+" - "+caixa.horafechamento);
 		$('#ilha').html(caixa.numero_ilha);
 		$('#responsavel').html(caixa.numero_funcionario+" - "+caixa.nome_funcionario);
 		$('#vlr_inicial').html("R$ "+caixa.valorinicial.toFixed(2));

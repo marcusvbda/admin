@@ -70,6 +70,9 @@ class importacaoController extends controller
 
 	public function postImportar()
 	{
+		ini_set('max_execution_time', 0);
+		ini_set('memory_limit', '2048M');
+
 		if($this->existeArquivos())
 		{
 			$tempo_inicio = microtime(true);
@@ -83,7 +86,6 @@ class importacaoController extends controller
 						$this->updates = 0;	
 						if ($this->validaJSON($arquivo))
 						{
-							set_time_limit(0);
 							$this->importar($this->arquivo = $arquivo);
 							$this->registrar_importacao('S',microtime(true) - $tempo_inicio);
 							$this->mover_arquivo('importados');	
@@ -99,7 +101,6 @@ class importacaoController extends controller
 					$this->updates = 0;	
 					if ($this->validaJSON($_POST['arquivo']))
 					{
-						set_time_limit(0);
 						$this->importar($this->arquivo = $_POST['arquivo']);
 						$this->registrar_importacao('S',microtime(true) - $tempo_inicio);
 						$this->mover_arquivo('importados');	
@@ -115,9 +116,10 @@ class importacaoController extends controller
 				$this->mover_arquivo('erro');
         		registralog("Erro ao importar arquivo :".$this->arquivo);
 			}
-			ini_set('max_execution_time', 30);
 		}
 		echo json_encode($this->arquivos_importados);
+		ini_set('max_execution_time', 30);
+
 	}
 
 	private function registrar_importacao($status,$tempo)
@@ -138,11 +140,12 @@ class importacaoController extends controller
 
 	private function mover_arquivo($pasta)
 	{
-		$pasta = __DIR__."/../../../public/uploads/importacao/$pasta/{$this->cnpj_empresa}/";
-		if (!is_dir($pasta))
-			mkdir($pasta);
-		copy($this->pasta_importar.$this->arquivo,$pasta.$this->arquivo);
-		unlink($this->pasta_importar.$this->arquivo);
+		// $pasta = __DIR__."/../../../public/uploads/importacao/$pasta/{$this->cnpj_empresa}/";
+		// if (!is_dir($pasta))
+		// 	mkdir($pasta);
+		// if($pasta!="IMPORTADOS")
+		// 	copy($this->pasta_importar.$this->arquivo,$pasta.$this->arquivo);
+		// unlink($this->pasta_importar.$this->arquivo);
 	}
 
 	private function existeArquivos()
@@ -166,6 +169,8 @@ class importacaoController extends controller
 	private function lerArquivo($arquivo)
 	{
 		$JSON = stream_get_contents(fopen($arquivo, 'r'));
+		// $objeto = (object) json_decode(utf8_encode($JSON));
+		// print_r($objeto);exit();
 		return (object) json_decode(utf8_encode($JSON));
 	}
 
@@ -246,7 +251,6 @@ class importacaoController extends controller
 
 	private function atualizar_tabela($tabela)
 	{
-
 		$sql = "";	
 		$tabelas = DB::table('INFORMATION_SCHEMA.TABLES')
 			->where('TABLE_SCHEMA','=',DB_NOME)
@@ -257,14 +261,15 @@ class importacaoController extends controller
 			$sql = "CREATE TABLE $tabela(sequencia int NOT NULL AUTO_INCREMENT, ";				
 			foreach ($this->campos_tabela as $campo=>$info):
 				foreach ($info as $_info):
-				if((strtoupper($_info->tipo)=="CHAR")||(strtoupper($_info->tipo)=="VARCHAR"))
-					$sql.="$campo $_info->tipo($_info->tamanho),";
-				else
-					if((strtoupper($_info->tipo)=="DATE")||(strtoupper($_info->tipo)=="DATETIME"))
-						$sql.="$campo varchar(15),";
+					if((strtoupper($_info->tipo)=="CHAR")||(strtoupper($_info->tipo)=="VARCHAR"))
+						$sql.="$campo $_info->tipo($_info->tamanho),";
 					else
-						$sql.="$campo $_info->tipo,";
-				endforeach;				
+						if((strtoupper($_info->tipo)=="DATE")||(strtoupper($_info->tipo)=="DATETIME"))
+							$sql.="$campo varchar(15),";
+						else
+							$sql.="$campo $_info->tipo,";
+				endforeach;
+
 			endforeach;
 			$sql.=" PRIMARY KEY (sequencia))";	
 			DB::statement($sql);	
@@ -292,6 +297,39 @@ class importacaoController extends controller
 				}
 			endforeach;			
 		}		
+	}
+
+
+	private function criar_tabela($tabela)
+	{
+		$sql = "";	
+		$tabelas = DB::table('INFORMATION_SCHEMA.TABLES')
+			->where('TABLE_SCHEMA','=',DB_NOME)
+				->where('table_name','=',$tabela)
+					->get();
+		if(count($tabelas)<=0)
+		{
+			$sql = "CREATE TABLE $tabela(sequencia int NOT NULL AUTO_INCREMENT, ";	
+			foreach ($this->campos_tabela as $campo=>$info):
+				if((strtoupper($info->tipo)=="CHAR")||(strtoupper($info->tipo)=="VARCHAR"))	
+					$sql.=" $campo {$info->tipo}({$info->tamanho}),";
+				else
+					$sql.=" $campo {$info->tipo} NULL,";					
+			endforeach;
+			$sql.=" PRIMARY KEY (sequencia))";	
+			DB::statement($sql);
+		}
+		else
+		{
+			$sql="ALTER TABLE $tabela ADD COLUMN ";
+			foreach ($this->campos_tabela as $campo=>$info):
+				if((strtoupper($info->tipo)=="CHAR")||(strtoupper($info->tipo)=="VARCHAR"))	
+					$sql.=" $campo {$info->tipo}({$info->tamanho})";
+				else
+					$sql.=" $campo {$info->tipo} NULL";				
+			endforeach;
+			DB::statement($sql);
+		}
 	}
 
 	private function importar($arquivo)
@@ -418,5 +456,95 @@ class importacaoController extends controller
     	$this->getIndex("IMPORTAR");
     }
 
+    public function getImportarDoFirebird($tabela)
+    {
+    	$tabela = strtoupper($tabela);
+    	ini_set('max_execution_time', 0);
+		ini_set('memory_limit', '2048M');
+		if(!tabela_existe($tabela))
+		{
+			$campos_tabela = $this->query_firebird(
+    		"select ".
+                 'R.RDB$FIELD_NAME NOME,
+                  CASE R.RDB$NULL_FLAG WHEN 1 THEN'.
+                  "
+                    'SIM'
+                  ELSE
+                    'NAO'
+                  END AS NOT_NULL,
+                  CASE WHEN".' RESULT.RDB$CONSTRAINT_TYPE IS NOT NULL THEN'."
+                    'SIM'
+                  ELSE
+                    'NAO'
+                  END AS PRIMARY_KEY, ".'
+                  F.RDB$FIELD_LENGTH AS TAMANHO,
+                  F.RDB$FIELD_PRECISION AS PRECISAO,
+                  CASE F.RDB$FIELD_TYPE '."
+                    WHEN 7 THEN 'SMALLINT'
+                    WHEN 8 THEN 'INTEGER'
+                    WHEN 9 THEN 'QUAD'
+                    WHEN 10 THEN 'FLOAT'
+                    WHEN 11 THEN 'D_FLOAT'
+                    WHEN 12 THEN 'DATE'
+                    WHEN 13 THEN 'TIME'
+                    WHEN 14 THEN 'CHAR'
+                    WHEN 16 THEN 'INT64'
+                    WHEN 27 THEN 'DOUBLE'
+                    WHEN 35 THEN 'TIMESTAMP'
+                    WHEN 37 THEN 'VARCHAR'
+                    WHEN 40 THEN 'CSTRING'
+                    WHEN 261 THEN 'BLOB'
+                    ELSE 'UNKNOWN'
+                  END AS TIPO, ".'
+                  CSET.RDB$CHARACTER_SET_NAME AS CHARSET
+                FROM
+                  RDB$RELATION_FIELDS R
+                  LEFT JOIN RDB$FIELDS F ON (R.RDB$FIELD_SOURCE = F.RDB$FIELD_NAME)
+                  LEFT JOIN RDB$CHARACTER_SETS CSET ON F.RDB$CHARACTER_SET_ID = CSET.RDB$CHARACTER_SET_ID
+                LEFT JOIN (SELECT
+                  B.RDB$FIELD_NAME,
+                  A.RDB$CONSTRAINT_TYPE
+                FROM
+                  RDB$RELATION_CONSTRAINTS A
+                  JOIN RDB$INDEX_SEGMENTS B on (B.RDB$INDEX_NAME = A.RDB$INDEX_NAME)
+                WHERE
+                  A.RDB$RELATION_NAME='."'".$tabela."' ".'
+                AND
+                  A.RDB$CONSTRAINT_TYPE = '."'PRIMARY KEY'".') RESULT ON (R.RDB$FIELD_NAME=RESULT.RDB$FIELD_NAME)
+                WHERE
+                  R.RDB$RELATION_NAME='."'".$tabela."'");
+	    	$array = array();
+	    	foreach ($campos_tabela as $linha):
+	    		if(trim(strtolower($linha['NOME']))!="sincro")
+	    			$array[trim(strtolower($linha['NOME']))]=(object) array("tipo"=>strtoupper(trim($linha['TIPO'])),"tamanho"=>$linha['TAMANHO']);
+	    	endforeach;
+	    	$this->campos_tabela = json_decode(json_encode($array));
+			$this->criar_tabela($tabela);
+		}
+    	$resultado = $this->query_firebird("select * from {$tabela}");
+     	query("truncate {$tabela}");    
+
+    	for ($i=0; $i < count($resultado) ; $i++) :
+    		unset($resultado[$i]['SINCRO']);
+    		DB::table($tabela)->insert($resultado[$i]);
+    		clearstatcache(); 
+    	endfor;
+    	echo "Pronto";
+    }
+
+    private function query_firebird($sql)
+    {
+    	$conexao = $this->conectar_firebird();
+    	// echo $sql;exit();
+    	$sth = $conexao->query($sql);
+		return $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function conectar_firebird($usuario="SYSDBA",$senha="masterkey")
+    {
+    	$banco_de_dados = "C://Users//bdavi//Desktop//banco.DB";
+    	$str_conn="firebird:host=localhost;dbname={$banco_de_dados};charset=UTF8";
+		return $db = new PDO($str_conn, $usuario, $senha);
+    }
 }
 

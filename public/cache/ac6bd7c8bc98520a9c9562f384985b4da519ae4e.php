@@ -39,11 +39,11 @@
 				<div class="row">
 					<div class="col-md-3">
 						<label>Abertura</label>
-						<input type="text" class="form-control" value="<?php echo e(dia_semana($caixa->dataabertura)); ?> , <?php echo e($caixa->dataabertura); ?> , <?php echo e($caixa->horaabertura); ?>" readonly>
+						<input type="text" class="form-control" value="<?php echo e(dia_semana($caixa->dataabertura)); ?> , <?php echo e($caixa->dataabertura_formatada); ?> , <?php echo e($caixa->horaabertura); ?>" readonly>
 					</div>
 					<div class="col-md-3">
 						<label>Fechamento</label>
-						<input type="text" class="form-control" value="<?php echo e(dia_semana($caixa->dataabertura)); ?> , <?php echo e($caixa->datafechamento); ?>, <?php echo e($caixa->horafechamento); ?>" readonly>
+						<input type="text" class="form-control" value="<?php echo e(dia_semana($caixa->dataabertura)); ?> , <?php echo e($caixa->datafechamento_formatada); ?>, <?php echo e($caixa->horafechamento); ?>" readonly>
 					</div>
 					<div class="col-md-3">
 						<label>Permanencia</label>
