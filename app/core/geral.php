@@ -321,3 +321,9 @@ function dif_horas($horaInicial,$horaFinal)
 {
 	return date('H:i',(strtotime($horaInicial ) - strtotime($horaFinal)));
 }
+
+function format_dinheiro($moeda, $numero)
+{
+	return "$moeda ".number_format($numero, 2, ',', '.');
+	// return $numero;
+}

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="<?php echo e(PASTA_PUBLIC); ?>/template/dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="<?php echo e(PASTA_PUBLIC); ?>/template/dist/css/skins/_all-skins.min.css">
   <link rel="stylesheet" href="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/css/custom.css">
+  <link rel="stylesheet" href="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/css/circulos.css">
   <link rel='icon' href=<?php echo e(FAVICON); ?> type='image/gif'>
 
 <style type="text/css"></style></head>
@@ -208,7 +209,7 @@
     <div class="pull-right hidden-xs">
       <b>Versão</b> 01.00.00
     </div>
-    <strong><a href="#">SITE DA EMPRESA</a></strong> Todos os direitos reservados.
+    <strong><a href="http://alive.inf.br/">Alive It</a></strong> Todos os direitos reservados.
   </footer>
   <!-- Control Sidebar -->
 
