@@ -387,7 +387,7 @@
 						    </thead>
 						   <tbody>
 						   		@foreach($cancelamentos as $canc)
-						   		<tr title="Duplo clique para ver o cupom" ondblclick="verCupom({{$canc->numeronota}});">
+						   		<tr title="Duplo clique para ver o cupom" ondblclick="verDocumento({{$canc->numeronota}});">
 						   			<td>{{str_pad($canc->numeronota, 6, "0", STR_PAD_LEFT)}}</td>
 						   			<td>{{$canc->data_formatada}}</td>
 						   			<td>{{$canc->hora}}</td>
@@ -436,7 +436,7 @@
 						    </thead>
 						   <tbody>
 						   		@foreach($cupons as $c)
-						   		<tr title="Duplo clique para ver o cupom" ondblclick="verCupom({{$c->numeronota}});">
+						   		<tr title="Duplo clique para ver o cupom" ondblclick="verDocumento({{$c->numeronota}});">
 						   			<td>{{str_pad($c->ecf, 6, "0", STR_PAD_LEFT)}}</td>
 						   			<td>{{str_pad($c->numeronota, 6, "0", STR_PAD_LEFT)}}</td>						   			
 						   			<td>{{$c->data_formatada}}</td>
@@ -494,10 +494,196 @@
 @endif
 
 
-function verCupom(cupom)
+function verDocumento(documento)
 {
-	alert("ver cupom numero "+cupom);
+	$.post("{{asset('caixas/Documento')}}", {documento:documento}, function(resposta) 
+	{				
+	    $('#documento_titulo').html('Lançamentos de Venda');
+	    
+	    $('#itens_table_itens_cupom').html(null);
+	    $.each(resposta.cupom, function(resp,r)
+	      {      
+	      	if(r.numero_cliente=='999999')
+	    		$('#Nome_Cliente').val('999999 - Consumidor');	     
+	    	else    	
+	    		$('#Nome_Cliente').val(r.numero_cliente+" - "+r.nome_cliente);	     
+
+	    	$('#Cond_pagto').val(r.numero_condpgto+" - "+r.nome_condpgto);   	
+	    	$('#Data_Negociacao').val(r.datanegociacao_formatada);   	
+	    	$('#Emissao').val(r.dataemissao_formatada);   	
+	    	$('#Data_Vencimento').val(r.datavencimento_formatada);   	
+	    	$('#Hora').val(r.hora);   	
+	    	$('#ECF').val(r.ecf);   	
+	    	$('#cnpj').val(r.cnpjcpfcliente);   	
+	    	$('#Cupom').val(r.numeronota);   	
+	    	$('#Funcionario').val(r.numero_funcionario+" - "+r.funcionario);   	
+	    	$('#Motorista').val(r.motorista);   	
+	    	$('#Placa').val(r.placa);   	
+	    	$('#km').val(r.km);   	
+	    	if(r.situacao=="I")
+	    		$('#Tipo').val('Inserida');
+	    	else   	
+	    		$('#Tipo').val('Normal');
+
+	    	$('#itens_table_itens_cupom').append("<tr>"+
+									    			"<td>"+r.numero_produto+" - "+r.nome_produto+"</td>"+
+									    			"<td>"+r.id_bomba+"</td>"+
+									    			"<td>R$ "+r.precounitario+"</td>"+
+									    			"<td>"+r.totallitros+"</td>"+
+									    			"<td>R$ "+r.totaldinheiro+"</td>"+
+									    		"</tr>");
+
+	      });
+
+	}, 'json')
+	.done(function() {
+	    $('#Modal_Documento').modal('show');
+	});
 }
+	
 
 </script>
+
+
+
+
+
+
+
+
+
+
+  <div class="modal fade"  id="Modal_Documento" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+        	<h4 class="text-center"><strong><span id="documento_titulo"></span></strong></h4>
+        </div>
+        <div class="modal-body">
+           
+
+          	<ul class="nav nav-tabs" id="myTab" role="tablist">
+			  <li class="nav-item active">
+			    <a class="nav-link active" data-toggle="tab" href="#cupom" role="tab" aria-controls="cupons">Cupom</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="tab" href="#itens" role="tab" aria-controls="itens">Itens</a>
+			  </li>
+			 <!--  <li class="nav-item">
+			    <a class="nav-link" data-toggle="tab" href="#formaspagtos" role="tab" aria-controls="formaspagtos">Formas Pagtos</a>
+			  </li> -->
+			</ul>
+
+			<div class="tab-content">
+			  <div class="tab-pane active" id="cupom" role="tabpanel">
+
+			  			<br>
+			  	       	<div class="row">
+          					<div class="col-md-8">
+			          			<label>Nome Cliente:</label>
+			          			<input type="text" id="Nome_Cliente" class="form-control" disabled>
+			          		</div>
+			          		<div class="col-md-4">
+			          			<label>CPF/CNPJ:</label>
+			          			<input type="text" id="cnpj" class="form-control" disabled>
+			          		</div>
+			          	</div>
+
+			          	<div class="row">
+			          		<div class="col-md-12">
+			          			<label>Condição de Pagto:</label>
+			          			<input type="text" id="Cond_pagto" class="form-control" disabled>
+			          		</div>
+			          	</div>
+
+			          	<div class="row">
+			          		<div class="col-md-3">
+			          			<label>Data Negociação:</label>
+			          			<input type="text" id="Data_Negociacao" class="form-control" disabled>
+			          		</div>
+			          		<div class="col-md-3">
+			          			<label>Emissão:</label>
+			          			<input type="text" id="Emissao" class="form-control" disabled>
+			          		</div>
+			          		<div class="col-md-3">
+			          			<label>Data Vencimento:</label>
+			          			<input type="text" id="Data_Vencimento" class="form-control" disabled>
+			          		</div>
+			          		<div class="col-md-3">
+			          			<label>Hora:</label>
+			          			<input type="text" id="Hora" class="form-control" disabled>
+			          		</div>
+			          	</div>
+
+			          	<div class="row">
+			          		<div class="col-md-3">
+			          			<label>Número ECF/S@T:</label>
+			          			<input type="text" id="ECF" class="form-control" disabled>
+			          		</div>
+			          		<div class="col-md-3">
+			          			<label>Cupom:</label>
+			          			<input type="text" id="Cupom" class="form-control" disabled>
+			          		</div>
+			          		<div class="col-md-3">
+			          			<label>Tipo Nota:</label>
+			          			<input type="text" id="Tipo" class="form-control" disabled>
+			          		</div>
+			          		<div class="col-md-3">
+			          			<label>Funcionário:</label>
+			          			<input type="text" id="Funcionario" class="form-control" disabled>
+			          		</div>
+			          	</div>
+
+			          	<div class="row">
+			          		<div class="col-md-3">
+			          			<label>Motorista</label>
+			          			<input type="text" id="Motorista" class="form-control" disabled>
+			          		</div>
+			          		<div class="col-md-3">
+			          			<label>KM:</label>
+			          			<input type="text" id="km" class="form-control" disabled>
+			          		</div>
+			          		<div class="col-md-3">
+			          			<label>Placa:</label>
+			          			<input type="text" id="Placa" class="form-control" disabled>
+			          		</div>
+			          		
+			          	</div>
+
+			  </div>
+			  <div class="tab-pane" id="itens" role="tabpanel" style="height: 315px;overflow-y: auto">
+			  		<div class="table-responsive" >
+						 <table class="table table-hover" style="font-size: 14px">
+						    <thead>
+							    <tr style="background-color: #F4F4F4;border-radius: 100px;">
+							      <th>Produto</th>
+							      <th>Bico</th>
+							      <th>P.Unitário</th>						      
+							      <th>Qtde</th>
+							      <th>Valor</th>
+							    </tr>
+						    </thead>
+						   <tbody id="itens_table_itens_cupom">
+						   	
+						   </tbody>
+						 </table>
+						 <hr>
+					</div>	
+				</div>
+			<!--   <div class="tab-pane" id="formaspagtos" role="tabpanel">...</div> -->
+			</div>
+
+
+        </div>
+        <br>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
 @stop

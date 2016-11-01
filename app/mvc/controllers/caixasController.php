@@ -209,7 +209,7 @@ class caixasController extends controller
 					where d.id_caixa={$caixa->id} and d.recebido='N' and d.excluido='N'","total");
 
 		    $cupons = query("
-					    select
+					   select
 			                d.ecf, 
 			                d.numeronota,
 			                d.valortotalcupom,
@@ -218,18 +218,13 @@ class caixasController extends controller
 			                d.nome_cliente,
 			                d.numero_cliente,
 			                d.recebido
-			                	from dadosfaturamento d
-			                	where d.id_caixa={$caixa->id} and d.excluido='N'
-			                group by 
-			                d.ecf, 
-			                d.numeronota,
-			                d.valortotalcupom,
-			                d.datalancamento,
-			                d.hora,
-			                d.nome_cliente,
-			                d.numero_cliente,
-			                d.recebido
-			                order by
+			            from  
+			            	dadosfaturamento d 
+			            where 
+			            	d.id_caixa={$caixa->id} and d.excluido in('N','P')
+			            group by 
+			                d.numeronota
+			            order by
 			                d.numeronota
 						");
 		   
@@ -287,6 +282,32 @@ class caixasController extends controller
 
 
 		echo $this->view('caixas.show',compact('caixa','dias_permanencia','horas_permanencia','porcentagem_grupo','agrupado','vlr_total','combustiveis','tem_combustiveis','ag_combustiveis','vlr_manutencoes','manutencoes_agrupadas','manutencoes','cancelamentos','total_prazo','cupons'));		
+	}
+
+	public function postDocumento()
+	{
+		$documento = $_POST['documento'];
+		$resposta['cupom'] = query("
+				select 
+					d.*,cond.descricao as nome_condpgto,
+					DATE_FORMAT(d.datanegociacao, '%d/%m/%Y') as datanegociacao_formatada,
+					DATE_FORMAT(d.emissao, '%d/%m/%Y') as dataemissao_formatada,
+					DATE_FORMAT(d.vencimento, '%d/%m/%Y') as datavencimento_formatada,
+					f.nome as funcionario,
+					p.descricao as nome_produto,
+					a.id_bomba,a.totallitros,a.totaldinheiro,a.precounitario
+				from 
+					dadosfaturamento d
+				left join 
+					condicaopagamento cond on cond.codigo=d.numero_condpgto
+				left join
+					funcionarios f on d.numero_funcionario=f.numero
+				left join 
+					produtos p on p.codigo=d.numero_produto
+				left join 
+					abastecimentos a on a.id=d.id_abastecimento
+				where numeronota={$documento}");
+		echo json_encode($resposta);
 	}
 }
 

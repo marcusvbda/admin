@@ -559,7 +559,7 @@ class importacaoController extends controller
 		return $result = $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    private function conectar_firebird($usuario="caixa",$senha="caixa")
+    private function conectar_firebird($usuario="CAIXA",$senha="2")
     {
     	$banco_de_dados = "C://Users//bdavi//Desktop//banco.DB";
     	$str_conn="firebird:host=localhost;dbname={$banco_de_dados};charset=UTF8";
