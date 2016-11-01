@@ -15,7 +15,7 @@ class caixasController extends controller
 		  DATE_FORMAT(dataabertura, '%d/%m/%Y') as dataabertura_formatada,
 		  DATE_FORMAT(datafechamento, '%d/%m/%Y') as datafechamento_formatada
 		   FROM caixa WHERE dataabertura >= date('".$data_inicio."') and
-		dataabertura <= date('".$data_fim."') order by numero");
+		dataabertura <= date('".$data_fim."') order by numero desc");
 		echo $this->view('caixas.index',compact('caixas','data_inicio','data_fim'));	
 	}
 
@@ -36,7 +36,7 @@ class caixasController extends controller
 		  DATE_FORMAT(dataabertura, '%d/%m/%Y') as dataabertura_formatada,
 		  DATE_FORMAT(datafechamento, '%d/%m/%Y') as datafechamento_formatada
 		   FROM caixa WHERE dataabertura >= date('".$data_inicio."') and
-		dataabertura <= date('".$data_fim."') order by numero");
+		dataabertura <= date('".$data_fim."') order by numero desc");
 		 echo $this->view('caixas.index',compact('caixas','data_inicio','data_fim'));	
 	}
 
@@ -205,6 +205,33 @@ class caixasController extends controller
 		    	}
 		    endforeach;
 
+		    $total_prazo = query("select sum(d.valornegociacao) as total from dadosfaturamento d
+					where d.id_caixa={$caixa->id} and d.recebido='N' and d.excluido='N'","total");
+
+		    $cupons = query("
+					    select
+			                d.ecf, 
+			                d.numeronota,
+			                d.valortotalcupom,
+							DATE_FORMAT(d.datalancamento, '%d/%m/%Y') as data_formatada,
+			                d.hora,
+			                d.nome_cliente,
+			                d.numero_cliente,
+			                d.recebido
+			                	from dadosfaturamento d
+			                	where d.id_caixa={$caixa->id} and d.excluido='N'
+			                group by 
+			                d.ecf, 
+			                d.numeronota,
+			                d.valortotalcupom,
+			                d.datalancamento,
+			                d.hora,
+			                d.nome_cliente,
+			                d.numero_cliente,
+			                d.recebido
+			                order by
+			                d.numeronota
+						");
 		   
 
 		    if($tem_combustiveis):
@@ -255,12 +282,11 @@ class caixasController extends controller
 			endif;
 
 
-
 		$dias_permanencia = dif_datas($caixa->dataabertura,$caixa->datafechamento);
 		$horas_permanencia = dif_horas($caixa->horafechamento,$caixa->horaabertura);
 
 
-		echo $this->view('caixas.show',compact('caixa','dias_permanencia','horas_permanencia','porcentagem_grupo','agrupado','vlr_total','combustiveis','tem_combustiveis','ag_combustiveis','vlr_manutencoes','manutencoes_agrupadas','manutencoes','cancelamentos'));		
+		echo $this->view('caixas.show',compact('caixa','dias_permanencia','horas_permanencia','porcentagem_grupo','agrupado','vlr_total','combustiveis','tem_combustiveis','ag_combustiveis','vlr_manutencoes','manutencoes_agrupadas','manutencoes','cancelamentos','total_prazo','cupons'));		
 	}
 }
 

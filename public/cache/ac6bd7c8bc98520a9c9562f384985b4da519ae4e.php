@@ -2,12 +2,12 @@
 
 <?php $__env->startSection('topo'); ?>
 <h1>Visualização 
-  <small>de Caixa <strong>N° <?php echo e($caixa->id); ?></strong></small>
+  <small>de Caixa <strong>N° <?php echo e(str_pad($caixa->numero, 6, "0", STR_PAD_LEFT)); ?></strong></small>
 </h1>
 <ol class="breadcrumb">
   <li><a href="<?php echo e(asset('')); ?>"><i class="glyphicon glyphicon-stats"></i> Início</a></li>
   <li><a href="<?php echo e(asset('caixas')); ?>"><i class="glyphicon glyphicon-indent-left"></i> Caixas</a></li>
-  <li><i class="glyphicon glyphicon-indent-left"></i> Caixa - <?php echo e($caixa->id); ?></li>
+  <li><i class="glyphicon glyphicon-indent-left"></i> Caixa - <?php echo e(str_pad($caixa->numero, 6, "0", STR_PAD_LEFT)); ?></li>
 </ol>
 <?php $__env->stopSection(); ?>
 
@@ -17,7 +17,12 @@
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header" style="height: 10px">
-		      	<p class="title_box">Resumo</p>		
+		      	<p class="title_box">Resumo</p>	
+		      	<div class="box-tools pull-right">
+			    	<button type="button" class="btn btn-box-tool" data-widget="collapse">
+			    		<i class="fa fa-minus"></i>
+			    	</button>		                
+			    </div>	
 			</div>
 			<div class="box-body"> 
 			  <!-- conteudo -->
@@ -25,7 +30,7 @@
 					<div class="row">
 						<div class="col-md-2">
 							<label>N° Caixa</label>
-							<input type="text" class="form-control" value="<?php echo e($caixa->numero); ?>" readonly>
+							<input type="text" class="form-control" value="<?php echo e(str_pad($caixa->numero, 6, "0", STR_PAD_LEFT)); ?>" readonly>
 						</div>
 						<div class="col-md-4">
 							<label>Ilha</label>
@@ -66,7 +71,12 @@
 	<div class="col-md-12">
 		<div class="box"  id="movimento_porcento_circulos">
 			<div class="box-header" style="height: 10px">
-		      	<p class="title_box">Movimento Grupos de Produto (%)</p>		
+		      	<p class="title_box">Movimento Grupos de Produto (%)</p>	
+		      	<div class="box-tools pull-right">
+			    	<button type="button" class="btn btn-box-tool" data-widget="collapse">
+			    		<i class="fa fa-minus"></i>
+			    	</button>		                
+			    </div>	
 			</div>
 			<div class="box-body"> 
 			  <!-- conteudo -->
@@ -94,6 +104,11 @@
 			<div class="box"  id="movimento_porcento_circulos">
 				<div class="box-header" style="height: 10px">
 			      	<p class="title_box">Movimento Combustíveis (%)</p>		
+			      	<div class="box-tools pull-right">
+			            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+			            	<i class="fa fa-minus"></i>
+			            </button>		                
+			        </div>
 				</div>
 				<div class="box-body"> 
 				  <!-- conteudo -->
@@ -121,6 +136,11 @@
 		<div class="box" >
 			<div class="box-header" style="height: 10px">
 		      	<p class="title_box">Movimento Agrupado</p>		
+		      	<div class="box-tools pull-right">
+			    	<button type="button" class="btn btn-box-tool" data-widget="collapse">
+			    		<i class="fa fa-minus"></i>
+			    	</button>		                
+			    </div>
 			</div>
 			<div class="box-body" > 
 			  <!-- conteudo -->
@@ -130,6 +150,11 @@
 					<div class="box">
 						<div class="box-header" style="height: 10px;">
 					      	<p class="title_box" style="background-color: darkgray;color:white">... Por Produto</p>		
+					      	<div class="box-tools pull-right">
+					            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+					            	<i class="fa fa-minus"></i>
+					            </button>		                
+					        </div>
 						</div>
 						<div class="box-body" > 
 
@@ -167,7 +192,17 @@
 				<div class="col-md-4" >
 					<div class="box" >
 						<div class="box-header" style="height: 10px">
-					      	<p class="title_box" style="background-color: darkgray;color:white">... Por Grupo de Produto</p>		
+					      	<p class="title_box" style="background-color: darkgray;color:white">... Por Grupo de Produto</p>
+					      	<div class="box-tools pull-right">
+					            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+					            	<i class="fa fa-minus"></i>
+					            </button>		                
+					        </div>
+					      	<div class="box-tools pull-right">
+				            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+				            	<i class="fa fa-minus"></i>
+				            </button>		                
+			        </div>		
 						</div>
 						<div class="box-body" > 
 						  <!-- conteudo -->
@@ -200,51 +235,60 @@
 
 					<div class="box" style="bottom: 0">
 						<div class="box-header" style="height: 10px">
-					      	<p class="title_box" style="background-color: darkgray;color:white">Valores</p>		
+					      	<p class="title_box" style="background-color: darkgray;color:white">Valores</p>
+					      	<div class="box-tools pull-right">
+					            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+					            	<i class="fa fa-minus"></i>
+					            </button>		                
+					        </div>		
 						</div>
 						<div class="box-body"  style="background-color:whitesmoke "> 
 						  <!-- conteudo -->
-								
+
+							<div class="row text-center"><strong>Créditos</strong></div>
 							<div class="row">
-								<div class="col-md-8 text-left">
-									<h4>Valor Inicial :</h4>
-								</div>
-								<div class="col-md-4 text-right" >
-									<h4 ><strong><?php echo e(format_dinheiro('R$',$caixa->VALOR_INICIAL)); ?></strong></h4>
+								<div class="col-md-6 text-left">Total Vendas :</div>
+								<div class="col-md-6 text-right" ><?php echo e(format_dinheiro('R$',$vlr_total)); ?></div>
+							</div>
+							<div class="row">
+								<div class="col-md-6 text-left">Total Inserções :</div>
+								<div class="col-md-6 text-right"><?php echo e(format_dinheiro('R$',$vlr_manutencoes['I'])); ?>
+
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-8 text-left">
-									<h4>Total Vendas :</h4>
+								<div class="col-md-6 text-left">Total Créditos :</div>
+								<div class="col-md-6 text-right"><?php echo e(format_dinheiro('R$',$vlr_manutencoes['I']+$vlr_total)); ?>
+
 								</div>
-								<div class="col-md-4 text-right" >
-									<h4 ><strong><?php echo e(format_dinheiro('R$',$vlr_total)); ?></strong></h4>
+							</div>
+							<div class="row text-center"><strong>Débitos</strong></div>							
+							<div class="row">
+								<div class="col-md-6 text-left">Total Retiradas :</div>
+								<div class="col-md-6 text-right"><?php echo e(format_dinheiro('R$',$vlr_manutencoes['R'])); ?>
+
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-8 text-left">
-									<h4>Inserções :</h4>
-								</div>
-								<div class="col-md-4 text-right">
-									<h4><strong><?php echo e(format_dinheiro('R$',$vlr_manutencoes['I'])); ?></strong></h4>
-								</div>
+								<div class="col-md-6 text-left">Total a Prazo :</div>
+								<div class="col-md-6 text-right"><?php echo e(format_dinheiro('R$',$total_prazo)); ?></div>
 							</div>
 							<div class="row">
-								<div class="col-md-8 text-left">
-									<h4>Retiradas :</h4>
-								</div>
-								<div class="col-md-4 text-right">
-									<h4><strong><?php echo e(format_dinheiro('R$',$vlr_manutencoes['R'])); ?></strong></h4>
+								<div class="col-md-6 text-left">Total a Pagto Antecipado :</div>
+								<div class="col-md-6 text-right"><?php echo e(format_dinheiro('R$',0)); ?>
+
 								</div>
 							</div>
+
 							<hr>
 							<!-- revisar -->
 							<div class="row">
-								<div class="col-md-8 text-left">
-									<h4><strong>Saldo</strong> :</h4>
-								</div>
-								<div class="col-md-4 text-right">
-									<h4><strong><?php echo e(format_dinheiro('R$', $caixa->VALOR_INICIAL+$vlr_total-$vlr_manutencoes['R'] + $vlr_manutencoes['I'] )); ?></strong></h4>
+								<div class="col-md-6 text-left"><strong>Sub Total</strong> :</div>
+								<div class="col-md-6 text-right">
+									<strong><?php echo e(format_dinheiro
+											('R$', 
+												$caixa->VALOR_INICIAL + $vlr_total-$vlr_manutencoes['R'] + $vlr_manutencoes['I'] - $total_prazo 
+											)); ?></strong>
 								</div>
 							</div>
 							<!-- revisar -->
@@ -270,6 +314,11 @@
 			<div class="box">
 				<div class="box-header" style="height: 10px;">
 			      	<p class="title_box">Manutenções de Caixa</p>		
+			      	<div class="box-tools pull-right">
+			            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+			            	<i class="fa fa-minus"></i>
+			            </button>		                
+			        </div>
 				</div>
 				<div class="box-body" > 
 
@@ -318,7 +367,12 @@
 		<div class="col-md-6">
 			<div class="box">
 				<div class="box-header" style="height: 10px;">
-			      	<p class="title_box">Cancelamentos</p>		
+			      	<p class="title_box">Cancelamentos</p>
+			      	<div class="box-tools pull-right">
+			            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+			            	<i class="fa fa-minus"></i>
+			            </button>		                
+			        </div>		
 				</div>
 				<div class="box-body" > 
 
@@ -336,7 +390,7 @@
 						   <tbody>
 						   		<?php foreach($cancelamentos as $canc): ?>
 						   		<tr title="Duplo clique para ver o cupom" ondblclick="verCupom(<?php echo e($canc->numeronota); ?>);">
-						   			<td><?php echo e($canc->numeronota); ?></td>
+						   			<td><?php echo e(str_pad($canc->numeronota, 6, "0", STR_PAD_LEFT)); ?></td>
 						   			<td><?php echo e($canc->data_formatada); ?></td>
 						   			<td><?php echo e($canc->hora); ?></td>
 						   			<td><?php echo e($canc->usuariocancelamento); ?></td>
@@ -353,6 +407,65 @@
 		</div>
 </div>
 
+
+
+<div class="row">
+		<div class="col-md-12" style="height: 400px;overflow-y: auto">
+			<div class="box">
+				<div class="box-header" style="height: 10px;">
+			      	<p class="title_box">Cupons</p>	
+				    <div class="box-tools pull-right">
+			            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+			            	<i class="fa fa-minus"></i>
+			            </button>		                
+			        </div>
+				</div>
+				<div class="box-body" > 
+
+					<div class="table-responsive" >
+						 <table class="table table-hover" style="font-size: 14px">
+						    <thead>
+							    <tr style="background-color: #F4F4F4;border-radius: 100px;">
+							      <th>ECF / S@T</th>
+							      <th>Cupom</th>
+							      <th>Data</th>						      
+							      <th>Hora</th>
+							      <th>Cód. Cliente</th>
+							      <th>Nome Cliente</th>
+							      <th>Valor</th>
+							      <th>Tipo Venda</th>
+							    </tr>
+						    </thead>
+						   <tbody>
+						   		<?php foreach($cupons as $c): ?>
+						   		<tr title="Duplo clique para ver o cupom" ondblclick="verCupom(<?php echo e($c->numeronota); ?>);">
+						   			<td><?php echo e(str_pad($c->ecf, 6, "0", STR_PAD_LEFT)); ?></td>
+						   			<td><?php echo e(str_pad($c->numeronota, 6, "0", STR_PAD_LEFT)); ?></td>						   			
+						   			<td><?php echo e($c->data_formatada); ?></td>
+						   			<td><?php echo e($c->hora); ?></td>
+						   			<td><?php echo e(str_pad($c->numero_cliente, 6, "0", STR_PAD_LEFT)); ?></td>
+						   			<?php if($c->numero_cliente=='999999'): ?>
+						   				<td>COMSUMIDOR</td>
+						   			<?php else: ?>
+						   				<td><?php echo e($c->nome_cliente); ?></td>
+						   			<?php endif; ?>
+						   			<td><?php echo e(format_dinheiro('R$',$c->valortotalcupom)); ?></td>
+						   			<?php if($c->recebido=='S'): ?>
+						   				<td>À Vista</td>
+						   			<?php else: ?>
+						   				<td>A Prazo</td>
+						   			<?php endif; ?>
+						   		</tr>
+						   		<?php endforeach; ?>
+						   </tbody>
+						 </table>
+						 <hr>
+					</div>							
+
+				</div>
+			</div>
+		</div>
+</div>
 
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/js/custom.js"></script>

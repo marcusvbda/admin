@@ -18,6 +18,11 @@
 	<div class="box">
 		<div class="box-header" style="height: 10px">
 	      	<p class="title_box">TITULO</p>		
+	      	<div class="box-tools pull-right">
+			    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+			    	<i class="fa fa-minus"></i>
+			    </button>		                
+			</div>
 		</div>
 		<div class="box-body"> 
 		  <!-- conteudo -->
