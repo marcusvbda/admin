@@ -73,19 +73,6 @@ class caixasController extends controller
 		    $vlr_manutencoes[$ma->tipo]+=$ma->valor;
 		endforeach;
 
-		$cancelamentos = 
-		query(
-			"select
-				d.numeronota,
-				d.usuariocancelamento,
-				sum(d.valornegociacao) as valor,
-				DATE_FORMAT(d.datacancelamento, '%d/%m/%Y') as data_formatada,
-				d.hora
-				 from dadosfaturamento d
-				where d.excluido='C'
-				and d.id_caixa={$caixa->id}
-				group by
-				d.numeronota ,d.usuariocancelamento ,d.datacancelamento,d.hora");
 
 		$vlr_total = query(
 			"Select
@@ -196,6 +183,8 @@ class caixasController extends controller
 				      P.CODIGO_GRUPOPRODUTO
 				      ");
 
+
+
 		    $tem_combustiveis = false;
 		    foreach ($porcentagem_grupo as $ag):
 		    	if($ag->TIPOPRODUTO=="C")
@@ -210,18 +199,12 @@ class caixasController extends controller
 
 		    $cupons = query("
 					   select
-			                d.ecf, 
-			                d.numeronota,
-			                d.valortotalcupom,
-							DATE_FORMAT(d.datalancamento, '%d/%m/%Y') as data_formatada,
-			                d.hora,
-			                d.nome_cliente,
-			                d.numero_cliente,
-			                d.recebido
+			                d.*,
+							DATE_FORMAT(d.datalancamento, '%d/%m/%Y') as data_formatada
 			            from  
 			            	dadosfaturamento d 
 			            where 
-			            	d.id_caixa={$caixa->id} and d.excluido in('N','P')
+			            	d.id_caixa={$caixa->id} and d.excluido in('N','P','C')
 			            group by 
 			                d.numeronota
 			            order by
@@ -281,7 +264,7 @@ class caixasController extends controller
 		$horas_permanencia = dif_horas($caixa->horafechamento,$caixa->horaabertura);
 
 
-		echo $this->view('caixas.show',compact('caixa','dias_permanencia','horas_permanencia','porcentagem_grupo','agrupado','vlr_total','combustiveis','tem_combustiveis','ag_combustiveis','vlr_manutencoes','manutencoes_agrupadas','manutencoes','cancelamentos','total_prazo','cupons'));		
+		echo $this->view('caixas.show',compact('caixa','dias_permanencia','horas_permanencia','porcentagem_grupo','agrupado','vlr_total','combustiveis','tem_combustiveis','ag_combustiveis','vlr_manutencoes','manutencoes_agrupadas','manutencoes','cancelamentos','total_prazo','cupons','abastecimentos'));		
 	}
 
 	public function postDocumento()

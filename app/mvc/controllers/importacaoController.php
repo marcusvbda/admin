@@ -319,8 +319,7 @@ class importacaoController extends controller
 			$sql.=" PRIMARY KEY (sequencia))";			
 			DB::statement($sql);
 			if(count($chaves_primarias)>0):
-				$sql_index = "";
-				DB::statement("CREATE INDEX idx_sequencia_{$tabela} on {$tabela}(sequencia);");				
+				$sql_index = "";		
 				foreach ($chaves_primarias as $chave):
 					DB::statement("CREATE INDEX idx_{$tabela}_{$chave} on {$tabela}($chave);");
 				endforeach;

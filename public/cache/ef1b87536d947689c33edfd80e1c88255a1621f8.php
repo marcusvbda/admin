@@ -128,6 +128,8 @@
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/js/custom.js"></script>
 <script type="text/javascript">
+
+
 	$( document ).ready(function()
 	{
 		admin_rede = "<?php echo e(Auth('admin_rede')); ?>";

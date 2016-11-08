@@ -130,6 +130,8 @@
 <script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
 <script src="{{PASTA_PUBLIC}}/template/bootstrap/js/custom.js"></script>
 <script type="text/javascript">
+
+
 	$( document ).ready(function()
 	{
 		admin_rede = "{{Auth('admin_rede')}}";

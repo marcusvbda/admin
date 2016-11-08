@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 31-Out-2016 às 20:43
+-- Generation Time: 08-Nov-2016 às 18:27
 -- Versão do servidor: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -19,6 +19,36 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_admin_00001`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `abastecimentos`
+--
+
+CREATE TABLE `abastecimentos` (
+  `sequencia` int(11) NOT NULL,
+  `id` int(11) DEFAULT NULL,
+  `numero_empresa` int(11) DEFAULT NULL,
+  `id_bomba` int(11) DEFAULT NULL,
+  `id_caixa` int(11) DEFAULT NULL,
+  `totaldinheiro` double DEFAULT NULL,
+  `totallitros` double DEFAULT NULL,
+  `precounitario` double DEFAULT NULL,
+  `tempoabastecimento` varchar(10) DEFAULT NULL,
+  `dataabastecimento` date DEFAULT NULL,
+  `horaabastecimento` varchar(5) DEFAULT NULL,
+  `encerrantereal` double DEFAULT NULL,
+  `inserido` char(1) DEFAULT NULL,
+  `pendente` char(1) DEFAULT NULL,
+  `registro` int(11) DEFAULT NULL,
+  `id_dadosfaturamento` int(11) DEFAULT NULL,
+  `numero_funcionario` int(11) DEFAULT NULL,
+  `tag` varchar(30) DEFAULT NULL,
+  `encerranteinicial` double DEFAULT NULL,
+  `md5` varchar(128) DEFAULT NULL,
+  `leitura` varchar(82) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -132,6 +162,30 @@ CREATE TABLE `clientes` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `condicaopagamento`
+--
+
+CREATE TABLE `condicaopagamento` (
+  `sequencia` int(11) NOT NULL,
+  `codigo` int(11) DEFAULT NULL,
+  `descricao` varchar(50) DEFAULT NULL,
+  `numeroparcelas` int(11) DEFAULT NULL,
+  `diasprazo` int(11) DEFAULT NULL,
+  `solicitavencimento` char(1) DEFAULT NULL,
+  `vencimentofixo` int(11) DEFAULT NULL,
+  `intervalovencimento` int(11) DEFAULT NULL,
+  `excluido` char(1) DEFAULT NULL,
+  `primeiravista` char(1) DEFAULT NULL,
+  `solicitavalores` char(1) DEFAULT NULL,
+  `tipojuros` char(1) DEFAULT NULL,
+  `valorjurosdiario` double DEFAULT NULL,
+  `valorjurosmulta` double DEFAULT NULL,
+  `assumecondicaocupom` char(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `dadosfaturamento`
 --
 
@@ -215,6 +269,33 @@ CREATE TABLE `dadosfaturamento` (
   `chv_cfecanc` char(44) DEFAULT NULL,
   `qcod` blob,
   `observacao` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `funcionarios`
+--
+
+CREATE TABLE `funcionarios` (
+  `sequencia` int(11) NOT NULL,
+  `numero` int(11) DEFAULT NULL,
+  `nome` varchar(50) DEFAULT NULL,
+  `cnpj` varchar(18) DEFAULT NULL,
+  `inscricaoestadual` varchar(18) DEFAULT NULL,
+  `datanascimento` date DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `usuariocadastro` int(11) DEFAULT NULL,
+  `excluido` char(1) DEFAULT NULL,
+  `datacadastro` date DEFAULT NULL,
+  `site` varchar(100) DEFAULT NULL,
+  `tipopessoa` char(1) DEFAULT NULL,
+  `estado` char(2) DEFAULT NULL,
+  `tipo` char(1) DEFAULT NULL,
+  `numero_funcao` int(11) DEFAULT NULL,
+  `dataadmissao` date DEFAULT NULL,
+  `usuario` varchar(20) DEFAULT NULL,
+  `numero_previsao` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -479,6 +560,14 @@ CREATE TABLE `todolist` (
 --
 
 --
+-- Indexes for table `abastecimentos`
+--
+ALTER TABLE `abastecimentos`
+  ADD PRIMARY KEY (`sequencia`),
+  ADD KEY `idx_ABASTECIMENTOS_id` (`id`),
+  ADD KEY `id_caixa` (`id_caixa`);
+
+--
 -- Indexes for table `bancos`
 --
 ALTER TABLE `bancos`
@@ -504,12 +593,27 @@ ALTER TABLE `clientes`
   ADD KEY `idx_CLIENTES_numero` (`numero`);
 
 --
+-- Indexes for table `condicaopagamento`
+--
+ALTER TABLE `condicaopagamento`
+  ADD PRIMARY KEY (`sequencia`),
+  ADD KEY `idx_sequencia_CONDICAOPAGAMENTO` (`sequencia`),
+  ADD KEY `idx_CONDICAOPAGAMENTO_codigo` (`codigo`);
+
+--
 -- Indexes for table `dadosfaturamento`
 --
 ALTER TABLE `dadosfaturamento`
   ADD PRIMARY KEY (`sequencia`),
-  ADD KEY `idx_ID_CAIXA` (`id_caixa`),
-  ADD KEY `idx_sequencia_dadosfaturamento` (`sequencia`);
+  ADD KEY `idx_ID_CAIXA` (`id_caixa`);
+
+--
+-- Indexes for table `funcionarios`
+--
+ALTER TABLE `funcionarios`
+  ADD PRIMARY KEY (`sequencia`),
+  ADD KEY `idx_sequencia_FUNCIONARIOS` (`sequencia`),
+  ADD KEY `idx_FUNCIONARIOS_numero` (`numero`);
 
 --
 -- Indexes for table `gruposprodutos`
@@ -580,6 +684,11 @@ ALTER TABLE `todolist`
 --
 
 --
+-- AUTO_INCREMENT for table `abastecimentos`
+--
+ALTER TABLE `abastecimentos`
+  MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84722;
+--
 -- AUTO_INCREMENT for table `bancos`
 --
 ALTER TABLE `bancos`
@@ -595,10 +704,20 @@ ALTER TABLE `caixa`
 ALTER TABLE `clientes`
   MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
 --
+-- AUTO_INCREMENT for table `condicaopagamento`
+--
+ALTER TABLE `condicaopagamento`
+  MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
 -- AUTO_INCREMENT for table `dadosfaturamento`
 --
 ALTER TABLE `dadosfaturamento`
   MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92297;
+--
+-- AUTO_INCREMENT for table `funcionarios`
+--
+ALTER TABLE `funcionarios`
+  MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `gruposprodutos`
 --
@@ -648,7 +767,7 @@ ALTER TABLE `tiposprodutos`
 -- AUTO_INCREMENT for table `todolist`
 --
 ALTER TABLE `todolist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

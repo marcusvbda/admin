@@ -306,164 +306,155 @@
 </div>
 
 
-
 <div class="row">
-		<div class="col-md-6">
-			<div class="box">
-				<div class="box-header" style="height: 10px;">
-			      	<p class="title_box">Manutenções de Caixa</p>		
-			      	<div class="box-tools pull-right">
-			            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-			            	<i class="fa fa-minus"></i>
-			            </button>		                
-			        </div>
+	<div class="col-md-12" style="height: 400px;overflow-y: auto">
+		<div class="box">
+			<div class="box-header" style="height: 10px;">
+		      	<p class="title_box">Vendas</p>
+		      	<div class="box-tools pull-right">
+		            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+		            	<i class="fa fa-minus"></i>
+		            </button>		                
+		        </div>		
+			</div>
+			<div class="box-body" > 
+			<br>
+				<div class="row">
+					<div class="col-md-12">
+
+							<ul class="nav nav-tabs">
+							  <li class="active"><a data-toggle="tab" href="#cupons">Cupons</a></li>
+							  <li><a data-toggle="tab" href="#cancelamentos">Cancelamentos</a></li>
+							  <li><a data-toggle="tab" href="#manutencoes">Manutenção de Caixa</a></li>
+							</ul>
+
+							<div class="tab-content">
+							  <div id="cupons" class="tab-pane fade in active">
+
+							    <br>
+							  		<table class="table table-hover" style="font-size: 14px">
+									    <thead>
+										    <tr style="background-color: #F4F4F4;border-radius: 100px;">
+										      <th>ECF / S@T</th>
+										      <th>Cupom</th>
+										      <th>Data</th>						      
+										      <th>Hora</th>
+										      <th>Cód. Cliente</th>
+										      <th>Nome Cliente</th>
+										      <th>Valor</th>
+										      <th>Tipo Venda</th>
+										    </tr>
+									    </thead>
+									   <tbody>
+									   		@foreach($cupons as $c)
+									   			@if(cupons!='C')
+											   		<tr title="Duplo clique para ver o cupom" ondblclick="verDocumento({{$c->numeronota}});">
+											   			<td>{{str_pad($c->ecf, 6, "0", STR_PAD_LEFT)}}</td>
+											   			<td>{{str_pad($c->numeronota, 6, "0", STR_PAD_LEFT)}}</td>						   			
+											   			<td>{{$c->data_formatada}}</td>
+											   			<td>{{$c->hora}}</td>
+											   			<td>{{str_pad($c->numero_cliente, 6, "0", STR_PAD_LEFT)}}</td>
+											   			@if($c->numero_cliente=='999999')
+											   				<td>COMSUMIDOR</td>
+											   			@else
+											   				<td>{{$c->nome_cliente}}</td>
+											   			@endif
+											   			<td>{{format_dinheiro('R$',$c->valortotalcupom)}}</td>
+											   			@if($c->recebido=='S')
+											   				<td>À Vista</td>
+											   			@else
+											   				<td>A Prazo</td>
+											   			@endif
+											   		</tr>
+											   	@endif
+									   		@endforeach
+									   </tbody>
+									</table>
+									<hr>
+
+							  </div>
+							  <div id="cancelamentos" class="tab-pane fade">
+							  	<br>
+									 <table class="table table-hover" style="font-size: 14px">
+									    <thead>
+										    <tr style="background-color: #F4F4F4;border-radius: 100px;">
+										      <th>Cupom</th>
+										      <th>Data</th>						      
+										      <th>Hora</th>
+										      <th>Usuário</th>
+										      <th>Valor</th>
+										    </tr>
+									    </thead>
+									   <tbody>
+									   		@foreach($cupons as $canc)
+									   			@if($canc->excluido=="C")
+											   		<tr title="Duplo clique para ver o cupom" ondblclick="verDocumento({{$canc->numeronota}});">
+											   			<td>{{str_pad($canc->numeronota, 6, "0", STR_PAD_LEFT)}}</td>
+											   			<td>{{$canc->data_formatada}}</td>
+											   			<td>{{$canc->hora}}</td>
+											   			<td>{{$canc->usuariocancelamento}}</td>
+											   			<td>{{format_dinheiro('R$',$canc->valortotalcupom)}}</td>
+											   		</tr>
+											   	@endif
+									   		@endforeach
+									   </tbody>
+									 </table>
+									<hr>		
+
+
+							  </div>
+							  <div id="manutencoes" class="tab-pane fade">
+							    <br>			
+							  	 <table class="table table-hover" style="font-size: 14px">
+								    <thead>
+									    <tr style="background-color: #F4F4F4;border-radius: 100px;">
+									      <th>Documento</th>
+									      <th>Descrição</th>
+									      <th>Data</th>						      
+									      <th>Hora</th>
+									      <th>Usuário</th>
+									      <th>Tipo</th>
+									      <th>Valor</th>
+									    </tr>
+								    </thead>
+								   <tbody>
+								   		@foreach($manutencoes as $mn)
+								   		@if($mn->tipo=="R")
+								   			<tr style="background-color: mistyrose">
+								   		@else
+								   			<tr style="background-color: #c0ffc0">
+								   		@endif
+
+								   			<td>{{$mn->documento}}</td>
+								   			<td>{{$mn->descricao}}</td>
+								   			<td>{{$mn->data_formatada}}</td>
+								   			<td>{{$mn->hora}}</td>
+								   			<td>{{$mn->usuariolancamento}}</td>
+								   			@if($mn->tipo=="R")
+								   				<td>Retirada</td>
+								   			@else
+								   				<td>Inserção</td>
+								   			@endif
+								   			<td>{{format_dinheiro('R$',$mn->valor)}}</td>
+								   		</tr>
+								   		@endforeach
+								   </tbody>
+								 </table>
+								<hr> 
+
+							  </div>
+
+							</div>
+
+					</div>
 				</div>
-				<div class="box-body" > 
+						
 
-					<div class="table-responsive" >
-						 <table class="table table-hover" style="font-size: 14px">
-						    <thead>
-							    <tr style="background-color: #F4F4F4;border-radius: 100px;">
-							      <th>Documento</th>
-							      <th>Descrição</th>
-							      <th>Data</th>						      
-							      <th>Hora</th>
-							      <th>Usuário</th>
-							      <th>Tipo</th>
-							      <th>Valor</th>
-							    </tr>
-						    </thead>
-						   <tbody>
-						   		@foreach($manutencoes as $mn)
-						   		@if($mn->tipo=="R")
-						   			<tr style="background-color: mistyrose">
-						   		@else
-						   			<tr style="background-color: #c0ffc0">
-						   		@endif
-
-						   			<td>{{$mn->documento}}</td>
-						   			<td>{{$mn->descricao}}</td>
-						   			<td>{{$mn->data_formatada}}</td>
-						   			<td>{{$mn->hora}}</td>
-						   			<td>{{$mn->usuariolancamento}}</td>
-						   			@if($mn->tipo=="R")
-						   				<td>Retirada</td>
-						   			@else
-						   				<td>Inserção</td>
-						   			@endif
-						   			<td>{{format_dinheiro('R$',$mn->valor)}}</td>
-						   		</tr>
-						   		@endforeach
-						   </tbody>
-						 </table>
-						 <hr>
-					</div>							
-
-				</div>
 			</div>
 		</div>
-		<div class="col-md-6">
-			<div class="box">
-				<div class="box-header" style="height: 10px;">
-			      	<p class="title_box">Cancelamentos</p>
-			      	<div class="box-tools pull-right">
-			            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-			            	<i class="fa fa-minus"></i>
-			            </button>		                
-			        </div>		
-				</div>
-				<div class="box-body" > 
-
-					<div class="table-responsive" >
-						 <table class="table table-hover" style="font-size: 14px">
-						    <thead>
-							    <tr style="background-color: #F4F4F4;border-radius: 100px;">
-							      <th>Cupom</th>
-							      <th>Data</th>						      
-							      <th>Hora</th>
-							      <th>Usuário</th>
-							      <th>Valor</th>
-							    </tr>
-						    </thead>
-						   <tbody>
-						   		@foreach($cancelamentos as $canc)
-						   		<tr title="Duplo clique para ver o cupom" ondblclick="verDocumento({{$canc->numeronota}});">
-						   			<td>{{str_pad($canc->numeronota, 6, "0", STR_PAD_LEFT)}}</td>
-						   			<td>{{$canc->data_formatada}}</td>
-						   			<td>{{$canc->hora}}</td>
-						   			<td>{{$canc->usuariocancelamento}}</td>
-						   			<td>{{format_dinheiro('R$',$canc->valor)}}</td>
-						   		</tr>
-						   		@endforeach
-						   </tbody>
-						 </table>
-						 <hr>
-					</div>							
-
-				</div>
-			</div>
-		</div>
+	</div>
 </div>
 
-
-
-<div class="row">
-		<div class="col-md-12" style="height: 400px;overflow-y: auto">
-			<div class="box">
-				<div class="box-header" style="height: 10px;">
-			      	<p class="title_box">Cupons</p>	
-				    <div class="box-tools pull-right">
-			            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-			            	<i class="fa fa-minus"></i>
-			            </button>		                
-			        </div>
-				</div>
-				<div class="box-body" > 
-
-					<div class="table-responsive" >
-						 <table class="table table-hover" style="font-size: 14px">
-						    <thead>
-							    <tr style="background-color: #F4F4F4;border-radius: 100px;">
-							      <th>ECF / S@T</th>
-							      <th>Cupom</th>
-							      <th>Data</th>						      
-							      <th>Hora</th>
-							      <th>Cód. Cliente</th>
-							      <th>Nome Cliente</th>
-							      <th>Valor</th>
-							      <th>Tipo Venda</th>
-							    </tr>
-						    </thead>
-						   <tbody>
-						   		@foreach($cupons as $c)
-						   		<tr title="Duplo clique para ver o cupom" ondblclick="verDocumento({{$c->numeronota}});">
-						   			<td>{{str_pad($c->ecf, 6, "0", STR_PAD_LEFT)}}</td>
-						   			<td>{{str_pad($c->numeronota, 6, "0", STR_PAD_LEFT)}}</td>						   			
-						   			<td>{{$c->data_formatada}}</td>
-						   			<td>{{$c->hora}}</td>
-						   			<td>{{str_pad($c->numero_cliente, 6, "0", STR_PAD_LEFT)}}</td>
-						   			@if($c->numero_cliente=='999999')
-						   				<td>COMSUMIDOR</td>
-						   			@else
-						   				<td>{{$c->nome_cliente}}</td>
-						   			@endif
-						   			<td>{{format_dinheiro('R$',$c->valortotalcupom)}}</td>
-						   			@if($c->recebido=='S')
-						   				<td>À Vista</td>
-						   			@else
-						   				<td>A Prazo</td>
-						   			@endif
-						   		</tr>
-						   		@endforeach
-						   </tbody>
-						 </table>
-						 <hr>
-					</div>							
-
-				</div>
-			</div>
-		</div>
-</div>
 
 <script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
 <script src="{{PASTA_PUBLIC}}/template/bootstrap/js/custom.js"></script>

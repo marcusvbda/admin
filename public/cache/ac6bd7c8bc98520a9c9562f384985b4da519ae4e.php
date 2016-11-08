@@ -308,164 +308,155 @@
 </div>
 
 
-
 <div class="row">
-		<div class="col-md-6">
-			<div class="box">
-				<div class="box-header" style="height: 10px;">
-			      	<p class="title_box">Manutenções de Caixa</p>		
-			      	<div class="box-tools pull-right">
-			            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-			            	<i class="fa fa-minus"></i>
-			            </button>		                
-			        </div>
+	<div class="col-md-12" style="height: 400px;overflow-y: auto">
+		<div class="box">
+			<div class="box-header" style="height: 10px;">
+		      	<p class="title_box">Vendas</p>
+		      	<div class="box-tools pull-right">
+		            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+		            	<i class="fa fa-minus"></i>
+		            </button>		                
+		        </div>		
+			</div>
+			<div class="box-body" > 
+			<br>
+				<div class="row">
+					<div class="col-md-12">
+
+							<ul class="nav nav-tabs">
+							  <li class="active"><a data-toggle="tab" href="#cupons">Cupons</a></li>
+							  <li><a data-toggle="tab" href="#cancelamentos">Cancelamentos</a></li>
+							  <li><a data-toggle="tab" href="#manutencoes">Manutenção de Caixa</a></li>
+							</ul>
+
+							<div class="tab-content">
+							  <div id="cupons" class="tab-pane fade in active">
+
+							    <br>
+							  		<table class="table table-hover" style="font-size: 14px">
+									    <thead>
+										    <tr style="background-color: #F4F4F4;border-radius: 100px;">
+										      <th>ECF / S@T</th>
+										      <th>Cupom</th>
+										      <th>Data</th>						      
+										      <th>Hora</th>
+										      <th>Cód. Cliente</th>
+										      <th>Nome Cliente</th>
+										      <th>Valor</th>
+										      <th>Tipo Venda</th>
+										    </tr>
+									    </thead>
+									   <tbody>
+									   		<?php foreach($cupons as $c): ?>
+									   			<?php if(cupons!='C'): ?>
+											   		<tr title="Duplo clique para ver o cupom" ondblclick="verDocumento(<?php echo e($c->numeronota); ?>);">
+											   			<td><?php echo e(str_pad($c->ecf, 6, "0", STR_PAD_LEFT)); ?></td>
+											   			<td><?php echo e(str_pad($c->numeronota, 6, "0", STR_PAD_LEFT)); ?></td>						   			
+											   			<td><?php echo e($c->data_formatada); ?></td>
+											   			<td><?php echo e($c->hora); ?></td>
+											   			<td><?php echo e(str_pad($c->numero_cliente, 6, "0", STR_PAD_LEFT)); ?></td>
+											   			<?php if($c->numero_cliente=='999999'): ?>
+											   				<td>COMSUMIDOR</td>
+											   			<?php else: ?>
+											   				<td><?php echo e($c->nome_cliente); ?></td>
+											   			<?php endif; ?>
+											   			<td><?php echo e(format_dinheiro('R$',$c->valortotalcupom)); ?></td>
+											   			<?php if($c->recebido=='S'): ?>
+											   				<td>À Vista</td>
+											   			<?php else: ?>
+											   				<td>A Prazo</td>
+											   			<?php endif; ?>
+											   		</tr>
+											   	<?php endif; ?>
+									   		<?php endforeach; ?>
+									   </tbody>
+									</table>
+									<hr>
+
+							  </div>
+							  <div id="cancelamentos" class="tab-pane fade">
+							  	<br>
+									 <table class="table table-hover" style="font-size: 14px">
+									    <thead>
+										    <tr style="background-color: #F4F4F4;border-radius: 100px;">
+										      <th>Cupom</th>
+										      <th>Data</th>						      
+										      <th>Hora</th>
+										      <th>Usuário</th>
+										      <th>Valor</th>
+										    </tr>
+									    </thead>
+									   <tbody>
+									   		<?php foreach($cupons as $canc): ?>
+									   			<?php if($canc->excluido=="C"): ?>
+											   		<tr title="Duplo clique para ver o cupom" ondblclick="verDocumento(<?php echo e($canc->numeronota); ?>);">
+											   			<td><?php echo e(str_pad($canc->numeronota, 6, "0", STR_PAD_LEFT)); ?></td>
+											   			<td><?php echo e($canc->data_formatada); ?></td>
+											   			<td><?php echo e($canc->hora); ?></td>
+											   			<td><?php echo e($canc->usuariocancelamento); ?></td>
+											   			<td><?php echo e(format_dinheiro('R$',$canc->valortotalcupom)); ?></td>
+											   		</tr>
+											   	<?php endif; ?>
+									   		<?php endforeach; ?>
+									   </tbody>
+									 </table>
+									<hr>		
+
+
+							  </div>
+							  <div id="manutencoes" class="tab-pane fade">
+							    <br>			
+							  	 <table class="table table-hover" style="font-size: 14px">
+								    <thead>
+									    <tr style="background-color: #F4F4F4;border-radius: 100px;">
+									      <th>Documento</th>
+									      <th>Descrição</th>
+									      <th>Data</th>						      
+									      <th>Hora</th>
+									      <th>Usuário</th>
+									      <th>Tipo</th>
+									      <th>Valor</th>
+									    </tr>
+								    </thead>
+								   <tbody>
+								   		<?php foreach($manutencoes as $mn): ?>
+								   		<?php if($mn->tipo=="R"): ?>
+								   			<tr style="background-color: mistyrose">
+								   		<?php else: ?>
+								   			<tr style="background-color: #c0ffc0">
+								   		<?php endif; ?>
+
+								   			<td><?php echo e($mn->documento); ?></td>
+								   			<td><?php echo e($mn->descricao); ?></td>
+								   			<td><?php echo e($mn->data_formatada); ?></td>
+								   			<td><?php echo e($mn->hora); ?></td>
+								   			<td><?php echo e($mn->usuariolancamento); ?></td>
+								   			<?php if($mn->tipo=="R"): ?>
+								   				<td>Retirada</td>
+								   			<?php else: ?>
+								   				<td>Inserção</td>
+								   			<?php endif; ?>
+								   			<td><?php echo e(format_dinheiro('R$',$mn->valor)); ?></td>
+								   		</tr>
+								   		<?php endforeach; ?>
+								   </tbody>
+								 </table>
+								<hr> 
+
+							  </div>
+
+							</div>
+
+					</div>
 				</div>
-				<div class="box-body" > 
+						
 
-					<div class="table-responsive" >
-						 <table class="table table-hover" style="font-size: 14px">
-						    <thead>
-							    <tr style="background-color: #F4F4F4;border-radius: 100px;">
-							      <th>Documento</th>
-							      <th>Descrição</th>
-							      <th>Data</th>						      
-							      <th>Hora</th>
-							      <th>Usuário</th>
-							      <th>Tipo</th>
-							      <th>Valor</th>
-							    </tr>
-						    </thead>
-						   <tbody>
-						   		<?php foreach($manutencoes as $mn): ?>
-						   		<?php if($mn->tipo=="R"): ?>
-						   			<tr style="background-color: mistyrose">
-						   		<?php else: ?>
-						   			<tr style="background-color: #c0ffc0">
-						   		<?php endif; ?>
-
-						   			<td><?php echo e($mn->documento); ?></td>
-						   			<td><?php echo e($mn->descricao); ?></td>
-						   			<td><?php echo e($mn->data_formatada); ?></td>
-						   			<td><?php echo e($mn->hora); ?></td>
-						   			<td><?php echo e($mn->usuariolancamento); ?></td>
-						   			<?php if($mn->tipo=="R"): ?>
-						   				<td>Retirada</td>
-						   			<?php else: ?>
-						   				<td>Inserção</td>
-						   			<?php endif; ?>
-						   			<td><?php echo e(format_dinheiro('R$',$mn->valor)); ?></td>
-						   		</tr>
-						   		<?php endforeach; ?>
-						   </tbody>
-						 </table>
-						 <hr>
-					</div>							
-
-				</div>
 			</div>
 		</div>
-		<div class="col-md-6">
-			<div class="box">
-				<div class="box-header" style="height: 10px;">
-			      	<p class="title_box">Cancelamentos</p>
-			      	<div class="box-tools pull-right">
-			            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-			            	<i class="fa fa-minus"></i>
-			            </button>		                
-			        </div>		
-				</div>
-				<div class="box-body" > 
-
-					<div class="table-responsive" >
-						 <table class="table table-hover" style="font-size: 14px">
-						    <thead>
-							    <tr style="background-color: #F4F4F4;border-radius: 100px;">
-							      <th>Cupom</th>
-							      <th>Data</th>						      
-							      <th>Hora</th>
-							      <th>Usuário</th>
-							      <th>Valor</th>
-							    </tr>
-						    </thead>
-						   <tbody>
-						   		<?php foreach($cancelamentos as $canc): ?>
-						   		<tr title="Duplo clique para ver o cupom" ondblclick="verDocumento(<?php echo e($canc->numeronota); ?>);">
-						   			<td><?php echo e(str_pad($canc->numeronota, 6, "0", STR_PAD_LEFT)); ?></td>
-						   			<td><?php echo e($canc->data_formatada); ?></td>
-						   			<td><?php echo e($canc->hora); ?></td>
-						   			<td><?php echo e($canc->usuariocancelamento); ?></td>
-						   			<td><?php echo e(format_dinheiro('R$',$canc->valor)); ?></td>
-						   		</tr>
-						   		<?php endforeach; ?>
-						   </tbody>
-						 </table>
-						 <hr>
-					</div>							
-
-				</div>
-			</div>
-		</div>
+	</div>
 </div>
 
-
-
-<div class="row">
-		<div class="col-md-12" style="height: 400px;overflow-y: auto">
-			<div class="box">
-				<div class="box-header" style="height: 10px;">
-			      	<p class="title_box">Cupons</p>	
-				    <div class="box-tools pull-right">
-			            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-			            	<i class="fa fa-minus"></i>
-			            </button>		                
-			        </div>
-				</div>
-				<div class="box-body" > 
-
-					<div class="table-responsive" >
-						 <table class="table table-hover" style="font-size: 14px">
-						    <thead>
-							    <tr style="background-color: #F4F4F4;border-radius: 100px;">
-							      <th>ECF / S@T</th>
-							      <th>Cupom</th>
-							      <th>Data</th>						      
-							      <th>Hora</th>
-							      <th>Cód. Cliente</th>
-							      <th>Nome Cliente</th>
-							      <th>Valor</th>
-							      <th>Tipo Venda</th>
-							    </tr>
-						    </thead>
-						   <tbody>
-						   		<?php foreach($cupons as $c): ?>
-						   		<tr title="Duplo clique para ver o cupom" ondblclick="verDocumento(<?php echo e($c->numeronota); ?>);">
-						   			<td><?php echo e(str_pad($c->ecf, 6, "0", STR_PAD_LEFT)); ?></td>
-						   			<td><?php echo e(str_pad($c->numeronota, 6, "0", STR_PAD_LEFT)); ?></td>						   			
-						   			<td><?php echo e($c->data_formatada); ?></td>
-						   			<td><?php echo e($c->hora); ?></td>
-						   			<td><?php echo e(str_pad($c->numero_cliente, 6, "0", STR_PAD_LEFT)); ?></td>
-						   			<?php if($c->numero_cliente=='999999'): ?>
-						   				<td>COMSUMIDOR</td>
-						   			<?php else: ?>
-						   				<td><?php echo e($c->nome_cliente); ?></td>
-						   			<?php endif; ?>
-						   			<td><?php echo e(format_dinheiro('R$',$c->valortotalcupom)); ?></td>
-						   			<?php if($c->recebido=='S'): ?>
-						   				<td>À Vista</td>
-						   			<?php else: ?>
-						   				<td>A Prazo</td>
-						   			<?php endif; ?>
-						   		</tr>
-						   		<?php endforeach; ?>
-						   </tbody>
-						 </table>
-						 <hr>
-					</div>							
-
-				</div>
-			</div>
-		</div>
-</div>
 
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
 <script src="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/js/custom.js"></script>
