@@ -1,5 +1,5 @@
 @extends('templates.principal.principal')
-
+@include('javascript.caixas.index')
 @section('titulo','Caixas')
 
 @section('topo')
@@ -143,10 +143,15 @@ function visualizar_caixa(sequencia)
 		$('#responsavel').html(caixa.numero_funcionario+" - "+caixa.nome_funcionario);
 		$('#vlr_inicial').html("R$ "+caixa.valorinicial.toFixed(2));
 		$('#situacao').html(caixa.situacao);
-		$('#btn_visualizar').attr("href","{{asset('caixas/show')}}"+"/"+caixa.numero);	
+		$('#btn_visualizar').attr("onclick","entrar_caixa("+caixa.numero+")");	
 	});
 	div_periodo('DIMINUIR');
 	$('#div_visualizacao_caixa').toggle(150);	
+}
+
+function entrar_caixa(numero)
+{
+	POST("{{asset('caixas/show')}}",{caixa:numero});
 }
 
 function div_periodo(operacao)

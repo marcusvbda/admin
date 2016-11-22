@@ -3,7 +3,7 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 
 function CheckAuth()
-{
+{	
 	if(isset($_SESSION['dados_usuario']->usuario)) 
 	{
 		if(isset($_SESSION['dados_usuario']->app_id))
@@ -24,6 +24,7 @@ function CheckAuth()
 	}
 	else
 	{
+
 		LimpaUsuario();
 		return false;
 	}

@@ -10,12 +10,12 @@ class errosController extends controller
 	
 
 
-	public function get403()
+	public function getSEM_PERMISSAO()
 	{
 		echo $this->view('erros.bloqueado');
 	}
 
-	public function get404()
+	public function getNAO_EXISTE()
 	{
 		echo $this->view('erros.nao_existe');
 	}

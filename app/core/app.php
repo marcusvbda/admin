@@ -1,79 +1,43 @@
 <?php
 class app 
 {	
-
-	//definição padrão
-	protected $controller = 'inicio';
-	protected $metodo     = 'index';
-	protected $parametros = [];
-	protected $middleware = "";
-	protected $posicao    = 0;
-
+	protected $request = null;
 	public function __construct()
 	{
-		$this->middleware = new middleware();
-		$this->controller.='Controller';
-		$url = $this->parseUrl();
+		if(isset($_POST['REQUEST_METHOD']))
+			$_SERVER['REQUEST_METHOD']=$_POST['REQUEST_METHOD'];
 
-		//define o app
-		if(isset($url[$this->posicao]))
+
+		$this->request = Route::getParametros(App::getUrl(),$_SERVER['REQUEST_METHOD']);
+		if($this->request==404)
+			Route::direcionar(asset('erros/NAO_EXISTE'));
+
+		switch ($metodo = $_SERVER['REQUEST_METHOD'])
 		{
-			if(is_dir('../../'.$url[$this->posicao]))
-			{
-				$this->app = $url[$this->posicao];
-				unset($url[$this->posicao]);
-				$this->posicao ++;
-			}
+			case 'POST':
+				Request::set('POST',$_POST);
+				break;
+			case 'GET':
+				Request::set('GET',$_GET);			
+				break;			
+			default:
+				Request::set($metodo,$_POST);
+				break;
 		}
-		
-	    //define o controller
-	    if(isset($url[$this->posicao]))
-		{
-			if(file_exists(__DIR__.'/../mvc/controllers/'.$url[$this->posicao].'Controller'.'.php'))
-			{
-				$this->controller = $url[$this->posicao].'Controller';
-				unset($url[$this->posicao]);
-				$this->posicao ++;
-			}
-		}
-
-		
-
-		$nome_controller = $this->controller;	
-		require __DIR__.'/../mvc/controllers/'.$nome_controller.'.php';
-		$this->controller = new $this->controller;
-
-
-		//define o metodo 
-		if(isset($url[$this->posicao]))
-		{
-			if(method_exists($this->controller, strtolower($_SERVER['REQUEST_METHOD']).ucfirst($url[$this->posicao])))
-			{
-				$this->metodo = $url[$this->posicao];
-				unset($url[$this->posicao]); 
-			}
-			else
-				redirecionar(asset('erros/404'));
-		}
-		$this->metodo = strtolower($_SERVER['REQUEST_METHOD']).ucfirst($this->metodo);  
-		//mantedo assim getMetodo postMetodo
-
-		//define parametros
-		$this->parametros = $url ? array_values($url) : [];
-
-		if($this->middleware->middleware_geral($nome_controller,$this->metodo))
-		{
-			call_user_func_array([$this->controller,$this->metodo],$this->parametros);
-		}
-		
+		unset($_POST,$_GET);
 	}
 
-	public function parseUrl()
+	public function run()
+	{
+		if(middleware::liberado($this->request['NOME_CONTROLLER'],$this->request['METODO']))
+			Route::executar($this->request['CONTROLLER'],$this->request['METODO'],$this->request['PARAMETROS']);
+	}
+
+
+	public function getUrl()
 	{
 		if(isset($_GET['url']))
-		{
-			return $url = explode('/' , filter_var(rtrim($_GET['url'], '/'),FILTER_SANITIZE_URL));
-		}
+			return $_GET['url'];
 	}
 
 }

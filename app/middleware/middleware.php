@@ -1,27 +1,27 @@
 <?php
 class middleware
 {
-	public function middleware_geral($controller, $metodo)
+	public function liberado($controller, $metodo)
 	{	
 		$rota_requerida = _route($controller.'@'.$metodo);
-		if ($this->RotaLiberada($rota_requerida))
+		if (middleware::RotaLiberada($rota_requerida))
 		  	return true;
 		else
 		{
 			if(CheckAuth())
 			{
-				if($this->RotaProtegida($rota_requerida))
+				if(middleware::RotaProtegida($rota_requerida))
 				{
 					if(Auth('admin')=="S")
 						return true;
 					else
-						redirecionar(asset('erros/403'));
+						Route::direcionar(asset('erros/403'));
 				}
 				else
 					return true;
 			}
 			else
-				redirecionar(asset('usuarios/login'));
+				Route::direcionar(asset('usuarios/login'));
 		}
 	}
 

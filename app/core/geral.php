@@ -327,3 +327,84 @@ function format_dinheiro($moeda, $numero)
 	return "$moeda ".number_format($numero, 2, ',', '.');
 	// return $numero;
 }
+
+function POST($info=[],$redirecionar = true)
+{
+	if($redirecionar)
+	{
+		$form = "<form hidden action='{$info['URL']}' name='___FORM___' id='___FORM___' method='POST'>";
+		foreach ($info['DADOS'] as $campo => $valor):
+			$form.="<input id='{$campo}' name='{$campo}' value='$valor'>";
+		endforeach;		
+		$form.="</form>
+		<script type=\"text/javascript\"> 
+                window.onload=function()
+                {
+                    document.forms['___FORM___'].submit();
+                }
+       </script>";
+       echo $form;
+	}
+	else
+	{
+		$url= $info['URL'];
+		$request = array('http' =>
+						          array(
+						              'method'  => $info['METODO'],
+						              'header'  => 'Content-type: application/x-www-form-urlencoded',
+						              'content' => $info['DADOS'],
+						          )
+		      			);
+		$contexto  = stream_context_create($request);
+		return file_get_contents($url, false, $contexto);
+	}	
+}
+
+function SEND($method,$url,$dados = [], $redirecionar = true)
+{
+	$dados['REQUEST_METHOD']=$method;
+	if($redirecionar)
+	{
+		$form = "<form hidden action='{$url}' name='___FORM___' id='___FORM___' method='POST'>";
+		foreach ($dados as $campo => $valor):
+			$form.="<input id='{$campo}' name='{$campo}' value='$valor'>";
+		endforeach;		
+		$form.="</form>
+		<script type=\"text/javascript\"> 
+                window.onload=function()
+                {
+                    document.forms['___FORM___'].submit();
+                }
+       </script>";
+       echo $form;
+	}
+	else
+	{
+		$url= $url;
+		$request = array('http' =>
+						          array(
+						              'method'  => 'POST',
+						              'header'  => 'Content-type: application/x-www-form-urlencoded',
+						              'content' => $dados,
+						          )
+		      			);
+		$contexto  = stream_context_create($request);
+		return file_get_contents($url, false, $contexto);
+	}	
+}
+
+function SUBMITER($metodo="POST",$url,$dados=[])
+{
+	$form = "<form hidden action='{$info['URL']}' name='___FORM___' id='___FORM___' method='{$metodo}'>";
+	foreach ($dados as $campo => $valor):
+		$form.="<input id='{$campo}' name='{$campo}' value='$valor'>";
+	endforeach;		
+	$form.="</form>
+	<script type=\"text/javascript\"> 
+               window.onload=function()
+               {
+                   document.forms['___FORM___'].submit();
+               }
+      </script>";
+    echo $form;	
+}

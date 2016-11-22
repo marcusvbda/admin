@@ -1,144 +1,14 @@
-<?php $__env->startSection('titulo','Dashboard'); ?>
-
-<?php $__env->startSection('topo'); ?>
-<h1>Dashboard
-  <small>Painel de controle</small>
-</h1>
-<ol class="breadcrumb">
-  <li><i class="fa fa-dashboard"></i> Início</li>
-</ol>
-<?php $__env->stopSection(); ?>
-
-
-
-<?php $__env->startSection('conteudo'); ?>
-
-
-<div class="row" style="display: none;" id="div_importacao_dados">
-	<div class="col-md-12">
-		<div class="box">
-			<div class="box-header">
-		      	<p class="title_box">Importação de Dados</p>
-		      	<div class="box-tools pull-right">
-			    	<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button>
-			    </div>			 
-				<div class="box-tools pull-right">
-				</div>
-			</div>
-			<div class="box-body">
-			  <!-- conteudo -->
-				
-
-		           
-		           	<div class="col-md-4" id="importacao_notificacao" style="display:none;">
-						<div class="small-box bg-red">
-							<div class="inner">
-								<h3 id="importacao_qtde">0</h3>
-							        <p id="importacao_texto">Arquivo aguardando importação</p>
-							</div>
-							<a id="importacao_btn_importar" class="small-box-footer">Importar <i class="fa fa-arrow-circle-right"></i></a>
-						</div>
-					</div>
-					<div id="importacao_loading" style="display:none;">
-						<div class="col-md-4">
-							<div class="small-box">
-							    <div class="centro">
-							        <p><img src="<?php echo e(PASTA_PUBLIC); ?>/template/img/loading.gif"></p>
-							    </div>
-							    <a class="small-box-footer"> <strong style="color:black;">Importando ...  </strong></a>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-md-4" id="btn_ultima_importacao">
-						<div class="small-box bg-green">
-							<div class="inner">
-								<h3><i class="glyphicon glyphicon-thumbs-up"></i></h3>
-							    <p id="data_ultima_importacao">20/09/2016</p>
-							</div>
-							<a href="<?php echo e(asset('importacao/Importados')); ?>" class="small-box-footer"> Ver Importações Com Sucesso <i class="fa fa-arrow-circle-right"></i></a>
-						</div>
-					</div>
-
-					<div class="col-md-4" id="btn_importacao_erro" style="display:none;">
-						<div class="small-box bg-yellow">
-							<div class="inner">
-								<h3><i class="glyphicon glyphicon-thumbs-down"></i></h3>
-							    <p id="qtde_com_erro">0</p>
-							</div>
-							<a href="<?php echo e(asset('importacao/erro')); ?>" class="small-box-footer"> Ver Importações Com Erro <i class="fa fa-arrow-circle-right"></i></a>
-						</div>
-					</div>
-
-
-
-
-
-
-			</div>
-			<div class="box-footer">
-				<!-- rodapé -->
-			</div>
-		</div>
-	</div>
-	
-</div>
-
-
-<?php if(parametro('lista_de_afazeres')=="S"): ?>
-	<div class="row" style="display:none;" id="lista_de_afazeres">
-		<div class="col-md-5">
-			<div class="box">
-				<div class="box-header with-border" style="height: 31px;">
-				  <p class="title_box">Lista de Afazeres (<span id="porcentagem_afazeres">0%</span>)</p>		
-				  <div class="box-tools pull-right">
-				    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div>
-				</div>
-				<div class="box-body">
-				  <!-- conteudo -->
-						
-						<div class="progress sm">
-	                      <div class="progress-bar progress-bar-aqua" id="afazeres_porcentagem_progresso" style="width: 0%"></div>
-	                    </div>
-			           
-			            <!-- /.box-header -->
-			              <ul class="todo-list ui-sortable" id="afazeres" style="overflow: hidden;"> 
-			                
-			               
-			              </ul>
-			            <!-- /.box-body -->
-			            <div class="box-footer clearfix no-border">
-			              <button onclick="novoafazer();" type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Novo Afazer</button>
-			            </div>
-
-
-
-				</div>
-				<div class="box-footer">
-					<!-- rodapé -->
-				</div>
-			</div>
-		</div>
-
-	</div>
-<?php endif; ?>
-
-
-
-<script src="<?php echo e(PASTA_PUBLIC); ?>/template/plugins/jQuery/jquery.min.js"></script>
-<script src="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/js/custom.js"></script>
-<script type="text/javascript">
 
 
 	$( document ).ready(function()
 	{
-		admin_rede = "<?php echo e(Auth('admin_rede')); ?>";
-		admin = "<?php echo e(Auth('admin')); ?>";
+		admin_rede = "{{Auth('admin_rede')}}";
+		admin = "{{Auth('admin')}}";
 
 		if((admin_rede=="N")&&(admin=="S"))
 	    	procura_arquivos_para_importar();
 
-		lista_de_afazeres = "<?php echo e(parametro('lista_de_afazeres')); ?>";
+		lista_de_afazeres = "{{parametro('lista_de_afazeres')}}";
 	    if(lista_de_afazeres=="S")
 	    	atualizar_afazeres();
 
@@ -179,7 +49,7 @@
 
 	  	});
 	
-	  	$.getJSON("<?php echo e(asset('importacao/DadosImportacoes')); ?>", function(dados)
+	  	$.getJSON("{{asset('importacao/DadosImportacoes')}}", function(dados)
 	  	{ 
 	  		if(dados.nao_importados>0)	  		
 	  		{
@@ -235,7 +105,7 @@
 	{
 		$('#lista_de_afazeres').hide();
 		$('#afazeres').html(null);
-		$.getJSON("<?php echo e(asset('todolist/Afazeres')); ?>", function(data)
+		$.getJSON("{{asset('todolist/Afazeres')}}", function(data)
 		{
 			$.each(data.afazeres, function(data,d)
 		    { 
@@ -269,7 +139,7 @@
 		if(efetivar)
 			msg_confirm('<strong>Confirmação</strong>','Confirma afazer?',"efetivar("+id+")"); 
 		else
-			$.post("<?php echo e(asset('todolist/feito')); ?>", { id: id });
+			$.post("{{asset('todolist/feito')}}", { id: id });
 		atualizar_porcentagem();
 	}
 
@@ -282,7 +152,7 @@
 	function efetivar(id)
 	{
 		texto_descricao = $("#afazer_"+id).val();
-		$.post("<?php echo e(asset('todolist/alterar')); ?>", { id: id, descricao:texto_descricao });
+		$.post("{{asset('todolist/alterar')}}", { id: id, descricao:texto_descricao });
 		atualizar_porcentagem();
 		$('#afazer_'+id).prop('disabled','disabled');
 
@@ -290,7 +160,7 @@
 
 	function atualizar_porcentagem()
 	{
-		$.getJSON("<?php echo e(asset('todolist/Afazeres')); ?>", function(data)
+		$.getJSON("{{asset('todolist/Afazeres')}}", function(data)
 		{
 			$('#porcentagem_afazeres').html(data.porcentagem+'%');
 		    $('#afazeres_porcentagem_progresso').width(data.porcentagem+'%');
@@ -327,7 +197,7 @@
 	{
 		if(efetivar)
 		{
-			$.post("<?php echo e(asset('todolist/Novo')); ?>", { descricao: $('#afazer_0').val() });
+			$.post("{{asset('todolist/Novo')}}", { descricao: $('#afazer_0').val() });
 			atualizar_afazeres();
 		}
 		else
@@ -338,7 +208,7 @@
 	{
 		if(efetivar)
 		{
-			$.post("<?php echo e(asset('todolist/excluir')); ?>", { id: id });
+			$.post("{{asset('todolist/excluir')}}", { id: id });
 			$('#li_afazer_'+id).toggle(150);
 			atualizar_porcentagem();
 		}
@@ -346,9 +216,3 @@
 			msg_confirm('<strong>Confirmação</strong>','Deseja Excluir afazer?',"excluir_afazer("+id+",true)"); 
 
 	}
-
-
-</script>
-<?php $__env->stopSection(); ?>
-
-<?php echo $__env->make('templates.principal.principal', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

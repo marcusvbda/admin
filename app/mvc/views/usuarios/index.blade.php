@@ -66,10 +66,10 @@
                     <td class="centro">
 
                       <div class="tools">                      
-                        <a title="Visualizar / Alterar" href='{{asset("usuarios/show/$usuario->id")}}'>
+                        <a title="Visualizar / Alterar" href="{{asset('usuarios/show/').$usuario->id}}" ">
                           <i class="fa fa-edit" style="color:#3C8DBC;" ></i>
                         </a>
-                        <a title="Excluir" onclick="excluir('{{$usuario->id}}')">
+                        <a title="Excluir" onclick="excluir({{$usuario->id}})">
                           <i class="fa fa-trash-o" style="color:#DD4B39;"></i>
                         </a>  
                       </div>
@@ -92,36 +92,5 @@
     </div>
   </div>
 </div>
-
-
-<script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
-<script src="{{PASTA_PUBLIC}}/template/bootstrap/js/custom.js"></script>
-<script type="text/javascript">
-function excluir(id)
-{
-  msg_confirm('<strong>Confirmação</strong>','Deseja excluir este usuário','excluir_registro('+id+')');
-}
-
-function excluir_registro(id)
-{
-  action ="{{asset('usuarios/destroy')}}";
-  var form = $('<form action="'+action+'" method="post">' +
-                '<input type="hidden" value="'+id+'" name="id_usuario" />' +
-              '</form>');
-  $('body').append(form);
-  $(form).submit();  
-}
-
-function imprimir()
-{
-  var filtro = $('#filtro').val();
-  var action = "{{asset('usuarios/relatorio_simples')}}";
-  var form = '<form action="'+action+'" method="post">' +
-                '<input type="hidden" value="'+filtro+'" name="filtro" />' +
-              '</form>';
-  $('body').append(form);
-  $(form).submit();  
-}
-</script>
 
 @stop

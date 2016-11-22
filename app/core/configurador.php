@@ -6,6 +6,6 @@
     define("PASTA_PROJETO", "admin");
     define("PASTA_PUBLIC",     asset('public'));
     define("FAVICON", PASTA_PUBLIC.'/template/img/icone.ico');
-
+    define("LIMPAR_CACHE", false);    
     date_default_timezone_set('America/Sao_Paulo');
 

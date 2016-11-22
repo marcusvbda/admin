@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/dist/css/skins/_all-skins.min.css">
-  <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/bootstrap/css/custom.css">
+  <script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
+  <script src="{{PASTA_PUBLIC}}/assets/js/custom.js"></script>
   <link rel="stylesheet" href="{{PASTA_PUBLIC}}/template/bootstrap/css/circulos.css">
   <link rel='icon' href={{FAVICON}} type='image/gif'>
 
@@ -225,8 +226,6 @@
 
 
 <!-- jQuery 2.2.0 -->
-<script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
-
 
 <script src="{{PASTA_PUBLIC}}/template/bootstrap/js/bootstrap.min.js"></script>
 <!-- SlimScroll -->
@@ -286,7 +285,7 @@
       </div>
       <div  class="modal-footer" id="btn_msg1">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
-        <button  id="btn_confirmar_mensagem1"  type="button" onclick="excluir()" data-dismiss="modal" class="btn btn-primary">Sim</button>
+        <button  id="btn_confirmar_mensagem1"  type="button" onclick="" data-dismiss="modal" class="btn btn-primary">Sim</button>
       </div>
     </div>    
   </div>

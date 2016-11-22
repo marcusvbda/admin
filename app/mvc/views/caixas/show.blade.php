@@ -326,6 +326,7 @@
 							  <li class="active"><a data-toggle="tab" href="#cupons">Cupons</a></li>
 							  <li><a data-toggle="tab" href="#cancelamentos">Cancelamentos</a></li>
 							  <li><a data-toggle="tab" href="#manutencoes">Manutenção de Caixa</a></li>
+							  <li><a data-toggle="tab" href="#abastecimentos">Abastecimentos</a></li>
 							</ul>
 
 							<div class="tab-content">
@@ -444,6 +445,40 @@
 
 							  </div>
 
+							  <div id="abastecimentos" class="tab-pane fade">
+							    <br>			
+							  	 <table class="table table-hover" style="font-size: 14px">
+								    <thead>
+									    <tr style="background-color: #F4F4F4;border-radius: 100px;">
+									      <th>Registro</th>
+									      <th>Bomba</th>
+									      <th>Combustível</th>					      
+									      <th>Preço</th>
+									      <th>Total (Litros)</th>
+									      <th>Total (R$)</th>
+									      <th>Data</th>
+									      <th>Hora</th>
+									    </tr>
+								    </thead>
+								   <tbody>
+								   		@foreach($abastecimentos as $ab)
+								   		<tr>
+								   			<td>{{$ab->registro}}</td>
+								   			<td>{{$ab->id_bomba}}</td>
+								   			<td>{{$ab->combustivel}}</td>
+								   			<td>{{$ab->precounitario}}</td>
+								   			<td>{{$ab->totallitros}}</td>		
+								   			<td>{{format_dinheiro('R$',$ab->totaldinheiro)}}</td>				
+								   			<td>{{$ab->data_formatada}}</td>				
+								   			<td>{{$ab->horaabastecimento}}</td>				
+								   		</tr>
+								   		@endforeach
+								   </tbody>
+								 </table>
+								<hr> 
+
+							  </div>
+
 							</div>
 
 					</div>
@@ -521,7 +556,7 @@ function verDocumento(documento)
 									    			"<td>"+r.id_bomba+"</td>"+
 									    			"<td>R$ "+r.precounitario+"</td>"+
 									    			"<td>"+r.totallitros+"</td>"+
-									    			"<td>R$ "+r.totaldinheiro+"</td>"+
+									    			"<td>R$ "+r.totaldinheiro.toFixed(2)+"</td>"+
 									    		"</tr>");
 
 	      });

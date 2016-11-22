@@ -57,8 +57,9 @@ class caixasController extends controller
 		return $ultimo_caixa=$ultimo_caixa[0];
 	}
 
-	public function getShow($numero)
+	public function postShow()
 	{				
+		$numero = $_POST['caixa'];
 		$caixa = query("select *,
 		  DATE_FORMAT(dataabertura, '%d/%m/%Y') as dataabertura_formatada,
 		  DATE_FORMAT(datafechamento, '%d/%m/%Y') as datafechamento_formatada
@@ -259,8 +260,20 @@ class caixasController extends controller
 					      ");
 			endif;
 
+		$abastecimentos    = query("select 
+										a.*,
+										DATE_FORMAT(a.dataabastecimento, '%d/%m/%Y') as data_formatada,
+										p.descricao as combustivel
+									from 
+										abastecimentos a
+										join bomba b on b.id = a.id_bomba
+										join tanque t on t.id=b.id_tanque
+										join produtos p on t.numero_produto=p.codigo
+									where 
+									a.id_caixa={$caixa->id}
+									order by a.registro desc");
 
-		$dias_permanencia = dif_datas($caixa->dataabertura,$caixa->datafechamento);
+		$dias_permanencia  = dif_datas($caixa->dataabertura,$caixa->datafechamento);
 		$horas_permanencia = dif_horas($caixa->horafechamento,$caixa->horaabertura);
 
 

@@ -7,12 +7,13 @@ class usuariosController extends controller
 {
 	
 	public function __construct()
-	{
-		$this->model = $this->model('usuario');
+	{	
+		$this->model = Controller::model('usuario');
 	}
 
 	public function getIndex()
 	{
+		$_GET = Request::get('GET');
 		if(isset($_GET['filtro']))
 			$filtro = strtoupper($_GET['filtro']);
 		else
@@ -32,18 +33,19 @@ class usuariosController extends controller
       	$tempo_consulta = microtime(true) - $tempo_inicio;
       	$qtde_registros = $usuarios->total();  
       	$usuarios->appends(['filtro'=>$filtro])->render();
-		echo $this->view('usuarios.index',compact('usuarios','filtro','tempo_consulta','qtde_registros'));
+		Controller::view('usuarios.index',compact('usuarios','filtro','tempo_consulta','qtde_registros'));
 	}
 
-	public function postDestroy()
+	public function deleteExcluir()
 	{
-		if($this->valida_exclusao($_POST['id_usuario']))
+		$USUARIO = Request::get('DELETE');
+		if($this->valida_exclusao($USUARIO['id']))
 		{
-			$usuario = $this->model->find($_POST['id_usuario']);
+			$usuario = $this->model->find($USUARIO['id']);
 			$usuario->excluido="S";
 			$usuario->save();
 		}
-		redirecionar(asset('usuarios'));
+		Route::direcionar(asset('usuarios'));
 	}
 
 	private function valida_exclusao($id)
@@ -55,24 +57,24 @@ class usuariosController extends controller
 	public function getShow($id)
 	{
 		if($id=="")
-			redirecionar(asset('erros/404'));
+			Route::direcionar(asset('erros/404'));
 	
 		$usuario = DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
 				->where('usuarios.id','=',$id)
 					->get();
-		// $usuario = DB::table('usuarios')->find($usuario[0]->id);
 		if(count($usuario)==0)
-			redirecionar(asset('erros/404'));
+			Route::direcionar(asset('erros/404'));
 		$usuario=$usuario[0];
-		echo $this->view('usuarios.show',compact('usuario'));
+		Controller::view('usuarios.show',compact('usuario'));
 	}
 
-	public function postEditar()
+	public function updateEditar()
 	{		
+		$request = Request::get('UPDATE');
 		$usuario = DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
-			->where('id', $_POST['id'])
-            	->update($_POST);
-		redirecionar(asset("usuarios/show/{$_POST['id']}"));
+			->where('id', $request['id'])
+            	->update($request);
+		Route::direcionar(asset("usuarios/show/{$request['id']}"));
 	}
 
 
@@ -106,12 +108,13 @@ class usuariosController extends controller
 
 	public function getNovo()
 	{
-		echo $this->view('usuarios.novo');		
+		Controller::view('usuarios.novo');		
 	}
 
 
-	public function postStore()
+	public function putNovo()
 	{
+		$_POST = Request::get('PUT');
 		$empresas_selecionadas = '';
 		$empresa = Auth('serie_empresa');
 
@@ -126,7 +129,7 @@ class usuariosController extends controller
 		$usuario['empresa'] = $empresa;
 		$usuario['empresa_selecionada'] = $empresas_selecionadas;
 		$this->model->create($usuario);
-		redirecionar(asset('usuarios'));
+		Route::direcionar(asset('usuarios'));
 	}
 
 
@@ -145,17 +148,18 @@ class usuariosController extends controller
 	public function getLogin()
 	{
 		LimpaUsuario();
-		echo $this->view('usuarios.login',[]);
+		Controller::view('usuarios.login',[]);
 	}
 
 	public function getSair()
 	{
 		LimpaUsuario();
-		redirecionar(asset('usuarios/login'));
+		Route::direcionar(asset('usuarios/login'));
 	}
 
 	public function postLogar()
 	{
+		$_POST = Request::get('POST');
 		$usuarios = query(
 			"select 
 				u.id as id_usuario,
@@ -190,7 +194,6 @@ class usuariosController extends controller
 					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID,'serie_empresa'=>$usuarios[0]->serie_empresa_usuario,'empresa'=>$usuarios[0]->empresa,'razao_empresa'=>$usuarios[0]->razao_empresa,'nome_empresa'=>$usuarios[0]->nome_empresa,'im_empresa'=>$usuarios[0]->im_empresa,'ie_empresa'=>$usuarios[0]->ie_empresa,'cnpj_empresa'=>$usuarios[0]->cnpj_empresa,'nome_rede'=>$usuarios[0]->nome_rede];
 	
 			$array['empresa_selecionada'] = remove_repeticao_array(limpa_vazios_array(string_virgulas_array($usuarios[0]->empresa_selecionada)));
-	
 			SalvaUsuario($array);
 			SetLogado('S');
 			$parametros = query("select * From ".PREFIXO_BANCO.Auth('serie_empresa').".parametros");
@@ -200,10 +203,10 @@ class usuariosController extends controller
 			endfor;
 			SalvaParametros($array);	
 			SetLogado('S');
-			redirecionar(asset('inicio'));
+			Route::direcionar(asset('inicio'));
 		}
 		else
-			voltar();		
+			Route::voltar();		
 	}
 
 	public function getUsuarioexiste($email)
@@ -242,6 +245,7 @@ class usuariosController extends controller
 
 	public function postDefinirsenha()
 	{	
+		$_POST = Request::get('POST');
 		if($_POST['defseguranca']=='S')
 		{
 	   		$usuario = $this->model->where('email','=',$_POST['defemail'])->get();	   		 
@@ -249,11 +253,12 @@ class usuariosController extends controller
 	   		$usuario->senha=md5($_POST['defsenha']);
 	   		$usuario->save();
 		}	
-		redirecionar(asset(''));
+		Route::direcionar(asset(''));
 	}
 
 	public function postRenovarSenha()
 	{
+		$_POST = Request::get('POST');
 		$usuario = $this->model->where('email','=',$_POST['renov_email'])->get();	   		 
 	   	$usuario = $this->model->findOrFail($usuario[0]->id);
 	   	$usuario->senha=md5('0123456789');
@@ -265,11 +270,12 @@ class usuariosController extends controller
 			enviarEmail($_POST['renov_email'],'Renovação de senha '.APP_NOME,$email);	
 
 		}
-		redirecionar(asset(''));
+		Route::direcionar(asset(''));
 	}
 
 	public function postRelatorio_simples()
 	{
+		$_POST = Request::get('POST');
 		if(isset($_POST['filtro']))
 			$filtro = strtoupper($_POST['filtro']);
 		else

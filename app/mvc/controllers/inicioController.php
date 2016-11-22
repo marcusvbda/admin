@@ -9,13 +9,10 @@ class inicioController extends controller
 
 	public function getIndex()
 	{
-		echo $this->view('index');
+		echo $this->view('inicio.index');
 	}
 
-	public function getExemplo()
-	{
-		echo $this->view('exemplo');		
-	}
+
 	
 }
 

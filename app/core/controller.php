@@ -1,21 +1,21 @@
 <?php
 use Jenssegers\Blade\Blade;
-class controller
+class Controller
 {
     private $blade;
     
-	public function model($model)
+    public function model($model)
     {
-    	$model.='Model';
+        $model.='Model';
         require_once  __DIR__.'/../mvc/models/' . $model . '.php';
         return new $model();
     }
 
     public function view($view,array $dados = [])
     {
-        // $this->limpaCacheBlade();
+        Controller::limpar_cache();
         $this->blade = new Blade( __DIR__.'/../mvc/views/', __DIR__.'/../../public/cache');
-        return $output = $this->blade->make($view,$dados)->render();        
+        echo $view = $this->blade->make($view,$dados)->render();
     }
 
     public function getModel()
@@ -23,17 +23,18 @@ class controller
         return $this->model;
     }
 
-    private function limpaCacheBlade()
+    public function limpar_cache()
     {
-        if(is_dir(PASTA_PUBLIC.'/cache')):
-            $diretorio = opendir( PASTA_PUBLIC.'/cache');
-            while ($arq = readdir($diretorio)) :
-                if(($arq != '.') && ($arq != '..'))
-                   unlink(PASTA_PUBLIC.'/cache/'.$arq); 
-            endwhile;
-        endif;
+        if(LIMPAR_CACHE)
+        {   
+            $diretorio = scandir(__DIR__.'/../../public/cache');
+            foreach ($diretorio as $arquivo) 
+            {
+                if(($arquivo!='..')&&($arquivo!='.'))
+                    unlink(__DIR__.'/../../public/cache/'.$arquivo);
+            }
+        }
     }
-
   
 
 
