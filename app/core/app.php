@@ -4,27 +4,45 @@ class app
 	protected $request = null;
 	public function __construct()
 	{
+		App::PrepareRest();
+		$this->request = Route::getParametros(App::getUrl(),$_SERVER['REQUEST_METHOD']);
+
+		if($this->request==404)
+			Route::direcionar(asset('erros/NAO_EXISTE'));
+		if($this->request==303)
+			Route::direcionar(asset('erros/SEM_PERMISSAO'));
+		unset($_POST,$_GET);		
+	}
+
+	public function PrepareRest()
+	{
 		if(isset($_POST['REQUEST_METHOD']))
 			$_SERVER['REQUEST_METHOD']=$_POST['REQUEST_METHOD'];
 
-
-		$this->request = Route::getParametros(App::getUrl(),$_SERVER['REQUEST_METHOD']);
-		if($this->request==404)
-			Route::direcionar(asset('erros/NAO_EXISTE'));
-
 		switch ($metodo = $_SERVER['REQUEST_METHOD'])
 		{
+			case 'GET':
+				Request::set('GET',$_GET);
+				break;
 			case 'POST':
 				Request::set('POST',$_POST);
-				break;
-			case 'GET':
-				Request::set('GET',$_GET);			
+				break;		
+			case 'DELETE':
+				Request::set('DELETE',$_POST);	
+				break;		
+			case 'PUT':
+				Request::set('PUT',$_POST);		
+				break;	
+			case 'HEAD':
+				Request::set('HEAD',$_POST);				
+				break;			
+			case 'OPTION':
+				Request::set('OPTION',$_POST);				
 				break;			
 			default:
-				Request::set($metodo,$_POST);
+				return false;
 				break;
 		}
-		unset($_POST,$_GET);
 	}
 
 	public function run()

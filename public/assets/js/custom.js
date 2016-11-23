@@ -76,14 +76,18 @@ function FORMATA_MOEDA(moeda,valor,cifrao=false)
 	return moeda+valor.toFixed(2).replace(".", ",");
 }
 
-function SEND(method,url,JSON = {})
+function SEND(method,url,JSON = {},token=null)
 {
-	var form = "<form hidden  action='"+url+"' name='___FORM___POST' id='___FORM___POST' method='POST'>";
+	var form = "<form hidden action='"+url+"' name='___FORM___POST' id='___FORM___POST' method='POST'>";
 	for (var campo in JSON) 
 	{
 	   form+="<input id='"+campo+"' name='"+campo+"'  value='"+JSON[campo]+"'>";
 	}
 	form+="<input id='REQUEST_METHOD' name='REQUEST_METHOD'  value='"+method+"'>";
+	if(token!=null)
+	{
+		form+="<input id='__TOKEN' name='__TOKEN'  value='"+token+"'>";
+	}
 	form+="</form>";
 	var form_ =  document.createElement("h1")
 	form_.innerHTML = form;

@@ -65,7 +65,7 @@ function alterar()
   var email = $("#email").val();
   var sexo = $("#sexo").val();
   var admin = $("#admin").val();
-  SEND('UPDATE',"{{asset('usuarios/editar')}}",{usuario:usuario,id:id,email:email,sexo:sexo,admin:admin});
+  SEND('PUT',"{{asset('usuarios/editar')}}",{usuario:usuario,id:id,email:email,sexo:sexo,admin:admin});
 }
 
 

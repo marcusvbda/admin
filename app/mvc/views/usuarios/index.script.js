@@ -4,7 +4,7 @@ function excluir(id,perguntar=true)
     msg_confirm('<strong>Confirmação</strong>','Deseja excluir este usuário','excluir('+id+',false)');
   else
   {
-    SEND("DELETE","{{asset('usuarios/excluir')}}",{id:id} );
+    SEND("DELETE","{{asset('usuarios/excluir')}}",{id:id},"{{Request::getToken()}}");
   }
 }
 

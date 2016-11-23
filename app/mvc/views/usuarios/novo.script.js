@@ -42,13 +42,13 @@ function cadastrar()
   var sexo = $('#sexo').val();
   var senha = $('#senha').val();
   var admin = $('#admin').val();
-  SEND('PUT',"{{asset('usuarios/novo')}}",{ 
+  SEND('POST',"{{asset('usuarios/novo')}}",{ 
                                             usuario:usuario,
                                             email:email,
                                             sexo:sexo,
                                             senha:senha,
                                             admin:admin,
-                                          });
+                                          },"{{Request::getToken()}}");
 }
 
 $('#admin_checkbox').on('change', function() 

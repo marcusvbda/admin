@@ -13,7 +13,7 @@ class usuariosController extends controller
 
 	public function getIndex()
 	{
-		$_GET = Request::get('GET');
+		$_GET = Request::get('GET',false);
 		if(isset($_GET['filtro']))
 			$filtro = strtoupper($_GET['filtro']);
 		else
@@ -68,9 +68,9 @@ class usuariosController extends controller
 		Controller::view('usuarios.show',compact('usuario'));
 	}
 
-	public function updateEditar()
+	public function putEditar()
 	{		
-		$request = Request::get('UPDATE');
+		$request = Request::get('PUT');
 		$usuario = DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
 			->where('id', $request['id'])
             	->update($request);
@@ -112,9 +112,9 @@ class usuariosController extends controller
 	}
 
 
-	public function putNovo()
+	public function postNovo()
 	{
-		$_POST = Request::get('PUT');
+		$_POST = Request::get('POST');
 		$empresas_selecionadas = '';
 		$empresa = Auth('serie_empresa');
 

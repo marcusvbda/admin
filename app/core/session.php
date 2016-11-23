@@ -26,11 +26,33 @@
 			$_REQUEST['REQUEST']=[$metodo=>$valor];
 		}
 
-		public function get($metodo)
+		public function get($metodo,$valida_token = true)
 		{
 			if(isset($_REQUEST['REQUEST'][$metodo]))
+			{
+				if($tem_token)
+				{
+					if (Request::validaToken($_REQUEST['REQUEST'][$metodo]['__TOKEN']))
+						unset($_REQUEST['REQUEST'][$metodo]['__TOKEN']);
+					else
+					{
+						echo json_encode("Request indevido:erro 303, Acesso negado!!");
+						exit();
+					}
+				}
 				return $_REQUEST['REQUEST'][$metodo];
+			}
 			else
 				return null;
+		}
+
+		public function getToken()
+		{
+			return md5(date("dmyH"));
+		}
+
+		public function validaToken($token)
+		{
+			return ($token==Request::getToken());
 		}
 	}

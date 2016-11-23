@@ -24,6 +24,7 @@ class todolistController extends controller
 
 	public function postFeito()
 	{
+		$_POST = Request::get('POST',false);
 		$id = $_POST['id'];
 		$afazer = DB::table('TodoList')->find($id);
 		$feito = "S";
@@ -34,6 +35,7 @@ class todolistController extends controller
 
 	public function postAlterar()
 	{
+		$_POST = Request::get('POST',false);
 		$id = $_POST['id'];
 		$descricao = $_POST['descricao'];
 		query("update TodoList set descricao='{$descricao}' where id=".$id);
@@ -41,6 +43,7 @@ class todolistController extends controller
 
 	public function postExcluir()
 	{
+		$_POST = Request::get('POST',false);
 		$id = $_POST['id'];		
 		$afazer = DB::table('TodoList')->find($id);		
 		query("update TodoList set excluido='S' where id=".$id);
@@ -48,6 +51,7 @@ class todolistController extends controller
 
 	public function postNovo()
 	{
+		$_POST = Request::get('POST',false);
 		$descricao = $_POST['descricao'];
 		$usuario = Auth('id');
 		query("insert into TodoList(descricao,usuario) values('{$descricao}','$usuario')");

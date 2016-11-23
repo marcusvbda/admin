@@ -16,7 +16,7 @@ class caixasController extends controller
 		  DATE_FORMAT(datafechamento, '%d/%m/%Y') as datafechamento_formatada
 		   FROM caixa WHERE dataabertura >= date('".$data_inicio."') and
 		dataabertura <= date('".$data_fim."') order by numero desc");
-		echo $this->view('caixas.index',compact('caixas','data_inicio','data_fim'));	
+		Controller::view('caixas.index',compact('caixas','data_inicio','data_fim'));	
 	}
 
 	public function postIndex()
@@ -37,7 +37,7 @@ class caixasController extends controller
 		  DATE_FORMAT(datafechamento, '%d/%m/%Y') as datafechamento_formatada
 		   FROM caixa WHERE dataabertura >= date('".$data_inicio."') and
 		dataabertura <= date('".$data_fim."') order by numero desc");
-		 echo $this->view('caixas.index',compact('caixas','data_inicio','data_fim'));	
+		 Controller::view('caixas.index',compact('caixas','data_inicio','data_fim'));	
 	}
 
 
@@ -57,9 +57,9 @@ class caixasController extends controller
 		return $ultimo_caixa=$ultimo_caixa[0];
 	}
 
-	public function postShow()
+	public function getShow($caixa)
 	{				
-		$numero = $_POST['caixa'];
+		$numero = $caixa;
 		$caixa = query("select *,
 		  DATE_FORMAT(dataabertura, '%d/%m/%Y') as dataabertura_formatada,
 		  DATE_FORMAT(datafechamento, '%d/%m/%Y') as datafechamento_formatada
@@ -277,7 +277,7 @@ class caixasController extends controller
 		$horas_permanencia = dif_horas($caixa->horafechamento,$caixa->horaabertura);
 
 
-		echo $this->view('caixas.show',compact('caixa','dias_permanencia','horas_permanencia','porcentagem_grupo','agrupado','vlr_total','combustiveis','tem_combustiveis','ag_combustiveis','vlr_manutencoes','manutencoes_agrupadas','manutencoes','cancelamentos','total_prazo','cupons','abastecimentos'));		
+		Controller::view('caixas.show',compact('caixa','dias_permanencia','horas_permanencia','porcentagem_grupo','agrupado','vlr_total','combustiveis','tem_combustiveis','ag_combustiveis','vlr_manutencoes','manutencoes_agrupadas','manutencoes','cancelamentos','total_prazo','cupons','abastecimentos'));		
 	}
 
 	public function postDocumento()

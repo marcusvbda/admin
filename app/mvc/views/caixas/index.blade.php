@@ -1,5 +1,4 @@
 @extends('templates.principal.principal')
-@include('javascript.caixas.index')
 @section('titulo','Caixas')
 
 @section('topo')
@@ -102,91 +101,6 @@
 	</div>
 </div>
 
-<script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
-<script src="{{PASTA_PUBLIC}}/template/bootstrap/js/custom.js"></script>
-<script type="text/javascript">	
-$("#data_inicio").keyup(function(event)
-{
-  	if(event.keyCode == 13)
-	    $('#data_fim').focus();
-});
-$("#data_fim").keyup(function(event)
-{
-  	if(event.keyCode == 13)
-	    consultar();
-});
-function click_caixa(sequencia)
-{
-	$('#div_selec_caixa').removeClass("col-md-12");
-	$('#div_selec_caixa').addClass("col-md-8"); 	
-	$('#div_visualizacao_caixa').hide();
-	visualizar_caixa(sequencia);
-}
-
-function voltar_selecao()
-{
-	$('#div_selec_caixa').removeClass("col-md-8");
-	$('#div_selec_caixa').addClass("col-md-12"); 
-	$('#div_visualizacao_caixa').hide();	
-	div_periodo('AUMENTAR');
-}
-
-function visualizar_caixa(sequencia)
-{
-	$.getJSON("{{asset('caixas/caixa_especifico')}}"+"/"+sequencia, function(caixa)
-	{ 
-		$('#numero_caixa_titulo').html(caixa.numero);
-		$('#id_caixa').html(caixa.numero);
-		$('#dt_abertura').html(caixa.dataabertura_formatada+" - "+caixa.horaabertura);
-		$('#dt_fechamento').html(caixa.datafechamento_formatada+" - "+caixa.horafechamento);
-		$('#ilha').html(caixa.numero_ilha);
-		$('#responsavel').html(caixa.numero_funcionario+" - "+caixa.nome_funcionario);
-		$('#vlr_inicial').html("R$ "+caixa.valorinicial.toFixed(2));
-		$('#situacao').html(caixa.situacao);
-		$('#btn_visualizar').attr("onclick","entrar_caixa("+caixa.numero+")");	
-	});
-	div_periodo('DIMINUIR');
-	$('#div_visualizacao_caixa').toggle(150);	
-}
-
-function entrar_caixa(numero)
-{
-	POST("{{asset('caixas/show')}}",{caixa:numero});
-}
-
-function div_periodo(operacao)
-{
-	if(operacao=="AUMENTAR")
-	{
-		$('#div_periodo_inicio').removeClass("col-md-5");		
-		$('#div_periodo_fim').removeClass("col-md-5");
-
-		$('#div_periodo_inicio').addClass("col-md-2");
-		$('#div_periodo_fim').addClass("col-md-2"); 
-	}
-	else
-	{
-		$('#div_periodo_inicio').removeClass("col-md-2");		
-		$('#div_periodo_fim').removeClass("col-md-2");
-
-		$('#div_periodo_inicio').addClass("col-md-5");
-		$('#div_periodo_fim').addClass("col-md-5");
-	}
-}
-
-function consultar()
-{
-	var data_inicio = $('#data_inicio').val();
-	var data_fim = $('#data_fim').val();
-	var action ="{{asset('caixas/index')}}";
-	var form = $('<form action="'+action+'" method="post">' +
-                '<input type="hidden" value="'+data_fim+'" name="data_fim" />' +
-                '<input type="hidden" value="'+data_inicio+'" name="data_inicio" />' +
-              '</form>');
-              $('body').append(form);
-              $(form).submit();  
-}
-</script>
 @stop
 
 
