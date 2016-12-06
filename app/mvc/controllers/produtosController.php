@@ -12,27 +12,11 @@ class produtosController extends controller
 	}
 
 	public function getIndex()
-	{
-		if(isset($_GET['filtro']))
-			$filtro = strtoupper($_GET['filtro']);
-		else
-			$filtro = "";
-		if(isset($_GET['pagina']))
-			$pagina = $_GET['pagina'];
-		else
-			$pagina = "1";
-
-      	$tempo_inicio = microtime(true);		
+	{	
 		$produtos = DB::table('produtos')
-						->whereRaw("excluido='N' and 
-							(descricao like '%$filtro%' or 
-							nomefantasia like '%$filtro%' or
-							codigo like '%$filtro%')")
-									->paginate(10, ['*'], "pagina", $pagina);
-      	$tempo_consulta = microtime(true) - $tempo_inicio;
-      	$qtde_registros = $produtos->total();      	
-		$produtos->appends(['filtro'=>$filtro])->render();
-		echo $this->view('produtos.index',compact('produtos','filtro','tempo_consulta','qtde_registros'));
+						->where("excluido",'=', 'N')
+							->get();
+		echo $this->view('produtos.index',compact('produtos'));
 	}
 
 	public function postRelatorio_simples()
@@ -120,50 +104,21 @@ class produtosController extends controller
 
 	public function getTipos()
 	{
-		if(isset($_GET['filtro']))
-			$filtro = strtoupper($_GET['filtro']);
-		else
-			$filtro = "";
-		if(isset($_GET['pagina']))
-			$pagina = $_GET['pagina'];
-		else
-			$pagina = "1";
-
-      	$tempo_inicio = microtime(true);	
-
 		$tipos = 
 		DB::table('tiposprodutos')
 				->where('excluido','=','N')
-					->whereRaw("descricao like '%$filtro%'")
-						->paginate(10, ['*'], "pagina", $pagina);
-      	$tempo_consulta = microtime(true) - $tempo_inicio;
-      	$qtde_registros = $tipos->total();      	
-		$tipos->appends(['filtro'=>$filtro])->render();
-		echo $this->view('produtos.tipos',compact('tipos','filtro','tempo_consulta','qtde_registros'));
+					->get();
+		echo $this->view('produtos.tipos',compact('tipos'));
 	}
 
 	public function getGrupos()
 	{
-		if(isset($_GET['filtro']))
-			$filtro = strtoupper($_GET['filtro']);
-		else
-			$filtro = "";
-		if(isset($_GET['pagina']))
-			$pagina = $_GET['pagina'];
-		else
-			$pagina = "1";
 
-      	$tempo_inicio = microtime(true);	
-
-		$grupos = 
-		DB::table('gruposprodutos')
+		$grupos = DB::table('gruposprodutos')
 				->where('excluido','=','N')
-					->whereRaw("descricao like '%$filtro%'")
-						->paginate(10, ['*'], "pagina", $pagina);
-      	$tempo_consulta = microtime(true) - $tempo_inicio;
-      	$qtde_registros = $grupos->total();      	
-		$grupos->appends(['filtro'=>$filtro])->render();
-		echo $this->view('produtos.grupos',compact('grupos','filtro','tempo_consulta','qtde_registros'));
+					->get();
+    
+		echo $this->view('produtos.grupos',compact('grupos'));
 
 	}
 }

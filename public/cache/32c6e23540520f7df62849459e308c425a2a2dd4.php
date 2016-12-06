@@ -14,6 +14,23 @@
   <link rel="stylesheet" href="<?php echo e(PASTA_PUBLIC); ?>/template/bootstrap/css/circulos.css">
   <link rel='icon' href=<?php echo e(FAVICON); ?> type='image/gif'>
 
+
+<!-- DATATABLES -->
+<script src="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/custom.datatables.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/dataTables.bootstrap.min.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/dataTables.buttons.min.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/buttons.bootstrap.min.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/jszip.min.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/pdfmake.min.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/vfs_fonts.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/buttons.html5.min.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/buttons.print.min.js"></script>
+<script src="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/buttons.colVis.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/dataTables.bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo e(PASTA_PUBLIC); ?>/assets/datatables/buttons.bootstrap.min.css">
+<!-- DATATABLES -->
+
 <style type="text/css"></style></head>
 <body class="sidebar-mini skin-blue sidebar-collapse fixed" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
 <!-- Site wrapper -->
@@ -313,6 +330,5 @@
     </div>    
   </div>
 </div>
-
 
 <!--  -->

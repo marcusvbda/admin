@@ -1,3 +1,6 @@
+dataTable('#tabela');
+
+
 function excluir(id,perguntar=true)
 {
   if(perguntar)

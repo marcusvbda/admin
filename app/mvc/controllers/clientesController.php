@@ -7,29 +7,11 @@ class clientesController extends controller
 {
 
 	public function getIndex()
-	{
-		if(isset($_GET['filtro']))
-			$filtro = strtoupper($_GET['filtro']);
-		else
-			$filtro = "";
-		if(isset($_GET['pagina']))
-			$pagina = $_GET['pagina'];
-		else
-			$pagina = "1";
-
-		$filtro = strtoupper($filtro);
-      	$tempo_inicio = microtime(true);		
+	{	
 		$clientes = DB::table('clientes')
 						->where('excluido','=','N')
-						->whereRaw("(numero like '%$filtro%' or 
-							nome like '%$filtro%' or
-							cnpj like '%$filtro%' or 
-							razaosocial like '%$filtro%')")
-									->paginate(10, ['*'], "pagina", $pagina);
-      	$tempo_consulta = microtime(true) - $tempo_inicio;
-      	$qtde_registros = $clientes->total();      	
-		$clientes->appends(['filtro'=>$filtro])->render();
-		echo $this->view('clientes.index',compact('clientes','filtro','tempo_consulta','qtde_registros'));
+							->get();
+		echo $this->view('clientes.index',compact('clientes'));
 	}
 
 

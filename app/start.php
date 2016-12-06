@@ -2,6 +2,7 @@
 
 require_once __DIR__."/core/session.php";
 require_once __DIR__."/core/scripts.php";
+require_once __DIR__."/core/ArrayUtils.php";
 require_once __DIR__."/core/roteador.php";
 require_once __DIR__."/core/geral.php";
 require_once __DIR__."/core/configurador.php";

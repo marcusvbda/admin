@@ -13,27 +13,11 @@ class usuariosController extends controller
 
 	public function getIndex()
 	{
-		$_GET = Request::get('GET',false);
-		if(isset($_GET['filtro']))
-			$filtro = strtoupper($_GET['filtro']);
-		else
-			$filtro = "";
-		if(isset($_GET['pagina']))
-			$pagina = $_GET['pagina'];
-		else
-			$pagina = "1";
-      	$tempo_inicio = microtime(true);
 		$usuarios =  DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
 						->where('empresa','=',Auth('serie_empresa'))
 							->where('excluido','=',"N")
-								->whereRaw("(email like '%$filtro%' or
-										 usuario like '%$filtro%')")
-									->wherein('empresa',Auth('empresa_selecionada'))
-										->paginate(10, ['*'], "pagina", $pagina);
-      	$tempo_consulta = microtime(true) - $tempo_inicio;
-      	$qtde_registros = $usuarios->total();  
-      	$usuarios->appends(['filtro'=>$filtro])->render();
-		Controller::view('usuarios.index',compact('usuarios','filtro','tempo_consulta','qtde_registros'));
+								->get();
+		Controller::view('usuarios.index',compact('usuarios'));
 	}
 
 	public function deleteExcluir()
