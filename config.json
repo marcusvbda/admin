@@ -1,0 +1,16 @@
+{
+  "diretorios": 
+  {
+     "__DIR_TEMPLATE__":"public/template/"
+  },
+
+  "parametros":
+  {
+    "__MODO_DESENVOLVEDOR__" : true,
+  	"__APP_NOME__"           : "ADMIN",
+    "__URL_BASE__"           : "http://localhost/admin/",
+    "__URL_ERRO_404__"       : "erros/NAO_EXISTE",
+    "__URL_ERRO_303__"       : "erros/SEM_PERMISSAO"
+  }
+}
+
