@@ -12,6 +12,17 @@ class empresaController extends controller
 		$this->usuario = $this->model('usuario');
 	}
 	
+	public function getRede()
+	{
+		$rede = DB::table(BANCO_DE_DADOS_USUARIOS.'.redes')->where('id','=',Auth('rede'))->get();
+		return $rede = $rede[0]->nome;
+	}
+
+	public function qtde_empresas_selecionadas()
+	{
+		return count(Auth('empresa_selecionada'));
+	}
+
 	public function getIndex()
 	{
 		echo $this->view('empresa.index');

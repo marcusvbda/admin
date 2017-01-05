@@ -35,6 +35,20 @@ class Controller
             }
         }
     }
+
+    public function exec($controller,$metodo,$parametros = [])
+    {
+        if(file_exists(__CODE__.'controllers/'.$controller.'.php'))
+        {
+            require_once __CODE__.'controllers/'.$controller.'.php';
+            if(method_exists($controller, $metodo))
+                return call_user_func_array(array($controller,$metodo),$parametros);
+            else
+                return 'METODO NÃO EXISTE';
+        }
+        else
+            return 'CONTROLLER NÃO EXISTE';
+    }
   
 
 

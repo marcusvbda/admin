@@ -11,6 +11,14 @@ class usuariosController extends controller
 		$this->model = Controller::model('usuario');
 	}
 
+	public function qtde()
+	{
+		return  count($usuarios =  DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
+						->where('empresa','=',Auth('serie_empresa'))
+							->where('excluido','=',"N")
+								->get());
+	}
+
 	public function getIndex()
 	{
 		$usuarios =  DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')

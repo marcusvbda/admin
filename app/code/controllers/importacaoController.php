@@ -55,10 +55,27 @@ class importacaoController extends controller
 	   	echo json_encode($this->Qtde_arquivos($pasta));
 	}
 
-	public function Qtde_arquivos($pasta)
+	public function qtde_arq($pasta)
+	{		
+		$cnpj_empresa = auth('cnpj_empresa');
+	   	$arq_importar = scandir( __PUBLIC__."uploads/importacao/{$pasta}/{$cnpj_empresa}/");
+	   	return (count($arq_importar)-2);
+	}
+
+	public function Dt_ultima_imp()
 	{
-		
-	   	$this->arq_importar = scandir( __DIR__."/../../../public/uploads/importacao/{$pasta}/{$this->cnpj_empresa}/");
+    	$query = query("select * from importacoes where id = (select max(id) as id from importacoes)");	
+	    if(count($query)>0)
+	    	return data_formatada($query[0]->created_at);
+	    else
+	    	return null;
+	}
+
+
+
+	public function Qtde_arquivos($pasta)
+	{		
+	   	$this->arq_importar = scandir( __PUBLIC__."uploads/importacao/{$pasta}/{$this->cnpj_empresa}/");
 	   	return (count($this->arq_importar)-2);
 	}
 

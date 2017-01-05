@@ -6,11 +6,10 @@ use Jenssegers\Blade\Blade;
 class relatoriosController extends controller
 {
 
-	protected $conteudo;
 
 	public function __construct()
 	{
-		$this->conteudo = "";
+		// 
 	}
 
 	public function getIndex()
@@ -23,129 +22,56 @@ class relatoriosController extends controller
 		echo $this->view('relatorios.tributacoes_codigos');
 	}
 
-	public function postImprimir_tributacoes_codigos()
+	public function postTributacoes_codigos()
 	{
+		$_POST = Request::get('POST');
 		$sql = "select p.*,pe.*, gp.descricao as grupo_produto from produtos p 
 		join produto_empresa pe on pe.codigo_produto=p.codigo 
 		join gruposprodutos gp on p.codigo_grupoproduto=gp.codigo 
-		where p.empresa in(".separa_array_virgulas(Auth('empresa_selecionada')).")";
+		where 1=1 ";
+		$ncm = null;
+		$anp = null;
+		$cest = null;
+		$cst_ent = null;
+		$cst_saida = null;
 
-		if (!vazio($_POST['NCM'])):
-			$ncm = $_POST['NCM'];
-			$sql .= " and p.codigo_nbmsh like '%$ncm%' ";
+
+		if (isset($_POST['ncm'])):
+			$ncm = $_POST['ncm'];
+			if(uppertrim($ncm)!="")
+				$sql .= " and p.codigo_nbmsh = '{$ncm}'";
 		endif;
 
-		if (!vazio($_POST['ANP'])):
-			$anp = $_POST['ANP'];
-			$sql .= " and p.codigoanp like '%$anp%' ";
+		if (isset($_POST['anp'])):
+			$anp = $_POST['anp'];
+			if(uppertrim($anp)!="")			
+				$sql .= " and p.codigoanp = '{$anp}' ";
 		endif;
 
-		if (!vazio($_POST['CEST'])):
-			$cest = $_POST['CEST'];
-			$sql .= " and p.codigo_cest like '%$cest%' ";
+		if (isset($_POST['cest'])):
+			$cest = $_POST['cest'];
+			if(uppertrim($cest)!="")		
+				$sql .= " and p.codigo_cest = '{$cest}'";
 		endif;
 
-		if (!vazio($_POST['calcula_pis']))
-			$sql .= " and p.calculapis='S' ";
-		if (!vazio($_POST['calcula_cofins']))
-			$sql .= " and p.calculacofins='S' ";
+		if (isset($_POST['CST_entrada'])):
+			$cst_ent = $_POST['CST_entrada'];
+			if(uppertrim($cst_ent)!="")	
+				$sql .= " and p.codigo_stentrada = '{$cst_ent}'";
+		endif;
+
+		if (isset($_POST['CST_saida'])):
+			$cst_saida = $_POST['CST_saida'];
+			if(uppertrim($cst_saida)!="")	
+				$sql .= " and p.codigo_st = '{$cst_saida}'";
+		endif;
 
 		$sql .= " order by gp.descricao";
-		$consulta = query($sql);
+		$produtos = query($sql);
 
-		$this->limpa_conteudo();
-
-		foreach ($consulta as $linha):
-			$this->linha("<br><strong>{$linha->grupo_produto}</strong>");
-			$this->linha("<hr style='margin-top:5;margin-bottom:10;border:solid black 1px;'>");
-			$this->linha
-			(
-				"<div class='col-xs-12 text-left'>
-					<strong>Produto. :</strong> {$linha->codigo} : {$linha->descricao} - <strong>NCM :</strong> {$linha->codigo_nbmsh}
-				</div>
-
-				<div class='col-xs-3 text-left'>
-					<strong>CEST :</strong> {$linha->codigo_cest}
-				</div>
-				<div class='col-xs-6 text-center'>
-					<strong>CST Saída :</strong> {$linha->codigo_st}
-				</div>	
-				<div class='col-xs-3 text-right'>
-					<strong>CST Ent. :</strong> {$linha->codigo_stentrada}
-				</div>"		
-			);
-			$this->linha("<hr style='margin-top:5;margin-bottom:10;border:dashed black 1px;'>");
-			if($linha->calculapis=="S"):
-			$this->linha
-			(										
-				"<div class='col-xs-3 text-left'>
-					<strong>CST PIS :</strong> {$linha->cstpis}
-				</div>
-				<div class='col-xs-6 text-center'>
-					<strong>CST PIS Ent. :</strong> {$linha->cstpisentrada}
-				</div>	
-				<div class='col-xs-3 text-right'>
-					<strong>Aliquota PIS :</strong> {$linha->aliquotapis}
-				</div>"
-			);
-			endif;
-			if($linha->calculacofins=="S"):
-			$this->linha
-			(										
-				"<div class='col-xs-3 text-left'>
-					<strong>CST COFINS :</strong> {$linha->cstcofins}
-				</div>
-				<div class='col-xs-6 text-center'>
-					<strong>CST COFINS Ent. :</strong> {$linha->cstcofinsentrada}
-				</div>	
-				<div class='col-xs-3 text-right'>
-					<strong>Aliquota COFINS :</strong> {$linha->aliquotacofins}
-				</div>"
-			);
-			endif;
-			// $this->linha("<hr style='margin-top:5;margin-bottom:10;border:dashed black 1px;'>");
-			
-			$this->linha
-			(										
-				"<div class='col-xs-3 text-left'>
-					<strong>Aliquota ICMS :</strong> {$linha->aliquotaicms}
-				</div>	
-				<div class='col-xs-6 text-center'>
-					<strong>Aliquota ISS :</strong> {$linha->aliquotaiss}
-				</div>									
-				<div class='col-xs-3 text-right'>
-					<strong>Aliquota ICMS Red. :</strong> {$linha->aliquotaicmsreduzida}
-				</div>"
-			);
-			$this->linha
-			(										
-				"<div class='col-xs-3 text-left'>
-					<strong>Aliquota MVA ST :</strong> {$linha->mvast}
-				</div>	
-				<div class='col-xs-6 text-center'>
-					<strong>Aliquota IPI :</strong> {$linha->aliquotaipi}
-				</div>									
-				<div class='col-xs-3 text-right'>
-					<strong>ICMS Outros UF. :</strong> {$linha->icmsoutros}
-				</div>"
-			);
-			$this->linha("<hr style='margin-top:5;margin-bottom:10;border:dashed black 1px;'>");
-		// break;
-		endforeach;
-		$html = template_relatorio('Relatório Tributações / Códigos',$this->conteudo);
-		imprimir($html);
+		echo $this->view('relatorios.tributacoes_codigos',compact('produtos','cest','ncm','anp','cst','cst_saida','cst_ent'));
 	}
 
-	private function linha($conteudo)
-	{
-		$this->conteudo .= "<div class='row'>{$conteudo}</div>";
-	}
-
-	private function limpa_conteudo()
-	{
-		$this->conteudo = "";
-	}
-	
 }
 
 

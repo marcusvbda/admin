@@ -14,118 +14,74 @@
 
 
 @section('conteudo')
+<div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua" style="padding-top: 20px;"><i class="ion ion-ios-people-outline"></i></span>
 
+            <a style="color:black" href="{{asset('usuarios')}}" title="clique para visualizar"><div class="info-box-content">
+              <span class="info-box-text">Usuários</span>
+              <?php $qtde_usuarios = Controller::exec('usuariosController','qtde');  ?>
+              <span class="info-box-number">{{$qtde_usuarios}}<small> Cadastrado @if($qtde_usuarios>1){{'s'}}@endif</small></span>
+            </div></a>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red" style="padding-top: 20px;"><i class="ion ion-ios-gear-outline"></i></span>
 
-<div class="row" style="display: none;" id="div_importacao_dados">
+            <a style="color:black" href="{{asset('rede')}}" title="clique para visualizar"><div class="info-box-content">
+              <span class="info-box-text">Rede</span>
+               <span class="info-box-number"><small>{{Controller::exec('empresaController','getRede')}}</small></span>
+            </div></a>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow" style="padding-top: 20px;"><i class="ion ion-stats-bars"></i></span>
+
+            <a style="color:black" href="{{asset('empresa')}}" title="clique para visualizar"><div class="info-box-content">
+              <?php $empresas_selecionadas = Controller::exec('empresaController','qtde_empresas_selecionadas'); ?>
+              <span class="info-box-text">{{$empresas_selecionadas}} selecionada @if(count($empresas_selecionadas)>1){{'s'}}@endif</span>              
+              <span class="info-box-number"><small>{{auth('nome_empresa')}}</small></span>
+            </div></a>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green" style="width: 100%;"><span id="timer"></span></span>
+
+           
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+<div class="row">
 	<div class="col-md-12">
 		<div class="box">
-			<div class="box-header">
-		      	<p class="title_box">Importação de Dados</p>
-		      	<div class="box-tools pull-right">
-			    	<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button>
-			    </div>			 
-				<div class="box-tools pull-right">
-				</div>
-			</div>
-			<div class="box-body">
-			  <!-- conteudo -->
-				
-
-		           
-		           	<div class="col-md-4" id="importacao_notificacao" style="display:none;">
-						<div class="small-box bg-red">
-							<div class="inner">
-								<h3 id="importacao_qtde">0</h3>
-							        <p id="importacao_texto">Arquivo aguardando importação</p>
-							</div>
-							<a id="importacao_btn_importar" class="small-box-footer">Importar <i class="fa fa-arrow-circle-right"></i></a>
-						</div>
-					</div>
-					<div id="importacao_loading" style="display:none;">
-						<div class="col-md-4">
-							<div class="small-box">
-							    <div class="centro">
-							        <p><img src="{{asset()}}/template/img/loading.gif"></p>
-							    </div>
-							    <a class="small-box-footer"> <strong style="color:black;">Importando ...  </strong></a>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-md-4" id="btn_ultima_importacao">
-						<div class="small-box bg-green">
-							<div class="inner">
-								<h3><i class="glyphicon glyphicon-thumbs-up"></i></h3>
-							    <p id="data_ultima_importacao">20/09/2016</p>
-							</div>
-							<a href="{{asset('importacao/Importados')}}" class="small-box-footer"> Ver Importações Com Sucesso <i class="fa fa-arrow-circle-right"></i></a>
-						</div>
-					</div>
-
-					<div class="col-md-4" id="btn_importacao_erro" style="display:none;">
-						<div class="small-box bg-yellow">
-							<div class="inner">
-								<h3><i class="glyphicon glyphicon-thumbs-down"></i></h3>
-							    <p id="qtde_com_erro">0</p>
-							</div>
-							<a href="{{asset('importacao/erro')}}" class="small-box-footer"> Ver Importações Com Erro <i class="fa fa-arrow-circle-right"></i></a>
-						</div>
-					</div>
-
-
-
-
-
-
-			</div>
-			<div class="box-footer">
-				<!-- rodapé -->
-			</div>
+		    <div class="box-header with-border">
+		      <p class="title_box"></p>
+		      <div class="box-tools pull-right">
+		        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div>
+		      </div>
+		    </div>
 		</div>
 	</div>
-	
 </div>
-
-
-@if(parametro('lista_de_afazeres')=="S")
-	<div class="row" style="display:none;" id="lista_de_afazeres">
-		<div class="col-md-5">
-			<div class="box">
-				<div class="box-header with-border" style="height: 31px;">
-				  <p class="title_box">Lista de Afazeres (<span id="porcentagem_afazeres">0%</span>)</p>		
-				  <div class="box-tools pull-right">
-				    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div>
-				</div>
-				<div class="box-body">
-				  <!-- conteudo -->
-						
-						<div class="progress sm">
-	                      <div class="progress-bar progress-bar-aqua" id="afazeres_porcentagem_progresso" style="width: 0%"></div>
-	                    </div>
-			           
-			            <!-- /.box-header -->
-			              <ul class="todo-list ui-sortable" id="afazeres" style="overflow: hidden;"> 
-			                
-			               
-			              </ul>
-			            <!-- /.box-body -->
-			            <div class="box-footer clearfix no-border">
-			              <button onclick="novoafazer();" type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Novo Afazer</button>
-			            </div>
-
-
-
-				</div>
-				<div class="box-footer">
-					<!-- rodapé -->
-				</div>
-			</div>
-		</div>
-
-	</div>
-@endif
-
-
-
-
 @stop

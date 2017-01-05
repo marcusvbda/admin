@@ -10,6 +10,7 @@ class inicioController extends controller
 	public function getIndex()
 	{
 		echo $this->view('inicio.index');
+		// print_r($_SESSION['dados_usuario']);
 	}
 
 

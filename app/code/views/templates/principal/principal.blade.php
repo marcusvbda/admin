@@ -32,7 +32,7 @@
 <!-- DATATABLES -->
 
 <style type="text/css"></style></head>
-<body class="sidebar-mini skin-blue sidebar-collapse fixed" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
+<body class="sidebar-mini skin-blue sidebar sidebar-collapse" cz-shortcut-listen="true" style="height:100%;overflow:auto;">
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -57,10 +57,9 @@
 
 
 
-
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          
+         
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -98,6 +97,26 @@
       </div>
 
 
+
+       <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+         
+          <!-- User Account: style can be found in dropdown.less -->
+          <?php   
+            $qtde_arq  = Controller::exec('importacaoController','qtde_arq',array('importar'));
+            $dt_ultima_imp  = Controller::exec('importacaoController','Dt_ultima_imp');
+         ?>
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="@if(isset($dt_ultima_imp)){{'Ultima importção feita '.$dt_ultima_imp}} @else {'Nunca houve importação de dados'} @endif" >
+              <i class="fa fa-flag-o"></i>{{$qtde_arq}} arquivo @if($qtde_arq>1){{'s'}}@endif aguardando importação
+              <span class="label label-danger" >{{$qtde_arq}}</span>
+            </a>
+
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+        
+        </ul>
+      </div>
 
 
 
@@ -162,14 +181,14 @@
             </a>
             <ul class="treeview-menu">
                <li><a href="{{asset('Abastecimentos')}}"><i class="glyphicon glyphicon-erase"></i> <span>Abastecimentos</span></a></li>
-              <li class="treeview">
+               <li class="treeview">
                 <a href="#">
                   <i class="glyphicon glyphicon-erase"></i> <span>Produtos</span>
                 </a>
                 <ul class="treeview-menu">                 
                   <li><a href="{{asset('relatorios/tributacoes_codigos')}}"><i class="glyphicon glyphicon-erase"></i> <span>Tributações / Códigos</span></a></li>
                 </ul>
-              </li>            
+              </li>                 
             </ul>
           </li>
 

@@ -251,7 +251,6 @@ function vazio($variavel)
 
 function query($sql,$campo=null)
 {
-	DB::beginTransaction();
 	if(is_null($campo))
 	{
 		$resultado = DB::select(DB::raw($sql));
@@ -270,7 +269,6 @@ function query($sql,$campo=null)
 			$query = DB::select(DB::raw($sql));
 			return $query[0]->{$campo};
 		}
-		DB::rollback();
 	}
 }
 
@@ -411,3 +409,4 @@ function SUBMITER($metodo="POST",$url,$dados=[])
       </script>";
     echo $form;	
 }
+

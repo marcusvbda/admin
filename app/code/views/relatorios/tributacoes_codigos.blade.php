@@ -27,49 +27,79 @@
 		<div class="row">
 			<div class="col-md-12">
 
-				<form action="{{asset('relatorios/imprimir_tributacoes_codigos')}}" method="POST">		
-					<div class="row">
-						<div class="col-md-4">
-							<label>NCM</label>
-							<input class="form-control" type="text" pattern="[0-9.]+" name="NCM">
-						</div>
-						<div class="col-md-4">
-							<label>ANP</label>
-							<input class="form-control" type="text" pattern="[0-9.]+" name="ANP">
-						</div>
-						<div class="col-md-4">
-							<label>CEST</label>
-							<input class="form-control" type="text" pattern="[0-9.]+" name="CEST">
-						</div>
-					</div>
-
+					
 					<div class="row">
 						<div class="col-md-2">
+							<label>NCM</label>
+							<input class="form-control" type="text" pattern="[0-9.]+" id="NCM" 
+							@if(isset($ncm)) value="{{$ncm}}" @endif>
+						</div>
+						<div class="col-md-2">
+							<label>ANP</label>
+							<input class="form-control" type="text" pattern="[0-9.]+" id="ANP"
+							@if(isset($anp)) value="{{$anp}}" @endif>
+						</div>
+						<div class="col-md-2">
+							<label>CEST</label>
+							<input class="form-control" type="text" pattern="[0-9.]+" id="CEST"
+							@if(isset($cest)) value="{{$cest}}" @endif>
+						</div>
+						<div class="col-md-2">
 							<label>CST Entrada</label>
-							<input class="form-control" type="text" pattern="[0-9.]+" name="CST_entrada">
+							<input class="form-control" type="text" pattern="[0-9.]+" id="CST_entrada"
+							@if(isset($cst_ent)) value="{{$cst_ent}}" @endif>
 						</div>
 						<div class="col-md-2">
 							<label>CST Saida</label>
-							<input class="form-control" type="text" pattern="[0-9.]+" name="CST_saida">
-						</div>
-						<div class="col-md-2" style="padding-top: 27px;">
-							<label>Calcula PIS <input type="checkbox" name="calcula_pis"></label>
-						</div>
-						<div class="col-md-2" style="padding-top: 27px;">
-							<label>Calcula COFINS <input type="checkbox" name="calcula_cofins"></label>
-						</div>
-					</div>
-					<hr>
-					<div class="row">
+							<input class="form-control" type="text" pattern="[0-9.]+" id="CST_saida"
+							@if(isset($cst_saida)) value="{{$cst_saida}}" @endif>
+						</div>						
 						<div class="col-md-2">
-							<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span> Relatório</button>
+							<button type="submit" onclick="filtrar()" style="padding-bottom: 30px;padding-top: 30px;" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> Relatório</button>
 						</div>
 					</div>
-				</form>
 
 
 			</div>
 		</div>
+
+		<hr>
+
+
+        <div class="row">
+          @if(isset($produtos))
+            <div class="col-md-12">
+                    <br>      
+                     <table class="table table-hover" style="font-size: 14px" id="tabela">
+                      <thead>
+                        <tr style="background-color: #F4F4F4;border-radius: 100px;">
+                          <th>Código</th>
+                          <th>Descrição</th>                
+                          <th>cst saida</th>
+                          <th>cst entrada</th>
+                          <th>cest</th>
+                          <th>ncm</th>
+                          <th>anp</th>
+                        </tr>
+                      </thead>
+                     <tbody>
+                        @foreach($produtos as $prod)
+                        <tr>
+                          <td>{{$prod->codigo}}</td>
+                          <td>{{$prod->descricao}}</td>
+                          <td>{{$prod->codigo_st}}</td>
+                          <td>{{$prod->codigo_stentrada}}</td>
+                          <td>{{$prod->codigo_cest}}</td>      
+                          <td>{{$prod->codigo_nbmsh}}</td>      
+                          <td>{{$prod->codigoanp}}</td>       
+                        </tr>
+                        @endforeach
+                     </tbody>
+                   </table>
+                  <hr> 
+            </div>
+          @endif
+        </div>
 
 
 		</div>
