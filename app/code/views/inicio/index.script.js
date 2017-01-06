@@ -9,7 +9,7 @@ function showTimer()
   if(hour<10)   hour  ="0"+hour;
   if(minute<10) minute="0"+minute;
   var st=hour+":"+minute+":"+second;
-  document.getElementById("timer").innerHTML=st; 
+  document.getElementById("relogio").innerHTML=st; 
 }
 function initTimer() 
 {

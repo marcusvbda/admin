@@ -409,4 +409,3 @@ function SUBMITER($metodo="POST",$url,$dados=[])
       </script>";
     echo $form;	
 }
-

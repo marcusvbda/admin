@@ -31,9 +31,10 @@ class configuracoesController extends controller
 
 	public function postSalvar()
 	{	
+		$_POST = request::get('POST',['valida_token'=>false]);
 		foreach (Auth('empresa_selecionada') as $empresa):
 			foreach ($_POST as $parametro =>$valor):
-				$banco = PREFIXO_BANCO.$empresa.".parametros";
+				$banco = __PREFIXO_BANCO__.$empresa.".parametros";
 			 	DB::table($banco)->where("id",'=',$parametro)->update(['valor'=>$valor]);
 			endforeach;
 		endforeach;

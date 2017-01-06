@@ -26,6 +26,7 @@ $("input[name='email']").on('keyup', function()
     var senha = document.getElementById("senha").value;
     $.getJSON('usuarioexiste/' + email,function(data)
     {
+      alert(data);
       if(data=='NAO')
       {
         document.getElementById("email").style.border = "1px solid red";

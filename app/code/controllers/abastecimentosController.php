@@ -41,7 +41,7 @@ class abastecimentosController extends controller
 		$bicos = query("select * from bomba");
 		$bomba = $_POST['bomba'];
 		$bico = $_POST['bico'];
-		echo $combustivel = $_POST['combustivel'];
+		$combustivel = $_POST['combustivel'];
 		if($combustivel>0)
 		{
 			$combustivel_nome = query("SELECT * FROM produtos WHERE produtos.codigo='{$combustivel}'");
@@ -49,8 +49,6 @@ class abastecimentosController extends controller
 		}
 		else
 			$combustivel_nome = 'Todos';
-	    print_r($combustivel_nome);
-
 		$de = $_POST['de'];
 		$ate = $_POST['ate'];
 
@@ -66,11 +64,11 @@ class abastecimentosController extends controller
 									where 
 									a.dataabastecimento BETWEEN '{$de}' and '{$ate}' ";
 		if($bico != 0)
-			$sql.="and b.numero = {$bico} and ";
+			$sql.=" and b.numero = {$bico} ";
 		if($bomba != 0)
-			$sql.="b.bomba = {$bomba} and ";
+			$sql.=" and b.bomba = {$bomba} ";
 		if($combustivel != 0)
-			$sql.="t.numero_produto = {$combustivel} ";
+			$sql.=" and t.numero_produto = {$combustivel} ";
 		                            
 		$sql .="order by a.registro desc";
 

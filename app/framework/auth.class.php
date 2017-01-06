@@ -59,7 +59,7 @@ function append_empresa($empresas)
 
 function remove_empresas()
 {
-	if(count(Auth('empresa_selecionadas'))>0)
+	if(count(Auth('empresa_selecionada'))>0)
 		unset($_SESSION['dados_usuario']->empresa);
 }
 

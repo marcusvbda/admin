@@ -45,13 +45,12 @@ class empresaController extends controller
 	   	echo json_encode($empresas_da_rede);
 	}
 
-	public function postSelecionar_empresas()
+	public function putSelecionar_empresas()
 	{
-		$empresas_selecionadas =  remove_repeticao_array(limpa_vazios_array(string_virgulas_array($_POST['empresas_selecionadas'])));
-		append_empresa($empresas_selecionadas);
-		$usuario = $this->usuario->find(Auth('id'));
-		$usuario->empresa_selecionada = separa_array_virgulas($empresas_selecionadas);
-		$usuario->save();
+		$empresas_selecionadas = request::get('PUT')['empresas_selecionadas'];
+		$usuario = DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')->where('id','=',Auth('id'))->update(['empresa_selecionada'=>$empresas_selecionadas]);
+		$empresas_selecionadas =  remove_repeticao_array(limpa_vazios_array(string_virgulas_array($empresas_selecionadas)));
+		append_empresa($empresas_selecionadas);	
         registralog("Alterou emprsas selecionadas");
 		redirecionar(asset('empresa'));
 	}
