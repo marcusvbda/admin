@@ -9,7 +9,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="{{asset()}}template/dist/css/AdminLTE.min.css">
   <link rel='icon' href={{asset('template/img/icone.ico')}} type='image/gif'>
+  <!-- <script src="{{asset('sweetalert/sweetalert.min.js')}}"></script> -->
+  <script src="{{asset('assets/sweetalert/sweetalert.min.js')}}"></script>
   
+  <link rel="stylesheet" type="text/css" href="{{asset('assets/sweetalert/sweetalert.css')}}">
   <!-- iCheck -->
 
 <style type="text/css"></style></head>
@@ -32,6 +35,7 @@
 
 <!-- Bootstrap 3.3.6 -->
 <script src="{{asset()}}template/plugins/jQuery/jquery.min.js"></script>
+
 <script src="{{asset()}}template/bootstrap/js/bootstrap.min.js"></script>
 <script src="{{asset()}}assets/js/custom.js"></script>
 

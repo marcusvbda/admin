@@ -20,27 +20,26 @@ $("#chk_manter_login").keyup(function(event){
 });
 
 // verifica usuario
-$("input[name='email']").on('keyup', function()
-{
-    var email = document.getElementById("email").value;
-    var senha = document.getElementById("senha").value;
-    $.getJSON('usuarioexiste/' + email,function(data)
-    {
-      alert(data);
-      if(data=='NAO')
-      {
-        document.getElementById("email").style.border = "1px solid red";
-        document.getElementById("email_valida").value="NAO";
-        // $('#resultado').html('Usuário não cadastrado');
-      }
-      else
-      {
-        document.getElementById("email").style.border = "1px solid green";   
-        document.getElementById("email_valida").value="SIM";    
-        $('#resultado').html('');
-      }
-    });
-});
+// $("input[name='email']").on('keyup', function()
+// {
+//     var email = document.getElementById("email").value;
+//     var senha = document.getElementById("senha").value;
+//     $.getJSON('usuarioexiste/' + email,function(data)
+//     {
+//       if(data=='NAO')
+//       {
+//         document.getElementById("email").style.border = "1px solid red";
+//         document.getElementById("email_valida").value="NAO";
+//         // $('#resultado').html('Usuário não cadastrado');
+//       }
+//       else
+//       {
+//         document.getElementById("email").style.border = "1px solid green";   
+//         document.getElementById("email_valida").value="SIM";    
+//         $('#resultado').html('');
+//       }
+//     });
+// });
 
 $("#chk_manter_login").on('change', function()
 {
@@ -113,7 +112,8 @@ $('#btn_definir_Senha').on('click',function()
 
 function logar()
 {
-  if((document.getElementById("senha").value=="")||(document.getElementById("email").value=="")||(document.getElementById("senha").length<4)||(document.getElementById("email_valida").value=='NAO'))
+  if((document.getElementById("senha").value=="")||(document.getElementById("email").value=="")||
+    (document.getElementById("senha").length<4))
   {
     return false;
   }
@@ -125,9 +125,7 @@ function logar()
     {
           if(resultado=='NAO')
           {
-            $('#titulo_msg1').html('Aviso');
-            $('#msg_msg1').html('Senha incorreta!');
-            $('#mensagem1').modal('show'); 
+            sweetAlert("Oops...", "Usuário e/ou senha incorreto(s)", "error");
           }
           else
           {

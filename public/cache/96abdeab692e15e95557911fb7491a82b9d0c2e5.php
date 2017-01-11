@@ -29,6 +29,10 @@
 <script src="<?php echo e(asset()); ?>assets/datatables/buttons.colVis.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset()); ?>assets/datatables/dataTables.bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset()); ?>assets/datatables/buttons.bootstrap.min.css">
+
+  <script src="<?php echo e(asset('assets/sweetalert/sweetalert.min.js')); ?>"></script>
+  
+  <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/sweetalert/sweetalert.css')); ?>">
 <!-- DATATABLES -->
 
 <style type="text/css"></style></head>
@@ -87,7 +91,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">                
                 <div class="pull-right">
-                  <button data-toggle="modal" data-target="#sair" class="btn btn-danger">Sair</button>
+                  <button onclick="sair()" class="btn btn-danger">Sair</button>
                 </div>
               </li>
             </ul>
@@ -292,32 +296,30 @@
 
 
 
-
-
-<!-- Modal -->
-  <div class="modal fade" id="sair" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Confirmação</h4>
-        </div>
-        <div class="modal-body">
-          <p>Deseja mesmo sair do sistema ?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
-          <a href="<?php echo e(asset('usuarios/sair')); ?>" class="btn btn-danger" >Sim</a>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-
-
   
+<script type="text/javascript">
+  
+
+  function sair()
+  {
+     swal({
+      title: "Confirmação",
+      text: "Deseja sair do sistema ?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Sim, desejo!",
+      cancelButtonText: "Não",
+      closeOnConfirm: false
+    },
+    function()
+    {
+      location.href = "<?php echo e(asset('usuarios/sair')); ?>";
+    });
+  }
+</script>
+
+
 <!-- Modal -->
 <div class="modal fade" id="mensagem1" role="dialog">
   <div class="modal-dialog modal-sm">

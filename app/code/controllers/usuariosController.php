@@ -185,7 +185,11 @@ class usuariosController extends controller
 					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID,'serie_empresa'=>$usuarios[0]->serie_empresa_usuario,'razao_empresa'=>$usuarios[0]->razao_empresa,'nome_empresa'=>$usuarios[0]->nome_empresa,'im_empresa'=>$usuarios[0]->im_empresa,'ie_empresa'=>$usuarios[0]->ie_empresa,'cnpj_empresa'=>$usuarios[0]->cnpj_empresa,'nome_rede'=>$usuarios[0]->nome_rede];
 	
 			$array['empresa_selecionada'] = remove_repeticao_array(limpa_vazios_array(string_virgulas_array($usuarios[0]->empresa_selecionada)));
-			SalvaUsuario($array);
+			if($_POST['manter_login']=='S')
+				SalvaUsuario($array,true);
+			else
+				SalvaUsuario($array);
+
 			SetLogado('S');
 
 			$parametros = query("select * From ".__PREFIXO_BANCO__.Auth('serie_empresa').".parametros");

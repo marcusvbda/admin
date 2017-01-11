@@ -10,13 +10,13 @@
 
       <!-- <form action="{{asset('usuarios/logar')}}" method="post" onsubmit="return logar()"> -->
         <div class="form-group has-feedback">
-          <input type="email" class="form-control" name="email" id="email" required=""  autocomplete="off" placeholder="Email" style="border:1px solid red;">
-          <input type="text" name="email" id="email_valida"  value="NAO" autocomplete="off" style="display: none;"/>
+          <input type="email" class="form-control" name="email" id="email" required=""  autocomplete="off" placeholder="Email">
+          <input type="text" name="email" id="email_valida"  autocomplete="off" style="display: none;"/>
           <!-- <div id="resultado"></div> -->
           <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-          <input type="password" class="form-control" name="senha" id="senha" required="" maxlength="20" autocomplete="off" placeholder="Senha" style="border:1px solid red;">
+          <input type="password" class="form-control" name="senha" id="senha" required="" maxlength="20" autocomplete="off" placeholder="Senha">
           <input type="password" name="password" id="password" id="senha" autocomplete="off" style="display: none;" />
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           <input type="text" id="manter_login" value="N" hidden="">
