@@ -11,6 +11,82 @@ class produtosController extends controller
 		// $this->model = $this->model('produtos');
 	}
 
+	public function postJsonPorcentagemGrupo()
+	{
+		try
+		{
+			function gerarDados()
+			{
+				$importacao_id = db::table('importacoes')->orderby('id','desc')->first()->id;
+				$vlr_total = query("
+				Select
+					 SUM(D.VALORNEGOCIACAO) AS vlr_total
+					FROM
+					 PRODUTOS P,
+					 DADOSFATURAMENTO D,
+					 GRUPOSPRODUTOS G
+					WHERE
+					 D.SITUACAO<>'I'
+					AND
+					 D.EXCLUIDO <>'S'
+					AND
+					 D.EXCLUIDO <>'C'
+					AND
+					 D.TIPONOTA<>8
+					AND
+					 D.NUMERO_PRODUTO = P.CODIGO
+					AND
+					 P.CODIGO_GRUPOPRODUTO = G.CODIGO","vlr_total");
+				$porcentagem_grupo  = query(
+				"Select
+	                 G.DESCRICAO as grupo,
+	                 SUM((D.VALORNEGOCIACAO)*100)/{$vlr_total} AS porcentagem
+	                FROM
+	                 PRODUTOS P,
+	                 DADOSFATURAMENTO D,
+	                 GRUPOSPRODUTOS G
+	                WHERE      
+	                 D.SITUACAO NOT IN('I','S','C')
+	                AND
+	                 D.TIPONOTA<>8
+	                AND
+	                 D.NUMERO_PRODUTO = P.CODIGO
+	                AND
+	                 P.CODIGO_GRUPOPRODUTO = G.CODIGO
+	                GROUP BY
+	                 G.DESCRICAO");
+
+				db::table('porcentagem_grupo')->truncate();
+				foreach ($porcentagem_grupo as $pg) :
+					db::table('porcentagem_grupo')->insert(['grupo'=>$pg->grupo,'porcentagem'=>$pg->porcentagem,'importacao_id'=>$importacao_id]);
+				endforeach;
+				return db::table('porcentagem_grupo')->get();
+			}
+
+			$importacao_id = db::table('importacoes')->orderby('id','desc')->first()->id;
+			$porcentagem_grupo = db::table('porcentagem_grupo')->where('importacao_id','=',$importacao_id)->get();
+
+			if(count($porcentagem_grupo)<=0)
+				$porcentagem_grupo = gerarDados();
+
+			if($porcentagem_grupo[0]->importacao_id!=$importacao_id)
+				$porcentagem_grupo = gerarDados();
+
+			if(count($porcentagem_grupo)>0)
+			{
+				if($porcentagem_grupo[0]->importacao_id===$importacao_id)
+				{
+					$porcentagem_grupo = db::table('porcentagem_grupo')->where('importacao_id','=',$importacao_id)->get();
+					echo json_encode($porcentagem_grupo);
+				}
+			}
+		}
+		catch(Exception $e)
+		{
+			return null;
+		}
+	}
+
 	public function getIndex()
 	{	
 		$produtos = DB::table('produtos')

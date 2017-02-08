@@ -1,63 +1,62 @@
 $('#btn_confirmar').on('click', function() 
 {
-  if (($('#usuario').val()=="") || 
-      ($('#email').val()=="") || 
-      ($('#sexo').val()=="") || 
-      ($('#senha').val()=="") || 
-      ($('#confirme_senha').val()==""))
-  {
-    msg("aviso","Todos os campos são obrigatórios para este formulário !");
-    return false;
-  }  
-  else
-  {
-      if(($('#senha').val())!=($('#confirme_senha').val()))
-      {
-        msg("aviso","Senhas não conferem !");
-        return false;
-      }
-      else
-      {
-        $.get('usuarioexiste/' + $('#email').val(),function(data)
-        {
-            if(data=='SIM')
-            {
-              msg("aviso","Email em uso por outro usuário !");
-              return false;
-            }
-            else
-            {
-              msg_confirm('<strong>Confirmação</strong>','Confirma cadastro deste usuário?',"cadastrar()"); 
-            }            
-        });
-      }
-  }
+  if(!ValidarCampos(["#nome","#email","#sexo","#senha","#confirme_senha"]))
+    return msg("Oops","Os campos em vermelho são obrigatórios","error");
+
+  if(!confirmaSenha())
+    return msg("Oops","Senhas não conferem !!","error");
     
+  var dados = $('#frmusuario').getData();
+  email = dados['email'];
+  send('POST',"{{asset('usuarios/Restvalidanovoemail')}}",{email:email},function(validou)
+  { 
+    if(validou)
+    {
+      send('POST',"{{asset('usuarios/Restvalidanovoemail')}}",{email:email},function(cadastrou)
+      {
+
+        send('POST',"{{asset('usuarios/novo')}}",{dados},function(cadastrou)
+        {
+          if(!cadastrou)
+            return msg("oops!","Erro ao gravar este usuário !!","error");
+
+          msg_stop(":)","Cadastrado com sucesso !!",function()
+          {
+            reload();
+          },"success");     
+        });
+
+      });
+    }
+    else
+    {
+      $('#email').addClass( "error" );      
+      msg("oops!","Usuário em uso","error");
+    }   
+  });   
+
 }); 
 
-function cadastrar()
+
+function confirmaSenha()
 {
-  var usuario = $('#usuario').val();
-  var email = $('#email').val();
-  var sexo = $('#sexo').val();
-  var senha = $('#senha').val();
-  var admin = $('#admin').val();
-  SEND('POST',"{{asset('usuarios/novo')}}",{ 
-                                            usuario:usuario,
-                                            email:email,
-                                            sexo:sexo,
-                                            senha:senha,
-                                            admin:admin,
-                                          },"{{Request::getToken()}}");
+  var senha       = $('#senha').val();
+  var confirmacao = $('#confirme_senha').val();
+  if(senha==confirmacao)
+  {
+    $('#confirme_senha').removeClass( "error" );   
+    $('#senha').removeClass( "error" ); 
+    return true;
+  }
+  else
+  {
+    $('#confirme_senha').addClass( "error" );    
+    $('#senha').addClass( "error" );  
+    return false;
+  }
 }
 
-$('#admin_checkbox').on('change', function() 
-{
-  if($('#admin').val()=='S')
-    $('#admin').val('N');
-  else
-    $('#admin').val('S');
-}); 
+
 
 function trocabotoes()
 {

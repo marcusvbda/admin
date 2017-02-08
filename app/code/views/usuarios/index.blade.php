@@ -45,13 +45,17 @@
                     <td>{{$usuario->email}}</td>
                     <td class="centro">
 
-                      <div class="tools">                      
+                      <div class="tools">           
+                        @if(Access("PUT","usuarios"))           
                         <a title="Visualizar / Alterar" href="{{asset('usuarios/show/').$usuario->id}}" ">
                           <i class="fa fa-edit" style="color:#3C8DBC;" ></i>
                         </a>
+                        @endif
+                        @if(Access("DELETE","usuarios"))
                         <a title="Excluir" onclick="excluir({{$usuario->id}})">
                           <i class="fa fa-trash-o" style="color:#DD4B39;"></i>
-                        </a>  
+                        </a>
+                        @endif  
                       </div>
 
                     </td>
@@ -65,11 +69,15 @@
       </div>          
   </div>  
 
-  <div class="row">
-    <div class="col-md-1">
-      <a href="{{asset('usuarios/novo')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Cadastrar</a>
+  @if(Access("GET","usuarios"))
+    <div class="row">
+      <div class="col-md-1">
+        <a href="{{asset('usuarios/novo')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Cadastrar</a>
+      </div>
     </div>
-  </div>
+  @endif
 </div>
+
+
 
 @stop

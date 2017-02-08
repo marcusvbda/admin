@@ -15,20 +15,19 @@
   <link rel='icon' href="{{asset('template/img/icone.ico')}}" type='image/gif'>
 
 
-<!-- DATATABLES -->
-<script src="{{asset()}}assets/datatables/custom.datatables.js"></script>
-<script src="{{asset()}}assets/datatables/jquery.dataTables.min.js"></script>
-<script src="{{asset()}}assets/datatables/dataTables.bootstrap.min.js"></script>
-<script src="{{asset()}}assets/datatables/dataTables.buttons.min.js"></script>
-<script src="{{asset()}}assets/datatables/buttons.bootstrap.min.js"></script>
-<script src="{{asset()}}assets/datatables/jszip.min.js"></script>
-<script src="{{asset()}}assets/datatables/pdfmake.min.js"></script>
-<script src="{{asset()}}assets/datatables/vfs_fonts.js"></script>
-<script src="{{asset()}}assets/datatables/buttons.html5.min.js"></script>
-<script src="{{asset()}}assets/datatables/buttons.print.min.js"></script>
-<script src="{{asset()}}assets/datatables/buttons.colVis.min.js"></script>
-<link rel="stylesheet" type="text/css" href="{{asset()}}assets/datatables/dataTables.bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="{{asset()}}assets/datatables/buttons.bootstrap.min.css">
+  <!-- DATATABLES -->
+  <script src="{{asset()}}assets/datatables/jquery.dataTables.min.js"></script>
+  <script src="{{asset()}}assets/datatables/dataTables.bootstrap.min.js"></script>
+  <script src="{{asset()}}assets/datatables/dataTables.buttons.min.js"></script>
+  <script src="{{asset()}}assets/datatables/buttons.bootstrap.min.js"></script>
+  <script src="{{asset()}}assets/datatables/jszip.min.js"></script>
+  <script src="{{asset()}}assets/datatables/pdfmake.min.js"></script>
+  <script src="{{asset()}}assets/datatables/vfs_fonts.js"></script>
+  <script src="{{asset()}}assets/datatables/buttons.html5.min.js"></script>
+  <script src="{{asset()}}assets/datatables/buttons.print.min.js"></script>
+  <script src="{{asset()}}assets/datatables/buttons.colVis.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{{asset()}}assets/datatables/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{{asset()}}assets/datatables/buttons.bootstrap.min.css">
 
   <script src="{{asset('assets/sweetalert/sweetalert.min.js')}}"></script>
   
@@ -60,7 +59,7 @@
 
 
 
-
+      
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
          
@@ -143,18 +142,18 @@
         <li class="header">Menu Principal</li>
 
         <!-- itens menu -->
-        @if(Auth('admin')=="S")
           <li class="treeview">
             <a href="#">
               <i class="glyphicon glyphicon-inbox"></i> <span>Cadastros</span>
             </a>
             <ul class="treeview-menu">
-              <li>              
-                <a href="{{asset('usuarios')}}"><i class="glyphicon glyphicon-user"></i> <span>Usuários</span></a>   
-              </li>
+              @if(Access("GET","usuarios"))
+                <li>              
+                  <a href="{{asset('usuarios')}}"><i class="glyphicon glyphicon-user"></i> <span>Usuários</span></a>   
+                </li>
+              @endif
             </ul>
           </li>
-        @endif  
         
 
 
@@ -197,7 +196,6 @@
             </ul>
           </li>
 
-          @if(Auth('admin_rede')=='S')          
           <li class="treeview">
             <a href="#">
               <i class="glyphicon glyphicon-road"></i> <span>Multi Empresa</span>
@@ -206,9 +204,7 @@
               <li><a href="{{asset('multiempresa/Abastecimentos')}}"><i class="glyphicon glyphicon-erase"></i> <span>Abastecimentos</span></a></li>      
             </ul>
           </li>
-          @endif
 
-          @if(Auth('admin')=='S')
           <li class="treeview">
             <a href="#">
               <i class="glyphicon glyphicon-wrench"></i> <span>Configurações</span>
@@ -218,17 +214,6 @@
                  <li><a href="{{asset('configuracoes')}}"><i class="glyphicon glyphicon-tasks"></i> <span>Parametros de sistema</span></a></li>
             </ul>
           </li> 
-          @else
-            <li class="treeview">
-              <a href="#">
-                <i class="glyphicon glyphicon-wrench"></i> <span>Configurações</span>
-              </a>
-              <ul class="treeview-menu">
-                   <li><a href="{{asset('empresa')}}"><i class="glyphicon glyphicon-object-align-bottom"></i> <span>Empresa</span></a></li>
-              </ul>
-          </li> 
-          @endif
-
 
 
         <!-- itens menu -->
@@ -297,7 +282,6 @@
 
   
 <script type="text/javascript">
-  
 
   function sair()
   {
@@ -365,3 +349,122 @@
 </div>
 
 <!--  -->
+<script type="text/javascript">
+$.fn.getData = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
+function div_exist(div)
+{
+    var $myDiv = $(div);
+    if ($myDiv.length)
+        return true;
+    else
+        return false;
+}  
+
+function modalpage(titulo,url,param=null)
+{
+    if(div_exist('#myModal'))
+        $('#myModal').remove();
+    var div = 
+    '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">'+
+      '<div class="modal-dialog" role="document">'+
+        '<div class="modal-content">'+
+          '<div class="modal-header">'+
+            '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
+            '<h4 class="modal-title" id="myModalLabel">'+titulo+'</h4>'+
+          '</div>'+
+          '<div id="modal_body"></div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'; 
+    $('body').append(div);
+    $( "#modal_body" ).load(url,param);        
+    $('#myModal').modal();
+}
+
+function verificarCampos(campo)
+{
+    if($(campo).val()=="")
+    {
+        $( campo ).addClass( "error" );
+        return 1;
+    }
+    else
+    {
+        $(campo).removeClass( "error" );
+        return 0;
+    }
+}
+
+
+function ValidarCampos(campos)
+{
+    var contador = 0;        
+    $.each(campos, function(i,campo) 
+    {
+        contador += verificarCampos(campo);
+    });
+    if(contador===0)
+        return true;
+    else
+        return false;
+}
+
+function load(url,destino,origem)
+{
+  $(destino).load(url+" "+destino);    
+}
+
+function dataTable(tabela)
+{
+   var table = $(tabela).DataTable( {
+        lengthChange: true,
+        responsive: true,
+        lengthMenu: [
+            [ 10, 25, 50,100, -1 ],
+            [ '10', '25', '50 ', '100', 'Todos' ]
+        ],
+        buttons:
+        [
+          {extend : 'excel', text: 'Excel'},
+          {extend : 'pdf', text: 'PDF'},
+          {extend : 'colvis', text: 'Configurar Colunas'},
+          {extend : 'print', text: 'Imprimir'}
+        ],
+        "oLanguage": 
+        {
+           "sLengthMenu": "Mostrar _MENU_ ",
+           "sZeroRecords": "Sem Registros",
+           "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+           "sInfoEmpty": "Mostrando 0 de 0 registros",
+           "sSearch": "Pesquisar",
+           "sInfoFiltered": "",
+           "oPaginate": 
+           {
+               "sFirst":    "Primeira",
+               "sLast":     "Última",
+               "sNext":     "Próxima",
+               "sPrevious": "Anterior",
+            }
+        }
+    } );
+    table.buttons().container()
+            .appendTo( tabela+'_wrapper .col-sm-6:eq(0)' );
+  
+}
+</script>

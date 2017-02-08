@@ -17,10 +17,14 @@ class usuariosController extends controller
 						->where('empresa','=',Auth('serie_empresa'))
 							->where('excluido','=',"N")
 								->get());
-	}
+	}	
+	
 
 	public function getIndex()
 	{
+		if(!Access("GET","usuarios"))
+			return App::erro(505);
+
 		$usuarios =  DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
 						->where('empresa','=',Auth('serie_empresa'))
 							->where('excluido','=',"N")
@@ -30,14 +34,29 @@ class usuariosController extends controller
 
 	public function deleteExcluir()
 	{
-		$USUARIO = Request::get('DELETE');
-		if($this->valida_exclusao($USUARIO['id']))
+		try
 		{
-			$usuario = $this->model->find($USUARIO['id']);
-			$usuario->excluido="S";
-			$usuario->save();
+			if(!Access("DELETE","usuarios"))
+				return App::erro(505);
+
+			$USUARIO = Request::get('DELETE');
+			DB::beginTransaction();	
+			if($this->valida_exclusao($USUARIO['id']))
+			{
+				$usuario = $this->model->find($USUARIO['id']);
+				$usuario->excluido="S";
+				$usuario->save();
+				if($USUARIO['id']==Auth('id'))
+					LimpaUsuario();
+			}
+			Rest::Response(true);
+			db::commit();
 		}
-		Route::direcionar(asset('usuarios'));
+		catch(Exception $e)
+		{
+			Rest::Response(false);
+			db::rollback();
+		}
 	}
 
 	private function valida_exclusao($id)
@@ -50,6 +69,9 @@ class usuariosController extends controller
 	{
 		if($id=="")
 			Route::direcionar(asset('erros/404'));
+
+		if(!Access("GET","usuarios"))
+			return App::erro(505);
 	
 		$usuario = DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
 				->where('usuarios.id','=',$id)
@@ -62,6 +84,8 @@ class usuariosController extends controller
 
 	public function putEditar()
 	{		
+		if(!Access("PUT","usuarios"))
+			return App::erro(505);
 		$request = Request::get('PUT');
 		$usuario = DB::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')
 			->where('id', $request['id'])
@@ -106,22 +130,27 @@ class usuariosController extends controller
 
 	public function postNovo()
 	{
-		$_POST = Request::get('POST');
-		$empresas_selecionadas = '';
-		$empresa = Auth('serie_empresa');
+		try
+		{
+			if(!Access("POST","usuarios"))
+				return REST::Response(false);
 
-		if(Auth('admin_rede')=="S")
-			$empresas_selecionadas =  $_POST['empresas_selecionadas'];
-		else
-			$empresas_selecionadas =  $empresa;
-
-
-		$usuario = $_POST;
-		$usuario['senha'] = md5($usuario['senha']);	
-		$usuario['empresa'] = $empresa;
-		$usuario['empresa_selecionada'] = $empresas_selecionadas;
-		$this->model->create($usuario);
-		Route::direcionar(asset('usuarios'));
+			$dados = Request::get('POST')['dados'];
+			$dados['senha']=md5($dados['senha']);
+			$dados['empresa']=Auth('serie_empresa');
+			$dados['empresa']=Auth('serie_empresa');
+			DB::beginTransaction();
+			$id_usuario = db::table(BANCO_DE_DADOS_USUARIOS.'.usuarios')->insertGetId($dados);
+			REST::Response(true);
+			// savelog("postStore","usuario","Cadastrou o usuario id ".$id_usuario);			
+			DB::commit();
+		}
+		catch(Exception $e)
+		{
+			DB::rollBack();
+			// savelog("postStore","usuario","Erro ( ".$e." )");				
+			REST::Response(false);
+		}
 	}
 
 
@@ -152,57 +181,11 @@ class usuariosController extends controller
 	public function postLogar()
 	{
 		$_POST = Request::get('POST');
-		$usuarios = query(
-			"select 
-				u.id as id_usuario,
-				u.usuario,
-			    u.sexo as sexo_usuario,
-			    u.empresa as serie_empresa_usuario,
-			    u.empresa_selecionada as serie_empresa_selecionada_usuario,
-			    u.admin,
-			    u.admin_rede,
-			    u.email,
-			    u.empresa_selecionada,
-			    e.razao as razao_empresa,
-			    e.nome as nome_empresa,
-			    e.inscricao_municipal as im_empresa,
-			    e.inscricao_estadual as ie_empresa,
-			    e.CNPJ_CPF as cnpj_empresa,
-			    re.id as id_rede,
-			    red.nome as nome_rede
-			from 
-				".BANCO_DE_DADOS_USUARIOS.".usuarios u 
-			    join ".BANCO_DE_DADOS_USUARIOS.".empresas e on e.serie=u.empresa
-			    join ".BANCO_DE_DADOS_USUARIOS.".redes_empresas re on re.serie_empresa=e.serie
-			    join ".BANCO_DE_DADOS_USUARIOS.".redes red on red.id=re.rede
-			  	where u.email='".$_POST['email']."' and u.senha='".md5($_POST['senha'])."'			    
-			");
-
-		
-		if(count($usuarios)>0)	
-		{			
-			$array = ['id'=>$usuarios[0]->id_usuario, 'sexo'=>$usuarios[0]->sexo_usuario ,'admin_rede'=>$usuarios[0]->admin_rede,'rede'=>$usuarios[0]->id_rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
-					'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>APP_ID,'serie_empresa'=>$usuarios[0]->serie_empresa_usuario,'razao_empresa'=>$usuarios[0]->razao_empresa,'nome_empresa'=>$usuarios[0]->nome_empresa,'im_empresa'=>$usuarios[0]->im_empresa,'ie_empresa'=>$usuarios[0]->ie_empresa,'cnpj_empresa'=>$usuarios[0]->cnpj_empresa,'nome_rede'=>$usuarios[0]->nome_rede];
-	
-			$array['empresa_selecionada'] = remove_repeticao_array(limpa_vazios_array(string_virgulas_array($usuarios[0]->empresa_selecionada)));
-			if($_POST['manter_login']=='S')
-				SalvaUsuario($array,true);
-			else
-				SalvaUsuario($array);
-
-			SetLogado('S');
-
-			$parametros = query("select * From ".__PREFIXO_BANCO__.Auth('serie_empresa').".parametros");
-			$array=array();						
-			for ($i=0; $i < count($parametros); $i++):
-				$array[$parametros[$i]->parametro] = $parametros[$i]->valor;				
-			endfor;
-			SalvaParametros($array);	
-			SetLogado('S');
+		$_POST['manter_login'] = ($_POST['manter_login']=='S');
+		if(attempt(['email'=>$_POST['email'],'senha'=>$_POST['senha'],'manter'=>$_POST['manter_login'] ]))		
 			Route::direcionar(asset('inicio'));
-		}
 		else
-			Route::voltar();		
+			Route::voltar();	
 	}
 
 	public function getUsuarioexiste($email)
@@ -224,6 +207,24 @@ class usuariosController extends controller
 		  return false; // email ja cadastrado
 		else
 		  return true;
+	}
+
+	public function postRestvalidanovoemail()
+	{		
+		$request = Request::get('POST',['valida_token'=>false]);
+		$email = $request['email'];
+		if(isset($request['id']))
+		{
+			$id = $request['id'];
+			$consulta = $this->model->where('email','=',$email)->where('excluido','=','N')->where('id','!=',$id)->get();
+		}
+		else
+			$consulta = $this->model->where('email','=',$email)->where('excluido','=','N')->get();
+
+		if(count($consulta)>0)	
+		  Rest::response(false); // email ja cadastrado
+		else
+		  Rest::response(true);
 	}
 
 	public function getValidalogin($email,$senha)

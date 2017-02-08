@@ -40,14 +40,14 @@
 			if(array_param($config,'valida_token'))
 			{
 				if(!isset($_REQUEST['REQUEST'][$metodo]['__TOKEN']))
-					return JSON::response("Request indevido:erro 303, Acesso negado!!");
+					return REST::response("Request indevido:erro 303, Acesso negado!!");
 				else
 				{
 					unset($_REQUEST['REQUEST'][$metodo]['__TOKEN']);
 					return $_REQUEST['REQUEST'][$metodo];
 				}
 			}
-			return JSON::response("Request indevido:erro 303, Acesso negado!!");
+			return REST::response("Request indevido:erro 303, Acesso negado!!");
 		}
 
 		public function getToken()
@@ -62,12 +62,13 @@
 	}
 
 
-	class JSON
+	class REST
 	{
 		
-		public function response($valor)
+		public function Response($valor)
 		{
 			echo json_encode($valor);
+			return $valor;
 		}
 	}
 

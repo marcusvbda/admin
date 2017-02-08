@@ -7,23 +7,11 @@ function rotas_liberadas()
 			_route("usuariosController@getLogin"),
 			_route("usuariosController@getRenovasenha"),
 			_route("usuariosController@postLogar"),
+			_route("usuariosController@getLogar"),
 			_route("usuariosController@getUsuarioexiste"),
 			_route("usuariosController@getValidalogin"),
 			_route("usuariosController@postDefinirsenha"),
 			_route("usuariosController@postRenovarSenha")
 		);
 	return $rotas_liberadas;
-}
-
-function rotas_protegidas()
-{
-	$rotas_protegidas = array
-		(
-			_route("usuariosController@getIndex"),
-			_route("configuracoesController@getIndex"),
-			_route("configuracoesController@getBuscaparametros"),
-			_route("configuracoesController@postSalvar"),
-			_route("importacao@getIndex")
-		);
-	return $rotas_protegidas;
 }

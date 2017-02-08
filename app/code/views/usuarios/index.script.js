@@ -1,23 +1,24 @@
+
+
 dataTable('#tabela');
 
 
-function excluir(id,perguntar=true)
+function excluir(id)
 {
-  if(perguntar)
-    msg_confirm('<strong>Confirmação</strong>','Deseja excluir este usuário','excluir('+id+',false)');
-  else
-  {
-    SEND("DELETE","{{asset('usuarios/excluir')}}",{id:id},"{{Request::getToken()}}");
-  }
+  msg_confirm('Confirmação',"Deseja mesmo excluir este cliente ?",function()
+  {   
+    send("DELETE","{{asset('usuarios/excluir')}}",{id}, function(excluiu)
+    {
+        if(excluiu)
+            msg_stop(":)","Cliente Excluido com sucesso !!",function()
+            {
+                REFRESH();
+            },'success');
+        else
+            return  msg("Oops","Erro ao excluir Cliente !!",'error');
+    },"{{Request::getToken()}}");
+        
+  },false);
+  
 }
 
-function imprimir()
-{
-  var filtro = $('#filtro').val();
-  var action = "{{asset('usuarios/relatorio_simples')}}";
-  var form = '<form action="'+action+'" method="post">' +
-                '<input type="hidden" value="'+filtro+'" name="filtro" />' +
-              '</form>';
-  $('body').append(form);
-  $(form).submit();  
-}

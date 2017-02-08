@@ -4,14 +4,14 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 function CheckAuth()
 {	
-	if(!isset($_SESSION['dados_usuario']->USUARIO)) 
+	if(!isset($_SESSION[md5(__APP_NOME__)]->USUARIO)) 
 		getUserFromCookie();
 
-	if(isset($_SESSION['dados_usuario']->usuario)) 
+	if(isset($_SESSION[md5(__APP_NOME__)]->usuario)) 
 	{
-		if(isset($_SESSION['dados_usuario']->app_id))
+		if(isset($_SESSION[md5(__APP_NOME__)]->app_id))
 		{
-			if((Auth('app_id')==APP_ID) && ChecarTimeOut(Parametro('timeout_login')))
+			if(Auth('app_id')==md5(__APP_NOME__))
 				return true;
 			else
 			{
@@ -33,55 +33,96 @@ function CheckAuth()
 	}
 }
 
+function attempt($dados = [])
+{
+	try
+	{
+		if(isset($dados['senha']))
+			$usuarios = query(
+				"select 
+					u.id as id_usuario,
+					u.usuario,
+				    u.sexo as sexo_usuario,
+				    u.empresa as serie_empresa_usuario,
+				    u.empresa_selecionada as serie_empresa_selecionada_usuario,
+				    u.admin,
+				    u.admin_rede,
+				    u.email,
+				    u.empresa_selecionada,
+				    e.razao as razao_empresa,
+				    e.nome as nome_empresa,
+				    e.inscricao_municipal as im_empresa,
+				    e.inscricao_estadual as ie_empresa,
+				    e.CNPJ_CPF as cnpj_empresa,
+				    re.id as id_rede,
+				    red.nome as nome_rede,
+				    u.grupo_acesso_id 
+				from 
+					".BANCO_DE_DADOS_USUARIOS.".usuarios u 
+				    join ".BANCO_DE_DADOS_USUARIOS.".empresas e on e.serie=u.empresa
+				    join ".BANCO_DE_DADOS_USUARIOS.".redes_empresas re on re.serie_empresa=e.serie
+				    join ".BANCO_DE_DADOS_USUARIOS.".redes red on red.id=re.rede
+				  	where u.email='".$dados['email']."' and u.senha='".md5($dados['senha'])."'			    
+				");
+		else
+			$usuarios = query(
+				"select 
+					u.id as id_usuario,
+					u.usuario,
+				    u.sexo as sexo_usuario,
+				    u.empresa as serie_empresa_usuario,
+				    u.empresa_selecionada as serie_empresa_selecionada_usuario,
+				    u.admin,
+				    u.admin_rede,
+				    u.email,
+				    u.empresa_selecionada,
+				    e.razao as razao_empresa,
+				    e.nome as nome_empresa,
+				    e.inscricao_municipal as im_empresa,
+				    e.inscricao_estadual as ie_empresa,
+				    e.CNPJ_CPF as cnpj_empresa,
+				    re.id as id_rede,
+				    red.nome as nome_rede,
+				    u.grupo_acesso_id 
+				from 
+					".BANCO_DE_DADOS_USUARIOS.".usuarios u 
+				    join ".BANCO_DE_DADOS_USUARIOS.".empresas e on e.serie=u.empresa
+				    join ".BANCO_DE_DADOS_USUARIOS.".redes_empresas re on re.serie_empresa=e.serie
+				    join ".BANCO_DE_DADOS_USUARIOS.".redes red on red.id=re.rede
+				  	where u.email='".$dados['email']."'");
+
+		if(count($usuarios)>0)	
+		{
+			$array = ['id'=>$usuarios[0]->id_usuario, 'sexo'=>$usuarios[0]->sexo_usuario ,'rede'=>$usuarios[0]->id_rede,'usuario'=>$usuarios[0]->usuario,'email'=>$usuarios[0]->email,'manter_login'=>$_POST['manter_login'],'app_id'=>md5(__APP_NOME__),'serie_empresa'=>$usuarios[0]->serie_empresa_usuario,'razao_empresa'=>$usuarios[0]->razao_empresa,'nome_empresa'=>$usuarios[0]->nome_empresa,'im_empresa'=>$usuarios[0]->im_empresa,'ie_empresa'=>$usuarios[0]->ie_empresa,'cnpj_empresa'=>$usuarios[0]->cnpj_empresa,'nome_rede'=>$usuarios[0]->nome_rede,'grupo_acesso_id'=>$usuarios[0]->grupo_acesso_id];
+				$array['empresa_selecionada'] = remove_repeticao_array(limpa_vazios_array(string_virgulas_array($usuarios[0]->empresa_selecionada)));
+				SalvaUsuario($array,$dados['manter']);
+				$parametros = query("select * From ".__PREFIXO_BANCO__.Auth('serie_empresa').".parametros");
+				$array=array();						
+				for ($i=0; $i < count($parametros); $i++):
+					$array[$parametros[$i]->parametro] = $parametros[$i]->valor;				
+				endfor;
+				SalvaParametros($array);	
+				SetLogado('S');
+				return true;
+		}
+		else
+			return false;
+	}
+	catch(Exception $e)
+	{
+		return false;
+	}
+}
+
 function getUserFromCookie()
 {
 	if(isset($_COOKIE[md5(__APP_NOME__.'sessao_salva')]))
 	{
 		$email = base64_decode($_COOKIE[md5(__APP_NOME__.'sessao_salva')]);		
-		$usuarios = query(
-			"select 
-				u.id as id_usuario,
-				u.usuario,
-			    u.sexo as sexo_usuario,
-			    u.empresa as serie_empresa_usuario,
-			    u.empresa_selecionada as serie_empresa_selecionada_usuario,
-			    u.admin,
-			    u.admin_rede,
-			    u.email,
-			    u.empresa_selecionada,
-			    e.razao as razao_empresa,
-			    e.nome as nome_empresa,
-			    e.inscricao_municipal as im_empresa,
-			    e.inscricao_estadual as ie_empresa,
-			    e.CNPJ_CPF as cnpj_empresa,
-			    re.id as id_rede,
-			    red.nome as nome_rede
-			from 
-				".BANCO_DE_DADOS_USUARIOS.".usuarios u 
-			    join ".BANCO_DE_DADOS_USUARIOS.".empresas e on e.serie=u.empresa
-			    join ".BANCO_DE_DADOS_USUARIOS.".redes_empresas re on re.serie_empresa=e.serie
-			    join ".BANCO_DE_DADOS_USUARIOS.".redes red on red.id=re.rede
-			  	where u.email='".$email."'");
-		if(count($usuarios)>0)
-		{
-			$array = ['id'=>$usuarios[0]->id_usuario, 'sexo'=>$usuarios[0]->sexo_usuario ,'admin_rede'=>$usuarios[0]->admin_rede,'rede'=>$usuarios[0]->id_rede,'admin'=>$usuarios[0]->admin,'usuario'=>$usuarios[0]->usuario,
-					'email'=>$usuarios[0]->email,'manter_login'=>'S','app_id'=>APP_ID,'serie_empresa'=>$usuarios[0]->serie_empresa_usuario,'razao_empresa'=>$usuarios[0]->razao_empresa,'nome_empresa'=>$usuarios[0]->nome_empresa,'im_empresa'=>$usuarios[0]->im_empresa,'ie_empresa'=>$usuarios[0]->ie_empresa,'cnpj_empresa'=>$usuarios[0]->cnpj_empresa,'nome_rede'=>$usuarios[0]->nome_rede];
-			$array['empresa_selecionada'] = remove_repeticao_array(limpa_vazios_array(string_virgulas_array(
-					$usuarios[0]->empresa_selecionada)));
-			SalvaUsuario($array,true);
-			$parametros = query("select * From ".__PREFIXO_BANCO__.Auth('serie_empresa').".parametros");
-			$array=array();						
-			for ($i=0; $i < count($parametros); $i++):
-				$array[$parametros[$i]->parametro] = $parametros[$i]->valor;				
-			endfor;
-			SalvaParametros($array);	
-			SetLogado('S');
-		}
+		attempt(['email'=>$email,'manter'=>true]);
 	}			
 }
 
-// fechou navegador , loga de novo 
-//logad0 = S no time out
 function arrayUnique($myArray){
     if(!is_array($myArray))
         return $myArray;
@@ -103,20 +144,19 @@ function arrayUnique($myArray){
 function append_empresa($empresas)
 {
 	remove_empresas();	
-	$_SESSION['dados_usuario']->empresa_selecionada = $empresas;
+	$_SESSION[md5(__APP_NOME__)]->empresa_selecionada = $empresas;
 }
 
 
 function remove_empresas()
 {
 	if(count(Auth('empresa_selecionada'))>0)
-		unset($_SESSION['dados_usuario']->empresa);
+		unset($_SESSION[md5(__APP_NOME__)]->empresa);
 }
 
 function SalvaUsuario($usuario,$lembrar=false)
 {
-	$usuario['ultima_atividade'] = time();
-	$_SESSION['dados_usuario'] = (object) $usuario;
+	$_SESSION[md5(__APP_NOME__)] = (object) $usuario;
 	if($lembrar)
 		setUserCookie($usuario['email']);
 	else
@@ -125,46 +165,30 @@ function SalvaUsuario($usuario,$lembrar=false)
 
 function SalvaParametros($parametro)
 {
-	$_SESSION['dados_usuario']->parametros = (object) $parametro;
-}
-
-
-function ChecarTimeOut($minutos = 15)
-{
-	if(Auth('manter_login')=="N")
-	{
-		if (Auth('ultima_atividade') + $minutos * 60 < time()) 
-			return false;
-		else 
-		    return true;
-	}
-	else
-	{
-		return true;
-	}
+	$_SESSION[md5(__APP_NOME__)]->parametros = (object) $parametro;
 }
 
 function AtualizaUltimaAtividade()
 {
-	$_SESSION['dados_usuario']->ultima_atividade = time();
+	$_SESSION[md5(__APP_NOME__)]->ultima_atividade = time();
 }
 
-function LimpaUsuario()
+function LimpaUsuario($set=true)
 {
-	SetLogado('N');
-	unset($_SESSION['dados_usuario']);
-	session_destroy();
+	unset($_SESSION[md5(__APP_NOME__)]);
+	if($set)	
+		SetLogado('N');
 	CleanUserCookie();
 }
 
 function Auth($variavel="id")
 {
-	if(isset($_SESSION['dados_usuario']))
+	if(isset($_SESSION[md5(__APP_NOME__)]))
 	{
-		if($_SESSION['dados_usuario']->{$variavel}=="")
+		if($_SESSION[md5(__APP_NOME__)]->{$variavel}=="")
 			return null;
 		else
-			return $_SESSION['dados_usuario']->{$variavel};
+			return $_SESSION[md5(__APP_NOME__)]->{$variavel};
 	}
 	else
 		return null;
@@ -172,12 +196,12 @@ function Auth($variavel="id")
 
 function Parametro($variavel="id")
 {
-	if(isset($_SESSION['dados_usuario']))
+	if(isset($_SESSION[md5(__APP_NOME__)]))
 	{
-		if($_SESSION['dados_usuario']->parametros->{$variavel}=="")
+		if($_SESSION[md5(__APP_NOME__)]->parametros->{$variavel}=="")
 			return null;
 		else
-			return $_SESSION['dados_usuario']->parametros->{$variavel};
+			return $_SESSION[md5(__APP_NOME__)]->parametros->{$variavel};
 	}
 	else
 		return null;
@@ -198,4 +222,27 @@ function setUserCookie($email)
 function CleanUserCookie()
 {
 	setcookie(md5(__APP_NOME__.'sessao_salva'),null,-1,'/');		
+}
+
+function Access($op,$module)
+{
+	$consulta = db::table(BANCO_DE_DADOS_USUARIOS.'.config_grupo_acesso')
+	->select($op)
+		->where('grupo_acesso_id','=',Auth('grupo_acesso_id'))
+		->where('modulo','=',$module)
+		->first();
+	if(count($consulta)>0)
+	{
+		
+		$resposta = uppertrim($consulta->{$op});
+		
+		if(count($resposta)<=0)
+			return false;
+		if($resposta==uppertrim("S"))
+			return true;
+		else
+			return false;
+	}
+	else
+		return false;
 }

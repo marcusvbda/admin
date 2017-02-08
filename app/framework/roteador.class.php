@@ -37,6 +37,9 @@ class Route
 				$posicao ++;
 			}
 		}
+
+
+
 		$nome_controller = $controller;	
 		require __CODE__.'/controllers/'.$nome_controller.'.php';
 		$controller = new $controller;
@@ -45,6 +48,7 @@ class Route
 		// define metodo
 		if(isset($url[$posicao]))
 		{
+
 			if(method_exists($controller, strtolower($request_method).ucfirst($url[$posicao])))
 			{
 				$metodo = $url[$posicao];

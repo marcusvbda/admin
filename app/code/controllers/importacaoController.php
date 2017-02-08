@@ -65,6 +65,7 @@ class importacaoController extends controller
 	public function Dt_ultima_imp()
 	{
     	$query = query("select * from importacoes where id = (select max(id) as id from importacoes)");	
+    	$query = db::table("importacoes")->whereRaw("id = (select max(id) as id from importacoes)")->get();	
 	    if(count($query)>0)
 	    	return data_formatada($query[0]->created_at);
 	    else

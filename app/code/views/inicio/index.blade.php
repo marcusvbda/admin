@@ -69,15 +69,31 @@
       </div>
 
 <div class="row">
-	<div class="col-md-12">
-		<div class="box">
-		    <div class="box-header with-border">
-		      <p class="title_box"></p>
-		      <div class="box-tools pull-right">
-		        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"><i class="fa fa-minus"></i></button></div>
-		      </div>
-		    </div>
-		</div>
-	</div>
+  <div class="col-md-12">
+    <div class="box"  id="movimento_porcento_circulos">
+      <div class="box-header" style="height: 10px">
+            <p class="title_box">Movimento Grupos de Produto (%)</p>  
+            <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+              <i class="fa fa-minus"></i>
+            </button>                   
+          </div>  
+      </div>
+      <div class="box-body"> 
+        <!-- conteudo -->        
+          <div class="row text-center" id="div_loading_grupos" style="height: 200px;" title="Carregando ...">      
+            <img src="{{asset('template/img/loading.gif')}}">
+          </div>
+
+          <div class="row" id="div_conteudo_grupos" style="display: none;"></div>
+        
+      </div>
+    </div>
+  </div>
 </div>
+
+<script src="{{asset()}}template/bootstrap/js/circulos.js"></script>
+
 @stop
+
+

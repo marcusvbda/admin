@@ -6,12 +6,43 @@ class app
 	{
 		App::PrepareRest();
 		$this->request = Route::getParametros(App::getUrl(),$_SERVER['REQUEST_METHOD']);
+		$_POST=null;$_GET=null;$_FILES=null;
+		$this->request;			
+		switch ($this->request) 
+		{
+			case 505:
+				$erro = 505;
+				$sub  = "Página Bloqueada !!";
+				$subsub  = "Você não tem acesso a esta página :(";
+				Controller::view('paginas.erro',compact('erro','sub','subsub'));
+				exit;
+			case 404:
+				$erro = 404;
+				$sub  = "Página não encontrada !!";
+				$subsub  = "Você deve ter se confundido :(";
+				Controller::view('paginas.erro',compact('erro','sub','subsub'));
+				exit;
+		}
+	}
 
-		if($this->request==404)
-			Route::direcionar(asset('erros/NAO_EXISTE'));
-		if($this->request==303)
-			Route::direcionar(asset('erros/SEM_PERMISSAO'));
-		unset($_POST,$_GET);		
+	public function erro($erro)
+	{
+		switch ($erro) 
+		{
+			case 505:
+				$erro = 505;
+				$sub  = "Página Bloqueada !!";
+				$subsub  = "Você não tem acesso a esta página :(";
+				Controller::view('paginas.erro',compact('erro','sub','subsub'));
+				exit;
+			case 404:
+				$erro = 404;
+				$sub  = "Página não encontrada !!";
+				$subsub  = "Você deve ter se confundido :(";
+				Controller::view('paginas.erro',compact('erro','sub','subsub'));
+				exit;
+		}
+		
 	}
 
 	public function PrepareRest()
@@ -49,6 +80,8 @@ class app
 	{
 		if(middleware::liberado($this->request['NOME_CONTROLLER'],$this->request['METODO']))
 			Route::executar($this->request['CONTROLLER'],$this->request['METODO'],$this->request['PARAMETROS']);
+		else
+			App::erro(505);
 	}
 
 

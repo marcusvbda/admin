@@ -1,10 +1,10 @@
 <?php
+use Whoops\Run;
+use Whoops\Handler\PrettyPageHandler;
+
 session_start();
 starter::preparar();
 starter::carregar();
-$app = new app();
-$app->run();
-
 
 class starter 
 {
@@ -42,8 +42,8 @@ class starter
 	}
 }
 date_default_timezone_set('America/Sao_Paulo');
-
-
-
-
-
+$run     = new \Whoops\Run;
+$run->pushHandler( new \Whoops\Handler\PrettyPageHandler);
+$run->register();
+$app = new app();
+$app->run();
