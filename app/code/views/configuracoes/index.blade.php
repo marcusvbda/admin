@@ -149,7 +149,7 @@
 </div>
 
 <div class="col-md-12">
-	<button class="btn btn-primary" id="btn_salvar" style="display:none;"><span class="glyphicon glyphicon-ok"></span> Salvar Alterações</button>
+	<button class="btn btn-primary btn-sm" id="btn_salvar" style="display:none;"><span class="glyphicon glyphicon-ok"></span> Salvar Alterações</button>
 </div>
 
 

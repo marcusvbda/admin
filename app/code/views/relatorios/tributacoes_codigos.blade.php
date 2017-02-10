@@ -55,7 +55,7 @@
 							@if(isset($cst_saida)) value="{{$cst_saida}}" @endif>
 						</div>						
 						<div class="col-md-2">
-							<button type="submit" onclick="filtrar()" style="padding-bottom: 30px;padding-top: 30px;" class="btn btn-default"><span class="glyphicon glyphicon-print"></span> Relatório</button>
+							<button type="submit" onclick="filtrar()" style="padding-bottom: 30px;padding-top: 30px;" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-print"></span> Relatório</button>
 						</div>
 					</div>
 

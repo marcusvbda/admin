@@ -377,7 +377,7 @@
     <div class="row">
       <div id="btn_visualizacao">
         <div class="col-md-6">
-          <button id="btn_voltar" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</button>
+          <button id="btn_voltar" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</button>
         </div>
       </div>     
     </div>

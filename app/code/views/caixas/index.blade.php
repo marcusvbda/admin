@@ -90,10 +90,10 @@
 			<hr>
 		  	<div class="row">
 		  		<div class="col-md-2 text-left">
-					<a onclick="voltar_selecao();"><button class="btn btn-warning">Voltar</button></a>
+					<a onclick="voltar_selecao();"><button class="btn btn-warning btn-sm">Voltar</button></a>
 				</div>
 				<div class="col-md-2 text-right">
-					<a id="btn_visualizar"><button class="btn btn-primary">Visualizar</button></a>
+					<a id="btn_visualizar"><button class="btn btn-primary btn-sm">Visualizar</button></a>
 				</div>
 			</div>
 				

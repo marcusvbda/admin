@@ -33,7 +33,7 @@
               <input class="form-control" type="text" id="descricao" maxlength="50" placeholder="Descrição" name="">
             </div>
             <div class="col-md-2">
-              <button class="btn btn-primary" id="btn_salvar" style="margin-top: 25px">Salvar</button>
+              <button class="btn btn-primary btn-sm" id="btn_salvar" style="margin-top: 25px">Salvar</button>
             </div>   
           </div>           
         </div>          

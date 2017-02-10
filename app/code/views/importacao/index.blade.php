@@ -23,10 +23,10 @@
           <a href="{{asset('importacao/importar')}}"><button  class="btn btn-success">Importar</button></a>
         </div>
         <div class="col-md-12 text-center">
-          <a href="{{asset('importacao/importados')}}"><button class="btn btn-warning">Importados</button></a>
+          <a href="{{asset('importacao/importados')}}"><button class="btn btn-warning btn-sm">Importados</button></a>
         </div>
         <div class="col-md-12 text-center">
-          <a href="{{asset('importacao/erro')}}"><button class="btn btn-danger">Erro</button></a>
+          <a href="{{asset('importacao/erro')}}"><button class="btn btn-danger btn-sm">Erro</button></a>
         </div>
     </div>
   </div>

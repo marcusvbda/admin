@@ -24,7 +24,7 @@
         </div>
 
      
-          <!-- <button title="Gerar Relatório" onclick="imprimir();" class="btn btn-default pull-right"><span class="glyphicon glyphicon-print"></span></button> -->
+          <!-- <button title="Gerar Relatório" onclick="imprimir();" class="btn btn-default btn-sm pull-right"><span class="glyphicon glyphicon-print"></span></button> -->
 
           <hr>
 
@@ -48,12 +48,12 @@
 
                         <div class="tools text-right">           
                           @if(Access("GET","grupos_acesso"))           
-                          <a title="Visualizar / Alterar" class="btn btn-primary" href="{{asset('usuarios/showgrupoacesso/').$grupo->id}}">
+                          <a title="Visualizar / Alterar" class="btn btn-primary btn-sm" href="{{asset('usuarios/showgrupoacesso/').$grupo->id}}">
                             <i class="fa fa-edit"></i> Visualizar / Alterar
                           </a>
                           @endif 
                           @if(Access("DELETE","grupos_acesso"))           
-                          <a title="Visualizar / Alterar" class="btn btn-danger"onclick="excluir({{$grupo->id}})">
+                          <a title="Visualizar / Alterar" class="btn btn-danger btn-sm"onclick="excluir({{$grupo->id}})">
                             <i class="fa fa-trash"></i> Excluir
                           </a>
                           @endif 
@@ -73,7 +73,7 @@
     @if(Access("POST","grupos_acesso"))
       <div class="row">
         <div class="col-md-1">
-          <a href="{{asset('usuarios/create_grupos_acesso')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Cadastrar</a>
+          <a href="{{asset('usuarios/create_grupos_acesso')}}" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Cadastrar</a>
         </div>
       </div>
     @endif
@@ -82,7 +82,7 @@
 
 <div id="editar" style="display: none">
   <h1>editar / visualizar</h1>
-  <a onclick="step('#editar','#index')" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> voltar</a>
+  <a onclick="step('#editar','#index')" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> voltar</a>
 
 </div>
 

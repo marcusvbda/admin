@@ -88,7 +88,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">                
                 <div class="pull-right">
-                  <button onclick="sair()" class="btn btn-danger">Sair</button>
+                  <button onclick="sair()" class="btn btn-danger btn-sm">Sair</button>
                 </div>
               </li>
             </ul>
@@ -323,8 +323,8 @@
         <p><div id="msg_msg1"></div></p>
       </div>
       <div  class="modal-footer" id="btn_msg1">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
-        <button  id="btn_confirmar_mensagem1"  type="button" onclick="" data-dismiss="modal" class="btn btn-primary">Sim</button>
+        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Não</button>
+        <button  id="btn_confirmar_mensagem1"  type="button" onclick="" data-dismiss="modal" class="btn btn-primary btn-sm">Sim</button>
       </div>
     </div>    
   </div>
@@ -346,7 +346,7 @@
         <p><div id="msg_msg2"></div></p>
       </div>
       <div  class="modal-footer">
-        <button  id="btn_voltar_mensagem2" type="button" class="btn btn-danger" data-dismiss="modal">Voltar</button>
+        <button  id="btn_voltar_mensagem2" type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Voltar</button>
       </div>
     </div>    
   </div>

@@ -44,7 +44,7 @@
 
 	<div class="row" >
 	    <div class="col-md-6">
-	      <button id="btn_salvar" style="display:none;" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Salvar Alteração</button>
+	      <button id="btn_salvar" style="display:none;" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-ok"></span> Salvar Alteração</button>
 	    </div>
 	</div>
 </div>

@@ -621,7 +621,7 @@
         </div>
         <br>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Fechar</button>
         </div>
       </div>
       

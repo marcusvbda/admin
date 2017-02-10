@@ -46,7 +46,7 @@
                     <td>{{$produto->descricao}}</td>
                     <td class="centro text-right">
                       <div class="tools">                      
-                        <a title="Visualizar" href='{{asset("produtos/show/$produto->sequencia")}}' class="btn btn-primary">
+                        <a title="Visualizar" href='{{asset("produtos/show/$produto->sequencia")}}' class="btn btn-primary btn-sm">
                           <i class="fa fa-search" title="Visualizar"></i> Visualizar
                         </a>                       
                       </div>

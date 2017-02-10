@@ -23,7 +23,7 @@
       </div>
 
    
-        <!-- <button title="Gerar Relatório" onclick="imprimir();" class="btn btn-default pull-right"><span class="glyphicon glyphicon-print"></span></button> -->
+        <!-- <button title="Gerar Relatório" onclick="imprimir();" class="btn btn-default btn-sm pull-right"><span class="glyphicon glyphicon-print"></span></button> -->
 
         <hr>
 
@@ -47,7 +47,7 @@
 
                       <div class="tools text-right">           
                         @if(Access("PUT","usuarios"))           
-                        <a title="Visualizar / Alterar" href="{{asset('usuarios/show/').$usuario->id}}" class="btn btn-primary">
+                        <a title="Visualizar / Alterar" href="{{asset('usuarios/show/').$usuario->id}}" class="btn btn-primary btn-sm btn-sm">
                           <i class="fa fa-edit" ></i> Visualizar / Alterar
                         </a>
                         @endif 
@@ -67,7 +67,7 @@
   @if(Access("POST","usuarios"))
     <div class="row">
       <div class="col-md-1">
-        <a href="{{asset('usuarios/novo')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Cadastrar</a>
+        <a href="{{asset('usuarios/novo')}}" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Cadastrar</a>
       </div>
     </div>
   @endif

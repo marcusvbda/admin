@@ -75,7 +75,7 @@
             </div>
 
             <div class="col-md-1">
-              <button class="btn btn-default" onclick="filtrar()" style="padding-bottom: 30px;padding-top: 30px;"><i class="glyphicon glyphicon-search"></i> Buscar</button>
+              <button class="btn btn-default btn-sm" onclick="filtrar()" style="padding-bottom: 30px;padding-top: 30px;"><i class="glyphicon glyphicon-search"></i> Buscar</button>
             </div>
 
           </div>
