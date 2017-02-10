@@ -3,6 +3,29 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Capsule\Manager as DB;
 use Jenssegers\Blade\Blade;
 
+	function limparcamposbrancos($array)
+	{
+		foreach ($array as $campo => $value) 
+		{
+			if(($array[$campo]=="")||(is_null($array[$campo])))
+				unset($array[$campo]);
+		}
+		return $array;
+	}
+
+	function array_param($array,$campo)
+	{	
+		$parametros_padrao = ['valida_token'=>true,'limpa_campos_vazios'=>false];
+		if(isset($array[$campo]))
+		{
+			if($array[$campo])
+				return true;
+			else
+				return false;
+		}	
+		else
+			return $parametros_padrao[$campo];
+	}
 function uppertrim($string)
 {
 	return strtoupper(trim($string));

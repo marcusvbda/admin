@@ -3,17 +3,28 @@
 	{		
 		public function set($campo,$valor)
 		{
-			unset($_SESSION['GLOBAL'][$campo]);
-			$_SESSION['GLOBAL']=[$campo=>$valor];
+			unset($_SESSION[md5('GLOBAL')][md5(__APP_NOME__)][$campo]);
+			$_SESSION[md5('GLOBAL')][md5(__APP_NOME__)][$campo]=$valor;
+		}
+
+		public function delete($campo)
+		{
+			unset($_SESSION[md5('GLOBAL')][md5(__APP_NOME__)][$campo]);
 		}
 
 		public function get($campo)
 		{
-			if(isset($_SESSION['GLOBAL'][$campo]))
-				return $_SESSION['GLOBAL'][$campo];
+			if(isset($_SESSION[md5('GLOBAL')][md5(__APP_NOME__)][$campo]))
+				return $_SESSION[md5('GLOBAL')][md5(__APP_NOME__)][$campo];
 			else
 				return null;
 		}
+
+		public function destroy()
+		{
+			unset($_SESSION[md5('GLOBAL')][md5(__APP_NOME__)]);
+		}
+
 	}
 
 	class Request
@@ -72,26 +83,3 @@
 		}
 	}
 
-	function limparcamposbrancos($array)
-	{
-		foreach ($array as $campo => $value) 
-		{
-			if(($array[$campo]=="")||(is_null($array[$campo])))
-				unset($array[$campo]);
-		}
-		return $array;
-	}
-
-	function array_param($array,$campo)
-	{	
-		$parametros_padrao = ['valida_token'=>true,'limpa_campos_vazios'=>false];
-		if(isset($array[$campo]))
-		{
-			if($array[$campo])
-				return true;
-			else
-				return false;
-		}	
-		else
-			return $parametros_padrao[$campo];
-	}

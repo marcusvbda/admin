@@ -11,8 +11,8 @@
  </small>
 </h1>
 <ol class="breadcrumb">
-  <li><a href="{{asset('admin/inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="{{asset('admin/empresa')}}"><i class="glyphicon glyphicon-object-align-bottom"></i> Empresa</a></li>
+  <li><a href="{{asset('inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
+  <li><a href="{{asset('empresa')}}"><i class="glyphicon glyphicon-object-align-bottom"></i> Empresa</a></li>
 </ol>
 @stop
 

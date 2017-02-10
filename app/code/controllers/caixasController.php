@@ -65,7 +65,7 @@ class caixasController extends controller
 		  DATE_FORMAT(datafechamento, '%d/%m/%Y') as datafechamento_formatada
 		  from caixa where numero={$numero}",false);
 		if(is_null($caixa))
-			redirecionar(asset('erros/404'));
+			App::erro(404);
 
 		$manutencoes = query("Select DATE_FORMAT(m.datalancamento, '%d/%m/%Y') as data_formatada,  m.* from manutencaocaixa m where m.id_caixa={$caixa->id}");
 		$manutencoes_agrupadas = query("select sum(m.valor) as valor,m.tipo from manutencaocaixa m where m.id_caixa={$caixa->id} group by m.tipo");

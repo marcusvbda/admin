@@ -7,8 +7,8 @@
   <small>Listagem e cadastro</small>
 </h1>
 <ol class="breadcrumb">
-  <li><a href="{{asset('admin/inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="{{asset('admin/usuarios')}}"><i class="glyphicon glyphicon-user"></i> Usuários</a></li>
+  <li><a href="{{asset('inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
+  <li><a href="{{asset('usuarios')}}"><i class="glyphicon glyphicon-user"></i> Usuários</a></li>
 </ol>
 @stop
 
@@ -35,7 +35,7 @@
                   <tr>
                       <th>Usuário</th>
                       <th>email</th>
-                      <th class="centro"><span class="glyphicon glyphicon-cog"></span></th>
+                      <th></th>
                   </tr>
                </thead>
                <tbody>
@@ -45,17 +45,12 @@
                     <td>{{$usuario->email}}</td>
                     <td class="centro">
 
-                      <div class="tools">           
+                      <div class="tools text-right">           
                         @if(Access("PUT","usuarios"))           
-                        <a title="Visualizar / Alterar" href="{{asset('usuarios/show/').$usuario->id}}" ">
-                          <i class="fa fa-edit" style="color:#3C8DBC;" ></i>
+                        <a title="Visualizar / Alterar" href="{{asset('usuarios/show/').$usuario->id}}" class="btn btn-primary">
+                          <i class="fa fa-edit" ></i> Visualizar / Alterar
                         </a>
-                        @endif
-                        @if(Access("DELETE","usuarios"))
-                        <a title="Excluir" onclick="excluir({{$usuario->id}})">
-                          <i class="fa fa-trash-o" style="color:#DD4B39;"></i>
-                        </a>
-                        @endif  
+                        @endif 
                       </div>
 
                     </td>
@@ -69,7 +64,7 @@
       </div>          
   </div>  
 
-  @if(Access("GET","usuarios"))
+  @if(Access("POST","usuarios"))
     <div class="row">
       <div class="col-md-1">
         <a href="{{asset('usuarios/novo')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Cadastrar</a>

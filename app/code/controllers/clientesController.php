@@ -18,13 +18,13 @@ class clientesController extends controller
 	public function getShow($id)
 	{
 		if($id=="")
-			redirecionar(asset('erros/404'));
+			App::erro(404);
 		$cliente = DB::table('clientes')			
 				->where('sequencia','=',$id)
 					->where('excluido','=','N')
 							->get();
 		if(count($cliente)==0)
-			redirecionar(asset('erros/404'));
+			App::erro(404);
 		$cliente=$cliente[0];
 		registralog("Visualizou o cliente :".$id);	
 

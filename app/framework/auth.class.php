@@ -4,7 +4,7 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 function CheckAuth()
 {	
-	if(!isset($_SESSION[md5(__APP_NOME__)]->USUARIO)) 
+	if(!isset($_SESSION[md5(__APP_NOME__)]->usuario)) 
 		getUserFromCookie();
 
 	if(isset($_SESSION[md5(__APP_NOME__)]->usuario)) 
@@ -35,8 +35,6 @@ function CheckAuth()
 
 function attempt($dados = [])
 {
-	try
-	{
 		if(isset($dados['senha']))
 			$usuarios = query(
 				"select 
@@ -45,8 +43,6 @@ function attempt($dados = [])
 				    u.sexo as sexo_usuario,
 				    u.empresa as serie_empresa_usuario,
 				    u.empresa_selecionada as serie_empresa_selecionada_usuario,
-				    u.admin,
-				    u.admin_rede,
 				    u.email,
 				    u.empresa_selecionada,
 				    e.razao as razao_empresa,
@@ -62,7 +58,8 @@ function attempt($dados = [])
 				    join ".BANCO_DE_DADOS_USUARIOS.".empresas e on e.serie=u.empresa
 				    join ".BANCO_DE_DADOS_USUARIOS.".redes_empresas re on re.serie_empresa=e.serie
 				    join ".BANCO_DE_DADOS_USUARIOS.".redes red on red.id=re.rede
-				  	where u.email='".$dados['email']."' and u.senha='".md5($dados['senha'])."'			    
+				  	where u.email='".$dados['email']."' and u.senha='".md5($dados['senha'])."'
+				  	and excluido='N'		    
 				");
 		else
 			$usuarios = query(
@@ -72,8 +69,6 @@ function attempt($dados = [])
 				    u.sexo as sexo_usuario,
 				    u.empresa as serie_empresa_usuario,
 				    u.empresa_selecionada as serie_empresa_selecionada_usuario,
-				    u.admin,
-				    u.admin_rede,
 				    u.email,
 				    u.empresa_selecionada,
 				    e.razao as razao_empresa,
@@ -89,7 +84,7 @@ function attempt($dados = [])
 				    join ".BANCO_DE_DADOS_USUARIOS.".empresas e on e.serie=u.empresa
 				    join ".BANCO_DE_DADOS_USUARIOS.".redes_empresas re on re.serie_empresa=e.serie
 				    join ".BANCO_DE_DADOS_USUARIOS.".redes red on red.id=re.rede
-				  	where u.email='".$dados['email']."'");
+				  	where u.email='".$dados['email']."' and excluido='N'");
 
 		if(count($usuarios)>0)	
 		{
@@ -107,19 +102,15 @@ function attempt($dados = [])
 		}
 		else
 			return false;
-	}
-	catch(Exception $e)
-	{
-		return false;
-	}
 }
 
 function getUserFromCookie()
 {
-	if(isset($_COOKIE[md5(__APP_NOME__.'sessao_salva')]))
+	if(isset($_COOKIE[md5(__APP_NOME__)]))
 	{
-		$email = base64_decode($_COOKIE[md5(__APP_NOME__.'sessao_salva')]);		
+		$email = base64_decode($_COOKIE[md5(__APP_NOME__)]);		
 		attempt(['email'=>$email,'manter'=>true]);
+		conectar(__PREFIXO_BANCO__.Auth('serie_empresa'));
 	}			
 }
 
@@ -216,21 +207,23 @@ function SetLogado($logado = "S")
 
 function setUserCookie($email)
 {
-	setcookie(md5(__APP_NOME__.'sessao_salva'),base64_encode($email), time()+(3600*24*365),'/');
+	setcookie(md5(__APP_NOME__),base64_encode($email), time()+(3600*24*365),'/');
 }
 
 function CleanUserCookie()
 {
-	setcookie(md5(__APP_NOME__.'sessao_salva'),null,-1,'/');		
+	setcookie(md5(__APP_NOME__),null,-1,'/');		
 }
 
 function Access($op,$module)
 {
-	$consulta = db::table(BANCO_DE_DADOS_USUARIOS.'.config_grupo_acesso')
-	->select($op)
-		->where('grupo_acesso_id','=',Auth('grupo_acesso_id'))
-		->where('modulo','=',$module)
-		->first();
+	$consulta = db::table(BANCO_DE_DADOS_USUARIOS.'.config_grupo_acesso as conf')
+		->select($op)
+			->join(BANCO_DE_DADOS_USUARIOS.'.modulos as mod','mod.id','=','conf.modulo_id')
+			->where('conf.grupo_acesso_id','=',Auth('grupo_acesso_id'))
+			->where('mod.modulo','=',$module)
+			->first();
+
 	if(count($consulta)>0)
 	{
 		

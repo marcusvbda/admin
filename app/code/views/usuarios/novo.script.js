@@ -22,7 +22,7 @@ $('#btn_confirmar').on('click', function()
 
           msg_stop(":)","Cadastrado com sucesso !!",function()
           {
-            reload();
+            location.href="{{asset('usuarios')}}";
           },"success");     
         });
 

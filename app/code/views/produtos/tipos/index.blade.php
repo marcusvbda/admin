@@ -7,8 +7,8 @@
   <small>Tipos</small>
 </h1>
 <ol class="breadcrumb">
-  <li><a href="{{asset('admin/inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="{{asset('admin/produtos/tipos')}}"><i class="glyphicon glyphicon-erase"></i> Tipos Produtos</a></li>
+  <li><a href="{{asset('inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
+  <li><a href="{{asset('produtos/tipos')}}"><i class="glyphicon glyphicon-erase"></i> Tipos Produtos</a></li>
 </ol>
 @stop
 

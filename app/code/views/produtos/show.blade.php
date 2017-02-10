@@ -7,8 +7,8 @@
   <small>Consulta</small>
 </h1>
 <ol class="breadcrumb">
-  <li><a href="{{asset('admin/inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="{{asset('admin/produtos')}}"><i class="glyphicon glyphicon-erase"></i> Produtos</a></li>
+  <li><a href="{{asset('inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
+  <li><a href="{{asset('produtos')}}"><i class="glyphicon glyphicon-erase"></i> Produtos</a></li>
   <li><a><i class="glyphicon glyphicon-search"></i> Consulta</a></li>
 </ol>
 @stop
@@ -52,11 +52,11 @@
                     </div>  
                     <div class="col-md-3">
                       <label>Tipo</label>
-                      @if($produto->tipoproduto=="C")
+                      @if(uppertrim($produto->tipoproduto)==="C")
                           <input type="text" readonly class="form-control" value="Combustivel">
-                      @elseif($produto->tipoproduto=="P")
+                      @elseif(uppertrim($produto->tipoproduto)==="P")
                         <input type="text" readonly class="form-control" value="Produto">
-                      @elseif($produto->tipoproduto=="S")
+                      @elseif(uppertrim($produto->tipoproduto)==="S")
                         <input type="text" readonly class="form-control" value="Serviço">
                       @endif                     
                     </div>                 
@@ -88,7 +88,7 @@
                   <div class="row">
                     <div class="col-md-2">
                       <label>Alteração Grupo</label>
-                      @if($produto->unidadeconversao=='S')
+                      @if(uppertrim($produto->unidadeconversao)==="S")
                         <input type="text" readonly class="form-control" value="SIM" >
                       @else
                         <input type="text" readonly class="form-control" value="NÃO" >                        
@@ -96,7 +96,7 @@
                     </div> 
                     <div class="col-md-2">
                       <label>Comissionado</label>
-                      @if($produto->comissionado=='S')
+                      @if(uppertrim($produto->comissionado)==="S")
                         <input type="text" readonly class="form-control" value="SIM">
                       @else
                         <input type="text" readonly class="form-control" value="NÃO">                        
@@ -105,8 +105,8 @@
                   </div>
                   <div class="row">
                     <div class="col-md-3">
-                      <label>Venda Frente de Caixa</label>                   
-                        @if($produto->vendafrentedecaixa=='S')
+                      <label>Venda Frente de Caixa</label>
+                        @if(uppertrim($produto->vendafrentecaixa)==="S") 
                           <input type="text" readonly class="form-control" value="SIM" >
                         @else
                           <input type="text" readonly class="form-control" value="NÃO" >                        
@@ -115,7 +115,7 @@
                     <div class="col-md-2">
                       <label>Arredondamento</label>
                        <!--  -->
-                        @if($produto->arredondamentotruncamento=='T')
+                        @if(uppertrim($produto->arredondamentotruncamento)==="S")
                           <input type="text" readonly class="form-control" value="Truncado" >
                         @else
                           <input type="text" readonly class="form-control" value="Arredondamento" >                        
@@ -125,7 +125,7 @@
                   <div class="row">
                     <div class="col-md-3">
                       <label>Bloquear Estoque Zerado</label>    
-                        @if($produto->bloquearvendaestoquezerado=='S')
+                        @if(uppertrim($produto->bloquearvendaestoquezerado)==="S")
                           <input type="text" readonly class="form-control" value="SIM" >
                         @else
                           <input type="text" readonly class="form-control" value="NÃO" >                        
@@ -134,7 +134,7 @@
                     <div class="col-md-2">
                     <!--  -->
                       <label>Produção</label>
-                        @if($produto->arredondamentotruncamento=='P')
+                        @if(uppertrim($produto->arredondamentotruncamento)==="P")
                           <input type="text" readonly class="form-control" value="PRÓPRIA" >
                         @else
                           <input type="text" readonly class="form-control" value="TERCEIRO" >                        
@@ -386,8 +386,8 @@
 
 
 
-<script src="{{PASTA_PUBLIC}}/template/plugins/jQuery/jquery.min.js"></script>
-<script src="{{PASTA_PUBLIC}}/template/bootstrap/js/custom.js"></script>
+<script src="{{__PUBLIC__}}/template/plugins/jQuery/jquery.min.js"></script>
+<script src="{{__PUBLIC__}}/template/bootstrap/js/custom.js"></script>
 <script type="text/javascript">
 $('#btn_voltar').on('click', function() 
 {

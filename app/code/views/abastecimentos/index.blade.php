@@ -7,8 +7,8 @@
   <small>Listagem</small>
 </h1>
 <ol class="breadcrumb">
-  <li><a href="{{asset('admin/inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="{{asset('admin/abastecimentos')}}"><i class="glyphicon glyphicon-erase"></i> Abastecimentos</a></li>
+  <li><a href="{{asset('inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
+  <li><a href="{{asset('abastecimentos')}}"><i class="glyphicon glyphicon-erase"></i> Abastecimentos</a></li>
 </ol>
 @stop
 

@@ -14,7 +14,7 @@ class relatoriosController extends controller
 
 	public function getIndex()
 	{
-		redirecionar(asset('erros/404'));
+		App::erro(404);
 	}
 
 	public function getTributacoes_codigos()

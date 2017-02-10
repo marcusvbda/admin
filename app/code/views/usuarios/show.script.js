@@ -1,105 +1,62 @@
-$('#btn_alterar').on('click', function() 
-{
-    $('#usuario').attr('readonly', false);
-    $('#email').attr('readonly', false);
-    $('#sexo').attr('readonly', false);
-    $('#rd_admin').attr('readonly', false);
-    $('#btn_visualizacao').toggle(150);
-    $('#btn_alteracao').toggle(150);
-}); 
+@if(Access("DELETE","usuarios"))
+  $("#div_alt_excluir").load("{{asset('usuarios/AlterarExcluir')}}",{});
+@endif
+@if(Access("PUT","usuarios"))
+  $("#div_alt_email").load("{{asset('usuarios/AlterarEmail')}}",{});
+  $("#div_alt_senha").load("{{asset('usuarios/AlterarSenha')}}",{});
 
-$('#btn_cancelar').on('click', function() 
-{
-    $('#usuario').attr('readonly', true);
-    $('#email').attr('readonly', true);
-    $('#sexo').attr('readonly', true);
-    $('#rd_admin').attr('readonly', true);
-    $('#btn_alteracao').toggle(150);    
-    $('#btn_visualizacao').toggle(150);
-}); 
-
-
-$('#btn_confirmar').on('click', function() 
-{
-  if (($('#usuario').val()=="") || 
-      ($('#email').val()=="") || 
-      ($('#sexo').val()=="") || 
-      ($('#senha').val()=="") || 
-      ($('#confirme_senha').val()==""))
-  {
-    mensagem_validacao("Todos os campos são obrigatórios para este formulário !");
-    return false;
-  }  
-  else
-  {
-      if(($('#senha').val())!=($('#confirme_senha').val()))
+  function editar()
+    {
+      msg_confirm("Confirmação","Editar Informações deste profile ?",function()
       {
-        mensagem_validacao("Senhas não conferem !");
-        return false;
-      }
-      else
+        liberar();
+      });
+    }
+
+    function cancelaredicao()
+    {
+      msg_confirm("Cancelar","As alterações serão perdidas ?",function()
       {
-        email = $('#email').val();
-        id = $('#id').val();
-        $.get('../Usuarioexiste_editar/'+email+'/'+id,function(data)
+        reload();
+      });
+    } 
+
+    function salvar()
+    {
+      if(!ValidarCampos(["#usuario"]))
+        return msg("Oops","Os campos em vermelho são obrigatórios","error");
+
+      msg_confirm("Salvar","As alterações serão salvas ?",function()
+      {
+        var dados        = $('#frm_usuario').getData();
+        dados['id']={{$usuario->id}};
+        send('PUT',"{{asset('usuarios/AlterarUsuario')}}",{dados},function(sucesso)
         {
-            if(data=='SIM')
+          if(sucesso)
+            msg_stop(":)","Salvo com sucesso !!",function()
             {
-              mensagem_validacao("Email em uso por outro usuário !");
-              return false;
-            }
-            else
+              location.href="{{asset('usuarios')}}";
+            },'success');
+          else
+            msg_stop("Oops","Erro ao salvar !!",function()
             {
-              alterar();
-            }            
-        });
-      }
-  }    
-}); 
+              reload();
+            },"error");
+        },"{{Request::getToken()}}");  
+      },false);
+    }
 
-
-function alterar()
-{
-  var usuario = $("#usuario").val();
-  var id = $("#id").val();
-  var email = $("#email").val();
-  var sexo = $("#sexo").val();
-  var admin = $("#admin").val();
-  SEND('PUT',"{{asset('usuarios/editar')}}",{usuario:usuario,id:id,email:email,sexo:sexo,admin:admin});
-}
-
-
-function mensagem_validacao(msg)
-{
-  $('#titulo_msg2').html('Aviso');
-  $('#msg_msg2').html(msg);
-  $('#mensagem2').modal('show'); 
-}
-
-$('#admin_checkbox').on('change', function() 
-{
-  if($('#admin').val()=='S')
-    $('#admin').val('N');
-  else
-    $('#admin').val('S');
-}); 
-
-function setAdmin(adm)
-{
-  $('#admin').val(adm);
-}
-
-function trocabotoes()
-{
-  $('#btn_alterar').toggle(150);
-  $('#btn_confirmar').toggle(150);
-  $('#btn_cancelar').toggle(150);
-  $('#div_risco').toggle(150);
-}
-
-function desabilitar_inputs(disabled)
-{
-  $("#usuario").prop('disabled', disabled);
-  $("#email").prop('disabled', disabled);
-  $("#admin_checkbox").prop('disabled', disabled);
-}
+    function liberar()
+    {
+      $("#btn_editar_info").hide();
+      $("#btn_salvar_info").hide();
+      $("#danger_zone").hide();
+      $("#btn_salvar_info").toggle(150);
+      $("#danger_zone").toggle(150);
+      $("#frm_usuario :input").prop('disabled', false);
+      $('#div_resumo').toggle(150);
+      $('#div_campos').removeClass('col-md-10');
+      $('#div_campos').removeClass('col-md-12');
+    }
+    
+@endif

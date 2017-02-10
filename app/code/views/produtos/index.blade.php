@@ -7,8 +7,8 @@
   <small>Listagem</small>
 </h1>
 <ol class="breadcrumb">
-  <li><a href="{{asset('admin/inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="{{asset('admin/produtos')}}"><i class="glyphicon glyphicon-erase"></i> Produtos</a></li>
+  <li><a href="{{asset('inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
+  <li><a href="{{asset('produtos')}}"><i class="glyphicon glyphicon-erase"></i> Produtos</a></li>
 </ol>
 @stop
 
@@ -34,7 +34,7 @@
                       <th>Código Estendido</th>
                       <th>Nome</th>
                       <th>Descrição</th>
-                      <th class="centro"><span class="glyphicon glyphicon-cog"></span></th>                      
+                      <th class="centro"></th>                      
                   </tr>
                </thead>
                <tbody>
@@ -44,10 +44,10 @@
                     <td>{{$produto->codigoestendido}}</td>
                     <td>{{$produto->nomefantasia}}</td>
                     <td>{{$produto->descricao}}</td>
-                    <td class="centro">
+                    <td class="centro text-right">
                       <div class="tools">                      
-                        <a title="Visualizar" href='{{asset("produtos/show/$produto->sequencia")}}'>
-                          <i class="fa fa-search" style="color:#3C8DBC;" title="Visualizar"></i>
+                        <a title="Visualizar" href='{{asset("produtos/show/$produto->sequencia")}}' class="btn btn-primary">
+                          <i class="fa fa-search" title="Visualizar"></i> Visualizar
                         </a>                       
                       </div>
                     </td>

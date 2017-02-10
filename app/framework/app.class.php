@@ -48,7 +48,9 @@ class app
 	public function PrepareRest()
 	{
 		if(isset($_POST['REQUEST_METHOD']))
-			$_SERVER['REQUEST_METHOD']=$_POST['REQUEST_METHOD'];
+			$_SERVER['REQUEST_METHOD']=uppertrim($_POST['REQUEST_METHOD']);
+		else
+			$_SERVER['REQUEST_METHOD'] = uppertrim($_SERVER['REQUEST_METHOD']);
 
 		switch ($metodo = $_SERVER['REQUEST_METHOD'])
 		{

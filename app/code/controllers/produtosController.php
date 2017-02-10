@@ -95,70 +95,12 @@ class produtosController extends controller
 		echo $this->view('produtos.index',compact('produtos'));
 	}
 
-	public function postRelatorio_simples()
-	{     	
-		if(isset($_POST['filtro']))
-			$filtro = strtoupper($_POST['filtro']);
-		else
-			$filtro = "";
-
-		$produtos = DB::table('produtos')
-						->where('excluido','=','N')
-						->whereRaw("(descricao like '%$filtro%' or 
-							nomefantasia like '%$filtro%' or
-							codigo like '%$filtro%')")
-									->get();
-		$campo_relatorio = array('Código'=>'codigo','Código Estendido'=>'codigoestendido','Nome'=>'nomefantasia','Descrição'=>'descricao');
-		$html = prepararelatorio($campo_relatorio,$produtos,"Relatório Simples de Produtos");
-		registralog("Imprimiu relatório simples de produtos");
-        imprimir($html);
-	}
-
-	public function postRelatorio_simples_tipos()
-	{     	
-		if(isset($_GET['filtro']))
-			$filtro = strtoupper($_GET['filtro']);
-		else
-			$filtro = "";
-
-		$tipos = 
-		DB::table('tiposprodutos')
-				->where('excluido','=','N')
-					->whereRaw("descricao like '%$filtro%'")
-						->get();
-
-		$campo_relatorio = array('Número'=>'numero','Descrição'=>'descricao','Entradas'=>'entradas','Saidas'=>'saidas');
-		$html = prepararelatorio($campo_relatorio,$tipos,"Relatório Simples de Tipos de Produto");
-		registralog("Imprimiu relatório simples de Tipos de produtos");
-        imprimir($html);
-	}
-
-
-	public function postRelatorio_simples_grupos()
-	{     	
-		if(isset($_GET['filtro']))
-			$filtro = strtoupper($_GET['filtro']);
-		else
-			$filtro = "";
-
-		$tipos = 
-		$grupos = 
-		DB::table('gruposprodutos')
-				->where('excluido','=','N')
-					->whereRaw("descricao like '%$filtro%'")
-						->get();
-
-		$campo_relatorio = array('Código'=>'codigo','Descrição'=>'descricao','Codigo ST'=>'codigo_st','Aliquota IPI'=>'aliquota_ipi','Aliquota ISS'=>"aliquota_iss","Calcula PIS"=>"calcula_pis","Calcula Cofins"=>"calcula_cofins");
-		$html = prepararelatorio($campo_relatorio,$tipos,"Relatório Simples de Tipos de Produto");
-		registralog("Imprimiu relatório simples de Tipos de produtos");
-        imprimir($html);
-	}
-
-	public function getShow($id)
+	
+	public function getShow($id="")
 	{
 		if($id=="")
-			redirecionar(asset('erros/404'));
-		$produtos = DB::table('produtos')			
+			App::erro(404);
+		$produto = DB::table('produtos')			
 		->where('produtos.sequencia','=',$id)
 			->where('produtos.excluido','=','N')
 				->where('tiposprodutos.excluido','=','N')
@@ -169,10 +111,9 @@ class produtosController extends controller
 									->join('situacoestributarias','situacoestributarias.codigo','=','produtos.codigo_st')
 										->join('situacoestributarias as sit_entrada','sit_entrada.codigo','=','produtos.codigo_stentrada')
 											->select('produtos.*','tiposprodutos.descricao as desc_tipoproduto','gruposprodutos.descricao as desc_grupoproduto','produto_empresa.*','situacoestributarias.descricao as desc_cstsaida','sit_entrada.descricao as desc_cst_entrada')
-												->get();
-		if(count($produtos)==0)
-			redirecionar(asset('erros/404'));
-		$produto=$produtos[0];
+												->first();
+		if(count($produto)==0)
+			App::erro(404);
 		registralog("Visualizou o produto :".$id);	
 
 		echo $this->view('produtos.show',compact('produto'));
@@ -184,7 +125,7 @@ class produtosController extends controller
 		DB::table('tiposprodutos')
 				->where('excluido','=','N')
 					->get();
-		echo $this->view('produtos.tipos',compact('tipos'));
+		echo $this->view('produtos.tipos.index',compact('tipos'));
 	}
 
 	public function getGrupos()
@@ -194,7 +135,7 @@ class produtosController extends controller
 				->where('excluido','=','N')
 					->get();
     
-		echo $this->view('produtos.grupos',compact('grupos'));
+		echo $this->view('produtos.grupos.index',compact('grupos'));
 
 	}
 }

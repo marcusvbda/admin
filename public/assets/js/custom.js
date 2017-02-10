@@ -1,10 +1,3 @@
-  function load(url,refresh=true)
-  {
-    if(refresh)
-      location.href=url;
-    else
-        $("body").load(url);       
-  }
 
   function reload(refresh=true)
   {

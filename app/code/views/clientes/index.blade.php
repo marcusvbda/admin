@@ -7,8 +7,8 @@
   <small>Listagem</small>
 </h1>
 <ol class="breadcrumb">
-  <li><a href="{{asset('admin/inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="{{asset('admin/clientes')}}"><i class="glyphicon glyphicon-user"></i> Clientes</a></li>
+  <li><a href="{{asset('inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
+  <li><a href="{{asset('clientes')}}"><i class="glyphicon glyphicon-user"></i> Clientes</a></li>
 </ol>
 @stop
 
@@ -33,7 +33,7 @@
                       <th>Número</th>
                       <th>Razão Social</th>
                       <th>CNPJ</th>
-                      <th class="centro no-sort"><span class="glyphicon glyphicon-cog"></span></th>                      
+                      <th class="centro no-sort"></th>                      
                   </tr>
                </thead>
                <tbody>
@@ -42,10 +42,10 @@
                     <td>{{$cliente->numero}}</td>
                     <td>{{$cliente->razaosocial}}</td>
                     <td>{{$cliente->cnpj}}</td>
-                    <td class="centro">
+                    <td class="centro text-right">
                       <div class="tools">                      
-                        <a title="Visualizar" href='{{asset("clientes/show/$cliente->sequencia")}}'>
-                          <i class="fa fa-search" style="color:#3C8DBC;" title="Visualizar"></i>
+                        <a title="Visualizar" href='{{asset("clientes/show/$cliente->sequencia")}}' class="btn btn-primary">
+                          <i class="fa fa-search" title="Visualizar"></i> Visualizar
                         </a>                       
                       </div>
                     </td>

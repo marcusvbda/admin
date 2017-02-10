@@ -55,11 +55,23 @@ class importacaoController extends controller
 	   	echo json_encode($this->Qtde_arquivos($pasta));
 	}
 
-	public function qtde_arq($pasta)
+	public function Qtde_arq($pasta)
 	{		
-		$cnpj_empresa = auth('cnpj_empresa');
-	   	$arq_importar = scandir( __PUBLIC__."uploads/importacao/{$pasta}/{$cnpj_empresa}/");
-	   	return (count($arq_importar)-2);
+		try
+		{
+			$cnpj_empresa = auth('cnpj_empresa');
+		   	$arq_importar = scandir( __PUBLIC__."uploads/importacao/{$pasta}/{$cnpj_empresa}/");
+		   	$contador = 0;
+		   	foreach ($arq_importar as $arquivo):
+				if (importacaoController::validaJSON($arquivo))
+					$contador++;
+			endforeach;	
+			return $contador;
+		}
+		catch(exception $e)
+		{
+			return 0;
+		}
 	}
 
 	public function Dt_ultima_imp()

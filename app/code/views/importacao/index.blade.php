@@ -7,8 +7,8 @@
   <small>de importação</small>
 </h1>
 <ol class="breadcrumb">
-  <li><a href="{{asset('admin/inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="{{asset('admin/importacao')}}"><i class="glyphicon glyphicon-circle-arrow-down"></i> Arquivos de importação</a></li>
+  <li><a href="{{asset('inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
+  <li><a href="{{asset('importacao')}}"><i class="glyphicon glyphicon-circle-arrow-down"></i> Arquivos de importação</a></li>
 </ol>
 @stop
 

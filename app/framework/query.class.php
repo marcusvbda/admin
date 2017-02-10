@@ -21,6 +21,7 @@ else
     define("DB_SENHA",   "");
 }
 
+
 function Ja_Logado()
 {
 	if((isset($_SESSION[md5(__APP_NOME__)]->usuario)) && (isset($_SESSION[md5(__APP_NOME__)]->app_id)) && (Auth('app_id')==APP_ID))
@@ -28,20 +29,42 @@ function Ja_Logado()
 	else
 		return false;
 }
+conectar();
 
 
 
-$capsule = new Capsule;
 
-$capsule->addConnection([
-	'driver'=>'mysql',
-	'database'=>DB_NOME,
-	'host'=>DB_SERVER,
-	'username'=>DB_USUARIO,
-	'password'=>DB_SENHA,
-	'charset'=>'utf8',
-	'collation'=>'utf8_unicode_ci',
-	'prefix'=>''
-]);
-$capsule->setAsGlobal();
-$capsule->bootEloquent();
+function conectar($nome_banco=null)
+{
+	$capsule = new Capsule;
+	if(is_null($nome_banco))
+	{		
+		$capsule->addConnection([
+			'driver'=>'mysql',
+			'database'=>DB_NOME,
+			'host'=>DB_SERVER,
+			'username'=>DB_USUARIO,
+			'password'=>DB_SENHA,
+			'charset'=>'utf8',
+			'collation'=>'utf8_unicode_ci',
+			'prefix'=>''
+		]);		
+	}
+	else
+	{
+		$capsule->addConnection([
+			'driver'=>'mysql',
+			'database'=>$nome_banco,
+			'host'=>DB_SERVER,
+			'username'=>DB_USUARIO,
+			'password'=>DB_SENHA,
+			'charset'=>'utf8',
+			'collation'=>'utf8_unicode_ci',
+			'prefix'=>''
+		]);	
+	}
+	$capsule->setAsGlobal();
+	$capsule->bootEloquent();	
+}
+
+

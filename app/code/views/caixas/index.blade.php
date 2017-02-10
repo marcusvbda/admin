@@ -101,8 +101,6 @@
 	</div>
 </div>
 
-<div id="container"><h1>TESTE</h1></div>
-
 @stop
 
 

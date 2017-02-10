@@ -7,8 +7,8 @@
   <small>Consulta</small>
 </h1>
 <ol class="breadcrumb">
-  <li><a href="{{asset('admin/inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
-  <li><a href="{{asset('admin/clientes')}}"><i class="glyphicon glyphicon-user"></i> Clientes</a></li>
+  <li><a href="{{asset('inicio')}}"><i class="fa fa-dashboard"></i> Início</a></li>
+  <li><a href="{{asset('clientes')}}"><i class="glyphicon glyphicon-user"></i> Clientes</a></li>
   <li><a><i class="glyphicon glyphicon-search"></i> Consulta</a></li>
 </ol>
 @stop
