@@ -13,6 +13,9 @@ class configuracoesController extends controller
 
 	public function getIndex()
 	{
+		if(!Access('GET','parametros'))
+			return App::erro(505);
+
 		$parametros = $this->model->get();
 		$array=array();						
 		for ($i=0; $i < count($parametros); $i++):

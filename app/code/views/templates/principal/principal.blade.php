@@ -215,7 +215,9 @@
             </a>
             <ul class="treeview-menu">
                  <li><a href="{{asset('empresa')}}"><i class="glyphicon glyphicon-object-align-bottom"></i> <span>Empresa</span></a></li>
-                 <li><a href="{{asset('configuracoes')}}"><i class="glyphicon glyphicon-tasks"></i> <span>Parametros de sistema</span></a></li>
+                @if(Access('GET','parametros'))
+                  <li><a href="{{asset('configuracoes')}}"><i class="glyphicon glyphicon-tasks"></i> <span>Parametros de sistema</span></a></li>
+                @endif
             </ul>
           </li> 
 
@@ -237,7 +239,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" id="content">
 
       @yield('conteudo')
 
