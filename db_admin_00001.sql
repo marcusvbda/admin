@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 10-Fev-2017 às 19:22
+-- Generation Time: 15-Fev-2017 às 16:28
 -- Versão do servidor: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -217,6 +217,22 @@ CREATE TABLE `condicaopagamento` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `config_grupo_acesso`
+--
+
+CREATE TABLE `config_grupo_acesso` (
+  `id` int(11) NOT NULL,
+  `grupo_acesso_id` int(11) NOT NULL,
+  `modulo_id` int(11) NOT NULL,
+  `POST` varchar(1) NOT NULL DEFAULT 'N',
+  `PUT` varchar(1) NOT NULL DEFAULT 'N',
+  `GET` varchar(1) NOT NULL DEFAULT 'N',
+  `DELETE` varchar(1) NOT NULL DEFAULT 'N'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `dadosfaturamento`
 --
 
@@ -348,6 +364,18 @@ CREATE TABLE `gruposprodutos` (
   `calcula_cofins` char(1) DEFAULT NULL,
   `acesso_subconta` varchar(20) DEFAULT NULL,
   `sincro` char(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `grupo_acesso`
+--
+
+CREATE TABLE `grupo_acesso` (
+  `id` int(11) NOT NULL,
+  `descricao` varchar(100) NOT NULL,
+  `excluido` varchar(1) NOT NULL DEFAULT 'N'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -653,6 +681,14 @@ ALTER TABLE `condicaopagamento`
   ADD KEY `idx_CONDICAOPAGAMENTO_codigo` (`codigo`);
 
 --
+-- Indexes for table `config_grupo_acesso`
+--
+ALTER TABLE `config_grupo_acesso`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_modulos_idx` (`modulo_id`),
+  ADD KEY `fk_grupo_acesso_idx` (`grupo_acesso_id`);
+
+--
 -- Indexes for table `dadosfaturamento`
 --
 ALTER TABLE `dadosfaturamento`
@@ -672,6 +708,12 @@ ALTER TABLE `funcionarios`
 --
 ALTER TABLE `gruposprodutos`
   ADD PRIMARY KEY (`sequencia`);
+
+--
+-- Indexes for table `grupo_acesso`
+--
+ALTER TABLE `grupo_acesso`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `importacoes`
@@ -772,6 +814,11 @@ ALTER TABLE `clientes`
 ALTER TABLE `condicaopagamento`
   MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
+-- AUTO_INCREMENT for table `config_grupo_acesso`
+--
+ALTER TABLE `config_grupo_acesso`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+--
 -- AUTO_INCREMENT for table `dadosfaturamento`
 --
 ALTER TABLE `dadosfaturamento`
@@ -786,6 +833,11 @@ ALTER TABLE `funcionarios`
 --
 ALTER TABLE `gruposprodutos`
   MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `grupo_acesso`
+--
+ALTER TABLE `grupo_acesso`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `importacoes`
 --
@@ -836,6 +888,17 @@ ALTER TABLE `tiposprodutos`
 --
 ALTER TABLE `todolist`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Limitadores para a tabela `config_grupo_acesso`
+--
+ALTER TABLE `config_grupo_acesso`
+  ADD CONSTRAINT `fk_grupo_acesso` FOREIGN KEY (`grupo_acesso_id`) REFERENCES `grupo_acesso` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_modulos` FOREIGN KEY (`modulo_id`) REFERENCES `db_admin_usuarios`.`modulos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

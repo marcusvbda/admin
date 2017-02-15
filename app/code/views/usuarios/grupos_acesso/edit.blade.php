@@ -49,7 +49,7 @@
 
 
         @foreach($modulos as $mod)
-         <?php $con = Query("select * from ".BANCO_DE_DADOS_USUARIOS.".config_grupo_acesso where modulo_id = $mod->id and 
+         <?php $con = Query("select * from config_grupo_acesso where modulo_id = $mod->id and 
           grupo_acesso_id=$grupo_acesso->id")[0]; ?>
           <div class="col-md-4 card" style="border-right : solid 1px #c1c1c1">
             <form id="{{uppertrim($mod->modulo)}}">

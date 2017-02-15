@@ -217,7 +217,7 @@ function CleanUserCookie()
 
 function Access($op,$module)
 {
-	$consulta = db::table(BANCO_DE_DADOS_USUARIOS.'.config_grupo_acesso as conf')
+	$consulta = db::table('config_grupo_acesso as conf')
 		->select($op)
 			->join(BANCO_DE_DADOS_USUARIOS.'.modulos as mod','mod.id','=','conf.modulo_id')
 			->where('conf.grupo_acesso_id','=',Auth('grupo_acesso_id'))

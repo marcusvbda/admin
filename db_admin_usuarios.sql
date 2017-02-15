@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 10-Fev-2017 às 19:21
+-- Generation Time: 15-Fev-2017 às 16:28
 -- Versão do servidor: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -23,22 +23,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `config_grupo_acesso`
---
-
-CREATE TABLE `config_grupo_acesso` (
-  `id` int(11) NOT NULL,
-  `grupo_acesso_id` int(11) NOT NULL,
-  `modulo_id` int(11) NOT NULL,
-  `POST` varchar(1) NOT NULL DEFAULT 'N',
-  `PUT` varchar(1) NOT NULL DEFAULT 'N',
-  `GET` varchar(1) NOT NULL DEFAULT 'N',
-  `DELETE` varchar(1) NOT NULL DEFAULT 'N'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `empresas`
 --
 
@@ -54,17 +38,13 @@ CREATE TABLE `empresas` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
 --
--- Estrutura da tabela `grupo_acesso`
+-- Extraindo dados da tabela `empresas`
 --
 
-CREATE TABLE `grupo_acesso` (
-  `id` int(11) NOT NULL,
-  `descricao` varchar(100) NOT NULL,
-  `excluido` varchar(1) NOT NULL DEFAULT 'N'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `empresas` (`id`, `serie`, `razao`, `nome`, `inscricao_municipal`, `inscricao_estadual`, `CNPJ_CPF`, `updated_at`, `created_at`) VALUES
+(1, '00001', 'empresa admin', 'empresa admin', '0000000000', '0000000000', '0000000000', NULL, NULL),
+(2, '01589', 'empresa 2', 'empresa 2', '00000000', '00000000', '000000001', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -79,6 +59,16 @@ CREATE TABLE `modulos` (
   `habilitado` varchar(1) NOT NULL DEFAULT 'S'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `modulos`
+--
+
+INSERT INTO `modulos` (`id`, `modulo`, `descricao`, `habilitado`) VALUES
+(1, 'usuarios', 'Usuários', 'S'),
+(2, 'grupos_acesso', 'Grupos de Acesso', 'S'),
+(3, 'parametros', 'Parâmetros de Sistema', 'S'),
+(6, 'config_redes', 'Configurações de Rede', 'S');
+
 -- --------------------------------------------------------
 
 --
@@ -89,6 +79,13 @@ CREATE TABLE `redes` (
   `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `redes`
+--
+
+INSERT INTO `redes` (`id`, `nome`) VALUES
+(1, 'Rede inventada para Teste ltda');
 
 -- --------------------------------------------------------
 
@@ -101,6 +98,14 @@ CREATE TABLE `redes_empresas` (
   `rede` int(11) NOT NULL,
   `serie_empresa` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `redes_empresas`
+--
+
+INSERT INTO `redes_empresas` (`id`, `rede`, `serie_empresa`) VALUES
+(1, 1, '00001'),
+(2, 1, '01589');
 
 -- --------------------------------------------------------
 
@@ -124,16 +129,16 @@ CREATE TABLE `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Indexes for dumped tables
+-- Extraindo dados da tabela `usuarios`
 --
 
+INSERT INTO `usuarios` (`id`, `usuario`, `email`, `grupo_acesso_id`, `sexo`, `empresa`, `empresa_selecionada`, `senha`, `logado`, `excluido`, `updated_at`, `created_at`) VALUES
+(1, 'Vinicius Bassalobre', 'root', 19, 'M', '00001', '00001', '7b24afc8bc80e548d66c4e7ff72171c5', 'S', 'N', '2017-02-14 19:57:17', NULL),
+(26, 'teste', 'teste', 19, 'M', '00001', '00001', '698dc19d489c4e4db73e28a713eab07b', 'N', 'S', '2017-02-10 18:18:33', NULL);
+
 --
--- Indexes for table `config_grupo_acesso`
+-- Indexes for dumped tables
 --
-ALTER TABLE `config_grupo_acesso`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_grupos_acesso_idx` (`grupo_acesso_id`),
-  ADD KEY `fk_conf_modulo_idx` (`modulo_id`);
 
 --
 -- Indexes for table `empresas`
@@ -141,12 +146,6 @@ ALTER TABLE `config_grupo_acesso`
 ALTER TABLE `empresas`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `serie` (`serie`);
-
---
--- Indexes for table `grupo_acesso`
---
-ALTER TABLE `grupo_acesso`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `modulos`
@@ -164,50 +163,22 @@ ALTER TABLE `redes_empresas`
 -- Indexes for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_grupo_acesso_usuario_idx` (`grupo_acesso_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `config_grupo_acesso`
---
-ALTER TABLE `config_grupo_acesso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `grupo_acesso`
---
-ALTER TABLE `grupo_acesso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
---
 -- AUTO_INCREMENT for table `modulos`
 --
 ALTER TABLE `modulos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
---
--- Constraints for dumped tables
---
-
---
--- Limitadores para a tabela `config_grupo_acesso`
---
-ALTER TABLE `config_grupo_acesso`
-  ADD CONSTRAINT `fk_conf_modulo` FOREIGN KEY (`modulo_id`) REFERENCES `modulos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_grupos_acesso` FOREIGN KEY (`grupo_acesso_id`) REFERENCES `grupo_acesso` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Limitadores para a tabela `usuarios`
---
-ALTER TABLE `usuarios`
-  ADD CONSTRAINT `fk_grupo_acesso_usuario` FOREIGN KEY (`grupo_acesso_id`) REFERENCES `grupo_acesso` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -53,7 +53,7 @@
             <div class="col-md-4">
               <label>Grupo de Acesso</label>
               <select class="form-control" name="grupo_acesso_id">
-                <?php $grupo_acesso = Controller::exec('tabelasAuxiliaresController','getTabela',[BANCO_DE_DADOS_USUARIOS.'.grupo_acesso']);?>
+                <?php $grupo_acesso = Controller::exec('tabelasAuxiliaresController','getTabela',['grupo_acesso']);?>
                 <option value=""></option>                            
                 @foreach($grupo_acesso as $gp)
                   <option value="{{$gp->id}}">

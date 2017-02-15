@@ -21,7 +21,7 @@ class usuariosController extends controller
 			$id = Request::get('DELETE')['id'];	
 			DB::beginTransaction();			
 
-			db::table(BANCO_DE_DADOS_USUARIOS.'.grupo_acesso')->where('id','=',$id)->update(['excluido'=>'S']);
+			db::table('grupo_acesso')->where('id','=',$id)->update(['excluido'=>'S']);
 			DB::commit();		
 			REST::Response(true);		
 		}
@@ -37,7 +37,7 @@ class usuariosController extends controller
 		if(!Access("GET","grupos_acesso"))
 			return App::erro(505);
 
-		$grupos =  DB::table(BANCO_DE_DADOS_USUARIOS.'.grupo_acesso')->where("excluido","=","N")->get();
+		$grupos =  DB::table('grupo_acesso')->where("excluido","=","N")->get();
 		Controller::view('usuarios.grupos_acesso.index',compact('grupos'));
 	}
 
@@ -56,10 +56,10 @@ class usuariosController extends controller
 		$descricao  = $request['descricao'];
 		if(isset($request['id']))
 		{
-			$grupos = db::table(BANCO_DE_DADOS_USUARIOS.'.grupo_acesso')->where('excluido','=','N')->where('descricao','=',$descricao)->where('id','!=',$request['id'])->get();
+			$grupos = db::table('grupo_acesso')->where('excluido','=','N')->where('descricao','=',$descricao)->where('id','!=',$request['id'])->get();
 		}
 		else
-			$grupos = db::table(BANCO_DE_DADOS_USUARIOS.'.grupo_acesso')->where('excluido','=','N')->where('descricao','=',$descricao)->get();
+			$grupos = db::table('grupo_acesso')->where('excluido','=','N')->where('descricao','=',$descricao)->get();
 
 		if(count($grupos)>0)
 			REST::Response(false);
@@ -81,10 +81,10 @@ class usuariosController extends controller
 			unset($dados['descricao']);	
 			DB::beginTransaction();			
 			$dados = $this->processadadosGrupoAcesso($dados,$id_grupo);	
-				db::table(BANCO_DE_DADOS_USUARIOS.'.config_grupo_acesso')->where('grupo_acesso_id','=',$id_grupo)->delete();
-				db::table(BANCO_DE_DADOS_USUARIOS.'.grupo_acesso')->where('id','=',$id_grupo)->update(['descricao'=>$descricao]);
+				db::table('config_grupo_acesso')->where('grupo_acesso_id','=',$id_grupo)->delete();
+				db::table('grupo_acesso')->where('id','=',$id_grupo)->update(['descricao'=>$descricao]);
 			foreach ($dados as $key => $value):
-				db::table(BANCO_DE_DADOS_USUARIOS.'.config_grupo_acesso')->insert($value);
+				db::table('config_grupo_acesso')->insert($value);
 			endforeach;
 			DB::commit();			
 			REST::Response(true);			
@@ -107,10 +107,10 @@ class usuariosController extends controller
 			$descricao = $dados['descricao'];
 			unset($dados['descricao']);	
 			DB::beginTransaction();			
-			$id_grupo = db::table(BANCO_DE_DADOS_USUARIOS.'.grupo_acesso')->insertGetId(['descricao'=>$descricao]);
+			$id_grupo = db::table('grupo_acesso')->insertGetId(['descricao'=>$descricao]);
 			$dados = $this->processadadosGrupoAcesso($dados,$id_grupo);	
 			foreach ($dados as $key => $value):
-				db::table(BANCO_DE_DADOS_USUARIOS.'.config_grupo_acesso')->insert($value);
+				db::table('config_grupo_acesso')->insert($value);
 			endforeach;
 			DB::commit();			
 			REST::Response(true);			
@@ -144,7 +144,7 @@ class usuariosController extends controller
 		if(!Access("GET","grupos_acesso"))
 			return App::Erro(505);
 
-		$grupo_acesso = db::table(BANCO_DE_DADOS_USUARIOS.'.grupo_acesso')->where('excluido','=','N')->where('id','=',$id)->first();
+		$grupo_acesso = db::table('grupo_acesso')->where('excluido','=','N')->where('id','=',$id)->first();
 		if(count($grupo_acesso)==0)
 			return App::Erro(404);
 
