@@ -168,7 +168,7 @@ class UsuariosSeed extends Seeder
                 "senha"  =>md5('admin'),
                 "nome"   =>"Administrador",
                 "dt_nascimento"   =>"1992-04-08",
-                "email"  =>"xnucleon.admin@gmail.com",
+                "email"  =>"vinicius@alive.inf.br",
                 "ativo"  =>"S",
                 "funcao_id"=>1,
                 "grupo_acesso_id"=>1,
@@ -182,7 +182,7 @@ class ParametrosSeed extends Seeder
 {
     public function run()
     {
-        DB::table('parametros')->insert(['qtde_dec_dinheiro'=>2,'versao'=>'01.01.01','tenant_id'=>1]);
+        DB::table('parametros')->insert(['qtde_dec_dinheiro'=>2,'tenant_id'=>1]);
     }
 }
 

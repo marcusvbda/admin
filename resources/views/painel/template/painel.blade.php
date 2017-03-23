@@ -84,11 +84,11 @@
     <a href="{{asset('admin')}}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">
-        <img src="{{asset('public/custom/img')}}/{{env('FAVICON')}}" style="width: 50%">
+        <img src="{{asset('public/custom/img')}}/{{env('FAVICON')}}" style="width: 70%">
       </span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg">
-        <img src="{{asset('public/custom/img')}}/{{env('FAVICON')}}" style="width: 10%">
+        <img src="{{asset('public/custom/img')}}/{{env('FAVICON')}}" style="width: 30%">
       <b>{{env('APP_NAME')}}</b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
@@ -266,7 +266,7 @@
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Versão : {{parametro('versao')}} </b>
+      <b>Versão : {{env('VERSAO')}} </b>
     </div>
     <strong><a href="http://xcode.com">XCode Ltda</a></strong> Todos os direitos reservados.
   </footer>

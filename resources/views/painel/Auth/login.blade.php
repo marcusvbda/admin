@@ -30,8 +30,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <img src="{{asset('public/custom/img')}}/{{env('FAVICON')}}" style="width: 20%">
-    <b>{{env('APP_NAME')}}</b>
+    <img src="{{asset('public/custom/img')}}/{{env('ICONE_FULL3')}}" style="width: 70%" title="Alive ADMIN">
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">

@@ -26,12 +26,12 @@ class Pessoas extends globalModel
         else
             $ativo="N";
 
-        return $query->where('ativo','=',$ativo)->where('classificacao','=',$tipo)->whereNotIn('nome',['CLIENTE','FORNECEDOR'])->count();
+        return $query->where('ativo','=',$ativo)->where('classificacao','=',$tipo)->count();
     }
 
     public static function scopePorcento($query,$tipo,$qtde)
     {
-        $total = $query->where('tenant_id', '=',Auth::user()->tenant_id)->where('classificacao','=',$tipo)->whereNotIn('nome',['CLIENTE','FORNECEDOR'])->count();
+        $total = $query->where('tenant_id', '=',Auth::user()->tenant_id)->where('classificacao','=',$tipo)->count();
         if($total>0)
             $percentual = ($qtde*100) / $total;
         else

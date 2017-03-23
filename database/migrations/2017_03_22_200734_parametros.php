@@ -20,8 +20,7 @@ class Parametros extends Migration
             $table->string('skin',20)->default('blue');        
             $table->string('fix_navbar',1)->default('S');        
             $table->string('sidebar_collapse',1)->default('N');        
-            $table->string('moeda',3)->default('R$');        
-            $table->string('versao',20);        
+            $table->string('moeda',3)->default('R$');             
             $table->timestamps();
             
             $table->integer('tenant_id')->unsigned();
