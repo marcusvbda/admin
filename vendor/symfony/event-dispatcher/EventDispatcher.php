@@ -39,6 +39,9 @@ class EventDispatcher implements EventDispatcherInterface
             $event = new Event();
         }
 
+        $event->setDispatcher($this);
+        $event->setName($eventName);
+
         if ($listeners = $this->getListeners($eventName)) {
             $this->doDispatch($listeners, $eventName, $event);
         }
@@ -70,22 +73,6 @@ class EventDispatcher implements EventDispatcherInterface
         }
 
         return array_filter($this->sorted);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getListenerPriority($eventName, $listener)
-    {
-        if (!isset($this->listeners[$eventName])) {
-            return;
-        }
-
-        foreach ($this->listeners[$eventName] as $priority => $listeners) {
-            if (false !== ($key = array_search($listener, $listeners, true))) {
-                return $priority;
-            }
-        }
     }
 
     /**
@@ -161,27 +148,29 @@ class EventDispatcher implements EventDispatcherInterface
      * This method can be overridden to add functionality that is executed
      * for each listener.
      *
-     * @param callable[] $listeners The event listeners
-     * @param string     $eventName The name of the event to dispatch
-     * @param Event      $event     The event object to pass to the event handlers/listeners
+     * @param callable[] $listeners The event listeners.
+     * @param string     $eventName The name of the event to dispatch.
+     * @param Event      $event     The event object to pass to the event handlers/listeners.
      */
     protected function doDispatch($listeners, $eventName, Event $event)
     {
         foreach ($listeners as $listener) {
+            call_user_func($listener, $event, $eventName, $this);
             if ($event->isPropagationStopped()) {
                 break;
             }
-            call_user_func($listener, $event, $eventName, $this);
         }
     }
 
     /**
      * Sorts the internal list of listeners for the given event by priority.
      *
-     * @param string $eventName The name of the event
+     * @param string $eventName The name of the event.
      */
     private function sortListeners($eventName)
     {
+        $this->sorted[$eventName] = array();
+
         krsort($this->listeners[$eventName]);
         $this->sorted[$eventName] = call_user_func_array('array_merge', $this->listeners[$eventName]);
     }
