@@ -196,7 +196,6 @@ class ComposerStaticInit5c0aaec76e85ff61fd35fe320b4846d4
     );
 
     public static $classMap = array (
-        'Contatos' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200747_contatos.php',
         'CorProfile' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200326_cor_profile.php',
         'CorProfileSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
@@ -207,6 +206,7 @@ class ComposerStaticInit5c0aaec76e85ff61fd35fe320b4846d4
         'Funcoes' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200343_funcoes.php',
         'FuncoesSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'GrupoAcessoPermissoes' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200612_grupo_acesso_permissoes.php',
+        'GrupoProduto' => __DIR__ . '/../..' . '/database/migrations/2017_03_24_124509_grupo_produto.php',
         'GruposAcesso' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200403_grupos_acesso.php',
         'GruposAcessoSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'GruposPermissoesSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
@@ -280,8 +280,8 @@ class ComposerStaticInit5c0aaec76e85ff61fd35fe320b4846d4
         'Hamcrest\\Xml\\HasXPath' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Xml/HasXPath.php',
         'Historico' => __DIR__ . '/../..' . '/database/migrations/2017_03_23_121318_historico.php',
         'IlluminateQueueClosure' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',
+        'Importacoes' => __DIR__ . '/../..' . '/database/migrations/2017_03_24_173830_importacoes.php',
         'Limpar' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
-        'Log' => __DIR__ . '/../..' . '/database/migrations/2017_03_23_120702_log.php',
         'Modulos' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200259_modulos.php',
         'ModulosSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'PHPUnit_Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
@@ -683,8 +683,7 @@ class ComposerStaticInit5c0aaec76e85ff61fd35fe320b4846d4
         'ParametrosSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'Permissoes' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200521_permissoes.php',
         'PermissoesSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
-        'Pessoas' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200720_pessoas.php',
-        'PessoasSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
+        'Produtos' => __DIR__ . '/../..' . '/database/migrations/2017_03_24_124517_produtos.php',
         'SebastianBergmann\\Comparator\\ArrayComparator' => __DIR__ . '/..' . '/sebastian/comparator/src/ArrayComparator.php',
         'SebastianBergmann\\Comparator\\Comparator' => __DIR__ . '/..' . '/sebastian/comparator/src/Comparator.php',
         'SebastianBergmann\\Comparator\\ComparisonFailure' => __DIR__ . '/..' . '/sebastian/comparator/src/ComparisonFailure.php',
@@ -725,6 +724,7 @@ class ComposerStaticInit5c0aaec76e85ff61fd35fe320b4846d4
         'TenantSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'TestCase' => __DIR__ . '/../..' . '/tests/TestCase.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/src/Template.php',
+        'TipoProduto' => __DIR__ . '/../..' . '/database/migrations/2017_03_24_124508_tipo_produto.php',
         'Todolist' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200703_todolist.php',
         'Usuarios' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200630_usuarios.php',
         'UsuariosSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',

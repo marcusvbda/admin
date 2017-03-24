@@ -35,10 +35,10 @@ function dataTable(tabela)
     } );
     table.buttons().container()
             .appendTo( tabela +'_wrapper .col-sm-6:eq(0)' );
-    $(tabela+' tbody').on( 'click', 'tr', function () 
-    {
-        $(this).toggleClass('selected');
-    } );
+    // $(tabela+' tbody').on( 'click', 'tr', function () 
+    // {
+    //     $(this).toggleClass('selected');
+    // } );
     return table;
 }
 

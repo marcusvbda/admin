@@ -20,7 +20,7 @@
 
   <link rel="stylesheet" href="{{asset('public/landing/css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{asset('public/landing/css/main.css')}}">
-  <link rel="icon" type="image/png" href="{{asset('public/custom/img')}}/{{env('FAVICON')}}" />
+  <link rel="icon" type="image/png" href="{{asset('public/custom/img')}}/{{env('ICONE_CINZA')}}" />
 
   <script src="{{asset('public/landing/js/modernizr-2.7.1.js')}}"></script>
   

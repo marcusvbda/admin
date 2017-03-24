@@ -1,0 +1,13 @@
+{
+	"tiposproduto":
+	[
+		{
+			"codigo":1,
+			"descricao":"PRODUTOS PARA VENDAS"
+		},
+		{
+			"codigo":2,
+			"descricao":"PRODUTOS PARA CONSUMO INTERNO"
+		}
+	]
+}

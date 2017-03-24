@@ -10,7 +10,6 @@ use Redirect;
 use Session;
 use Input;
 use App\User;
-use App\Pessoas;
 use App\Todolist;
 use App\historico;
 
@@ -25,9 +24,9 @@ class dashboardController extends Controller
       endif;
 
 
-      $historico_pessoas = Historico::wherein('tipo',['F','C'])->orderBy('id', 'desc')->take(5)->get();
+      $historico_usuarios = Historico::where('tipo','=','U')->orderBy('id', 'desc')->take(5)->get();
 
-		  return view('painel.dashboard.index',compact('mensagem','historico_pessoas'));
+		  return view('painel.dashboard.index',compact('mensagem','historico_usuarios'));
   	}
 
     public function putChecartodo()

@@ -22,15 +22,13 @@
         </tr>
         </thead>
         <tbody>
-          @foreach($historico_pessoas as $hist)
+          @foreach($historico_usuarios as $hist)
           <tr title="{{$hist->descricao}}">
             <td>{{dt_format($hist->created_at,'d/m/Y')}}</td>
             <td><strong>{{$hist->autor}}</strong></td>
             <td>
-              @if($hist->tipo=="F")
-                <span class="label label-primary">Fornecedor</span>
-              @elseif($hist->tipo=="C")
-                <span class="label label-success">Cliente</span>
+              @if($hist->tipo=="U")
+                <span class="label label-primary">Usuário</span>
               @endif
             </td>
             <td><strong>{{$hist->titulo}}</strong></td>     

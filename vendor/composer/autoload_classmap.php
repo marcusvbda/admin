@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Contatos' => $baseDir . '/database/migrations/2017_03_22_200747_contatos.php',
     'CorProfile' => $baseDir . '/database/migrations/2017_03_22_200326_cor_profile.php',
     'CorProfileSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
@@ -17,6 +16,7 @@ return array(
     'Funcoes' => $baseDir . '/database/migrations/2017_03_22_200343_funcoes.php',
     'FuncoesSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'GrupoAcessoPermissoes' => $baseDir . '/database/migrations/2017_03_22_200612_grupo_acesso_permissoes.php',
+    'GrupoProduto' => $baseDir . '/database/migrations/2017_03_24_124509_grupo_produto.php',
     'GruposAcesso' => $baseDir . '/database/migrations/2017_03_22_200403_grupos_acesso.php',
     'GruposAcessoSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'GruposPermissoesSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
@@ -90,8 +90,8 @@ return array(
     'Hamcrest\\Xml\\HasXPath' => $vendorDir . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Xml/HasXPath.php',
     'Historico' => $baseDir . '/database/migrations/2017_03_23_121318_historico.php',
     'IlluminateQueueClosure' => $vendorDir . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',
+    'Importacoes' => $baseDir . '/database/migrations/2017_03_24_173830_importacoes.php',
     'Limpar' => $baseDir . '/database/seeds/DatabaseSeeder.php',
-    'Log' => $baseDir . '/database/migrations/2017_03_23_120702_log.php',
     'Modulos' => $baseDir . '/database/migrations/2017_03_22_200259_modulos.php',
     'ModulosSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'PHPUnit_Exception' => $vendorDir . '/phpunit/phpunit/src/Exception.php',
@@ -493,8 +493,7 @@ return array(
     'ParametrosSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'Permissoes' => $baseDir . '/database/migrations/2017_03_22_200521_permissoes.php',
     'PermissoesSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
-    'Pessoas' => $baseDir . '/database/migrations/2017_03_22_200720_pessoas.php',
-    'PessoasSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
+    'Produtos' => $baseDir . '/database/migrations/2017_03_24_124517_produtos.php',
     'SebastianBergmann\\Comparator\\ArrayComparator' => $vendorDir . '/sebastian/comparator/src/ArrayComparator.php',
     'SebastianBergmann\\Comparator\\Comparator' => $vendorDir . '/sebastian/comparator/src/Comparator.php',
     'SebastianBergmann\\Comparator\\ComparisonFailure' => $vendorDir . '/sebastian/comparator/src/ComparisonFailure.php',
@@ -535,6 +534,7 @@ return array(
     'TenantSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'TestCase' => $baseDir . '/tests/TestCase.php',
     'Text_Template' => $vendorDir . '/phpunit/php-text-template/src/Template.php',
+    'TipoProduto' => $baseDir . '/database/migrations/2017_03_24_124508_tipo_produto.php',
     'Todolist' => $baseDir . '/database/migrations/2017_03_22_200703_todolist.php',
     'Usuarios' => $baseDir . '/database/migrations/2017_03_22_200630_usuarios.php',
     'UsuariosSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',

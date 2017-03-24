@@ -19,44 +19,39 @@ $user_porcento = User::porcento($user_qtde);
     </div>
 </div>
 
-
 <?php  
-use App\Pessoas; 
-$pessoas_qtde = Pessoas::qtde("C");
-$pessoas_porcento = Pessoas::Porcento("C",$pessoas_qtde);
+use App\Produtos; 
+$qtde_produtos = Produtos::qtde();
+$porcento_estoque_baixo = Produtos::PorcentagemComEstoque($qtde_produtos);
 ?>
+
 <div class="col-md-6">
     <div class="info-box bg-red">
       <span class="info-box-icon"><i class="fa fa-user"></i></span>
       <div class="info-box-content">
-        <span class="info-box-text">Clientes</span>
-        <span class="info-box-number">{{$pessoas_qtde}}</span>
+        <span class="info-box-text">Produtos</span>
+        <span class="info-box-number">{{$qtde_produtos}}</span>
         <div class="progress">
-          <div class="progress-bar" style="width: {{$pessoas_porcento}}%"></div>
+          <div class="progress-bar" style="width: {{$porcento_estoque_baixo}}%"></div>
         </div>
             <span class="progress-description">
-              {{$pessoas_porcento}}% Ativos
+              {{$porcento_estoque_baixo}}% com estoque baixo
             </span>
       </div>
     </div>
 </div>
 
-
-<?php 
-$fornecedor_qtde = Pessoas::qtde("F");
-$fornecedor_porcento = Pessoas::Porcento("F",$fornecedor_qtde);
-?>
 <div class="col-md-6">
     <div class="info-box bg-green">
       <span class="info-box-icon"><i class="fa fa-user"></i></span>
       <div class="info-box-content">
-        <span class="info-box-text">Fornecedores</span>
-        <span class="info-box-number">{{$fornecedor_qtde}}</span>
+        <span class="info-box-text">Clientes</span>
+        <span class="info-box-number">125</span>
         <div class="progress">
-          <div class="progress-bar" style="width: {{$fornecedor_porcento}}%"></div>
+          <div class="progress-bar" style="width: 9%"></div>
         </div>
             <span class="progress-description">
-              {{$fornecedor_porcento}}% Ativos
+              9% Bloqueados
             </span>
       </div>
     </div>

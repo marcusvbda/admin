@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-md-8">
-            @include('painel.dashboard.recents2',['historico_pessoas'=>$historico_pessoas])
+            @include('painel.dashboard.recents2',['historico_usuarios'=>$historico_usuarios])
         </div>
         <div class="col-md-4">
             @include('painel.dashboard.recents')

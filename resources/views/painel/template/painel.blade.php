@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="{{asset('public/painel/plugins/daterangepicker/daterangepicker.css')}}">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="{{asset('public/painel/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
-  <link rel="icon" type="image/png" href="{{asset('public/custom/img')}}/{{env('FAVICON')}}" />
+  <link rel="icon" type="image/png" href="{{asset('public/custom/img')}}/{{env('ICONE_CINZA')}}" />
 
 
 
@@ -84,11 +84,11 @@
     <a href="{{asset('admin')}}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">
-        <img src="{{asset('public/custom/img')}}/{{env('FAVICON')}}" style="width: 70%">
+        <img src="{{asset('public/custom/img')}}/{{env('ICONE_CINZA')}}" style="width: 80%">
       </span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg">
-        <img src="{{asset('public/custom/img')}}/{{env('FAVICON')}}" style="width: 30%">
+        <img src="{{asset('public/custom/img')}}/{{env('ICONE_CINZA')}}" style="width: 20%">
       <b>{{env('APP_NAME')}}</b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
@@ -203,25 +203,13 @@
                 </ul>
               </li>
               <li>
-                <a href="#"><i class="fa fa-user"></i> Clientes
+                <a href="#"><i class="fa fa-cubes"></i> Produtos
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                   </span>
                   <ul class="treeview-menu">
-                    @if(can('pessoas','get'))                
-                      <li><a href="{{asset('admin/persons/clientes')}}"><i class="fa fa-user"></i> Clientes</a></li>
-                    @endif   
-                  </ul>
-                </a>
-              </li>
-              <li>
-                <a href="#"><i class="fa fa-user"></i> Fornecedores
-                  <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                  </span>
-                  <ul class="treeview-menu">
-                    @if(can('pessoas','get'))                
-                      <li><a href="{{asset('admin/persons/fornecedores')}}"><i class="fa fa-user"></i> Fornecedores</a></li>
+                    @if(can('produtos','get'))                
+                      <li><a href="{{asset('admin/products')}}"><i class="fa fa-cubes"></i> Produtos</a></li>
                     @endif   
                   </ul>
                 </a>

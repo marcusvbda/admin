@@ -17,6 +17,7 @@ class Parametros extends Migration
             $table->increments('id');        
             $table->integer('qtde_dec_dinheiro')->default(2);        
             $table->integer('qtde_dec_porcento')->default(2);        
+            $table->integer('estoque_baixo')->default(5);        
             $table->string('skin',20)->default('blue');        
             $table->string('fix_navbar',1)->default('S');        
             $table->string('sidebar_collapse',1)->default('N');        
