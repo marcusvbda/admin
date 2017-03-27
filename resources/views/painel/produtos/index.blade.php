@@ -5,7 +5,7 @@
 <section class="content-header">
   <h1>
     <i class="fa fa-cubes"></i> Produtos
-    <small> Listagem e Ações</small>
+    <small> Listagem</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="{{asset('admin')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>

@@ -721,6 +721,7 @@ class ComposerStaticInit5c0aaec76e85ff61fd35fe320b4846d4
         'SebastianBergmann\\RecursionContext\\InvalidArgumentException' => __DIR__ . '/..' . '/sebastian/recursion-context/src/InvalidArgumentException.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
         'SessionHandlerInterface' => __DIR__ . '/..' . '/symfony/http-foundation/Resources/stubs/SessionHandlerInterface.php',
+        'Tanques' => __DIR__ . '/../..' . '/database/migrations/2017_03_27_164455_tanques.php',
         'TenantSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'TestCase' => __DIR__ . '/../..' . '/tests/TestCase.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/src/Template.php',

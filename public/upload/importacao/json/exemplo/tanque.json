@@ -1,0 +1,27 @@
+{
+	"tanque": [{
+		"codigo": "1",
+		"numero": "1",
+		"capacidade": "15000.000000",
+		"volumeatual": "12000.000000",
+		"produto_codigo": "1"
+	}, {
+		"codigo": "2",
+		"numero": "2",
+		"capacidade": "10000.000000",
+		"volumeatual": "5000.000000",
+		"produto_codigo": "2"
+	}, {
+		"codigo": "3",
+		"numero": "3",
+		"capacidade": "10000.000000",
+		"volumeatual": "1000.000000",
+		"produto_codigo": "3"
+	}, {
+		"codigo": "4",
+		"numero": "4",
+		"capacidade": "15000.000000",
+		"volumeatual": "5000.000000",
+		"produto_codigo": "4"
+	}]
+}

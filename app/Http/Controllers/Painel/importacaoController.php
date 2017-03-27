@@ -197,6 +197,9 @@ class importacaoController extends Controller
     		case 'tiposprodutos':
     			$this->exemplo_json_tiposprodutos();
     			break;
+            case 'tanque':
+                $this->exemplo_json_tanque();
+                break;
     		default:
     			# code...
     			break;
@@ -254,6 +257,21 @@ class importacaoController extends Controller
     		 	]);
     	endforeach;
 		echo json_encode($json);
+    }
+    private function exemplo_json_tanque()
+    {
+        $consulta = $this->query_firebird("select * from tanque");   
+        $json['tanque'] = array();
+        foreach ($consulta as $row):
+             array_push($json['tanque'],[
+                    'codigo'         =>   $row['ID'],
+                    'numero'         =>   $row['NUMERO'],
+                    'capacidade'     =>   $row['CAPACIDADE'],
+                    'volumeatual'    =>   $row['VOLUMEATUAL'],
+                    'produto_codigo' =>   $row['NUMERO_PRODUTO']
+                ]);
+        endforeach;
+        echo json_encode($json);
     }
 
 
