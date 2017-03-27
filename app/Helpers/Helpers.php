@@ -60,7 +60,7 @@ function cannot($modulo,$permissao)
 }
 function format_reais($valor)
 {
-	return "R$ ".number_format($valor, Auth::user()->empresa->parametros->qtde_dec_dinheiro , ',', '.');
+	return "R$ ".number_format($valor, parametro('qtde_dec_dinheiro'), ',', '.');
 }
 
 function tiramascara($string)
@@ -70,10 +70,12 @@ function tiramascara($string)
 
 function porcentagem($valor,$total)
 {
+	$porc = 0;
 	if($total==0)
-		return 0;
+		$porc =  0;
 	else
-		return ($valor*100)/$total;
+		$porc =  ($valor*100)/$total;
+	return number_format($porc, parametro('qtde_dec_porcentagem') , ',', '.');
 }
 
 function erro($erro)

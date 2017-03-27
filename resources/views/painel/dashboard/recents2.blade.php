@@ -41,7 +41,7 @@
   </div>
   <!-- /.box-body -->
   <div class="box-footer text-center">
-    <a href="#" class="uppercase">Ver Todo Histórico</a>
+    <a href="#" class="uppercase">Ver o Histórico completo</a>
   </div>
   <!-- /.box-footer -->
 </div>

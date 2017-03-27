@@ -1,53 +1,39 @@
 {
-	"gruposproduto":
-	[
-		{
-			"codigo":1,
-			"descricao":"COMBUSTIVEIS"
-		},
-		{
-			"codigo":2,
-			"descricao":"LIBRIFICANTES"
-		},
-		{
-			"codigo":3,
-			"descricao":"FILTROS"
-		},
-		{
-			"codigo":4,
-			"descricao":"BEBIDAS"
-		},
-		{
-			"codigo":5,
-			"descricao":"DOCES"
-		},
-		{
-			"codigo":6,
-			"descricao":"USO E CONSUMO"
-		},
-		{
-			"codigo":8,
-			"descricao":"CARVAO"
-		},
-		{
-			"codigo":9,
-			"descricao":"CIGARRO"
-		},
-		{
-			"codigo":10,
-			"descricao":"SALGADINHO"
-		},
-		{
-			"codigo":11,
-			"descricao":"SORVETE"
-		},
-		{
-			"codigo":12,
-			"descricao":"ACESSORIOS"
-		},
-		{
-			"codigo":14,
-			"descricao":"LAVAGEM"
-		}
-	]
+	"gruposprodutos": [{
+		"codigo": "1",
+		"descricao": "COMBUSTIVEIS"
+	}, {
+		"codigo": "2",
+		"descricao": "LUBRIFICANTES"
+	}, {
+		"codigo": "5",
+		"descricao": "DOCES"
+	}, {
+		"codigo": "4",
+		"descricao": "BEBIDAS"
+	}, {
+		"codigo": "12",
+		"descricao": "ACESSORIOS"
+	}, {
+		"codigo": "3",
+		"descricao": "FILTROS"
+	}, {
+		"codigo": "8",
+		"descricao": "CARVAO"
+	}, {
+		"codigo": "9",
+		"descricao": "CIGARRO"
+	}, {
+		"codigo": "10",
+		"descricao": "SALGADINHO"
+	}, {
+		"codigo": "11",
+		"descricao": "SORVETE"
+	}, {
+		"codigo": "14",
+		"descricao": "LAVAGEM"
+	}, {
+		"codigo": "6",
+		"descricao": "USO E CONSUMO"
+	}]
 }

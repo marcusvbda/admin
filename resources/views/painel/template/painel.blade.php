@@ -246,7 +246,6 @@
         </script>
         @endif
         @yield('conteudo')
-      </div>
 
     </section>
     <!-- /.content -->

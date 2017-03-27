@@ -27,11 +27,11 @@ class Produtos extends Migration
             $table->string('nome',100); //nomefantasia
             $table->string('unidade',6); 
             $table->string('unidadeentrada',6); 
+            $table->string('tipoproduto',1); 
             $table->string('cst_entrada',6); //codigo_stentrada
             $table->string('cst_saida',6); //codigo_st
             $table->double('estoque',15,8); 
             $table->double('precovenda',15,8); 
-            $table->double('precocompra',15,8); 
             $table->double('custoatual',15,8); 
             $table->integer('grupoproduto_codigo');  //codigo_grupoproduto
             $table->integer('tipoproduto_codigo');  //codigo_tipoproduto

@@ -69,7 +69,7 @@
                     @foreach($produtos as $prod)
                         <tr>    
                             <td style="display: none;">{{$prod->_id}}</td>                                   
-                            <td>{{$prod->codigo}}</td>
+                            <td>{{str_pad($prod->codigo,6,"0",STR_PAD_LEFT)}}</td>
                             <td>{{$prod->codigobarras}}</td>
                             <td>{{$prod->nome}}</td>
                             <td>{{parametro('moeda')}} {{number_format($prod->precovenda,parametro('qtde_dec_dinheiro'))}}</td>

@@ -8,7 +8,6 @@ use Response;
 use Illuminate\Http\Request;
 use Redirect;
 use Session;
-use Input;
 use App\Produtos;
 use App\GruposProduto;
 use App\TiposProduto;
@@ -41,6 +40,13 @@ class productsController extends Controller
         $gp_tipo = $dados['codigo_grupo'];
         $tp_tipo = $dados['codigo_tipo'];
         return view('painel.produtos.index',compact('produtos','grupos','gp_tipo','tipos','tp_tipo'));
+    }
+
+    public function getShow($id)
+    {
+      $id = base64_decode($id);
+      $produto = Produtos::find($id);
+      return view('painel.produtos.show',compact('produto'));
     }
 
 

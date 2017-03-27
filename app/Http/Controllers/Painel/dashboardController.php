@@ -12,21 +12,22 @@ use Input;
 use App\User;
 use App\Todolist;
 use App\historico;
+use App\Importacoes;
 
 
 class dashboardController extends Controller
 { 
   	public function index()
-  	{     
+  	{   
       if(Auth::user()->reset_token!=""):
         $mensagem = array(['tipo'=>'danger','titulo'=>'Alguem pode estar tentando descobrir sua senha','texto'=>"  Um email de renovação de senha foi enviado apartir do 'esqueci a senha' com um link de renovação de senha, porém sua senha ainda não foi renovada, aconselhamos trocar a senha do seu email e de seu usuário. Para sua segurança invalidamos o link que foi enviado anteriormente"]);
         User::where('id','=',Auth::user()->id)->update(['reset_token'=>null]);
       endif;
 
-
+      $importacoes = Importacoes::orderBy('id', 'desc')->take(5)->get();
       $historico_usuarios = Historico::where('tipo','=','U')->orderBy('id', 'desc')->take(5)->get();
 
-		  return view('painel.dashboard.index',compact('mensagem','historico_usuarios'));
+		  return view('painel.dashboard.index',compact('mensagem','historico_usuarios','importacoes'));
   	}
 
     public function putChecartodo()

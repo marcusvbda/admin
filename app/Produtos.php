@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class Produtos extends globalModel 
 {
     protected $table = 'Produtos';
+    protected $primaryKey = '_id';
 
     public static function scopeQtde($query,$ativo = true)
     {
@@ -21,6 +22,16 @@ class Produtos extends globalModel
         	return 0;
         else
         	return count($result);
+    }
+
+    public function grupoproduto()
+    {
+        return $this->hasOne(Gruposproduto::class,'codigo');
+    }
+
+    public function tiposproduto()
+    {
+        return $this->hasOne(Tiposproduto::class,'codigo');
     }
 
     public static function scopePorcentagemComEstoque($query,$qtde)
@@ -38,4 +49,16 @@ class Produtos extends globalModel
     }
 }
 
+class Gruposproduto extends globalModel
+{
+    protected $fillable = ['id','codigo']; 
+    
+    protected $table = 'gruposprodutos';
+    protected $primaryKey = '_id';
+}
+class Tiposproduto extends globalModel
+{    
+    protected $table = 'tiposprodutos';
+    protected $primaryKey = '_id';
+}
 

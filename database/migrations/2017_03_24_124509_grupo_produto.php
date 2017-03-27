@@ -12,7 +12,7 @@ class GrupoProduto extends Migration
      */
     public function up()
     {
-        Schema::create('gruposproduto', function (Blueprint $table) 
+        Schema::create('gruposprodutos', function (Blueprint $table) 
         {
             $table->increments('_id');
 
@@ -35,6 +35,6 @@ class GrupoProduto extends Migration
      */
     public function down()
     {
-        Schema::drop('gruposproduto');
+        Schema::drop('gruposprodutos');
     }
 }

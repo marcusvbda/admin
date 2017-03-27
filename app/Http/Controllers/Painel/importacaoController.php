@@ -26,8 +26,8 @@ class importacaoController extends Controller
   	{  
   		DB::table('importacoes')->truncate();
   		DB::table('produtos')->truncate();
-  		DB::table('gruposproduto')->truncate();
-  		DB::table('tiposproduto')->truncate();
+  		DB::table('gruposprodutos')->truncate();
+  		DB::table('tiposprodutos')->truncate();
 
   		$this->ImportarArquivos();
     }
@@ -104,8 +104,8 @@ class importacaoController extends Controller
 		// percorre os campos do banco de dados e verifica 
 		// quais tabelas tem registros no json com o mesmo nome
 		// que ela
-		// try
-		// {
+		try
+		{
 			$tabelas_importadas = array();
 			$dados_insert = array();
 			DB::connection()->disableQueryLog();
@@ -140,18 +140,30 @@ class importacaoController extends Controller
 				$this->qtde_inserts = count($dados_insert);
 			endforeach;
 			DB::commit();
-			Importacoes::insert(['qtde_inserts'=>$this->qtde_inserts,'qtde_updates'=>$this->qtde_updates,'arquivo'=>$nome_arquivo,'tenant_id'=>$this->tenant_id,'usuario_id'=>$this->usuario_id]);
-		// 	return true;
-		// }
-		// catch(\Exception $e)
-		// {
-		// 	return false;
-		// }
+			$this->makeImportacoes(['qtde_inserts'=>$this->qtde_inserts,'qtde_updates'=>$this->qtde_updates,'arquivo'=>$nome_arquivo]);
+			return true;
+		}
+		catch(\Exception $e)
+		{
+			db::rollback();
+			echo $e->getMessage();
+			return false;
+		}
+	}
+
+	private function makeImportacoes($array = [])
+	{
+		$imp = new Importacoes();
+		$imp->qtde_inserts=$array['qtde_inserts']; 
+		$imp->qtde_updates=$array['qtde_updates']; 
+		$imp->arquivo=$array['arquivo']; 
+		$imp->tenant_id=$this->tenant_id; 
+		$imp->usuario_id=$this->usuario_id; 
+		$imp->save();
 	}
 
 	private function getoperacao($tabela,$codigo)
 	{
-		print_r($codigo);exit;
 		if(count(DB::table($tabela)->where('codigo','=',$codigo)->where('tenant_id','=',$this->tenant_id)->get())>0)
 			return "UPDATE";
 		else
@@ -161,7 +173,6 @@ class importacaoController extends Controller
 	private function query_firebird($sql)
     {
     	$conexao = $this->conectar_firebird();
-    	// echo $sql;exit();
     	$sth = $conexao->query($sql);
 		return $result = $sth->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -180,7 +191,12 @@ class importacaoController extends Controller
     		case 'produtos':
     			$this->exemplo_json_produtos();
     			break;
-    		
+    		case 'gruposprodutos':
+    			$this->exemplo_json_gruposprodutos();
+    			break;
+    		case 'tiposprodutos':
+    			$this->exemplo_json_tiposprodutos();
+    			break;
     		default:
     			# code...
     			break;
@@ -197,12 +213,13 @@ class importacaoController extends Controller
     		 		'codigobarras'   =>   $row['CODIGOBARRAS'],
     		 		'descricao'      =>   $row['DESCRICAO'],
     		 		'nome'           =>   $row['NOMEFANTASIA'],
+    		 		'unidade'        =>   $row['UNIDADE'],
     		 		'unidadeentrada' =>   $row['UNIDADEENTRADA'],
     		 		'cst_entrada'    =>   $row['CODIGO_STENTRADA'],
+    		 		'tipoproduto'    =>   $row['TIPOPRODUTO'],
     		 		'cst_saida'      =>   $row['CODIGO_ST'],
     		 		'estoque'        =>   $row['ESTOQUE'],
     		 		'precovenda'     =>   $row['PRECOVENDA'],
-    		 		'precocompra'    =>   $row['PRECOCOMPRA'],
     		 		'custoatual'     =>   $row['CUSTOATUAL'],
     		 		'grupoproduto_codigo' =>  $row['CODIGO_GRUPOPRODUTO'],
     		 		'tipoproduto_codigo'  =>  $row['CODIGO_TIPOPRODUTO'],
@@ -210,6 +227,30 @@ class importacaoController extends Controller
     		 		'anp'            =>  $row['CODIGOANP'],
     		 		'cest'           =>  $row['CODIGO_CEST'],
     		 		'ultimavenda'    =>  $row['ULTIMAVENDA']
+    		 	]);
+    	endforeach;
+		echo json_encode($json);
+    }
+    private function exemplo_json_gruposprodutos()
+    {
+    	$consulta = $this->query_firebird("select * from gruposprodutos");	
+    	$json['gruposprodutos'] = array();
+    	foreach ($consulta as $row):
+    		 array_push($json['gruposprodutos'],[
+    		 		'codigo'         =>   $row['CODIGO'],
+    		 		'descricao'      =>   $row['DESCRICAO']
+    		 	]);
+    	endforeach;
+		echo json_encode($json);
+    }
+    private function exemplo_json_tiposprodutos()
+    {
+    	$consulta = $this->query_firebird("select * from tiposprodutos");	
+    	$json['tiposprodutos'] = array();
+    	foreach ($consulta as $row):
+    		 array_push($json['tiposprodutos'],[
+    		 		'codigo'         =>   $row['NUMERO'],
+    		 		'descricao'      =>   $row['DESCRICAO']
     		 	]);
     	endforeach;
 		echo json_encode($json);
