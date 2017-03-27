@@ -196,6 +196,7 @@ class ComposerStaticInit5c0aaec76e85ff61fd35fe320b4846d4
     );
 
     public static $classMap = array (
+        'Bomba' => __DIR__ . '/../..' . '/database/migrations/2017_03_27_191323_bomba.php',
         'CorProfile' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200326_cor_profile.php',
         'CorProfileSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',

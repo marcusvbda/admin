@@ -27,7 +27,9 @@ class importacaoController extends Controller
   		DB::table('importacoes')->truncate();
   		DB::table('produtos')->truncate();
   		DB::table('gruposprodutos')->truncate();
-  		DB::table('tiposprodutos')->truncate();
+        DB::table('tiposprodutos')->truncate();
+        DB::table('tanque')->truncate();
+  		DB::table('bomba')->truncate();
 
   		$this->ImportarArquivos();
     }
@@ -200,6 +202,9 @@ class importacaoController extends Controller
             case 'tanque':
                 $this->exemplo_json_tanque();
                 break;
+            case 'bomba':
+                $this->exemplo_json_bomba();
+                break;
     		default:
     			# code...
     			break;
@@ -269,6 +274,21 @@ class importacaoController extends Controller
                     'capacidade'     =>   $row['CAPACIDADE'],
                     'volumeatual'    =>   $row['VOLUMEATUAL'],
                     'produto_codigo' =>   $row['NUMERO_PRODUTO']
+                ]);
+        endforeach;
+        echo json_encode($json);
+    }
+    private function exemplo_json_bomba()
+    {
+        $consulta = $this->query_firebird("select * from bomba");  
+        $json['bomba'] = array();
+        foreach ($consulta as $row):
+             array_push($json['bomba'],[
+                    'codigo'         =>   $row['ID'],
+                    'numero'         =>   $row['NUMERO'],
+                    'tanque_codigo'  =>   $row['ID_TANQUE'],
+                    'bomba'          =>   $row['BOMBA'],
+                    'encerrante'     =>   $row['ENCERRANTEATUAL']
                 ]);
         endforeach;
         echo json_encode($json);

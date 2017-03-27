@@ -8,17 +8,16 @@ use Response;
 use Illuminate\Http\Request;
 use Redirect;
 use Session;
-use App\Tanques;
+use App\Bombas;
 
-
-class tanksController extends Controller
+class bombsController extends Controller
 { 
   	public function getIndex()
   	{     
-  		if(cannot('tanques','get'))
+  		if(cannot('bombas','get'))
 			return erro(505);
-      	$tanques = Tanques::all();
-      	return view('painel.tanques.index',compact('tanques'));
+      	$bombas = Bombas::groupBy('bomba')->get();
+      	return view('painel.bombas.index',compact('bombas'));
     }
 
 }

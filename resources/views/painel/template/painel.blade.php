@@ -226,6 +226,18 @@
                   </ul>
                 </a>
               </li>
+              <li>
+                <a href="#"><i class="fa fa-industry"></i> Bombas
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                  <ul class="treeview-menu">
+                    @if(can('bombas','get'))                
+                      <li><a href="{{asset('admin/bombs')}}"><i class="fa  fa-industry"></i> Bombas</a></li>
+                    @endif   
+                  </ul>
+                </a>
+              </li>
             </ul>
           </li>
       </ul>

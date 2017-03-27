@@ -1,0 +1,33 @@
+{
+	"bomba": [{
+		"codigo": "1",
+		"numero": "1",
+		"tanque_codigo": "1",
+		"bomba": "1",
+		"encerrante": "0.000000"
+	}, {
+		"codigo": "2",
+		"numero": "2",
+		"tanque_codigo": "2",
+		"bomba": "2",
+		"encerrante": "1.000000"
+	}, {
+		"codigo": "3",
+		"numero": "3",
+		"tanque_codigo": "2",
+		"bomba": "3",
+		"encerrante": "0.000000"
+	}, {
+		"codigo": "4",
+		"numero": "4",
+		"tanque_codigo": "3",
+		"bomba": "3",
+		"encerrante": "0.000000"
+	}, {
+		"codigo": "5",
+		"numero": "5",
+		"tanque_codigo": "1",
+		"bomba": "4",
+		"encerrante": "0.000000"
+	}]
+}

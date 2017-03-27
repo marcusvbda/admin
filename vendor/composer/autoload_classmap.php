@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Bomba' => $baseDir . '/database/migrations/2017_03_27_191323_bomba.php',
     'CorProfile' => $baseDir . '/database/migrations/2017_03_22_200326_cor_profile.php',
     'CorProfileSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
