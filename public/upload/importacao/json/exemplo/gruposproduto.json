@@ -6,34 +6,46 @@
 		"codigo": "2",
 		"descricao": "LUBRIFICANTES"
 	}, {
-		"codigo": "5",
-		"descricao": "DOCES"
+		"codigo": "3",
+		"descricao": "PRODUTOS 060"
 	}, {
 		"codigo": "4",
-		"descricao": "BEBIDAS"
-	}, {
-		"codigo": "12",
-		"descricao": "ACESSORIOS"
-	}, {
-		"codigo": "3",
 		"descricao": "FILTROS"
 	}, {
-		"codigo": "8",
-		"descricao": "CARVAO"
-	}, {
-		"codigo": "9",
-		"descricao": "CIGARRO"
-	}, {
-		"codigo": "10",
-		"descricao": "SALGADINHO"
-	}, {
-		"codigo": "11",
-		"descricao": "SORVETE"
-	}, {
-		"codigo": "14",
-		"descricao": "LAVAGEM"
+		"codigo": "5",
+		"descricao": "ACESSORIOS"
 	}, {
 		"codigo": "6",
-		"descricao": "USO E CONSUMO"
+		"descricao": "DIVERSOS"
+	}, {
+		"codigo": "10",
+		"descricao": "10"
+	}, {
+		"codigo": "8",
+		"descricao": "8"
+	}, {
+		"codigo": "13",
+		"descricao": "13"
+	}, {
+		"codigo": "12",
+		"descricao": "12"
+	}, {
+		"codigo": "14",
+		"descricao": "14"
+	}, {
+		"codigo": "11",
+		"descricao": "11"
+	}, {
+		"codigo": "7",
+		"descricao": "7"
+	}, {
+		"codigo": "9",
+		"descricao": "9"
+	}, {
+		"codigo": "15",
+		"descricao": "SERVI\u00c7OS"
+	}, {
+		"codigo": "16",
+		"descricao": "PRODUTOS 000"
 	}]
 }

@@ -24,6 +24,7 @@ class importacaoController extends Controller
 
   	public function getIndex()
   	{  
+        ini_set('max_execution_time', 280); //3 minutes
   		DB::table('importacoes')->truncate();
   		DB::table('produtos')->truncate();
   		DB::table('gruposprodutos')->truncate();
@@ -181,7 +182,7 @@ class importacaoController extends Controller
 
     private function conectar_firebird($usuario="CAIXA",$senha="caixa")
     {
-    	$banco_de_dados = "C://Aliveit//bd//DBUNIAO.DB";
+    	$banco_de_dados = "C://Aliveit//bd//DBMASTERSELSC.DB";
     	$str_conn="firebird:host=localhost;dbname={$banco_de_dados};charset=UTF8";
 		return $db = new PDO($str_conn, $usuario, $senha);
     }
@@ -204,6 +205,9 @@ class importacaoController extends Controller
                 break;
             case 'bomba':
                 $this->exemplo_json_bomba();
+                break;
+            case 'abastecimentos':
+                $this->exemplo_json_abastecimentos();
                 break;
     		default:
     			# code...
@@ -289,6 +293,25 @@ class importacaoController extends Controller
                     'tanque_codigo'  =>   $row['ID_TANQUE'],
                     'bomba'          =>   $row['BOMBA'],
                     'encerrante'     =>   $row['ENCERRANTEATUAL']
+                ]);
+        endforeach;
+        echo json_encode($json);
+    }
+    private function exemplo_json_abastecimentos()
+    {
+        $consulta = $this->query_firebird("select * from abastecimentos");  
+        $json['abastecimentos'] = array();
+        foreach ($consulta as $row):
+             array_push($json['abastecimentos'],[
+                    'registro'       =>   $row['REGISTRO'],
+                    'codigo'         =>   $row['ID'],
+                    'bomba_codigo'   =>   $row['ID_BOMBA'],
+                    'caixa_codigo'   =>   $row['ID_CAIXA'],
+                    'total_dinheiro' =>   $row['TOTALDINHEIRO'],
+                    'total_litros'   =>   $row['TOTALLITROS'],
+                    'preco'          =>   $row['PRECOUNITARIO'],
+                    'data'           =>   $row['DATAABASTECIMENTO'],
+                    'hora'           =>   $row['HORAABASTECIMENTO']
                 ]);
         endforeach;
         echo json_encode($json);

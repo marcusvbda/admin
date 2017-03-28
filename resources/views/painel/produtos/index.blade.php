@@ -40,14 +40,7 @@
                             @endforeach
                         </select>
                     </div>
-                </div>   
-                
-
-                <div class="pull-right">
-                   @if(can('produtos','post'))
-                   <a type="button" class="btn btn-primary btn-sm" href="{{asset('admin/products/create')}}" style="display: none"><i class="fa fa-plus-circle" ></i> Novo</a>
-                   @endif
-                </div>
+                </div>                   
            </div>
         </div>
         <hr>
@@ -85,37 +78,6 @@
                     @endforeach
                     </tbody>
                 </table>
-                <hr>
-                <div class="row" style="display: none;">    
-                    <div class="col-md-12">  
-                        <div class="pull-left">   
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Ações
-                                </button>
-                                <ul class="dropdown-menu">
-                                    @if(can('produtos','put'))
-                                    <li class="col-md-12">
-                                        <a  class="btn btn-warning btn-sm" onclick="bloquear()">
-                                           <span class="glyphicon glyphicon-lock"></span> Bloquear / Desbloquear
-                                        </a>   
-                                    </li>
-                                    @endif
-                                    @if(can('produtos','delete'))
-                                    <br>
-                                    <hr>
-                                    <br>
-                                    <li class="col-md-12">
-                                      <a  class="btn btn-danger btn-sm" onclick="excluir()" disbled>
-                                         <span class="fa fa-trash"></span> Excluir
-                                     </a>         
-                                    </li>
-                                    @endif
-                                </ul>
-                            </div>                    
-                        </div>
-                    </div>
-                </div>
 
             </div>
         </div>
@@ -127,57 +89,6 @@
 
 <script type="text/javascript">
 var table = dataTable('#tab_pessoas'); 
-
-function getSelecionados()
-{
-    var dados = table.rows('.selected').data();
-    var selecionados = [];
-    for (var i=0; i < dados.length ;i++)
-    {
-       selecionados[i] = dados[i][0];
-    }
-    return selecionados;
-}
-
-function excluir()
-{
-    var selecionados = getSelecionados();
-    if(selecionados.length<=0)
-        return msg('Oops','Nenhum item selecionado para ação','error');
-    msg_confirm('Confirmação',"Deseja mesmo excluir os produtos selecionado(s) ?",function()
-    {   
-        xCode.ajax("delete","{{asset('admin/products/destroy')}}",{selecionados}).then(function(response)
-        {
-            if(response.success)         
-                msg_stop(":)",response.msg,function()
-                {
-                    reload();
-                });
-            else
-                return msg("Oops",response.msg,"error"); 
-        });    
-    });    
-}
-
-function bloquear()
-{
-    var selecionados = getSelecionados();
-    if(selecionados.length<=0)
-        return msg('Oops','Nenhum item selecionado para ação','error');
-    msg_confirm('Confirmação',"Deseja mesmo bloquear os produtos selecionado(s) ?",function()
-    {   
-        xCode.ajax("put","{{asset('admin/products/bloquear')}}",{selecionados}).then(function(response)
-        {
-            if(response.success)         
-                msg_stop(":)",response.msg,function()
-                {
-                    reload();
-                });
-            else
-                return msg("Oops",response.msg,"error"); 
-        });    
-    });    
-}
 
 function mostrar(operador)
 {
