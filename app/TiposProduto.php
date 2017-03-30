@@ -6,5 +6,5 @@ use Illuminate\Support\Facades\Auth;
 
 class TiposProduto extends globalModel 
 {
-    protected $table = 'tiposproduto';
+    protected $table = 'tiposprodutos';
 }

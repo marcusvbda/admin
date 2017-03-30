@@ -1,4 +1,4 @@
-<div class="box box-primary">
+<div class="box box-primary  collapsed-box">
   <div class="box-header with-border">
     <i class="fa fa-clock-o"></i>
     <h3 class="box-title"> Histórico de pessoas</h3>

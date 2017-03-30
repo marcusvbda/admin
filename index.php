@@ -1,5 +1,4 @@
 <?php
-session_start();
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
@@ -57,18 +56,3 @@ $response->send();
 $kernel->terminate($request, $response);
 
 
-
-
-
-
-
-
-function palíndromo($string)
-{
-	// LOGICA PRA DESCOBRIR SE É
-
-	if(SIM)
-		return true;
-	else
-		return false;
-}

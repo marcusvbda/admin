@@ -8,6 +8,7 @@ use Response;
 use Illuminate\Http\Request;
 use Redirect;
 use Session;
+use Input;
 use App\Produtos;
 use App\GruposProduto;
 use App\TiposProduto;

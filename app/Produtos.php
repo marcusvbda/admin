@@ -49,16 +49,3 @@ class Produtos extends globalModel
     }
 }
 
-class Gruposproduto extends globalModel
-{
-    protected $fillable = ['id','codigo']; 
-    
-    protected $table = 'gruposprodutos';
-    protected $primaryKey = '_id';
-}
-class Tiposproduto extends globalModel
-{    
-    protected $table = 'tiposprodutos';
-    protected $primaryKey = '_id';
-}
-

@@ -197,6 +197,7 @@ class ComposerStaticInit5c0aaec76e85ff61fd35fe320b4846d4
 
     public static $classMap = array (
         'Abastecimentos' => __DIR__ . '/../..' . '/database/migrations/2017_03_28_124520_abastecimentos.php',
+        'Caixa' => __DIR__ . '/../..' . '/database/migrations/2017_03_30_135310_caixa.php',
         'CorProfile' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200326_cor_profile.php',
         'CorProfileSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',

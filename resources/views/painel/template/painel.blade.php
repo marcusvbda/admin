@@ -251,13 +251,25 @@
             </a>
             <ul class="treeview-menu">
               <li>
+                <a href="#"><i class="fa fa-money"></i> Caixas
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu">
+                  @if(can('caixas','get'))
+                    <li><a href="{{asset('admin/caixas')}}"><i class="fa fa-money"></i> Caixas</a></li>
+                  @endif                            
+                </ul>
+              </li>
+              <li>
                 <a href="#"><i class="fa fa-road"></i> Abastecimentos
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                   </span>
                 </a>
                 <ul class="treeview-menu">
-                  @if(can('abastecimentos','get'))
+                  @if(can('caixas','get'))
                     <li><a href="{{asset('admin/abastecimentos')}}"><i class="fa fa-road"></i> Abastecimentos</a></li>
                   @endif                            
                 </ul>
@@ -305,7 +317,7 @@
     <div class="pull-right hidden-xs">
       <b>Versão : {{env('VERSAO')}} </b>
     </div>
-    <strong><a href="http://xcode.com">XCode Ltda</a></strong> Todos os direitos reservados.
+    <strong><a href="http://alive.inf.br">Alive It Soluções Ltda</a></strong> Todos os direitos reservados.
   </footer>
 
   

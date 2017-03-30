@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Abastecimentos' => $baseDir . '/database/migrations/2017_03_28_124520_abastecimentos.php',
+    'Caixa' => $baseDir . '/database/migrations/2017_03_30_135310_caixa.php',
     'CorProfile' => $baseDir . '/database/migrations/2017_03_22_200326_cor_profile.php',
     'CorProfileSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',

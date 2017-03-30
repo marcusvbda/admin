@@ -1,0 +1,51 @@
+{
+	"gruposprodutos": [{
+		"codigo": "1",
+		"descricao": "COMBUSTIVEIS"
+	}, {
+		"codigo": "2",
+		"descricao": "LUBRIFICANTES"
+	}, {
+		"codigo": "3",
+		"descricao": "PRODUTOS 060"
+	}, {
+		"codigo": "4",
+		"descricao": "FILTROS"
+	}, {
+		"codigo": "5",
+		"descricao": "ACESSORIOS"
+	}, {
+		"codigo": "6",
+		"descricao": "DIVERSOS"
+	}, {
+		"codigo": "10",
+		"descricao": "10"
+	}, {
+		"codigo": "8",
+		"descricao": "8"
+	}, {
+		"codigo": "13",
+		"descricao": "13"
+	}, {
+		"codigo": "12",
+		"descricao": "12"
+	}, {
+		"codigo": "14",
+		"descricao": "14"
+	}, {
+		"codigo": "11",
+		"descricao": "11"
+	}, {
+		"codigo": "7",
+		"descricao": "7"
+	}, {
+		"codigo": "9",
+		"descricao": "9"
+	}, {
+		"codigo": "15",
+		"descricao": "SERVI\u00c7OS"
+	}, {
+		"codigo": "16",
+		"descricao": "PRODUTOS 000"
+	}]
+}

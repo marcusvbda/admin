@@ -14,7 +14,8 @@ use PDO;
 
 class importacaoController extends Controller
 { 
-	protected $diretorio_importacao = '/upload/importacao/json/exemplo/';
+    protected $diretorio_importar = '/upload/importar/';
+	protected $diretorio_importados = '/upload/importados/';
 	protected $arq_importar= null;
 	protected $tabelas = null;
 	protected $tenant_id = null;
@@ -23,16 +24,21 @@ class importacaoController extends Controller
 	protected $qtde_inserts = 0;
 
   	public function getIndex()
-  	{  
+  	{          
         ini_set('max_execution_time', 280); //3 minutes
-  		DB::table('importacoes')->truncate();
-  		DB::table('produtos')->truncate();
-  		DB::table('gruposprodutos')->truncate();
+  		$this->ImportarArquivos();
+    }
+
+    public function getReset()
+    {
+        DB::table('abastecimentos')->truncate();
+        DB::table('importacoes')->truncate();
+        DB::table('produtos')->truncate();
+        DB::table('gruposprodutos')->truncate();
         DB::table('tiposprodutos')->truncate();
         DB::table('tanque')->truncate();
-  		DB::table('bomba')->truncate();
-
-  		$this->ImportarArquivos();
+        DB::table('bomba')->truncate();
+        return Redirect::to('admin/import');
     }
 
     private function ImportarArquivos()
@@ -45,8 +51,13 @@ class importacaoController extends Controller
 	      	$this->tabelas = $this->listar_tabelas_colunas();
 	      	if($this->existeArquivos()):
 	      		foreach($this->arq_importar as $arquivo):
-	      			$this->qtde_inserts=0;$this->qtde_updates=0;
-	  				$this->importarArquivo($this->lerArquivo(public_path().$this->diretorio_importacao.$arquivo),$arquivo);
+                    if(uppertrim(substr($arquivo,strlen($arquivo)-5,strlen($arquivo)))=='.JSON'):
+    	      			$this->qtde_inserts=0;$this->qtde_updates=0;
+    	  				if($this->importarArquivo($this->lerArquivo(public_path().$this->diretorio_importar.$arquivo),$arquivo)):
+                            $this->mover($arquivo);
+                            header("Refresh: 0;"); 
+                        endif;
+                    endif;
 	      		endforeach;
 	      	endif;
 	      	return true;
@@ -57,10 +68,15 @@ class importacaoController extends Controller
 	    // }
     }
 
+    private function mover($arquivo)
+    {
+        copy(public_path().$this->diretorio_importar.$arquivo, public_path().$this->diretorio_importados.$arquivo);
+        unlink(public_path().$this->diretorio_importar.$arquivo);
+    }
 
     private function existeArquivos()
 	{
-	   	$this->arq_importar = scandir(public_path().$this->diretorio_importacao);
+	   	$this->arq_importar = scandir(public_path().$this->diretorio_importar);
 	   	unset($this->arq_importar[array_search("..", $this->arq_importar)]);
 	   	unset($this->arq_importar[array_search(".", $this->arq_importar)]);
 	   	if(count($this->arq_importar)>0)
@@ -161,7 +177,7 @@ class importacaoController extends Controller
 		$imp->qtde_updates=$array['qtde_updates']; 
 		$imp->arquivo=$array['arquivo']; 
 		$imp->tenant_id=$this->tenant_id; 
-		$imp->usuario_id=$this->usuario_id; 
+		$imp->usuario_id=$this->usuario_id;
 		$imp->save();
 	}
 
@@ -208,6 +224,9 @@ class importacaoController extends Controller
                 break;
             case 'abastecimentos':
                 $this->exemplo_json_abastecimentos();
+                break;
+            case 'caixa':
+                $this->exemplo_json_caixa();
                 break;
     		default:
     			# code...
@@ -312,6 +331,25 @@ class importacaoController extends Controller
                     'preco'          =>   $row['PRECOUNITARIO'],
                     'data'           =>   $row['DATAABASTECIMENTO'],
                     'hora'           =>   $row['HORAABASTECIMENTO']
+                ]);
+        endforeach;
+        echo json_encode($json);
+    }
+    private function exemplo_json_caixa()
+    {
+        $consulta = $this->query_firebird("select * from caixa");  
+        $json['caixa'] = array();
+        foreach ($consulta as $row):
+             array_push($json['caixa'],[
+                    'codigo'         =>   $row['ID'],
+                    'numero'         =>   $row['NUMERO'],
+                    'funcionario'    =>   $row['NOME_FUNCIONARIO'],
+                    'situacao'       =>   $row['SITUACAO'],
+                    'valor_inicial'  =>   $row['VALORINICIAL'],
+                    'data_abertura'  =>   $row['DATAABERTURA'],
+                    'hora_abertura'  =>   $row['HORAABERTURA'],
+                    'data_fechamento'=>   $row['DATAFECHAMENTO'],
+                    'hora_fechamento'=>   $row['HORAFECHAMENTO']
                 ]);
         endforeach;
         echo json_encode($json);

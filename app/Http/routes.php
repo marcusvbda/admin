@@ -26,6 +26,7 @@ Route::group(['prefix' => 'admin'], function ()
 		Route::controller('/tanks', 'Painel\tanksController');
 		Route::controller('/bombs', 'Painel\bombsController');
 		Route::controller('/abastecimentos', 'Painel\abastecimentosController');
+		Route::controller('/caixas', 'Painel\caixasController');
 	});
 
 });
