@@ -39,7 +39,7 @@ class abastecimentosController extends Controller
 		$filtro = Input::all();
 
 		$abastecimentos = Abastecimentos::where('_id','>',0);
-		if(isset($filtro['bico'])):	
+		if(isset($filtro)):	
 			if($filtro['bico']!="TODOS")
 				$abastecimentos->where('bomba_codigo','=',$filtro['bico']);
 

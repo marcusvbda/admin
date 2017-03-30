@@ -22,17 +22,27 @@
             <div class="box-body">
                 <div class="row">
 
-                    <form action="{{asset('admin/Caixas')}}" method="post">
+                    <form  method="post">
                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />                        
                         <div class="col-md-3">
-                            <label>Entre datas :</label>
-                            <input type="date" name="de" id="de" class="form-control" value="{{$filtro['de']}}">
-                            <input type="date" name="ate" id="ate" class="form-control" value="{{$filtro['ate']}}">
+                            <label>Abertura datas :</label>
+                            <input type="date" name="de_abertura" id="de_abertura" class="form-control" value="{{$filtro['de_abertura']}}">
+                            <input type="date" name="ate_abertura" id="ate_abertura" class="form-control" value="{{$filtro['ate_abertura']}}">
                         </div>
                         <div class="col-md-2">
-                            <label>Entre horas :</label>
-                            <input type="time" name="de_hora" id="de_hora" class="form-control" value="{{$filtro['de_hora']}}">
-                            <input type="time" name="ate_hora" id="ate_hora" class="form-control" value="{{$filtro['ate_hora']}}" >
+                            <label>Abertura horas :</label>
+                            <input type="time" name="de_hora_abertura" id="de_hora_abertura" class="form-control" value="{{$filtro['de_hora_abertura']}}">
+                            <input type="time" name="ate_hora_abertura" id="ate_hora_abertura" class="form-control" value="{{$filtro['ate_hora_abertura']}}" >
+                        </div>
+                        <div class="col-md-3">
+                            <label>Abertura datas :</label>
+                            <input type="date" name="de_fechamento" id="de_fechamento" class="form-control" value="{{$filtro['de_fechamento']}}">
+                            <input type="date" name="ate_fechamento" id="ate_fechamento" class="form-control" value="{{$filtro['ate_fechamento']}}">
+                        </div>
+                        <div class="col-md-2">
+                            <label>Abertura horas :</label>
+                            <input type="time" name="de_hora_fechamento" id="de_hora_fechamento" class="form-control" value="{{$filtro['de_hora_fechamento']}}">
+                            <input type="time" name="ate_hora_fechamento" id="ate_hora_fechamento" class="form-control" value="{{$filtro['ate_hora_fechamento']}}" >
                         </div>
                         <div class="1">
                             <label>FIltrar</label><br>
@@ -47,7 +57,11 @@
                         <table id="tab_caixas" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th style="display: none;">id</th>       
+                                    <th style="display: none;">id</th>
+                                    <?php $multi_tenant = Auth::user()->multi_tenant;?>                                    
+                                    @if($multi_tenant=="S")
+                                    <th>Empresa</th>
+                                    @endif             
                                     <th>Número</th>
                                     <th>Responsável</th>                            
                                     <th>Situação</th>                            
@@ -61,6 +75,9 @@
                                 @foreach($caixas as $caixa)
                                 <tr>
                                     <td style="display: none;">{{$caixa->_id}}</td>
+                                    @if($multi_tenant=="S")
+                                    <td><strong>{{$caixa->empresa->razao}}</strong></td>
+                                    @endif 
                                     <td>{{str_pad($caixa->numero,6,"0",STR_PAD_LEFT)}}</td>
                                     <td>{{$caixa->funcionario}}</td>
                                     <td>{{$caixa->situacao}}</td>

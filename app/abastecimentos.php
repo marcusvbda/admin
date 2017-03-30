@@ -9,6 +9,7 @@ use App\Bombas;
 class Abastecimentos extends globalModel 
 {
     protected $table = 'abastecimentos';
+    protected $primaryKey = '_id';      
     public function bomba()
     {
         return $this->hasOne(Bombas::class,'codigo','bomba_codigo');

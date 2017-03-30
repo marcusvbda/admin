@@ -13,7 +13,6 @@ function dataTable(tabela)
         [
           {extend : 'excel', text: 'Excel'},
           {extend : 'pdf', text: 'PDF'},
-          {extend : 'colvis', text: 'Configurar Colunas'},
           {extend : 'print', text: 'Imprimir'}
         ],
         "oLanguage": 
@@ -32,6 +31,9 @@ function dataTable(tabela)
                "sPrevious": "Anterior",
             }
         }
+    },
+    {
+        "ordering": true
     } );
     table.buttons().container()
             .appendTo( tabela +'_wrapper .col-sm-6:eq(0)' );

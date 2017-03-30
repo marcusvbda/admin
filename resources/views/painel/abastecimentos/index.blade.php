@@ -56,7 +56,11 @@
                         <table id="tab_abastecimentos" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th style="display: none;">id</th>       
+                                    <th style="display: none;">id</th> 
+                                    <?php $multi_tenant = Auth::user()->multi_tenant;?>
+                                    @if($multi_tenant=="S")
+                                    <th>Empresa</th>
+                                    @endif      
                                     <th>Bomba</th>
                                     <th>Combustivel</th>                            
                                     <th>Litros</th>                            
@@ -75,6 +79,9 @@
                             <tbody>                        
                                 <tr>
                                     <td style="display: none;">{{$abastecimento->_id}}</td>  
+                                    @if($multi_tenant=="S")
+                                    <td><strong>{{$abastecimento->empresa->razao}}</strong></td>
+                                    @endif 
                                     <td>{{str_pad($abastecimento->bomba_codigo,6,"0",STR_PAD_LEFT)}}</td>  
                                     <td>{{$abastecimento->bomba->tanque->produto->descricao}}</td>  
                                     <td>{{$abastecimento->total_litros}} {{$abastecimento->bomba->tanque->produto->unidade}}</td>  

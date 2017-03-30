@@ -200,6 +200,7 @@ class ComposerStaticInit5c0aaec76e85ff61fd35fe320b4846d4
         'Caixa' => __DIR__ . '/../..' . '/database/migrations/2017_03_30_135310_caixa.php',
         'CorProfile' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200326_cor_profile.php',
         'CorProfileSeed' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
+        'Dadosfaturamento' => __DIR__ . '/../..' . '/database/migrations/2017_03_30_184708_dadosfaturamento.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'Empresas' => __DIR__ . '/../..' . '/database/migrations/2017_03_22_200239_empresas.php',
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',

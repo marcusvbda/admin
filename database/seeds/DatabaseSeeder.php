@@ -144,7 +144,6 @@ class PermissoesSeed extends Seeder
         DB::table('permissoes')->insert(['modulo_id'=>7,'nome'=>'get','descricao'=>'Ver']);
 
         DB::table('permissoes')->insert(['modulo_id'=>8,'nome'=>'get','descricao'=>'Ver']);
-
     }
 }
 
@@ -162,7 +161,8 @@ class UsuariosSeed extends Seeder
                 "funcao_id"=>1,
                 "grupo_acesso_id"=>1,
                 "cor_profile_id"=>1,
-                'tenant_id'=>1
+                'tenant_id'=>1,
+                'tenant_selecionados'=>'1'
             ]);
     }
 }

@@ -10,6 +10,7 @@ return array(
     'Caixa' => $baseDir . '/database/migrations/2017_03_30_135310_caixa.php',
     'CorProfile' => $baseDir . '/database/migrations/2017_03_22_200326_cor_profile.php',
     'CorProfileSeed' => $baseDir . '/database/seeds/DatabaseSeeder.php',
+    'Dadosfaturamento' => $baseDir . '/database/migrations/2017_03_30_184708_dadosfaturamento.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'Empresas' => $baseDir . '/database/migrations/2017_03_22_200239_empresas.php',
     'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/src/Iterator.php',

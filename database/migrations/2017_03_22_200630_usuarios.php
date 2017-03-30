@@ -19,7 +19,7 @@ class Usuarios extends Migration
             $table->string('sobrenome',200)->nullable();
             $table->string('senha',250);
             $table->string('sexo',1)->default('M');
-            $table->string('email',250)->unique();;
+            $table->string('email',250)->unique();
             $table->string('timezone',200)->default('America/Sao_Paulo');
             $table->string('apelido',100)->nullable();
             $table->string('reset_token',100)->nullable();
@@ -47,6 +47,10 @@ class Usuarios extends Migration
             $table->foreign('tenant_id')
             ->references('id')
                 ->on('tenant');    
+
+            $table->string('tenant_selecionados',100);
+            $table->string('multi_tenant',1)->default('N');
+
 
          });
     }
