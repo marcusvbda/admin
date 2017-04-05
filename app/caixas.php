@@ -12,6 +12,11 @@ class Caixas extends globalModel
 
     public function abastecimentos()
     {
-    	 return $this->hasMany('App\Abastecimentos','caixa_codigo');
+    	 return $this->hasMany('App\Abastecimentos','caixa_codigo','codigo');
     }
+    public function cupons()
+    {
+    	 return $this->hasMany('App\Dadosfaturamento','caixa_codigo','codigo')->groupBy('numeronota');
+    }
+
 }

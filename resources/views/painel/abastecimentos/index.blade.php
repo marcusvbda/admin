@@ -56,11 +56,7 @@
                         <table id="tab_abastecimentos" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th style="display: none;">id</th> 
-                                    <?php $multi_tenant = Auth::user()->multi_tenant;?>
-                                    @if($multi_tenant=="S")
-                                    <th>Empresa</th>
-                                    @endif      
+                                    <th style="display: none;">id</th>    
                                     <th>Bomba</th>
                                     <th>Combustivel</th>                            
                                     <th>Litros</th>                            
@@ -79,9 +75,6 @@
                             <tbody>                        
                                 <tr>
                                     <td style="display: none;">{{$abastecimento->_id}}</td>  
-                                    @if($multi_tenant=="S")
-                                    <td><strong>{{$abastecimento->empresa->razao}}</strong></td>
-                                    @endif 
                                     <td>{{str_pad($abastecimento->bomba_codigo,6,"0",STR_PAD_LEFT)}}</td>  
                                     <td>{{$abastecimento->bomba->tanque->produto->descricao}}</td>  
                                     <td>{{$abastecimento->total_litros}} {{$abastecimento->bomba->tanque->produto->unidade}}</td>  
@@ -104,7 +97,7 @@
                         <hr>
                         <h3><strong>Resumo</strong></h3>
                         <p><strong>Total :</strong> {{parametro('moeda')}} {{number_format($valor_total,parametro('qtde_dec_dinheiro'))}}</p>
-                        <p><strong>Litros :</strong> {{$total_litros}} litros</p>
+                        <p><strong>Litros :</strong> {{$total_litros}} Litros</p>
                         <?php  
                             if(count($abastecimentos)>0)
                                 $valor_medio = $valor_total/count($abastecimentos);

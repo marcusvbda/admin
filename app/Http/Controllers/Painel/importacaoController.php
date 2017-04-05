@@ -38,6 +38,8 @@ class importacaoController extends Controller
         DB::table('tiposprodutos')->truncate();
         DB::table('tanque')->truncate();
         DB::table('bomba')->truncate();
+        DB::table('caixa')->truncate();
+        DB::table('dadosfaturamento')->truncate();
         return Redirect::to('admin/import');
     }
 
@@ -228,6 +230,9 @@ class importacaoController extends Controller
             case 'caixa':
                 $this->exemplo_json_caixa();
                 break;
+            case 'dadosfaturamento':
+                $this->exemplo_json_dadosfaturamento();
+                break;
     		default:
     			# code...
     			break;
@@ -341,19 +346,48 @@ class importacaoController extends Controller
         $json['caixa'] = array();
         foreach ($consulta as $row):
              array_push($json['caixa'],[
-                    'codigo'         =>   $row['ID'],
-                    'numero'         =>   $row['NUMERO'],
-                    'funcionario'    =>   $row['NOME_FUNCIONARIO'],
-                    'situacao'       =>   $row['SITUACAO'],
-                    'valor_inicial'  =>   $row['VALORINICIAL'],
-                    'data_abertura'  =>   $row['DATAABERTURA'],
-                    'hora_abertura'  =>   $row['HORAABERTURA'],
-                    'data_fechamento'=>   $row['DATAFECHAMENTO'],
-                    'hora_fechamento'=>   $row['HORAFECHAMENTO']
+                    'codigo'           =>   $row['ID'],
+                    'numero'           =>   $row['NUMERO'],
+                    'funcionario'      =>   $row['NOME_FUNCIONARIO'],
+                    'situacao'         =>   $row['SITUACAO'],
+                    'valor_inicial'    =>   $row['VALORINICIAL'],
+                    'data_abertura'    =>   $row['DATAABERTURA'],
+                    'hora_abertura'    =>   $row['HORAABERTURA'],
+                    'data_fechamento'  =>   $row['DATAFECHAMENTO'],
+                    'hora_fechamento'  =>   $row['HORAFECHAMENTO']
                 ]);
         endforeach;
         echo json_encode($json);
     }
 
+    private function exemplo_json_dadosfaturamento()
+    {
+        $consulta = $this->query_firebird("select * from dadosfaturamento");  
+        $json['dadosfaturamento'] = array();
+        foreach ($consulta as $row):
+             array_push($json['dadosfaturamento'],[
+                    'codigo'            =>    $row['ID'],
+                    'produto_codigo'    =>    $row['NUMERO_PRODUTO'],
+                    'valorproduto'      =>    $row['VALORPRODUTO'],
+                    'datanegociacao'    =>    $row['DATANEGOCIACAO'],
+                    'hora'              =>    $row['HORA'],
+                    'quantidade'        =>    $row['QUANTIDADE'],
+                    'valorunitario'     =>    $row['VALORUNITARIO'],
+                    'motorista'         =>    $row['MOTORISTA'],
+                    'placa'             =>    $row['PLACA'],
+                    'numeronota'        =>    $row['NUMERONOTA'],
+                    'emissao'           =>    $row['EMISSAO'],
+                    'caixa_codigo'      =>    $row['ID_CAIXA'],
+                    'excluido'          =>    $row['EXCLUIDO'],
+                    'nomecliente'       =>    $row['NOME_CLIENTE'],
+                    'datacancelamento'  =>    $row['DATACANCELAMENTO'],
+                    'valordesconto'     =>    $row['VALORDESCONTO'],
+                    'valoracrescimo'    =>    $row['VALORACRESCIMO'],
+                    'valortotalcupom'   =>    $row['VALORTOTALCUPOM']
+                ]);
+        endforeach;
+        echo json_encode($json);
+    }
 
+    
 }

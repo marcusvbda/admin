@@ -57,11 +57,7 @@
                         <table id="tab_caixas" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th style="display: none;">id</th>
-                                    <?php $multi_tenant = Auth::user()->multi_tenant;?>                                    
-                                    @if($multi_tenant=="S")
-                                    <th>Empresa</th>
-                                    @endif             
+                                    <th style="display: none;">id</th>            
                                     <th>Número</th>
                                     <th>Responsável</th>                            
                                     <th>Situação</th>                            
@@ -75,9 +71,6 @@
                                 @foreach($caixas as $caixa)
                                 <tr>
                                     <td style="display: none;">{{$caixa->_id}}</td>
-                                    @if($multi_tenant=="S")
-                                    <td><strong>{{$caixa->empresa->razao}}</strong></td>
-                                    @endif 
                                     <td>{{str_pad($caixa->numero,6,"0",STR_PAD_LEFT)}}</td>
                                     <td>{{$caixa->funcionario}}</td>
                                     <td>{{$caixa->situacao}}</td>
