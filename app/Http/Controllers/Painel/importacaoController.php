@@ -233,6 +233,15 @@ class importacaoController extends Controller
             case 'dadosfaturamento':
                 $this->exemplo_json_dadosfaturamento();
                 break;
+            case 'manutencaocaixa':
+                $this->exemplo_json_manutencaocaixa();
+                break;
+            case 'funcionarios':
+                $this->exemplo_json_funcionarios();
+                break;
+            case 'gruposprodutos':
+                $this->exemplo_json_gruposprodutos();
+                break;
     		default:
     			# code...
     			break;
@@ -384,6 +393,41 @@ class importacaoController extends Controller
                     'valordesconto'     =>    $row['VALORDESCONTO'],
                     'valoracrescimo'    =>    $row['VALORACRESCIMO'],
                     'valortotalcupom'   =>    $row['VALORTOTALCUPOM']
+                ]);
+        endforeach;
+        echo json_encode($json);
+    }
+
+    private function exemplo_json_manutencaocaixa()
+    {
+        $consulta = $this->query_firebird("select * from manutencaocaixa where excluido='N' ");  
+        $json['manutencaocaixa'] = array();
+        foreach ($consulta as $row):
+             array_push($json['manutencaocaixa'],[
+                    'codigo'     =>    $row['ID'],
+                    'caixa_codigo'   =>    $row['ID_CAIXA'],
+                    'tipo'       =>    $row['TIPO'],
+                    'documento'  =>    $row['DOCUMENTO'],
+                    'data'       =>    $row['DATALANCAMENTO'],
+                    'hora'       =>    $row['HORA'],
+                    'funcionario_codigo'   =>    $row['NUMERO_FUNCIONARIO'],
+                    'descricao'   =>    $row['DESCRICAO'],
+                    'classificacao'   =>    $row['CLASSIFICACAO'],
+                    'valor'       =>    $row['VALOR']
+                ]);
+        endforeach;
+        echo json_encode($json);
+    }
+
+    private function exemplo_json_funcionarios()
+    {
+        $consulta = $this->query_firebird("select * from funcionarios");  
+        $json['funcionarios'] = array();
+        foreach ($consulta as $row):
+             array_push($json['funcionarios'],[
+                    'codigo'   =>    $row['NUMERO'],
+                    'nome'     =>    $row['NOME'],
+                    'usuario'  =>    $row['USUARIO']
                 ]);
         endforeach;
         echo json_encode($json);

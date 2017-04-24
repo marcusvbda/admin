@@ -58,14 +58,14 @@ class User extends Model implements AuthenticatableContract,
             $ativo="N";
         return $query->where('tenant_id', '=',Auth::user()->tenant_id)->where('ativo','=',$ativo)->count();
     }
-    public static function scopePorcento($query,$qtde)
+    public static function scopePorcento($query,$total)
     {
-        $total = $query->where('tenant_id', '=',Auth::user()->tenant_id)->count();
-        if($total>0)
-            $percentual = ($qtde*100) / $total;
-        else
-            $percentual = 0;
-        return round($percentual,3);
+        if($total<=0)
+            return 0;
+
+        $qtde = $query->where('tenant_id', '=',Auth::user()->tenant_id)->count();
+        
+        return porcentagem($qtde,$total);
     }
 }
 class cor_profile extends Model

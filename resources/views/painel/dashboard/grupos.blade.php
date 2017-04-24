@@ -14,35 +14,12 @@
   <div class="box-body">
     <div class="row">
 
-      <div class="col-md-2 text-center">
-        <input type="text" class="knob" value="50" data-skin="tron" data-thickness="0.2" data-width="100" data-height="100" data-fgColor="#3c8dbc" data-readonly="true">
-        <div class="knob-label">Camisetas</div>
-      </div>
-
-      <div class="col-md-2 text-center">
-        <input type="text" class="knob" value="12" data-skin="tron" data-thickness="0.2" data-width="100" data-height="100" data-fgColor="#dd4b39" data-readonly="true">
-        <div class="knob-label">Calças</div>
-      </div>
-
-      <div class="col-md-2 text-center">
-        <input type="text" class="knob" value="8" data-skin="tron" data-thickness="0.2" data-width="100" data-height="100" data-fgColor="#f39c12" data-readonly="true">
-        <div class="knob-label">Sapatos</div>
-      </div>
-
-      <div class="col-md-2 text-center">
-        <input type="text" class="knob" value="10" data-skin="tron" data-thickness="0.2" data-width="100" data-height="100" data-fgColor="#00a65a" data-readonly="true">
-        <div class="knob-label">Acessórios</div>
-      </div>
-
-      <div class="col-md-2 text-center">
-        <input type="text" class="knob" value="5" data-skin="tron" data-thickness="0.2" data-width="100" data-height="100" data-fgColor="#fa73f5" data-readonly="true">
-        <div class="knob-label">Meias</div>
-      </div>
-
-      <div class="col-md-2 text-center">
-        <input type="text" class="knob" value="5" data-skin="tron" data-thickness="0.2" data-width="100" data-height="100" data-fgColor="#943a91" data-readonly="true">
-        <div class="knob-label">Bijoterias</div>
-      </div>
+      @foreach($porcentagem as $row)
+        <div class="col-md-2 text-center">
+          <input type="text" class="knob" value="{{$row->porcentagem}}" data-skin="tron" data-thickness="0.2" data-width="100" data-height="100" data-fgColor="{{randomColor()}}" data-readonly="true">
+          <div class="knob-label">{{$row->descricao_grupo}}</div>
+        </div>
+      @endforeach
     
       <!-- ./col -->
     </div>

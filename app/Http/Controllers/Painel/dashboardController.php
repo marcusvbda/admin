@@ -13,6 +13,8 @@ use App\User;
 use App\Todolist;
 use App\historico;
 use App\Importacoes;
+use App\DadosFaturamento;
+use App\GruposProduto;
 
 
 class dashboardController extends Controller
@@ -27,7 +29,8 @@ class dashboardController extends Controller
       $importacoes = Importacoes::orderBy('id', 'desc')->take(5)->get();
       $historico_usuarios = Historico::where('tipo','=','U')->orderBy('id', 'desc')->take(5)->get();
 
-		  return view('painel.dashboard.index',compact('mensagem','historico_usuarios','importacoes'));
+      $porcentagem =  $this->calcularporcentagens();
+		  return view('painel.dashboard.index',compact('mensagem','historico_usuarios','importacoes','porcentagem'));
   	}
 
     public function putChecartodo()
@@ -114,4 +117,27 @@ class dashboardController extends Controller
       return Response::json($dados);
     }
 
+    private function calcularporcentagens()
+    {
+      $dadosfaturamento = DadosFaturamento::where('excluido','=','N')->get();
+      $grupos = GruposProduto::all();      
+      $total = $dadosfaturamento->count();
+      $result = array();
+      foreach ($grupos as $grupo):
+        $query = select("
+        select
+           count(*) as qtde from dadosfaturamento d    
+           left join produtos p on p.codigo=d.produto_codigo
+           left join gruposprodutos gp on gp.codigo=p.grupoproduto_codigo
+        where 
+        d.excluido='N' and 
+        gp.codigo=".$grupo->codigo);
+        array_push($result,(object)['codigo_grupo'=>$grupo->codigo,'descricao_grupo'=>$grupo->descricao,'porcentagem'=>porcentagem($query[0]->qtde,$total)]);
+      endforeach;
+      return $result;
+    }
+
 }
+
+
+

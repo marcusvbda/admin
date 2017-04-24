@@ -34,18 +34,13 @@ class Produtos extends globalModel
         return $this->hasOne(Tiposproduto::class,'codigo');
     }
 
-    public static function scopePorcentagemComEstoque($query,$qtde)
+    public static function scopePorcentagemComEstoque($query,$total)
     {
-    	if($qtde<=0)
+    	if($total<=0)
     		return 0;
-        $total = $query->where('estoque','<=',parametro('estoque_baixo'))->count();
-    
-        if($total>0)
-            $percentual = ($qtde*100) / $total;
-        else
-            $percentual = 0;
+        $baixo = $query->where('estoque','<=',parametro('estoque_baixo'))->count();   
 
-        return round($percentual,parametro('qtde_dec_porcento'));
+        return porcentagem($baixo,$total);
     }
 }
 

@@ -2,6 +2,11 @@
 use App\Acl\Acl;
 use App\Historico;
 
+function regra_de_3($vlr1,$ref1,$vlr2)
+{
+	return ($vlr2*$ref1)/$vlr1;
+}
+
 function historico($array =[],$logado= true)
 {
 	try
@@ -75,14 +80,14 @@ function tiramascara($string)
 	return str_replace(')','',str_replace('(','',str_replace('.','',str_replace('-', '', $string))));
 }
 
+
 function porcentagem($valor,$total)
 {
-	$porc = 0;
-	if($total==0)
-		$porc =  0;
+	$porc = regra_de_3($total,100,$valor);
+	if(!is_int($porc))
+		return number_format($porc, parametro('qtde_dec_porcentagem') , ',', '.');
 	else
-		$porc =  ($valor*100)/$total;
-	return number_format($porc, parametro('qtde_dec_porcentagem') , ',', '.');
+		return $porc;
 }
 
 function erro($erro)

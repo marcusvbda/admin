@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Manutencaocaixa extends Migration
+class Funcionarios extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class Manutencaocaixa extends Migration
      */
     public function up()
     {
-        Schema::create('manutencaocaixa', function (Blueprint $table) 
+        Schema::create('funcionarios', function (Blueprint $table) 
         {
             $table->increments('_id');
 
@@ -22,16 +22,8 @@ class Manutencaocaixa extends Migration
                 ->on('tenant');  
 
             $table->integer('codigo');
-            $table->integer('caixa_codigo');
-            $table->string('tipo',1);   
-            $table->string('documento',20);   
-            $table->date('data');
-            $table->time('hora');
-            $table->integer('funcionario_codigo');
-            $table->string('descricao',50);    
-            $table->string('classificacao',2);    
-            $table->double('valor',15,8); 
-
+            $table->string('nome',18);   
+            $table->string('usuario',20);   
             $table->timestamps();         
 
         });
@@ -44,6 +36,6 @@ class Manutencaocaixa extends Migration
      */
     public function down()
     {
-        Schema::drop('manutencaocaixa');
+        Schema::drop('funcionarios');
     }
 }

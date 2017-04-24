@@ -18,5 +18,9 @@ class Caixas extends globalModel
     {
     	 return $this->hasMany('App\Dadosfaturamento','caixa_codigo','codigo')->groupBy('numeronota');
     }
+    public function manutencao()
+    {
+         return $this->hasMany('App\Manutencaocaixa','caixa_codigo','codigo');
+    }
 
 }

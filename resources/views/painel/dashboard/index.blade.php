@@ -46,7 +46,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            @include('painel.dashboard.grupos')            
+            @include('painel.dashboard.grupos',['porcentagem'=>$porcentagem])            
         </div>
     </div>
 

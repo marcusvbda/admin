@@ -11,6 +11,8 @@ use Session;
 use Input;
 use App\Caixas;
 use App\Abastecimentos;
+use App\DadosFaturamento;
+use App\GruposProduto;
 
 class caixasController extends Controller
 { 
@@ -73,7 +75,29 @@ class caixasController extends Controller
     {
     	$id = base64_decode($id);
     	$caixa = Caixas::find($id);
-	    return view('painel.caixas.show',compact('caixa'));
+    	$porcentagem = $this->calcularporcentagens($caixa->codigo);
+	    return view('painel.caixas.show',compact('caixa','porcentagem'));
+    }
+
+    private function calcularporcentagens($caixa)
+    {
+      $dadosfaturamento = DadosFaturamento::where('excluido','=','N')->get();
+      $grupos = GruposProduto::all();      
+      $total = $dadosfaturamento->count();
+      $result = array();
+      foreach ($grupos as $grupo):
+        $query = select("
+        select
+           count(*) as qtde from dadosfaturamento d    
+           left join produtos p on p.codigo=d.produto_codigo
+           left join gruposprodutos gp on gp.codigo=p.grupoproduto_codigo
+        where 
+        d.excluido='N' and 
+        d.caixa_codigo=$caixa and 
+        gp.codigo=".$grupo->codigo);
+        array_push($result,(object)['codigo_grupo'=>$grupo->codigo,'descricao_grupo'=>$grupo->descricao,'porcentagem'=>porcentagem($query[0]->qtde,$total)]);
+      endforeach;
+      return $result;
     }
 
 }
