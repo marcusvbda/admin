@@ -241,142 +241,144 @@
 
 <script type="text/javascript">
   var editando = false;
-  function editar_notificacoes()
-  {
-    if(editando)
-      return msg("Oops","Você precisa salvar ou cancelar primeira edição iniciada","error");
-    editando=true;
-    $("#frm_notificacoes :input").prop('disabled', false);
-    $('#btn_editar_notificacoes').hide();
-    $('#btn_salvar_notificacoes').show("slide",350);
-  } 
-
-  function cancelar_notificacoes()
-  {
-    msg_confirm('Cancelar ?','Se sim serão mantidas as configurações anteriores de Notificações',function()
+  @if(can('configuracoes','put'))
+    function editar_notificacoes()
     {
-      editando=false;
-      reload_notificacoes();
-    });    
-  }
+      if(editando)
+        return msg("Oops","Você precisa salvar ou cancelar primeira edição iniciada","error");
+      editando=true;
+      $("#frm_notificacoes :input").prop('disabled', false);
+      $('#btn_editar_notificacoes').hide();
+      $('#btn_salvar_notificacoes').show("slide",350);
+    } 
 
-  function reload_notificacoes()
-  {
-    $('#frm_notificacoes').load("{{asset('admin/config')}} #frm_notificacoes");
-    $('#btn_salvar_notificacoes').hide();    
-    $('#btn_editar_notificacoes').show("slide",350);    
-  }
-
-  function editar_numerais()
-  {
-    if(editando)
-      return msg("Oops","Você precisa salvar ou cancelar primeira edição iniciada","error");
-    editando=true;
-    $("#frm_numerais :input").prop('disabled', false);
-    $('#btn_editar_numerais').hide();
-    $('#btn_salvar_numerais').show("slide",350);
-  } 
-
-  function cancelar_numerais()
-  {
-    msg_confirm('Cancelar ?','Se sim serão mantidas as configurações anteriores de numerias',function()
+    function cancelar_notificacoes()
     {
-      editando=false;
-      reload_numerais();
-    });    
-  }
-
-  function salvar_notificacoes()
-  {
-    $('#frm_notificacoes .submit').click();
-  }
-
-  $('#frm_notificacoes').submit(function(form) 
-  {
-      msg_confirm('Confirmação','Salvar alterações nas configurações de Notificações ?',function()
+      msg_confirm('Cancelar ?','Se sim serão mantidas as configurações anteriores de Notificações',function()
       {
-        var dados = $('#frm_notificacoes').FormData();
-        xCode.ajax('put',"{{asset('admin/config/edit')}}",dados).then(function(response)
-        {
-            if(!response.success)
-              msg("Ooops",response.msg,"error");   
-            reload();
-        });  
-      });   
-      editando=false;
-      return false;
-  });
+        editando=false;
+        reload_notificacoes();
+      });    
+    }
 
+    function reload_notificacoes()
+    {
+      $('#frm_notificacoes').load("{{asset('admin/config')}} #frm_notificacoes");
+      $('#btn_salvar_notificacoes').hide();    
+      $('#btn_editar_notificacoes').show("slide",350);    
+    }
 
-  function reload_numerais()
-  {
-    $('#frm_numerais').load("{{asset('admin/config')}} #frm_numerais");
-    $('#btn_salvar_numerais').hide();    
-    $('#btn_editar_numerais').show("slide",350);    
-  }
+    function editar_numerais()
+    {
+      if(editando)
+        return msg("Oops","Você precisa salvar ou cancelar primeira edição iniciada","error");
+      editando=true;
+      $("#frm_numerais :input").prop('disabled', false);
+      $('#btn_editar_numerais').hide();
+      $('#btn_salvar_numerais').show("slide",350);
+    } 
 
-  function salvar_numerais()
-  {
-    $('#frm_numerais .submit').click();
-  }
-
-  $('#frm_numerais').submit(function(form) 
-  {
-      msg_confirm('Confirmação','Salvar alterações nas configurações de numerias ?',function()
+    function cancelar_numerais()
+    {
+      msg_confirm('Cancelar ?','Se sim serão mantidas as configurações anteriores de numerias',function()
       {
-        var dados = $('#frm_numerais').FormData();
-        xCode.ajax('put',"{{asset('admin/config/edit')}}",dados).then(function(response)
+        editando=false;
+        reload_numerais();
+      });    
+    }
+
+    function salvar_notificacoes()
+    {
+      $('#frm_notificacoes .submit').click();
+    }
+
+    $('#frm_notificacoes').submit(function(form) 
+    {
+        msg_confirm('Confirmação','Salvar alterações nas configurações de Notificações ?',function()
         {
-            if(!response.success)
-              msg("Ooops",response.msg,"error");   
-            reload();
-        });  
+          var dados = $('#frm_notificacoes').FormData();
+          xCode.ajax('put',"{{asset('admin/config/edit')}}",dados).then(function(response)
+          {
+              if(!response.success)
+                msg("Ooops",response.msg,"error");   
+              reload();
+          });  
+        });   
+        editando=false;
+        return false;
+    });
+
+
+    function reload_numerais()
+    {
+      $('#frm_numerais').load("{{asset('admin/config')}} #frm_numerais");
+      $('#btn_salvar_numerais').hide();    
+      $('#btn_editar_numerais').show("slide",350);    
+    }
+
+    function salvar_numerais()
+    {
+      $('#frm_numerais .submit').click();
+    }
+
+    $('#frm_numerais').submit(function(form) 
+    {
+        msg_confirm('Confirmação','Salvar alterações nas configurações de numerias ?',function()
+        {
+          var dados = $('#frm_numerais').FormData();
+          xCode.ajax('put',"{{asset('admin/config/edit')}}",dados).then(function(response)
+          {
+              if(!response.success)
+                msg("Ooops",response.msg,"error");   
+              reload();
+          });  
+        });   
+        editando=false;
+        return false;
+    });
+
+    function skin(skin)
+    {
+      xCode.ajax('put',"{{asset('admin/config/setconfig')}}",{valor:skin,parametro:'skin'}).then(function(response)
+      {
+          var skin_antiga = $('meta[name=_skin]').attr('content');
+          $('meta[name=_skin]').attr('content',skin);
+          $('body').toggleClass('skin-'+skin_antiga);
+          $('body').addClass('skin-'+skin);
+      })
+    }
+
+    function alterar_navbar(parametro)
+    {
+      if($('#'+parametro).is( ":checked" ))
+        var valor = 'S';
+      else
+        var valor = "N";
+
+      xCode.ajax('put',"{{asset('admin/config/setconfig')}}",{valor:valor,parametro:'fix_navbar'}).then(function(response)
+      {
+          if(valor=='S')
+            $('body').addClass('fixed');
+          else
+            $('body').removeClass('fixed');
       });   
-      editando=false;
-      return false;
-  });
+    }
 
-  function skin(skin)
-  {
-    xCode.ajax('put',"{{asset('admin/config/setconfig')}}",{valor:skin,parametro:'skin'}).then(function(response)
+    function alterar_sidebar(parametro)
     {
-        var skin_antiga = $('meta[name=_skin]').attr('content');
-        $('meta[name=_skin]').attr('content',skin);
-        $('body').toggleClass('skin-'+skin_antiga);
-        $('body').addClass('skin-'+skin);
-    })
-  }
+      if($('#'+parametro).is( ":checked" ))
+        var valor = 'S';
+      else
+        var valor = "N";
 
-  function alterar_navbar(parametro)
-  {
-    if($('#'+parametro).is( ":checked" ))
-      var valor = 'S';
-    else
-      var valor = "N";
-
-    xCode.ajax('put',"{{asset('admin/config/setconfig')}}",{valor:valor,parametro:'fix_navbar'}).then(function(response)
-    {
-        if(valor=='S')
-          $('body').addClass('fixed');
-        else
-          $('body').removeClass('fixed');
-    });   
-  }
-
-  function alterar_sidebar(parametro)
-  {
-    if($('#'+parametro).is( ":checked" ))
-      var valor = 'S';
-    else
-      var valor = "N";
-
-    xCode.ajax('put',"{{asset('admin/config/setconfig')}}",{valor:valor,parametro:'sidebar_collapse'}).then(function(response)
-    {
-        if(valor=='S')
-          $('body').addClass('sidebar-collapse');
-        else
-          $('body').removeClass('sidebar-collapse');
-    });   
-  }
+      xCode.ajax('put',"{{asset('admin/config/setconfig')}}",{valor:valor,parametro:'sidebar_collapse'}).then(function(response)
+      {
+          if(valor=='S')
+            $('body').addClass('sidebar-collapse');
+          else
+            $('body').removeClass('sidebar-collapse');
+      });   
+    }
+  @endif
 </script>
 @stop
