@@ -74,7 +74,9 @@ class configController extends Controller
     public function putSelecionarempresa()
     {
       try
-      {      
+      {    
+        if(cannot('multiempresa','put'))  
+          return Response::json(['success'=>false]);    
         $dados = Input::all();         
         $selecionados = explode(',', Auth::user()->tenant_selecionados);
        

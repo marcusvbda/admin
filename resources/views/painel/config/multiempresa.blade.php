@@ -59,11 +59,13 @@
 <script type="text/javascript">
 function selecionar(id,valor)
 {
-  xCode.ajax("put","{{asset('admin/config/selecionarempresa')}}",{id,valor}).then(function(response)
-  {
-      if(response.success)
-        reload();
-  });
+  @if(can('multiempresa','put'))  
+    xCode.ajax("put","{{asset('admin/config/selecionarempresa')}}",{id,valor}).then(function(response)
+    {
+        if(response.success)
+          reload();
+    });
+  @endif
 }
 </script>
 @stop
