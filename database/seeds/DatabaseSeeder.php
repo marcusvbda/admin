@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call('CorProfileSeed');        
         $this->call('UsuariosSeed');
         $this->call('ParametrosSeed');
+        $this->call('RedesSeed');
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
    }
 }
@@ -78,6 +79,23 @@ class GruposPermissoesSeed extends Seeder
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 14,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 15,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 16,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
+
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 1,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 2,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 3,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 4,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 5,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 6,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 7,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 8,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 9,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 10,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 11,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 12,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 13,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 14,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 15,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 16,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
     }
 }
 
@@ -86,7 +104,8 @@ class TenantSeed extends Seeder
 {
     public function run()
     {
-        DB::table('tenant')->insert(['nome' => 'Empresa Teste 1','razao'=>'Empresa Teste 1']);
+        DB::table('tenant')->insert(['nome' => 'Empresa Teste 1','rede_id'=>1,'razao'=>'Empresa Teste 1']);
+        DB::table('tenant')->insert(['nome' => 'Empresa Teste 2','rede_id'=>1,'razao'=>'Empresa Teste 2']);
     }
 }
 
@@ -119,6 +138,7 @@ class GruposAcessoSeed extends Seeder
     public function run()
     {
         DB::table('grupos_acesso')->insert(['descricao'=>'Administrador','tenant_id'=>1]);
+        DB::table('grupos_acesso')->insert(['descricao'=>'Administrador','tenant_id'=>2]);
     }
 }
 
@@ -178,6 +198,15 @@ class ParametrosSeed extends Seeder
     public function run()
     {
         DB::table('parametros')->insert(['qtde_dec_dinheiro'=>2,'tenant_id'=>1]);
+    }
+}
+
+
+class RedesSeed extends Seeder 
+{
+    public function run()
+    {
+        DB::table('redes')->insert(['nome' => 'Rede padrão','razao'=>'Rede padrão']);
     }
 }
 

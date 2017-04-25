@@ -96,4 +96,9 @@ class empresas extends model
     {
         return $this->hasOne('App\Parametros','id');
     }
+
+    public function rede()
+    {
+        return $this->belongsTo('App\Redes','id');
+    }
 }

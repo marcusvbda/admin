@@ -23,7 +23,47 @@
     </div>
   <!-- /.box-header -->
     <div class="box-body">
-
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-condensed table-striped">
+              <thead>
+                <tr>
+                  <th style="display: none">id</th>
+                  <th></th>
+                  <th>Nome</th>
+                  <th>Razão</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($empresas as $empresa)
+                    @if($empresa->selecionado==uppertrim('S'))
+                    <tr style="background-color: #afffdb" onclick="selecionar({{$empresa->id}},'N')">
+                      <td><span class="glyphicon glyphicon-check"></span></td>
+                    @else
+                    <tr style="background-color: #ffd8d8" onclick="selecionar({{$empresa->id}},'S')">
+                      <td><span class="glyphicon glyphicon-unchecked"></span></td>
+                    @endif
+                    <td style="display: none">{{$empresa->id}}</td>
+                    <td>{{$empresa->nome}}</td>
+                    <td>{{$empresa->razao}}</td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
     </div>
 </div>
+
+
+<script type="text/javascript">
+function selecionar(id,valor)
+{
+  xCode.ajax("put","{{asset('admin/config/selecionarempresa')}}",{id,valor}).then(function(response)
+  {
+      if(response.success)
+        reload();
+  });
+}
+</script>
 @stop

@@ -38,18 +38,18 @@
 
     <form id="frm_login">
       <div class="form-group has-feedback">
-        <input type="email" id="email" class="form-control" placeholder="Email" required max="250">
+        <input type="email" id="email" class="form-control" value="vinicius@alive.inf.br" placeholder="Email" required max="250">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" id="senha" class="form-control" placeholder="Senha" required maxlength="15">
+        <input type="password" id="senha" class="form-control" value="admin" placeholder="Senha" required maxlength="15">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox" id="remember" > Lembrar-me
+              <input type="checkbox" id="remember" checked > Lembrar-me
             </label>
           </div>
         </div><!-- /.col -->
