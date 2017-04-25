@@ -16,7 +16,7 @@ class configController extends Controller
   	public function getIndex()
   	{
       if(cannot('configuracoes','get'))
-        return erro(505);
+        return abort(505);
       $config = Parametros::first();
 		  return view('painel.config.index',compact('config'));
   	}
@@ -50,6 +50,13 @@ class configController extends Controller
       {
         return Response::json(['success'=>false,'msg'=>$e->errorInfo[2]]);    
       }  
+    }
+
+    public function getMultiempresa()
+    {
+      if(cannot('multiempresa','get'))
+        return abort(505);
+      return view('painel.config.multiempresa');
     }
 
 

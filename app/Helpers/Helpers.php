@@ -90,23 +90,6 @@ function porcentagem($valor,$total)
 		return $porc;
 }
 
-function erro($erro)
-{
-	switch ($erro) 
-	{
-		case 505:
-			$txt_erro = 'Oops, Você não tem permissão para acessar esta página  :(';				
-			$txt_msg = "Consulte seu grupo de acesso";
-			return view('auxiliares.erro',compact('erro','txt_erro','txt_msg'));
-			exit;
-		case 404:
-			$txt_erro = 'Ooops, página não encontrada';
-			$txt_msg  = 'Tente utilizar o menu de opções  :)';
-			return view('auxiliares.erro',compact('erro','txt_erro','txt_msg'));	
-			exit;
-	}	
-}
-
 function bomdia()
 {
 	date_default_timezone_set(Auth::user()->timezone);

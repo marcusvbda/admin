@@ -19,7 +19,7 @@ class caixasController extends Controller
   	public function getIndex()
   	{   
   	  	if(cannot('caixas','get'))
-			return erro(505);	
+			return abort(505);	
 	    $caixas = Caixas::all();
 	    $filtro['de_abertura'] = "";
 	    $filtro['ate_abertura'] = "";
@@ -36,7 +36,7 @@ class caixasController extends Controller
     public function postIndex()
   	{     
   		if(cannot('caixas','get'))
-			return erro(505);
+			return abort(505);
 
 		$filtro = Input::all();
 

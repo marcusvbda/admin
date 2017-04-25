@@ -76,6 +76,8 @@ class GruposPermissoesSeed extends Seeder
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 12,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 13,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 14,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 15,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 16,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
     }
 }
 
@@ -100,6 +102,7 @@ class ModulosSeed extends Seeder
         DB::table('modulos')->insert(['nome' => 'bombas','descricao'=>'Bombas']);
         DB::table('modulos')->insert(['nome' => 'abastecimentos','descricao'=>'Abastecimentos']);
         DB::table('modulos')->insert(['nome' => 'caixas','descricao'=>'Caixas']);
+        DB::table('modulos')->insert(['nome' => 'multiempresa','descricao'=>'MultiEmpresa']);
     }
 }
 
@@ -144,6 +147,9 @@ class PermissoesSeed extends Seeder
         DB::table('permissoes')->insert(['modulo_id'=>7,'nome'=>'get','descricao'=>'Ver']);
 
         DB::table('permissoes')->insert(['modulo_id'=>8,'nome'=>'get','descricao'=>'Ver']);
+
+        DB::table('permissoes')->insert(['modulo_id'=>9,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>9,'nome'=>'PUT','descricao'=>'Alterar']);
     }
 }
 

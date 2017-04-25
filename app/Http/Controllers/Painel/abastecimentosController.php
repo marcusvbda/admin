@@ -19,7 +19,7 @@ class abastecimentosController extends Controller
   	public function getIndex()
   	{     
   		if(cannot('abastecimentos','get'))
-			return erro(505);
+			return abort(505);
 
 		$abastecimentos = Abastecimentos::all();
 		$bicos = Bombas::all();
@@ -34,7 +34,7 @@ class abastecimentosController extends Controller
     public function postIndex()
   	{     
   		if(cannot('abastecimentos','get'))
-			return erro(505);
+			return abort(505);
 
 		$filtro = Input::all();
 

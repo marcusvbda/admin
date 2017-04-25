@@ -23,7 +23,7 @@ class UsersController extends Controller
   	public function getIndex()
 	{
 		if(cannot('usuarios','get'))
-			return erro(505);
+			return abort(505);
 		$ativo = "A";
     	$usuarios = user::Tenant()->where('ativo','=','S')->get();		
 		return view('painel.usuarios.index',compact('usuarios','ativo'));
@@ -32,7 +32,7 @@ class UsersController extends Controller
 	public function postIndex()
 	{
 		if(cannot('usuarios','get'))
-			return erro(505);
+			return abort(505);
 		$ativo = Input::all()['mostrar'];
 		$usuarios = [];
 		if($ativo=="A")
@@ -48,12 +48,12 @@ class UsersController extends Controller
     public function getShow($id)
     {
     	if(  ($id!=Auth::user()->id)&&(cannot('usuarios','get')  ))
-			return erro(505);
+			return abort(505);
 
     	$id = base64_decode($id);
         $usuario = User::search($id)->first();
         if(count($usuario)<=0)
-        	return erro(404);
+        	return abort(404);
 
 		$funcoes  =  Funcoes::get();
 		$cores    =  Cor_Profile::get();
@@ -65,7 +65,7 @@ class UsersController extends Controller
     public function getCreate()
     {
     	if(cannot('usuarios','post'))
-			return erro(505);
+			return abort(505);
 
 		$funcoes =  Funcoes::get();
 		$grupos  =  GruposAcesso::get();
@@ -339,7 +339,7 @@ class UsersController extends Controller
 	{
 		if(is_null($metodo)):
 			if(cannot('grupos_acesso','get'))
-				return erro(505);
+				return abort(505);
 
 			$grupos = GruposAcesso::all();
 			return view('painel.usuarios.grupos_acesso.index',compact('grupos'));
@@ -347,13 +347,13 @@ class UsersController extends Controller
 			switch ($metodo) {
 				case 'show':
 					if(cannot('grupos_acesso','get'))
-						return erro(505);
+						return abort(505);
 					$id = base64_decode($id);
 					$grupo =   GruposAcesso::find($id);
 					$usuarios =   User::Tenant()->where('grupo_acesso_id','=',$id)->get();
 					$modulos = Modulos::all();
 					if(count($grupo)<=0)
-						return erro(404);
+						return abort(404);
 
 					return view('painel.usuarios.grupos_acesso.show',compact('grupo','usuarios','modulos'));
 					break;
@@ -403,7 +403,7 @@ class UsersController extends Controller
 	public function getGroupscreate()
 	{
 		if(cannot('grupos_acesso','post'))
-			return erro(505);
+			return abort(505);
 		$modulos = Modulos::all();
 		return view('painel.usuarios.grupos_acesso.create',compact('modulos'));
 	}

@@ -294,12 +294,8 @@
 
 
 
-
-
-
-
-
 <script type="text/javascript">
+
 dataTable('#tab_abastecimentos'); 
 dataTable('#tab_cupons'); 
 dataTable('#tab_cancelamento'); 

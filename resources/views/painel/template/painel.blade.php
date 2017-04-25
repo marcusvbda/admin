@@ -277,6 +277,41 @@
             </ul>
           </li>
 
+          @if(can('configuracoes','get'))
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-wrench"></i> <span>Configurações</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li>
+                  <a href="#"><i class="fa fa-gear"></i> Parametros
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="{{asset('admin/config')}}" ><i class="fa fa-gear"></i> Parametros de sistema</a></li>
+                  </ul>
+                </li>   
+                <li>
+                  <a href="#"><i class="fa fa-institution "></i> Empresas
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    @if(can('multiempresa','get'))
+                      <li><a href="{{asset('admin/config/multiempresa')}}"><i class="fa fa-institution "></i> MultiEmpresa</a></li>
+                    @endif                            
+                  </ul>
+                </li>             
+              </ul>
+            </li>
+          @endif
+
 
       </ul>
     </section>
@@ -322,6 +357,35 @@
 
   
 </div>
+
+
+
+
+
+  <!-- Modal -->
+<div class="modal fade" id="___modal___" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h4 class="modal-title"><div id="___modal___titulo___"></div></h4>
+      </div>
+      <div class="modal-body">
+        <div id="___modal___conteudo___"></div>
+      </div>
+      <div class="modal-footer">
+        <div id="___modal___botoes___"></div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+
+
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
@@ -367,6 +431,23 @@
 
 
 <script type="text/javascript">
+$.fn.FormData = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};  
+
 // buscar_notificacoes();
 
 // function buscar_notificacoes()
@@ -394,6 +475,13 @@
 // {
 //     buscar_notificacoes();
 // }, 5000);
+function modal(titulo,conteudo,botoes="")
+{
+  $('#___modal___titulo___').html(titulo);
+  $('#___modal___conteudo___').html(conteudo);
+  $('#___modal___botoes___').html(botoes);
+  $('#___modal___').modal('show');
+}
 
 function sair()
 {

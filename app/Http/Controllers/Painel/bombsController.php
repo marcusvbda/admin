@@ -15,7 +15,7 @@ class bombsController extends Controller
   	public function getIndex()
   	{     
   		if(cannot('bombas','get'))
-			return erro(505);
+			return abort(505);
       	$bombas = Bombas::groupBy('bomba')->get();
       	return view('painel.bombas.index',compact('bombas'));
     }
