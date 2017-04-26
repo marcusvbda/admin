@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-04-26T17:59:56 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_Letter_2" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5dece581-ff16-45e1-99e9-325ebd57b2e3">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+registro,
+codigo,
+bomba_codigo,
+caixa_codigo,
+total_litros,
+preco
+from abastecimentos]]>
+	</queryString>
+	<field name="registro" class="java.lang.Integer"/>
+	<field name="codigo" class="java.lang.Integer"/>
+	<field name="bomba_codigo" class="java.lang.Integer"/>
+	<field name="caixa_codigo" class="java.lang.Integer"/>
+	<field name="total_litros" class="java.lang.Double"/>
+	<field name="preco" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="-20" width="612" height="95" uuid="abddfffb-dc82-455d-9cbb-dee3ba1dd465"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Abastecimentos]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="116" height="20" uuid="fadf4e5c-a9ed-4471-bcd4-6915574188a0"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[registro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="116" y="0" width="114" height="20" uuid="ada04003-2527-4e3d-b1c5-587bb056853d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[bomba_codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="0" width="114" height="20" uuid="f55ecef5-3a92-4745-ae2c-41f970bfa06d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[caixa_codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="344" y="0" width="114" height="20" uuid="f6055a0e-8329-431d-b853-6e66ce85fb9c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[total_litros]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="458" y="0" width="114" height="20" uuid="204cac5a-b5eb-469b-b14c-da82251392b1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[preco]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="19" width="116" height="21" uuid="bf3fde0c-1b89-430c-8008-717a61b4fe3f"/>
+				<textFieldExpression><![CDATA[$F{registro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="19" width="114" height="21" uuid="08c7e9c0-aec2-4069-b5b1-d53850aa5b0b"/>
+				<textFieldExpression><![CDATA[$F{bomba_codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="19" width="114" height="21" uuid="5843836b-d97d-4038-9500-d2ba905eb5c4"/>
+				<textFieldExpression><![CDATA[$F{caixa_codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="19" width="100" height="21" uuid="940c80ba-fd6d-4c0a-95ec-501689faac0c"/>
+				<textFieldExpression><![CDATA[$F{total_litros}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="458" y="19" width="114" height="21" uuid="4851f086-bb2c-495c-9109-fb4f66f3e25f"/>
+				<textFieldExpression><![CDATA[$F{preco}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="390" y="20" width="100" height="30" uuid="10c278a6-70a7-444a-9670-373f0f21d863"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="490" y="20" width="100" height="30" uuid="80292659-5d3e-4645-8048-f26e5b9a35da"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -19,6 +19,7 @@ Route::group(['prefix' => 'admin'], function ()
 	{	
 	    Route::get('/', 'Painel\dashboardController@index');
 		Route::controller('/import', 'Painel\importacaoController');
+		Route::controller('/teste', 'Painel\testeController');
 		Route::controller('/dashboard', 'Painel\dashboardController');
 		Route::controller('/users', 'Painel\usersController');
 		Route::controller('/config', 'Painel\configController');
