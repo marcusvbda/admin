@@ -1,6 +1,57 @@
 <?php
 use App\Acl\Acl;
 use App\Historico;
+use JasperPHP\JasperPHP;
+
+
+function relatorio($modelo,$parametros = array())
+{
+	try
+	{
+		// $input =  public_path() . '/relatorios/templates/_modelo_abastecimento.jrxml';
+	    $output = public_path() . '/relatorios/temp/' . time();
+		$jasper = new JasperPHP;
+		// $jasper->compile($input)->execute();
+
+		$input  = public_path() . '/relatorios/templates/'.$modelo.'.jasper';
+
+		$jasper->process(
+			$input,
+			$output,
+			array('pdf'),
+			$parametros,	
+		    [
+		        'driver'   =>  env('JDBC_DRIVER'),
+		        'host'     =>  env('JDBC_HOST'),
+		        'port'     =>  env('JDBC_PORT'),
+		        'username' =>  env('JDBC_USERNAME'),
+		        'password' =>  env('JDBC_PASSWORD'),
+		        'database' =>  env('JDBC_DATABASE'),
+		        'jdbc_dir' => base_path() .'/'. env('JDBC_DIR')
+		    ],
+			false,
+			false
+		)->execute();
+
+		$file = $output . '.pdf';
+	    $path = $file;
+	    
+	    if (!file_exists($file)) 
+	        return abort(404);
+	    $file = file_get_contents($file);
+
+	    // exclui pdf temporário criado
+	    unlink($path);
+	    
+	    return response($file, 200)
+	        ->header('Content-Type', 'application/pdf')
+	        ->header('Content-Disposition', 'inline;');
+	}
+	catch(\Exepction $e)
+	{
+	    throw new \Exception('Erro ao gerar Relatório', 1);
+	}
+}
 
 function regra_de_3($vlr1,$ref1,$vlr2)
 {

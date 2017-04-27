@@ -244,7 +244,7 @@
 
           <li class="treeview">
             <a href="#">
-              <i class="fa  fa-list"></i> <span>Relatórios</span>
+              <i class="fa  fa-list"></i> <span>Consultas</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -269,8 +269,31 @@
                   </span>
                 </a>
                 <ul class="treeview-menu">
-                  @if(can('caixas','get'))
+                  @if(can('abastecimentos','get'))
                     <li><a href="{{asset('admin/abastecimentos')}}"><i class="fa fa-road"></i> Abastecimentos</a></li>
+                  @endif                            
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <li class="treeview">
+            <a href="#">
+              <i class="glyphicon glyphicon-list-alt"></i> <span>Relatórios</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li>
+                <a href="#"><i class="fa fa-road"></i> Abastecimentos
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu">
+                  @if(can('abastecimentos','get'))
+                    <li><a href="{{asset('admin/abastecimentos/report')}}"><i class="fa fa-road"></i> Abastecimentos</a></li>
                   @endif                            
                 </ul>
               </li>

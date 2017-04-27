@@ -80,6 +80,7 @@ class GruposPermissoesSeed extends Seeder
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 15,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 16,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 17,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 18,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
 
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 1,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 2,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
@@ -98,6 +99,7 @@ class GruposPermissoesSeed extends Seeder
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 15,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 16,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
         DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 17,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 18,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
     }
 }
 
@@ -124,6 +126,7 @@ class ModulosSeed extends Seeder
         DB::table('modulos')->insert(['nome' => 'abastecimentos','descricao'=>'Abastecimentos']);
         DB::table('modulos')->insert(['nome' => 'caixas','descricao'=>'Caixas']);
         DB::table('modulos')->insert(['nome' => 'multiempresa','descricao'=>'MultiEmpresa']);
+        DB::table('modulos')->insert(['nome' => 'vendas','descricao'=>'Vendas']);
     }
 }
 
@@ -173,6 +176,8 @@ class PermissoesSeed extends Seeder
 
         DB::table('permissoes')->insert(['modulo_id'=>9,'nome'=>'get','descricao'=>'Ver']);
         DB::table('permissoes')->insert(['modulo_id'=>9,'nome'=>'PUT','descricao'=>'Alterar']);
+
+        DB::table('permissoes')->insert(['modulo_id'=>10,'nome'=>'get','descricao'=>'Ver']);
     }
 }
 

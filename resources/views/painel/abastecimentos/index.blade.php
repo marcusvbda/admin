@@ -44,7 +44,7 @@
                             <input type="time" name="ate_hora" id="ate_hora" class="form-control" value="{{$filtro['ate_hora']}}" >
                         </div>
                         <div class="1">
-                            <label>FIltrar</label><br>
+                            <label>Filtrar</label><br>
                             <button class="btn btn-sm btn-primary"><i class="fa fa-search"></i></button>
                         </div>
                     </form>
@@ -68,31 +68,31 @@
                                     <th class="text-center"><span class="fa fa-gears"></span></th>
                                 </tr>
                             </thead>
+                            <tbody>
                             <?php   $valor_total = 0;$total_litros = 0;?>
                             @foreach($abastecimentos as $abastecimento)
                             <?php $valor_total += $abastecimento->total_dinheiro;  ?>
                             <?php $total_litros += $abastecimento->total_litros;  ?>
-                            <tbody>                        
-                                <tr>
-                                    <td style="display: none;">{{$abastecimento->_id}}</td>  
-                                    <td>{{str_pad($abastecimento->bomba_codigo,6,"0",STR_PAD_LEFT)}}</td>  
-                                    <td>{{$abastecimento->bomba->tanque->produto->descricao}}</td>  
-                                    <td>{{$abastecimento->total_litros}} {{$abastecimento->bomba->tanque->produto->unidade}}</td>  
+                                <tr>    
+                                    <td style="display: none;">{{$abastecimento->_id}}</td>                                 
+                                    <td>{{str_pad($abastecimento->bomba_codigo,6,"0",STR_PAD_LEFT)}}</td>
+                                    <td>{{$abastecimento->bomba->tanque->produto->descricao}}</td>
+                                    <td>{{$abastecimento->total_litros}} {{$abastecimento->bomba->tanque->produto->unidade}}</td>
                                     <td>{{parametro('moeda')}} {{number_format($abastecimento->preco,parametro('qtde_dec_dinheiro'))}}</td>
-                                    <td>{{parametro('moeda')}} {{number_format($abastecimento->total_dinheiro,parametro('qtde_dec_dinheiro'))}}</td>  
-                                    <td>{{dt_format($abastecimento->data),'d/m/Y'}}</td>  
+                                    <td>{{parametro('moeda')}} {{number_format($abastecimento->total_dinheiro,parametro('qtde_dec_dinheiro'))}}</td>
+                                    <td>{{dt_format($abastecimento->data),'d/m/Y'}}</td>
                                     <td>{{$abastecimento->hora}}</td>
-                                    <td>{{str_pad($abastecimento->registro,6,"0",STR_PAD_LEFT)}}</td> 
-                                    <td>
+                                    <td>{{str_pad($abastecimento->registro,6,"0",STR_PAD_LEFT)}}</td>
+                                    <td class="text-center" >
                                         @if(can('abastecimentos','get'))
-                                        <a type="button" class="btn btn-info btn-sm" href="{{asset('admin/abastecimentos/show/'. base64_encode($abastecimento->_id))}}">
-                                            <i class="glyphicon glyphicon-eye-open"></i> Ver Cupom
+                                        <a type="button" class="btn btn-info btn-sm" href="">
+                                            <i class="glyphicon glyphicon-eye-open"></i> Ver
                                         </a>
                                         @endif
-                                    </td>  
+                                    </td>
                                 </tr>
-                            </tbody>
                             @endforeach
+                            </tbody>
                         </table>
                         <hr>
                         <h3><strong>Resumo</strong></h3>
