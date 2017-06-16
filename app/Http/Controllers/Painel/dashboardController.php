@@ -26,11 +26,11 @@ class dashboardController extends Controller
         User::where('id','=',Auth::user()->id)->update(['reset_token'=>null]);
       endif;
 
-      $importacoes = Importacoes::orderBy('id', 'desc')->take(5)->get();
-      $historico_usuarios = Historico::where('tipo','=','U')->orderBy('id', 'desc')->take(5)->get();
+      // $importacoes = Importacoes::orderBy('id', 'desc')->take(5)->get();
+      // $historico_usuarios = Historico::where('tipo','=','U')->orderBy('id', 'desc')->take(5)->get();
 
-      $porcentagem =  $this->calcularporcentagens();
-		  return view('painel.dashboard.index',compact('mensagem','historico_usuarios','importacoes','porcentagem'));
+      // $porcentagem =  $this->calcularporcentagens();
+		  return view('painel.dashboard.index',compact('mensagem'));
   	}
 
     public function putChecartodo()

@@ -9,6 +9,6 @@ class Bombas extends globalModel
     protected $table = 'bomba';
     public function tanque()
     {
-        return $this->hasOne(Tanques::class,'codigo');
+        return $this->hasOne(Tanques::class,'codigo','tanque_codigo');
     }
 }

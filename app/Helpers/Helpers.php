@@ -136,7 +136,7 @@ function porcentagem($valor,$total)
 {
 	$porc = regra_de_3($total,100,$valor);
 	if(!is_int($porc))
-		return number_format($porc, parametro('qtde_dec_porcentagem') , ',', '.');
+		return number_format($porc, parametro('qtde_dec_porcento') , ',', '.');
 	else
 		return $porc;
 }
@@ -259,25 +259,25 @@ function dt_format($data,$formato="d/m/Y")
 }
 function calc_idade($data_nasc) 
 {
-	$data_nasc=explode('/',dt_format($data_nasc));
-	$data=date('d/m/Y');
-	$data=explode('/',$data);
-	$anos=$data[2]-$data_nasc[2];
-	if($data_nasc[1] > $data[1])
-		return $anos-1;
-	if($data_nasc[1] == $data[1])
-	{
-		if($data_nasc[0] <= $data[0]) 
-		{
-			return $anos;
-		}
-		else
-		{
-			return $anos-1;
-		}
-	}
-	if ($data_nasc[1] < $data[1])
-		return $anos;
+	// $data_nasc=explode('/',dt_format($data_nasc));
+	// $data=date('d/m/Y');
+	// $data=explode('/',$data);
+	// $anos=$data[2]-$data_nasc[2];
+	// if($data_nasc[1] > $data[1])
+	// 	return $anos-1;
+	// if($data_nasc[1] == $data[1])
+	// {
+	// 	if($data_nasc[0] <= $data[0]) 
+	// 	{
+	// 		return $anos;
+	// 	}
+	// 	else
+	// 	{
+	// 		return $anos-1;
+	// 	}
+	// }
+	// if ($data_nasc[1] < $data[1])
+		return 0;
 }
 
 function select($sql,$campo=null)

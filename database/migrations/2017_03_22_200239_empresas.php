@@ -13,6 +13,7 @@ class Empresas extends Migration
             ->references('id')
                 ->on('redes');   
             $table->string('razao',50);
+            $table->string('cnpj',18)->nullable();
             $table->string('nome',50);
             $table->timestamps();           
         });

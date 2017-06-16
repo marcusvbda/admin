@@ -11,6 +11,6 @@ class Tanques extends globalModel
 
     public function produto()
     {
-        return $this->hasOne(Produtos::class,'codigo');
+        return $this->hasOne(Produtos::class,'codigo','produto_codigo');
     }
 }

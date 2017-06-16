@@ -81,23 +81,30 @@ class caixasController extends Controller
 
     private function calcularporcentagens($caixa)
     {
-      $dadosfaturamento = DadosFaturamento::where('excluido','=','N')->get();
+      $dadosfaturamento = DadosFaturamento::where('excluido','=','N')->where('caixa_codigo','=',$caixa)->get();
       $grupos = GruposProduto::all();      
       $total = $dadosfaturamento->count();
       $result = array();
+        // $query = select("
+        // select
+        //    count(*) as qtde from dadosfaturamento d    
+        //    join produtos p on p.codigo=d.produto_codigo
+        //    join gruposprodutos gp on gp.codigo=p.grupoproduto_codigo
+        // where 
+        // d.excluido='N' and 
+        // d.caixa_codigo=$caixa and 
+        // gp.codigo=8");
       foreach ($grupos as $grupo):
-        $query = select("
-        select
-           count(*) as qtde from dadosfaturamento d    
-           left join produtos p on p.codigo=d.produto_codigo
-           left join gruposprodutos gp on gp.codigo=p.grupoproduto_codigo
-        where 
-        d.excluido='N' and 
-        d.caixa_codigo=$caixa and 
-        gp.codigo=".$grupo->codigo);
-        array_push($result,(object)['codigo_grupo'=>$grupo->codigo,'descricao_grupo'=>$grupo->descricao,'porcentagem'=>porcentagem($query[0]->qtde,$total)]);
+	    // $query = DadosFaturamento::join('produtos','produtos.codigo','=','dadosfaturamento.produto_codigo')
+	    //   ->join('gruposprodutos','gruposprodutos.codigo','=','produtos.grupoproduto_codigo')
+	    //   ->select('dadosfaturamento.*')
+	    //   ->where('dadosfaturamento.caixa_codigo','=',$caixa)
+	    //   ->where('gruposprodutos.codigo','=',$grupo->codigo)
+	    //   ->count();
+        array_push($result,(object)['codigo_grupo'=>$grupo->codigo,'descricao_grupo'=>$grupo->descricao,'porcentagem'=>0]);
       endforeach;
       return $result;
+
     }
 
 }

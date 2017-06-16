@@ -11,12 +11,12 @@ class tenancyScope implements ScopeInterface
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->whereIn('tenant_id',explode(',',Auth::user()->tenant_selecionados));    
+        $builder->whereIn($model['table'].'.tenant_id',explode(',',Auth::user()->tenant_selecionados));    
     }
 
     public function remove(Builder $builder, Model $model)
     {    
-        $builder->whereIn('tenant_id',explode(',',Auth::user()->tenant_selecionados));    
+        $builder->whereIn($model['table'].'.tenant_id',explode(',',Auth::user()->tenant_selecionados));    
     }
 
     public function empresa()

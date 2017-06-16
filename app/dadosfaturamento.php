@@ -13,4 +13,8 @@ class Dadosfaturamento extends globalModel
     {
         return $this->hasOne(Produtos::class,'codigo','produto_codigo');
     }
+    public function produtos()
+    {
+        return $this->hasMany(Produtos::class,'codigo','produto_codigo');
+    }
 }

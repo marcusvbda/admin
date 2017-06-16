@@ -63,44 +63,64 @@ class GruposPermissoesSeed extends Seeder
 {
     public function run()
     {
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 1,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 2,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 3,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 4,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 5,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 6,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 7,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 8,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 9,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 10,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 11,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 12,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 13,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 14,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 15,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 16,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 17,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 18,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>1]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 1,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 2,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 3,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 4,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 5,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 6,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 7,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 8,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 9,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 10,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 11,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 12,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 13,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 14,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 15,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 16,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 17,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 18,'grupo_acesso_id'=>1,'valor'=>'S','tenant_id'=>437]);
 
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 1,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 2,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 3,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 4,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 5,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 6,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 7,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 8,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 9,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 10,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 11,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 12,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 13,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 14,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 15,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 16,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 17,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 18,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>2]);
-    }
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 1,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 2,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 3,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 4,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 5,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 6,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 7,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 8,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 9,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 10,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 11,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 12,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 13,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 14,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 15,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 16,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 17,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 18,'grupo_acesso_id'=>2,'valor'=>'S','tenant_id'=>1426]);
+
+
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 1,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 2,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 3,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 4,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 5,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 6,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 7,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 8,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 9,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 10,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 11,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 12,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 13,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 14,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 15,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 16,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 17,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+        DB::table('grupo_acesso_permissoes')->insert(['permissao_id' => 18,'grupo_acesso_id'=>3,'valor'=>'S','tenant_id'=>436]);
+    }    
 }
 
 
@@ -108,8 +128,9 @@ class TenantSeed extends Seeder
 {
     public function run()
     {
-        DB::table('tenant')->insert(['nome' => 'Empresa Teste 1','rede_id'=>1,'razao'=>'Empresa Teste 1']);
-        DB::table('tenant')->insert(['nome' => 'Empresa Teste 2','rede_id'=>1,'razao'=>'Empresa Teste 2']);
+        DB::table('tenant')->insert(['id'=>437,'nome' => 'CENTRO DE SERVICOS FRANGO ASSADO -NORTE LTDA','rede_id'=>1,'razao'=>'CENTRO DE SERVICOS FRANGO ASSADO -NORTE LTDA']);
+        DB::table('tenant')->insert(['id'=>1426, 'nome' => 'CARVALHO PINTO AUTOMOTIVOS E CONVENIENCIAS LTDA','rede_id'=>1,'razao'=>'CARVALHO PINTO AUTOMOTIVOS E CONVENIENCIAS LTDA']);
+        DB::table('tenant')->insert(['id'=>436, 'nome' => 'CENTRO DE SERVICOS FRANGO ASSADO -NORTE LTDA','rede_id'=>1,'razao'=>'CENTRO DE SERVICOS FRANGO ASSADO -NORTE LTDA']);
     }
 }
 
@@ -134,7 +155,9 @@ class FuncoesSeed extends Seeder
 {
     public function run()
     {
-        DB::table('funcoes')->insert(['descricao'=>'Administrador','tenant_id'=>1]);
+        DB::table('funcoes')->insert(['descricao'=>'Administrador','tenant_id'=>437]);
+        DB::table('funcoes')->insert(['descricao'=>'Administrador','tenant_id'=>1426]);
+        DB::table('funcoes')->insert(['descricao'=>'Administrador','tenant_id'=>436]);
     }
 }
 
@@ -142,8 +165,9 @@ class GruposAcessoSeed extends Seeder
 {
     public function run()
     {
-        DB::table('grupos_acesso')->insert(['descricao'=>'Administrador','tenant_id'=>1]);
-        DB::table('grupos_acesso')->insert(['descricao'=>'Administrador','tenant_id'=>2]);
+        DB::table('grupos_acesso')->insert(['descricao'=>'Administrador','tenant_id'=>437]);
+        DB::table('grupos_acesso')->insert(['descricao'=>'Administrador','tenant_id'=>1426]);
+        DB::table('grupos_acesso')->insert(['descricao'=>'Administrador','tenant_id'=>436]);
     }
 }
 
@@ -155,28 +179,66 @@ class PermissoesSeed extends Seeder
         DB::table('permissoes')->insert(['modulo_id'=>1,'nome'=>'post','descricao'=>'Cadastrar']);
         DB::table('permissoes')->insert(['modulo_id'=>1,'nome'=>'delete','descricao'=>'Excluir']);
         DB::table('permissoes')->insert(['modulo_id'=>1,'nome'=>'PUT','descricao'=>'Alterar']);
-
         DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'get','descricao'=>'Ver']);
         DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'post','descricao'=>'Cadastrar']);
         DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'delete','descricao'=>'Excluir']);
         DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'PUT','descricao'=>'Alterar']);
-
         DB::table('permissoes')->insert(['modulo_id'=>3,'nome'=>'get','descricao'=>'Ver']);
-
         DB::table('permissoes')->insert(['modulo_id'=>4,'nome'=>'get','descricao'=>'Ver']);
         DB::table('permissoes')->insert(['modulo_id'=>4,'nome'=>'put','descricao'=>'Alterar']);
-
         DB::table('permissoes')->insert(['modulo_id'=>5,'nome'=>'get','descricao'=>'Ver']);
-
         DB::table('permissoes')->insert(['modulo_id'=>6,'nome'=>'get','descricao'=>'Ver']);
-
         DB::table('permissoes')->insert(['modulo_id'=>7,'nome'=>'get','descricao'=>'Ver']);
-
         DB::table('permissoes')->insert(['modulo_id'=>8,'nome'=>'get','descricao'=>'Ver']);
-
         DB::table('permissoes')->insert(['modulo_id'=>9,'nome'=>'get','descricao'=>'Ver']);
         DB::table('permissoes')->insert(['modulo_id'=>9,'nome'=>'PUT','descricao'=>'Alterar']);
+        DB::table('permissoes')->insert(['modulo_id'=>10,'nome'=>'get','descricao'=>'Ver']);
 
+
+
+
+
+        DB::table('permissoes')->insert(['modulo_id'=>1,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>1,'nome'=>'post','descricao'=>'Cadastrar']);
+        DB::table('permissoes')->insert(['modulo_id'=>1,'nome'=>'delete','descricao'=>'Excluir']);
+        DB::table('permissoes')->insert(['modulo_id'=>1,'nome'=>'PUT','descricao'=>'Alterar']);
+        DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'post','descricao'=>'Cadastrar']);
+        DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'delete','descricao'=>'Excluir']);
+        DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'PUT','descricao'=>'Alterar']);
+        DB::table('permissoes')->insert(['modulo_id'=>3,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>4,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>4,'nome'=>'put','descricao'=>'Alterar']);
+        DB::table('permissoes')->insert(['modulo_id'=>5,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>6,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>7,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>8,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>9,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>9,'nome'=>'PUT','descricao'=>'Alterar']);
+        DB::table('permissoes')->insert(['modulo_id'=>10,'nome'=>'get','descricao'=>'Ver']);
+
+
+
+
+
+
+        DB::table('permissoes')->insert(['modulo_id'=>1,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>1,'nome'=>'post','descricao'=>'Cadastrar']);
+        DB::table('permissoes')->insert(['modulo_id'=>1,'nome'=>'delete','descricao'=>'Excluir']);
+        DB::table('permissoes')->insert(['modulo_id'=>1,'nome'=>'PUT','descricao'=>'Alterar']);
+        DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'post','descricao'=>'Cadastrar']);
+        DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'delete','descricao'=>'Excluir']);
+        DB::table('permissoes')->insert(['modulo_id'=>2,'nome'=>'PUT','descricao'=>'Alterar']);
+        DB::table('permissoes')->insert(['modulo_id'=>3,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>4,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>4,'nome'=>'put','descricao'=>'Alterar']);
+        DB::table('permissoes')->insert(['modulo_id'=>5,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>6,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>7,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>8,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>9,'nome'=>'get','descricao'=>'Ver']);
+        DB::table('permissoes')->insert(['modulo_id'=>9,'nome'=>'PUT','descricao'=>'Alterar']);
         DB::table('permissoes')->insert(['modulo_id'=>10,'nome'=>'get','descricao'=>'Ver']);
     }
 }
@@ -189,14 +251,38 @@ class UsuariosSeed extends Seeder
         DB::table('usuarios')->insert([
                 "senha"  =>md5('admin'),
                 "nome"   =>"Administrador",
-                "dt_nascimento"   =>"1992-04-08",
-                "email"  =>"vinicius@alive.inf.br",
+                "dt_nascimento"   =>"01-01-2017",
+                "email"  =>"adm@louveira.br",
                 "ativo"  =>"S",
                 "funcao_id"=>1,
                 "grupo_acesso_id"=>1,
                 "cor_profile_id"=>1,
-                'tenant_id'=>1,
-                'tenant_selecionados'=>'1'
+                'tenant_id'=>437,
+                'tenant_selecionados'=>'437'
+            ]);
+        DB::table('usuarios')->insert([
+                "senha"  =>md5('admin'),
+                "nome"   =>"Administrador",
+                "dt_nascimento"   =>"01-01-2017",
+                "email"  =>"adm@carvalho.br",
+                "ativo"  =>"S",
+                "funcao_id"=>2,
+                "grupo_acesso_id"=>2,
+                "cor_profile_id"=>1,
+                'tenant_id'=>1426,
+                'tenant_selecionados'=>'1426'
+            ]);
+        DB::table('usuarios')->insert([
+                "senha"  =>md5('admin'),
+                "nome"   =>"Administrador",
+                "dt_nascimento"   =>"01-01-2017",
+                "email"  =>"adm@sumare.br",
+                "ativo"  =>"S",
+                "funcao_id"=>3,
+                "grupo_acesso_id"=>3,
+                "cor_profile_id"=>1,
+                'tenant_id'=>436,
+                'tenant_selecionados'=>'436'
             ]);
     }
 }
@@ -205,7 +291,9 @@ class ParametrosSeed extends Seeder
 {
     public function run()
     {
-        DB::table('parametros')->insert(['qtde_dec_dinheiro'=>2,'tenant_id'=>1]);
+        DB::table('parametros')->insert(['qtde_dec_dinheiro'=>2,'tenant_id'=>437]);
+        DB::table('parametros')->insert(['qtde_dec_dinheiro'=>2,'tenant_id'=>1426]);
+        DB::table('parametros')->insert(['qtde_dec_dinheiro'=>2,'tenant_id'=>436]);
     }
 }
 
@@ -214,7 +302,7 @@ class RedesSeed extends Seeder
 {
     public function run()
     {
-        DB::table('redes')->insert(['nome' => 'Rede padrão','razao'=>'Rede padrão']);
+        DB::table('redes')->insert(['nome' => 'Rede Frango Assado','razao'=>'Rede Frango Assado']);
     }
 }
 

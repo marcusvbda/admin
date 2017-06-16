@@ -86,7 +86,6 @@ class todolist extends globalModel
 class parametros extends globalModel
 {
     protected $table     = "parametros";
-    protected $fillable  = ['id','qtde_dec_dinheiro','qtde_dec_porcento','skin','fix_navbar','sidebar_collapse','moeda','versao','created_at','updated_at'];
 }
 class empresas extends model
 {    
@@ -94,11 +93,11 @@ class empresas extends model
     protected $fillable  = ['id'];
     public function parametro()
     {
-        return $this->hasOne('App\Parametros','id');
+        return $this->hasOne('App\Parametros','tenant_id');
     }
 
     public function rede()
     {
-        return $this->belongsTo('App\Redes','id');
+        return $this->belongsTo('App\Redes','rede_id');
     }
 }

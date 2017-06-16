@@ -25,7 +25,9 @@ class importacaoController extends Controller
 
   	public function getIndex()
   	{          
-        ini_set('max_execution_time', 280); //3 minutes
+        ini_set('max_execution_time', 0); ini_set("memory_limit",-1);
+
+
   		$this->ImportarArquivos();
     }
 
@@ -45,8 +47,9 @@ class importacaoController extends Controller
 
     private function ImportarArquivos()
     {
-    // 	try
-  		// {
+    	try
+  		{
+            $tenant_id = Auth::user()->tenant_id;
 			$this->tenant_id = Auth::user()->tenant_id;
 			$this->usuario_id = Auth::user()->id;
 
@@ -55,7 +58,7 @@ class importacaoController extends Controller
 	      		foreach($this->arq_importar as $arquivo):
                     if(uppertrim(substr($arquivo,strlen($arquivo)-5,strlen($arquivo)))=='.JSON'):
     	      			$this->qtde_inserts=0;$this->qtde_updates=0;
-    	  				if($this->importarArquivo($this->lerArquivo(public_path().$this->diretorio_importar.$arquivo),$arquivo)):
+    	  				if($this->importarArquivo($this->lerArquivo(public_path().$this->diretorio_importar.$tenant_id.'/'.$arquivo),$arquivo)):
                             $this->mover($arquivo);
                             header("Refresh: 0;"); 
                         endif;
@@ -63,22 +66,24 @@ class importacaoController extends Controller
 	      		endforeach;
 	      	endif;
 	      	return true;
-	    // }
-	    // catch(\Exception $e)
-	    // {
-	    //  	return false;
-	    // }
+	    }
+	    catch(\Exception $e)
+	    {
+	     	print_r($e->errorInfo[2]);
+	    }
     }
+
 
     private function mover($arquivo)
     {
-        copy(public_path().$this->diretorio_importar.$arquivo, public_path().$this->diretorio_importados.$arquivo);
-        unlink(public_path().$this->diretorio_importar.$arquivo);
+        copy(public_path().$this->diretorio_importar.Auth::user()->tenant_id.'/'.$arquivo, public_path().$this->diretorio_importados.Auth::user()->tenant_id.'/'.$arquivo);
+        unlink(public_path().$this->diretorio_importar.Auth::user()->tenant_id.'/'.$arquivo);
     }
 
     private function existeArquivos()
 	{
-	   	$this->arq_importar = scandir(public_path().$this->diretorio_importar);
+        $tenant_id = Auth::user()->tenant_id;
+	   	$this->arq_importar = scandir(public_path().$this->diretorio_importar.$tenant_id);
 	   	unset($this->arq_importar[array_search("..", $this->arq_importar)]);
 	   	unset($this->arq_importar[array_search(".", $this->arq_importar)]);
 	   	if(count($this->arq_importar)>0)
@@ -193,168 +198,173 @@ class importacaoController extends Controller
 
 	private function query_firebird($sql)
     {
-    	$conexao = $this->conectar_firebird();
-    	$sth = $conexao->query($sql);
-		return $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+        try
+        {
+            $conexao = $this->conectar_firebird();
+            $sth = $conexao->query($sql);
+            return $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+        }
+    	catch(\Execption $e)
+        {
+            return [];
+        }
     }
 
     private function conectar_firebird($usuario="CAIXA",$senha="caixa")
     {
-    	$banco_de_dados = "C://Aliveit//bd//DBMASTERSELSC.DB";
+    	$banco_de_dados = "C://Aliveit//bd//DBFGSUMARE.DB";
     	$str_conn="firebird:host=localhost;dbname={$banco_de_dados};charset=UTF8";
 		return $db = new PDO($str_conn, $usuario, $senha);
     }
 
-    public function getCriarjson($tabela)
+    private function makeFile($title, $text)
     {
-    	switch ($tabela) 
-    	{
-    		case 'produtos':
-    			$this->exemplo_json_produtos();
-    			break;
-    		case 'gruposprodutos':
-    			$this->exemplo_json_gruposprodutos();
-    			break;
-    		case 'tiposprodutos':
-    			$this->exemplo_json_tiposprodutos();
-    			break;
-            case 'tanque':
-                $this->exemplo_json_tanque();
-                break;
-            case 'bomba':
-                $this->exemplo_json_bomba();
-                break;
-            case 'abastecimentos':
-                $this->exemplo_json_abastecimentos();
-                break;
-            case 'caixa':
-                $this->exemplo_json_caixa();
-                break;
-            case 'dadosfaturamento':
-                $this->exemplo_json_dadosfaturamento();
-                break;
-            case 'manutencaocaixa':
-                $this->exemplo_json_manutencaocaixa();
-                break;
-            case 'funcionarios':
-                $this->exemplo_json_funcionarios();
-                break;
-            case 'gruposprodutos':
-                $this->exemplo_json_gruposprodutos();
-                break;
-    		default:
-    			# code...
-    			break;
-    	}
+        $diretorio =public_path().$this->diretorio_importar.Auth::user()->tenant_id.'/';
+        $fp = fopen($diretorio.$title, "a");
+        $escreve = fwrite($fp, $text);
+
     }
 
-    private function exemplo_json_produtos()
+    private function insert($result,$tabela)
     {
-    	$consulta = $this->query_firebird("select * from produtos");	
-    	$json['produtos'] = array();
-    	foreach ($consulta as $row):
-    		 array_push($json['produtos'],[
-    		 		'codigo'         =>   $row['CODIGO'],
-    		 		'codigobarras'   =>   $row['CODIGOBARRAS'],
-    		 		'descricao'      =>   $row['DESCRICAO'],
-    		 		'nome'           =>   $row['NOMEFANTASIA'],
-    		 		'unidade'        =>   $row['UNIDADE'],
-    		 		'unidadeentrada' =>   $row['UNIDADEENTRADA'],
-    		 		'cst_entrada'    =>   $row['CODIGO_STENTRADA'],
-    		 		'tipoproduto'    =>   $row['TIPOPRODUTO'],
-    		 		'cst_saida'      =>   $row['CODIGO_ST'],
-    		 		'estoque'        =>   $row['ESTOQUE'],
-    		 		'precovenda'     =>   $row['PRECOVENDA'],
-    		 		'custoatual'     =>   $row['CUSTOATUAL'],
-    		 		'grupoproduto_codigo' =>  $row['CODIGO_GRUPOPRODUTO'],
-    		 		'tipoproduto_codigo'  =>  $row['CODIGO_TIPOPRODUTO'],
-    		 		'ncm'            =>  $row['CODIGO_NBMSH'],
-    		 		'anp'            =>  $row['CODIGOANP'],
-    		 		'cest'           =>  $row['CODIGO_CEST'],
-    		 		'ultimavenda'    =>  $row['ULTIMAVENDA']
-    		 	]);
-    	endforeach;
-		echo json_encode($json);
+        DB::connection()->disableQueryLog();
+        DB::beginTransaction();
+        $collection = collect($result);
+        $chunks = $collection->chunk(350);
+        $chunks->toArray();
+        $qtde_inserts = 0;$qtde_updates=0;
+        foreach ($chunks as $chunk):
+            DB::table($tabela)->insert($chunk->toArray());
+        endforeach;
+        DB::commit();
     }
-    private function exemplo_json_gruposprodutos()
+
+    public function getDireto()
     {
-    	$consulta = $this->query_firebird("select * from gruposprodutos");	
-    	$json['gruposprodutos'] = array();
-    	foreach ($consulta as $row):
-    		 array_push($json['gruposprodutos'],[
-    		 		'codigo'         =>   $row['CODIGO'],
-    		 		'descricao'      =>   $row['DESCRICAO']
-    		 	]);
-    	endforeach;
-		echo json_encode($json);
+        ini_set('max_execution_time', 0); ini_set("memory_limit",-1);
+        $this->tenant_id = Auth::user()->tenant_id;
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        $arquivos_gerar = ['produtos','tiposprodutos','gruposprodutos','tanque','bomba','funcionarios','caixa','dadosfaturamento','abastecimentos'];
+        foreach ($arquivos_gerar as $arquivo):
+            $this->{'importar_'.$arquivo}();
+        endforeach;
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
-    private function exemplo_json_tiposprodutos()
+
+
+    private function importar_produtos()
     {
-    	$consulta = $this->query_firebird("select * from tiposprodutos");	
-    	$json['tiposprodutos'] = array();
-    	foreach ($consulta as $row):
-    		 array_push($json['tiposprodutos'],[
-    		 		'codigo'         =>   $row['NUMERO'],
-    		 		'descricao'      =>   $row['DESCRICAO']
-    		 	]);
-    	endforeach;
-		echo json_encode($json);
+        $consulta = $this->query_firebird("select * from produtos");    
+        $json = array();
+        foreach ($consulta as $row):
+             array_push($json,[
+                    'codigo'         =>   $row['CODIGO'],
+                    'codigobarras'   =>   $row['CODIGOBARRAS'],
+                    'descricao'      =>   $row['DESCRICAO'],
+                    'nome'           =>   $row['NOMEFANTASIA'],
+                    'unidade'        =>   $row['UNIDADE'],
+                    'unidadeentrada' =>   $row['UNIDADEENTRADA'],
+                    'cst_entrada'    =>   $row['CODIGO_STENTRADA'],
+                    'tipoproduto'    =>   $row['TIPOPRODUTO'],
+                    'cst_saida'      =>   $row['CODIGO_ST'],
+                    'estoque'        =>   $row['ESTOQUE'],
+                    'precovenda'     =>   $row['PRECOVENDA'],
+                    'custoatual'     =>   $row['CUSTOATUAL'],
+                    'grupoproduto_codigo' =>  $row['CODIGO_GRUPOPRODUTO'],
+                    'tipoproduto_codigo'  =>  $row['CODIGO_TIPOPRODUTO'],
+                    'ncm'            =>  $row['CODIGO_NBMSH'],
+                    'anp'            =>  $row['CODIGOANP'],
+                    'cest'           =>  $row['CODIGO_CEST'],
+                    'ultimavenda'    =>  $row['ULTIMAVENDA'],
+                    'tenant_id'      =>  $this->tenant_id
+                ]);
+        endforeach;
+        $this->insert($json,'produtos');
     }
-    private function exemplo_json_tanque()
+
+    private function importar_tiposprodutos()
+    {
+        $consulta = $this->query_firebird("select * from tiposprodutos");   
+        $json = array();
+        foreach ($consulta as $row):
+             array_push($json,[
+                    'codigo'         =>   $row['NUMERO'],
+                    'descricao'      =>   $row['DESCRICAO'],
+                    'tenant_id'      =>  $this->tenant_id
+                ]);
+        endforeach;
+        $this->insert($json,'tiposprodutos');
+    }
+
+    private function importar_gruposprodutos()
+    {
+        $consulta = $this->query_firebird("select * from gruposprodutos");  
+        $json = array();
+        foreach ($consulta as $row):
+             array_push($json,[
+                    'codigo'         =>   $row['CODIGO'],
+                    'descricao'      =>   $row['DESCRICAO'],
+                    'tenant_id'      =>  $this->tenant_id
+                ]);
+        endforeach;
+        $this->insert($json,'gruposprodutos');
+    }
+
+    private function importar_tanque()
     {
         $consulta = $this->query_firebird("select * from tanque");   
-        $json['tanque'] = array();
+        $json = array();
         foreach ($consulta as $row):
-             array_push($json['tanque'],[
+             array_push($json,[
                     'codigo'         =>   $row['ID'],
                     'numero'         =>   $row['NUMERO'],
                     'capacidade'     =>   $row['CAPACIDADE'],
                     'volumeatual'    =>   $row['VOLUMEATUAL'],
-                    'produto_codigo' =>   $row['NUMERO_PRODUTO']
+                    'produto_codigo' =>   $row['NUMERO_PRODUTO'],
+                    'tenant_id'      =>  $this->tenant_id
                 ]);
         endforeach;
-        echo json_encode($json);
+        $this->insert($json,'tanque');
     }
-    private function exemplo_json_bomba()
+
+    private function importar_bomba()
     {
         $consulta = $this->query_firebird("select * from bomba");  
-        $json['bomba'] = array();
+        $json = array();
         foreach ($consulta as $row):
-             array_push($json['bomba'],[
+             array_push($json,[
                     'codigo'         =>   $row['ID'],
                     'numero'         =>   $row['NUMERO'],
                     'tanque_codigo'  =>   $row['ID_TANQUE'],
                     'bomba'          =>   $row['BOMBA'],
-                    'encerrante'     =>   $row['ENCERRANTEATUAL']
+                    'encerrante'     =>   $row['ENCERRANTEATUAL'],
+                    'tenant_id'      =>  $this->tenant_id
                 ]);
         endforeach;
-        echo json_encode($json);
+        $this->insert($json,'bomba');
     }
-    private function exemplo_json_abastecimentos()
+
+    private function importar_funcionarios()
     {
-        $consulta = $this->query_firebird("select * from abastecimentos");  
-        $json['abastecimentos'] = array();
+        $consulta = $this->query_firebird("select * from funcionarios");  
+        $json = array();
         foreach ($consulta as $row):
-             array_push($json['abastecimentos'],[
-                    'registro'       =>   $row['REGISTRO'],
-                    'codigo'         =>   $row['ID'],
-                    'bomba_codigo'   =>   $row['ID_BOMBA'],
-                    'caixa_codigo'   =>   $row['ID_CAIXA'],
-                    'total_dinheiro' =>   $row['TOTALDINHEIRO'],
-                    'total_litros'   =>   $row['TOTALLITROS'],
-                    'preco'          =>   $row['PRECOUNITARIO'],
-                    'data'           =>   $row['DATAABASTECIMENTO'],
-                    'hora'           =>   $row['HORAABASTECIMENTO']
+             array_push($json,[
+                    'codigo'   =>    $row['NUMERO'],
+                    'nome'     =>    $row['NOME'],
+                    'usuario'  =>    $row['USUARIO'],
+                    'tenant_id'      =>  $this->tenant_id
                 ]);
         endforeach;
-        echo json_encode($json);
+        $this->insert($json,'funcionarios');
     }
-    private function exemplo_json_caixa()
+
+    private function importar_caixa()
     {
-        $consulta = $this->query_firebird("select * from caixa");  
-        $json['caixa'] = array();
+        $consulta = $this->query_firebird("select * from caixa c where c.dataabertura >= '2017-01-01'");  
+        $json = array();
         foreach ($consulta as $row):
-             array_push($json['caixa'],[
+             array_push($json,[
                     'codigo'           =>   $row['ID'],
                     'numero'           =>   $row['NUMERO'],
                     'funcionario'      =>   $row['NOME_FUNCIONARIO'],
@@ -363,18 +373,19 @@ class importacaoController extends Controller
                     'data_abertura'    =>   $row['DATAABERTURA'],
                     'hora_abertura'    =>   $row['HORAABERTURA'],
                     'data_fechamento'  =>   $row['DATAFECHAMENTO'],
-                    'hora_fechamento'  =>   $row['HORAFECHAMENTO']
+                    'hora_fechamento'  =>   $row['HORAFECHAMENTO'],
+                    'tenant_id'      =>  $this->tenant_id
                 ]);
         endforeach;
-        echo json_encode($json);
+        $this->insert($json,'caixa');
     }
 
-    private function exemplo_json_dadosfaturamento()
+    private function importar_dadosfaturamento()
     {
-        $consulta = $this->query_firebird("select * from dadosfaturamento");  
-        $json['dadosfaturamento'] = array();
+        $consulta = $this->query_firebird("select * from dadosfaturamento d where d.datalancamento >= '2017-01-01' "); 
+        $json = array();
         foreach ($consulta as $row):
-             array_push($json['dadosfaturamento'],[
+             array_push($json,[
                     'codigo'            =>    $row['ID'],
                     'produto_codigo'    =>    $row['NUMERO_PRODUTO'],
                     'valorproduto'      =>    $row['VALORPRODUTO'],
@@ -392,46 +403,32 @@ class importacaoController extends Controller
                     'datacancelamento'  =>    $row['DATACANCELAMENTO'],
                     'valordesconto'     =>    $row['VALORDESCONTO'],
                     'valoracrescimo'    =>    $row['VALORACRESCIMO'],
-                    'valortotalcupom'   =>    $row['VALORTOTALCUPOM']
+                    'valortotalcupom'   =>    $row['VALORTOTALCUPOM'],
+                    'tenant_id'      =>  $this->tenant_id              
                 ]);
         endforeach;
-        echo json_encode($json);
+        $this->insert($json,'dadosfaturamento');
     }
 
-    private function exemplo_json_manutencaocaixa()
+    private function importar_abastecimentos()
     {
-        $consulta = $this->query_firebird("select * from manutencaocaixa where excluido='N' ");  
-        $json['manutencaocaixa'] = array();
+        $consulta = $this->query_firebird(" select * from abastecimentos a where a.dataabastecimento >= '2017-01-01'  "); 
+        $json = array();
         foreach ($consulta as $row):
-             array_push($json['manutencaocaixa'],[
-                    'codigo'     =>    $row['ID'],
-                    'caixa_codigo'   =>    $row['ID_CAIXA'],
-                    'tipo'       =>    $row['TIPO'],
-                    'documento'  =>    $row['DOCUMENTO'],
-                    'data'       =>    $row['DATALANCAMENTO'],
-                    'hora'       =>    $row['HORA'],
-                    'funcionario_codigo'   =>    $row['NUMERO_FUNCIONARIO'],
-                    'descricao'   =>    $row['DESCRICAO'],
-                    'classificacao'   =>    $row['CLASSIFICACAO'],
-                    'valor'       =>    $row['VALOR']
+                array_push($json,[
+                    'registro'       =>   $row['REGISTRO'],
+                    'codigo'         =>   $row['ID'],
+                    'bomba_codigo'   =>   $row['ID_BOMBA'],
+                    'caixa_codigo'   =>   $row['ID_CAIXA'],
+                    'total_dinheiro' =>   $row['TOTALDINHEIRO'],
+                    'total_litros'   =>   $row['TOTALLITROS'],
+                    'preco'          =>   $row['PRECOUNITARIO'],
+                    'data'           =>   $row['DATAABASTECIMENTO'],
+                    'hora'           =>   $row['HORAABASTECIMENTO'],
+                    'tenant_id'      =>  $this->tenant_id             
                 ]);
         endforeach;
-        echo json_encode($json);
+        $this->insert($json,'abastecimentos');
     }
-
-    private function exemplo_json_funcionarios()
-    {
-        $consulta = $this->query_firebird("select * from funcionarios");  
-        $json['funcionarios'] = array();
-        foreach ($consulta as $row):
-             array_push($json['funcionarios'],[
-                    'codigo'   =>    $row['NUMERO'],
-                    'nome'     =>    $row['NOME'],
-                    'usuario'  =>    $row['USUARIO']
-                ]);
-        endforeach;
-        echo json_encode($json);
-    }
-
     
 }

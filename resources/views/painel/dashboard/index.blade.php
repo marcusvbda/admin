@@ -1,3 +1,4 @@
+
 @extends('painel.template.painel')
 @section('titulo','Dashboard')
 
@@ -10,7 +11,7 @@
 
     <div class="row">
         <div class="col-md-12 text-center">
-        	<?php $dia_semana = dia_semana(date(" D ")); ?>
+            <?php $dia_semana = dia_semana(date(" D ")); ?>
             <h2>{{bomdia()}}
             @if(Auth::user()->apelido!="") 
                 {{Auth::user()->apelido}} 
@@ -24,31 +25,12 @@
     
     <hr>
 
-    <div class="row">
-
-    	<div class="col-md-7">
-            @include('painel.dashboard.basicinfo') 
-        </div>
-
-    	<div class="col-md-5">
+    <div class="row">    
+        <div class="col-md-5">
             @include('painel.dashboard.todolist')
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-7">
-            @include('painel.dashboard.recents2',['historico_usuarios'=>$historico_usuarios])
-        </div>
-        <div class="col-md-5">
-            @include('painel.dashboard.recents',['importacoes'=>$importacoes])
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            @include('painel.dashboard.grupos',['porcentagem'=>$porcentagem])            
-        </div>
-    </div>
 
 </section>
 @stop
